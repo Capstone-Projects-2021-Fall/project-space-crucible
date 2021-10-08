@@ -42,8 +42,6 @@ public class GameScreen implements Screen {
     //character movement
     int x = 0;
     int y = 0;
-    float tw;
-    float th;
 
     public GameScreen(MyGDxTest game) {
         try {
@@ -58,15 +56,13 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, 1920, 1080);
         batch = new SpriteBatch();
         player = new Sprite(WadFuncs.getSprite(file, "PLAYA1"));
-        tw = player.getWidth();
-        th = player.getHeight();
+
     }
 
     @Override
     public void show() {
 
     }
-
 
     @Override
     public void render(float delta) {
@@ -79,16 +75,17 @@ public class GameScreen implements Screen {
         //This centers the camera to the player
         camera.position.set(x + player.getWidth()/2, y + player.getHeight()/2, 0);
 
-
         //Get the angle where the mouse is pointing to on the screen in relation to where the player is
+        //Referenced code - https://stackoverflow.com/questions/16381031/get-cursor-position-in-libgdx
         mouseInWorld3D.x = Gdx.input.getX() - x;
-        mouseInWorld3D.y = Gdx.input.getY() - y;
+        mouseInWorld3D.y = Gdx.input.getY() + y;
         mouseInWorld3D.z = 0;
         camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
         mouseInWorld2D.x = mouseInWorld3D.x;
         mouseInWorld2D.y = mouseInWorld3D.y;
-        float angle = mouseInWorld2D.angleDeg();
-        System.out.println(angle);
+        float angle = mouseInWorld2D.angleDeg(); //Turn the vector2 into a degree angle
+        System.out.println(angle + ", " + x + ", " + y);
+
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -96,7 +93,6 @@ public class GameScreen implements Screen {
         batch.begin();
         batch.draw(player, x, y);
         batch.end();
-
     }
 
     public void movementUpdate(){
