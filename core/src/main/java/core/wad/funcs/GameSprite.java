@@ -11,7 +11,7 @@ public class GameSprite {
     final private HashMap<Character, GameSpriteFrame> frames;
 
     //One frame of an animation, with 8 different angles
-    private static class GameSpriteFrame {
+    public static class GameSpriteFrame {
 
         final private Sprite[] sprites;
 

@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import core.game.logic.Entity;
+import core.game.logic.PlayerPawn;
 import core.wad.funcs.GameSprite;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
@@ -24,7 +26,7 @@ public class GameScreen implements Screen {
     private MyGDxTest game;
     private WadFile file;
 
-    GameSprite player;
+    PlayerPawn player;
 
     //screen
     OrthographicCamera camera;
@@ -40,8 +42,6 @@ public class GameScreen implements Screen {
     public static final float SPEED = 120;
 
     //character movement
-    int x = 0;
-    int y = 0;
 
     public GameScreen(MyGDxTest game) {
         try {
@@ -54,7 +54,8 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
         batch = new SpriteBatch();
-        player = new GameSprite(file, "PLAY");
+        player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 100, 32, 56,
+                file, "PLAY");
     }
 
     @Override
@@ -73,23 +74,22 @@ public class GameScreen implements Screen {
         //This centers the camera to the player
         //Get the angle where the mouse is pointing to on the screen in relation to where the player is
         //Referenced code - https://stackoverflow.com/questions/16381031/get-cursor-position-in-libgdx
-        mouseInWorld3D.x = Gdx.input.getX() - x;
-        mouseInWorld3D.y = Gdx.input.getY() + y;
+        mouseInWorld3D.x = Gdx.input.getX() - player.getPos().x;
+        mouseInWorld3D.y = Gdx.input.getY() + player.getPos().y;
         mouseInWorld3D.z = 0;
         camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
         mouseInWorld2D.x = mouseInWorld3D.x;
         mouseInWorld2D.y = mouseInWorld3D.y;
-        float angle = mouseInWorld2D.angleDeg(); //Turn the vector2 into a degree angle
-        //System.out.println(angle + ", " + x + ", " + y);
+        player.getPos().angle = mouseInWorld2D.angleDeg(); //Turn the vector2 into a degree angle
+        System.out.println(player.getPos().angle + ", " + player.getPos().x + ", " + player.getPos().y);
 
-
-        Sprite playerSprite = player.getFrame('A', angle);
-        camera.position.set(x + playerSprite.getWidth()/2, y + playerSprite.getHeight()/2, 0);
+        camera.position.set(player.getPos().x + player.getSprite('A', player.getPos().angle).getWidth()/2,
+                player.getPos().y + player.getSprite('A', player.getPos().angle).getHeight()/2, 0);
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.draw(playerSprite, x, y);
+        batch.draw(player.getSprite('A', player.getPos().angle), player.getPos().x, player.getPos().y);
         batch.end();
     }
 
@@ -97,13 +97,13 @@ public class GameScreen implements Screen {
         //Input handling with polling method
         //This handles all the keys pressed with the keyboard.
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
-            x -= SPEED * Gdx.graphics.getDeltaTime();
+            player.getPos().x -= SPEED * Gdx.graphics.getDeltaTime();
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
-            x += SPEED * Gdx.graphics.getDeltaTime();
+            player.getPos().x += SPEED * Gdx.graphics.getDeltaTime();
         if(Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
-            y += SPEED * Gdx.graphics.getDeltaTime();
+            player.getPos().y += SPEED * Gdx.graphics.getDeltaTime();
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
-            y -= SPEED * Gdx.graphics.getDeltaTime();
+            player.getPos().y -= SPEED * Gdx.graphics.getDeltaTime();
     }
 
     @Override
