@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.ByteArray;
+import core.level.info.LevelData;
 import net.mtrop.doom.WadFile;
 import net.mtrop.doom.graphics.PNGPicture;
 
@@ -31,7 +32,7 @@ public class WadFuncs {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             p.writeBytes(os);
             ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
-            return new Pixmap(new Gdx2DPixmap(is, Gdx2DPixmap.GDX2D_FORMAT_RGB565));
+            return new Pixmap(new Gdx2DPixmap(is, Gdx2DPixmap.GDX2D_FORMAT_RGBA8888));
 
         } catch (IOException e) {
             System.out.println("Could not convert PNG lump to GDX Pixmap.");
@@ -50,5 +51,15 @@ public class WadFuncs {
 
     public static Sprite getSprite(WadFile file, String name) {
         return new Sprite(getTexture(file, name));
+    }
+
+    public static LevelData loadLevel(WadFile file, int levelnum) {
+        try {
+            return new LevelData(file, levelnum);
+        } catch (IOException e) {
+            System.out.println("Could not load LEVEL" + levelnum);
+            e.printStackTrace();
+            return null;
+        }
     }
 }

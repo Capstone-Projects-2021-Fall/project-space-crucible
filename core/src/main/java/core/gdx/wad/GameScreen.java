@@ -13,18 +13,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import core.game.logic.Entity;
 import core.game.logic.PlayerPawn;
+import core.level.info.LevelData;
+import core.level.info.LevelTile;
 import core.wad.funcs.GameSprite;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
 public class GameScreen implements Screen {
 
     //launcher = myGame
     private MyGDxTest game;
-    private WadFile file;
 
     PlayerPawn player;
 
@@ -33,10 +35,11 @@ public class GameScreen implements Screen {
     private final Vector2 mouseInWorld2D = new Vector2();
     private final Vector3 mouseInWorld3D = new Vector3();
 
+    //Level
+    LevelData level;
+
     //graphics
     SpriteBatch batch;
-    //Texture textureBack;
-    //Sprite spriteBack;
 
     //Player Speed
     public static final float SPEED = 120;
@@ -44,19 +47,19 @@ public class GameScreen implements Screen {
     //character movement
 
     public GameScreen(MyGDxTest game) {
+        WadFile file;
+
         try {
             file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
             String path = file.getFileAbsolutePath();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.game=game;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1920, 1080);
-        batch = new SpriteBatch();
-        player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 100, 32, 56,
-                file, "PLAY");
-        try {
+            this.game=game;
+            camera = new OrthographicCamera();
+            camera.setToOrtho(false, 1920, 1080);
+            batch = new SpriteBatch();
+            player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 100, 32, 56,
+                    file, "PLAY");
+
+            level = new LevelData(file, 1);
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,6 +76,7 @@ public class GameScreen implements Screen {
 
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         //This updates the player on the screen
         movementUpdate();
 
@@ -88,17 +92,21 @@ public class GameScreen implements Screen {
         player.getPos().angle = mouseInWorld2D.angleDeg(); //Turn the vector2 into a degree angle
         System.out.println(player.getPos().angle + ", " + player.getPos().x + ", " + player.getPos().y);
 
-        camera.position.set(player.getPos().x + player.getSprite('A', player.getPos().angle).getWidth()/2,
-                player.getPos().y + player.getSprite('A', player.getPos().angle).getHeight()/2, 0);
+        camera.position.set(player.getPos().x + player.getWidth()/(float)2.0,
+                player.getPos().y + player.getHeight()/(float)2.0, 0);
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
+        batch.enableBlending();
         batch.begin();
+
+        //Draw game world in the background
+        worldDraw();
         batch.draw(player.getSprite('A', player.getPos().angle), player.getPos().x, player.getPos().y);
         batch.end();
     }
 
-    public void movementUpdate(){
+    private void movementUpdate(){
         //Input handling with polling method
         //This handles all the keys pressed with the keyboard.
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
@@ -109,6 +117,13 @@ public class GameScreen implements Screen {
             player.getPos().y += SPEED * Gdx.graphics.getDeltaTime();
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
             player.getPos().y -= SPEED * Gdx.graphics.getDeltaTime();
+    }
+
+    private void worldDraw() {
+        level.getTiles().forEach((pos, tile)->
+                batch.draw(tile.getTileTexture(),
+                pos.x * LevelTile.TILE_SIZE,
+                pos.y * LevelTile.TILE_SIZE));
     }
 
     @Override
