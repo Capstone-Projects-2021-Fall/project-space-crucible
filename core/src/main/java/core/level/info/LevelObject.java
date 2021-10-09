@@ -22,4 +22,14 @@ public class LevelObject {
         this.ambush = ambush;
         this.tag = tag;
     }
+
+    public String toString() {
+        return "Type: " + type + "\n"
+                + "Position: " + pos.x + ", " + pos.y + "\n"
+                + "Singleplayer: " + singleplayer + "\n"
+                + "Cooperative: " + cooperative + "\n"
+                + "Skills: " + skill + "\n"
+                + "Ambush: " + ambush + "\n"
+                + "Tag: " + tag + "\n";
+    }
 }

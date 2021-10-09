@@ -182,4 +182,19 @@ public class LevelData {
         LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag, file);
         tiles.put(pos, tile);
     }
+
+    public String toString() {
+
+        String ret = "";
+
+        for (LevelTile.TilePosition pos : tiles.keySet()) {
+            ret = ret.concat(tiles.get(pos).toString() + "\n");
+        }
+
+        for (LevelObject obj : objects) {
+            ret = ret.concat(obj.toString() + "\n");
+        }
+
+        return ret;
+    }
 }

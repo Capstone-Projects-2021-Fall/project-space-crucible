@@ -11,18 +11,19 @@ public class LevelTile {
 
     //Different from entity positions- they are constant and multiplied by tile size when map is drawn
     public static class TilePosition {
-        public int xpos;
-        public int ypos;
+        public int x;
+        public int y;
 
         public TilePosition (int x, int y) {
-            xpos = x;
-            ypos = y;
+            this.x = x;
+            this.y = y;
         }
     }
 
     final private TilePosition pos;
     private boolean solid;
     private Texture graphic;
+    private String graphicname;
     private int light;
     private int effect;
     private int arg1;
@@ -41,6 +42,7 @@ public class LevelTile {
         this.repeat = repeat;
         this.tag = tag;
 
+        graphicname = tex;
         graphic = WadFuncs.getTexture(file, tex);
     }
 
@@ -48,4 +50,13 @@ public class LevelTile {
         return graphic;
     }
 
+    public String toString() {
+        return "Position: " + pos.x + ", " + pos.y + "\n"
+                + "Solid: " + solid + "\n"
+                + "Texture: " + graphicname + "\n"
+                + "Light Level: " + light + "\n"
+                + "Effect: " + effect + " (" + arg1 + ", " + arg2 + ")\n"
+                + "Repeat: " + repeat + "\n"
+                + "Tag: " + tag;
+    }
 }
