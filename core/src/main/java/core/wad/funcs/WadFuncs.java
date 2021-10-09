@@ -32,7 +32,7 @@ public class WadFuncs {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             p.writeBytes(os);
             ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
-            return new Pixmap(new Gdx2DPixmap(is, Gdx2DPixmap.GDX2D_FORMAT_RGB565));
+            return new Pixmap(new Gdx2DPixmap(is, Gdx2DPixmap.GDX2D_FORMAT_RGBA8888));
 
         } catch (IOException e) {
             System.out.println("Could not convert PNG lump to GDX Pixmap.");

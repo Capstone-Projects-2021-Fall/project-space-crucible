@@ -97,11 +97,11 @@ public class GameScreen implements Screen {
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
+        batch.enableBlending();
         batch.begin();
 
         //Draw game world in the background
         worldDraw();
-
         batch.draw(player.getSprite('A', player.getPos().angle), player.getPos().x, player.getPos().y);
         batch.end();
     }
