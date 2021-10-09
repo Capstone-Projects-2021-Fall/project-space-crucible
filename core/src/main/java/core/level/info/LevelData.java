@@ -44,6 +44,14 @@ public class LevelData {
         }
     }
 
+    public HashMap<LevelTile.TilePosition, LevelTile> getTiles() {
+        return tiles;
+    }
+
+    public ArrayList<LevelObject> getObjects() {
+        return objects;
+    }
+
     //Reads a map object from level data
     private void readObject(Scanner stringReader, WadFile file) throws IOException {
 
