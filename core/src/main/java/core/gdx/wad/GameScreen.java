@@ -56,6 +56,11 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 100, 32, 56,
                 file, "PLAY");
+        try {
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
