@@ -35,6 +35,14 @@ public class Entity {
         sprite = new GameSprite(file, spriteName);
     }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
     public Sprite getSprite(Character frame, float angle) {
         return sprite.getFrame(frame, angle);
     }

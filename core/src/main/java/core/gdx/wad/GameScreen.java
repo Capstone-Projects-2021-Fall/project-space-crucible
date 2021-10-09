@@ -92,8 +92,8 @@ public class GameScreen implements Screen {
         player.getPos().angle = mouseInWorld2D.angleDeg(); //Turn the vector2 into a degree angle
         System.out.println(player.getPos().angle + ", " + player.getPos().x + ", " + player.getPos().y);
 
-        camera.position.set(player.getPos().x + player.getSprite('A', player.getPos().angle).getWidth()/2,
-                player.getPos().y + player.getSprite('A', player.getPos().angle).getHeight()/2, 0);
+        camera.position.set(player.getPos().x + player.getWidth()/(float)2.0,
+                player.getPos().y + player.getHeight()/(float)2.0, 0);
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
