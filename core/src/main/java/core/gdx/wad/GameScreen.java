@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import core.wad.funcs.GameSprite;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
@@ -23,8 +24,7 @@ public class GameScreen implements Screen {
     private MyGDxTest game;
     private WadFile file;
 
-    Sprite player;
-    Sprite player2;
+    GameSprite player;
 
     //screen
     OrthographicCamera camera;
@@ -51,12 +51,10 @@ public class GameScreen implements Screen {
             e.printStackTrace();
         }
         this.game=game;
-        this.file = file;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
         batch = new SpriteBatch();
-        player = new Sprite(WadFuncs.getSprite(file, "PLAYA1"));
-
+        player = new GameSprite(file, "PLAY");
     }
 
     @Override
@@ -67,14 +65,12 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        Gdx.gl.glClearColor(00,00,00,1F);
+        Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //This updates the player on the screen
         movementUpdate();
 
         //This centers the camera to the player
-        camera.position.set(x + player.getWidth()/2, y + player.getHeight()/2, 0);
-
         //Get the angle where the mouse is pointing to on the screen in relation to where the player is
         //Referenced code - https://stackoverflow.com/questions/16381031/get-cursor-position-in-libgdx
         mouseInWorld3D.x = Gdx.input.getX() - x;
@@ -87,11 +83,13 @@ public class GameScreen implements Screen {
         System.out.println(angle + ", " + x + ", " + y);
 
 
+        Sprite playerSprite = player.getFrame('A', angle);
+        camera.position.set(x + playerSprite.getWidth()/2, y + playerSprite.getHeight()/2, 0);
         camera.update();
-        batch.setProjectionMatrix(camera.combined);
 
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.draw(player, x, y);
+        batch.draw(playerSprite, x, y);
         batch.end();
     }
 
@@ -110,8 +108,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth = width/1f;
-        camera.viewportHeight = height/1f;
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
     }
 
     @Override
