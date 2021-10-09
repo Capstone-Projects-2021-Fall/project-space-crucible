@@ -11,21 +11,22 @@ import java.util.Scanner;
 public class LevelData {
     String name;
     int levelnumber;
-    private HashMap<LevelTile.TilePosition, LevelTile> tiles;
-    private ArrayList<LevelObject> objects;
+    private HashMap<LevelTile.TilePosition, LevelTile> tiles = new HashMap<>();
+    private ArrayList<LevelObject> objects = new ArrayList<>();
 
     public LevelData(WadFile file, int levelnumber) throws IOException {
         this.levelnumber = levelnumber;
         String entry = "LEVEL" + levelnumber;
+        String leveldata = "";
 
         try {
-            String leveldata = file.getTextData(entry, Charset.defaultCharset());
+            leveldata = file.getTextData(entry, Charset.defaultCharset());
         } catch (IOException e) {
             System.out.println("Coudl not read entry \"" + entry + "\" from " + file.getFileName() + "!");
             e.printStackTrace();
         }
 
-        Scanner stringReader = new Scanner(entry);
+        Scanner stringReader = new Scanner(leveldata);
 
         while (stringReader.hasNextLine()) {
             String line = stringReader.nextLine();
@@ -33,10 +34,10 @@ public class LevelData {
             if (line.startsWith("name")) {
                 this.name = line.substring(line.indexOf("= ") + 2);
             } else if (line.equals("floortile {")) {
-                readTile(stringReader, line, file);
+                readTile(stringReader, file);
             } else if (line.equals("object {")) {
-                readObject(stringReader, line, file);
-            } else {
+                readObject(stringReader, file);
+            } else if (!line.isEmpty()){
                 System.out.println("Error: unrecognized level data!");
                 throw new IOException();
             }
@@ -44,7 +45,7 @@ public class LevelData {
     }
 
     //Reads a map object from level data
-    private void readObject(Scanner stringReader, String line, WadFile file) throws IOException {
+    private void readObject(Scanner stringReader, WadFile file) throws IOException {
 
         int type = 0, xpos = 0, ypos = 0, tag = 0;
         float angle = 0;
@@ -54,9 +55,10 @@ public class LevelData {
         boolean[] objectdata = {false, false, false, false, false, false, false, false,
                 false, false, false, false, false};
 
+        String line = stringReader.nextLine();
+        String rawvalue = line.substring(line.indexOf("= ") + 2);
+
         while(!line.equals("}")) {
-            line = stringReader.nextLine();
-            String rawvalue = line.substring(line.indexOf("= ") + 2);
 
             if (line.startsWith("type")) {
                 type = Integer.parseInt(rawvalue);
@@ -101,6 +103,9 @@ public class LevelData {
                 System.out.println("Error: unrecognized level object data!");
                 throw new IOException();
             }
+
+            line = stringReader.nextLine();
+            rawvalue = line.substring(line.indexOf("= ") + 2);
         }
 
         //Make sure everything necessary was read.
@@ -116,7 +121,7 @@ public class LevelData {
     }
 
     //Reads a map tile from level data
-    private void readTile(Scanner stringReader, String line, WadFile file) throws IOException {
+    private void readTile(Scanner stringReader, WadFile file) throws IOException {
 
         int xpos = 0, ypos = 0;
         boolean solid = false;
@@ -126,9 +131,11 @@ public class LevelData {
 
         boolean[] leveldata = {false, false, false, false, false, false, false, false, false, false};
 
+
+        String line = stringReader.nextLine();
+        String rawvalue = line.substring(line.indexOf("= ") + 2);
+
         while(!line.equals("}")) {
-            line = stringReader.nextLine();
-            String rawvalue = line.substring(line.indexOf("= ") + 2);
 
             if (line.startsWith("xpos")) {
                 xpos = Integer.parseInt(rawvalue);
@@ -168,6 +175,9 @@ public class LevelData {
                 System.out.println("Error: unrecognized level tile data!");
                 throw new IOException();
             }
+
+            line = stringReader.nextLine();
+            rawvalue = line.substring(line.indexOf("= ") + 2);
         }
 
         //Make sure everything necessary was read.

@@ -13,18 +13,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import core.game.logic.Entity;
 import core.game.logic.PlayerPawn;
+import core.level.info.LevelData;
 import core.wad.funcs.GameSprite;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
 public class GameScreen implements Screen {
 
     //launcher = myGame
     private MyGDxTest game;
-    private WadFile file;
 
     PlayerPawn player;
 
@@ -44,22 +45,32 @@ public class GameScreen implements Screen {
     //character movement
 
     public GameScreen(MyGDxTest game) {
+        WadFile file;
+
         try {
             file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
             String path = file.getFileAbsolutePath();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.game=game;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1920, 1080);
-        batch = new SpriteBatch();
-        player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 100, 32, 56,
-                file, "PLAY");
-        try {
+            this.game=game;
+            camera = new OrthographicCamera();
+            camera.setToOrtho(false, 1920, 1080);
+            batch = new SpriteBatch();
+            player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 100, 32, 56,
+                    file, "PLAY");
+
+            levelDataTest(file);
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void levelDataTest(WadFile file) {
+        LevelData testlevel = WadFuncs.loadLevel(file, 1);
+
+        if (testlevel != null) {
+            System.out.println(testlevel);
+        } else {
+            System.out.println("Level is null.");
         }
     }
 

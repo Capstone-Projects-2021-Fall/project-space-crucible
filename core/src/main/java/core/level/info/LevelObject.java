@@ -28,7 +28,7 @@ public class LevelObject {
                 + "Position: " + pos.x + ", " + pos.y + "\n"
                 + "Singleplayer: " + singleplayer + "\n"
                 + "Cooperative: " + cooperative + "\n"
-                + "Skills: " + skill + "\n"
+                + "Skills: " + skill[0] + ", " + skill[1] + ", " + skill[2] + ", " + skill[3] + ", " + skill[4] + "\n"
                 + "Ambush: " + ambush + "\n"
                 + "Tag: " + tag + "\n";
     }
