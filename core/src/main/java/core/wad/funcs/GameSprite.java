@@ -8,12 +8,12 @@ import java.util.HashMap;
 
 public class GameSprite {
 
-    private HashMap<Character, GameSpriteFrame> frames;
+    final private HashMap<Character, GameSpriteFrame> frames;
 
     //One frame of an animation, with 8 different angles
-    private class GameSpriteFrame {
+    private static class GameSpriteFrame {
 
-        private Sprite[] sprites;
+        final private Sprite[] sprites;
 
         protected GameSpriteFrame() {
             sprites = new Sprite[8];

@@ -80,7 +80,7 @@ public class GameScreen implements Screen {
         mouseInWorld2D.x = mouseInWorld3D.x;
         mouseInWorld2D.y = mouseInWorld3D.y;
         float angle = mouseInWorld2D.angleDeg(); //Turn the vector2 into a degree angle
-        System.out.println(angle + ", " + x + ", " + y);
+        //System.out.println(angle + ", " + x + ", " + y);
 
 
         Sprite playerSprite = player.getFrame('A', angle);
