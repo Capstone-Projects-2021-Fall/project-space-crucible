@@ -9,9 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import core.game.logic.Entity;
+import core.game.logic.EntityState;
 import core.game.logic.PlayerPawn;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
+import core.wad.funcs.GameSprite;
 import net.mtrop.doom.WadFile;
 
 import java.io.IOException;
@@ -49,19 +51,21 @@ public class GameScreen implements Screen {
             camera = new OrthographicCamera();
             camera.setToOrtho(false, 1920, 1080);
             batch = new SpriteBatch();
-            player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 100, 32, 56,
-                    file, "PLAY");
 
             level = new LevelData(file, 1);
+            loadSprites(file);
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //Temporarily hard-code statelist for proof-of-concept.
+        loadStates();
+        player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 100, 32, 56);
     }
 
     @Override
     public void show() {
-
     }
 
     @Override
@@ -95,7 +99,7 @@ public class GameScreen implements Screen {
 
         //Draw game world in the background
         worldDraw();
-        batch.draw(player.getSprite('A', player.getPos().angle), player.getPos().x, player.getPos().y);
+        batch.draw(player.getCurrentSprite(), player.getPos().x, player.getPos().y);
         batch.end();
     }
 
@@ -110,6 +114,10 @@ public class GameScreen implements Screen {
             player.getPos().y += SPEED * Gdx.graphics.getDeltaTime();
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
             player.getPos().y -= SPEED * Gdx.graphics.getDeltaTime();
+
+        if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            player.setState(player.getStates()[Entity.MISSILE]);
+        }
     }
 
     private void worldDraw() {
@@ -145,4 +153,29 @@ public class GameScreen implements Screen {
     public void dispose() {
 
     }
+
+    private void loadSprites(WadFile file) {
+        //For now, just load player sprites. I'll generalize this later.
+        GameSprite.spriteMap.put("PLAY", new GameSprite(file, "PLAY"));
+    }
+
+    private void loadStates() {
+        EntityState.stateList.add(new EntityState("PLAY", 'A', -1, 0)); //0
+        EntityState.stateList.add(new EntityState("PLAY", 'A', 4, 2));  //1
+        EntityState.stateList.add(new EntityState("PLAY", 'B', 4, 3));  //2
+        EntityState.stateList.add(new EntityState("PLAY", 'C', 4, 4));  //3
+        EntityState.stateList.add(new EntityState("PLAY", 'D', 4, 1));  //4
+        EntityState.stateList.add(new EntityState("PLAY", 'E', 12, 0)); //5
+        EntityState.stateList.add(new EntityState("PLAY", 'F', 6, 5));  //6
+        EntityState.stateList.add(new EntityState("PLAY", 'G', 4, 8));  //7
+        EntityState.stateList.add(new EntityState("PLAY", 'G', 4, 0));  //8
+        EntityState.stateList.add(new EntityState("PLAY", 'H', 10, 10));//9
+        EntityState.stateList.add(new EntityState("PLAY", 'I', 10, 11));//10
+        EntityState.stateList.add(new EntityState("PLAY", 'J', 10, 12));//11
+        EntityState.stateList.add(new EntityState("PLAY", 'K', 10, 13));//12
+        EntityState.stateList.add(new EntityState("PLAY", 'L', 10, 14));//13
+        EntityState.stateList.add(new EntityState("PLAY", 'M', 10, 15));//14
+        EntityState.stateList.add(new EntityState("PLAY", 'N', -1, 15));//15
+    }
+
 }
