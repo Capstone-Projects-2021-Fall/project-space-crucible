@@ -15,8 +15,6 @@ public class LevelWriter {
 
         String rawLevelData = "";
 
-        data.setName("Level " + levelnum);
-
         rawLevelData += "name = " + data.getName() + "\n";
 
         for (LevelTile tile : data.getTiles()) {

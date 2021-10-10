@@ -44,7 +44,13 @@ public class EditorScreen implements Screen {
         sr = new ShapeRenderer();
 
         this.levelnum = levelnum;
-        level = WadFuncs.loadLevel(file, levelnum);
+
+        try {
+            level = WadFuncs.loadLevel(file, levelnum);
+        } catch (Exception e) {
+            level = new LevelData(levelnum);
+
+        }
     }
 
     @Override

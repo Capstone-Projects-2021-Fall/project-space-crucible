@@ -13,6 +13,12 @@ public class LevelData {
     private ArrayList<LevelTile> tiles = new ArrayList<>();
     private ArrayList<LevelObject> objects = new ArrayList<>();
 
+
+    //New level from scratch
+    public LevelData(int levelnumber) {
+        name = "Level " + levelnumber;
+    }
+
     public LevelData(WadFile file, int levelnumber) throws IOException {
         this.levelnumber = levelnumber;
         String entry = "LEVEL" + levelnumber;
