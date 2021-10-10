@@ -5,11 +5,10 @@ import net.mtrop.doom.WadFile;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class LevelData {
-    String name;
+    private String name = "";
     int levelnumber;
     private ArrayList<LevelTile> tiles = new ArrayList<>();
     private ArrayList<LevelObject> objects = new ArrayList<>();
@@ -22,7 +21,7 @@ public class LevelData {
         try {
             leveldata = file.getTextData(entry, Charset.defaultCharset());
         } catch (IOException e) {
-            System.out.println("Coudl not read entry \"" + entry + "\" from " + file.getFileName() + "!");
+            System.out.println("Could not read entry \"" + entry + "\" from " + file.getFileName() + "!");
             e.printStackTrace();
         }
 
@@ -36,12 +35,18 @@ public class LevelData {
             } else if (line.equals("floortile {")) {
                 readTile(stringReader, file);
             } else if (line.equals("object {")) {
-                readObject(stringReader, file);
+                readObject(stringReader);
             } else if (!line.isEmpty()){
                 System.out.println("Error: unrecognized level data!");
                 throw new IOException();
             }
         }
+
+        System.out.println(name);
+    }
+
+    public String getName() {
+        return name;
     }
 
     public ArrayList<LevelTile> getTiles() {
@@ -63,7 +68,7 @@ public class LevelData {
     }
 
     //Reads a map object from level data
-    private void readObject(Scanner stringReader, WadFile file) throws IOException {
+    private void readObject(Scanner stringReader) throws IOException {
 
         int type = 0, xpos = 0, ypos = 0, tag = 0;
         float angle = 0;
@@ -209,6 +214,10 @@ public class LevelData {
         LevelTile.TilePosition pos = new LevelTile.TilePosition(xpos, ypos);
         LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag, file);
         tiles.add(tile);
+    }
+
+    public void setName(String newname) {
+        name = newname;
     }
 
     public String toString() {

@@ -14,9 +14,11 @@ import core.wad.funcs.WadFuncs;
 import editor.gdx.prompts.EditTilePrompt;
 
 import editor.gdx.prompts.EditorFrame;
+import editor.gdx.write.LevelWriter;
 import net.mtrop.doom.WadFile;
 
 import javax.swing.*;
+import java.io.IOException;
 
 public class EditorScreen implements Screen {
 
@@ -29,6 +31,7 @@ public class EditorScreen implements Screen {
 
     private WadFile file;
     private LevelData level;
+    private Integer levelnum;
 
     public EditorScreen(LevelEditor editor, WadFile file, Integer levelnum) {
         this.editor = editor;
@@ -40,6 +43,7 @@ public class EditorScreen implements Screen {
         batch = new SpriteBatch();
         sr = new ShapeRenderer();
 
+        this.levelnum = levelnum;
         level = WadFuncs.loadLevel(file, levelnum);
     }
 
@@ -52,6 +56,7 @@ public class EditorScreen implements Screen {
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        checkShortcuts();
         moveCamera();
 
         batch.setProjectionMatrix(camera.combined);
@@ -75,6 +80,21 @@ public class EditorScreen implements Screen {
             }
         }
         sr.end();
+    }
+
+    private void checkShortcuts() {
+        if ((Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+
+                try {
+                    LevelWriter.write(file, level, levelnum);
+                } catch (IOException e) {
+                    System.out.println("Could not save!");
+                    e.printStackTrace();
+                }
+
+            }
+        }
     }
 
     private void moveCamera() {
