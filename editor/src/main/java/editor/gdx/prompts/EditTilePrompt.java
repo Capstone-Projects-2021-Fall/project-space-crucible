@@ -1,6 +1,7 @@
 package editor.gdx.prompts;
 
 import core.level.info.LevelTile;
+import core.wad.funcs.WadFuncs;
 import editor.gdx.launch.EditorScreen;
 import net.mtrop.doom.WadFile;
 import net.mtrop.doom.graphics.PNGPicture;
@@ -9,7 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.util.Map;
 
 public class EditTilePrompt extends JPanel {
 
@@ -52,7 +52,7 @@ public class EditTilePrompt extends JPanel {
         mainPanel = new JPanel();
         previewPanel = new JPanel();
         texturePreviewLabel = new JLabel();
-        textureComboBox = new JComboBox<>();
+        textureComboBox = new JComboBox<>(getTextureList());
         settingsPanel = new JPanel();
         solidCheckBox = new JCheckBox();
         solidLabel = new JLabel();
@@ -106,6 +106,8 @@ public class EditTilePrompt extends JPanel {
                                 .addComponent(textureComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
+
+        textureComboBox.addActionListener(evt -> textureComboBoxActionPerformed(evt));
 
         settingsPanel.setBorder(BorderFactory.createEtchedBorder());
 
@@ -267,6 +269,19 @@ public class EditTilePrompt extends JPanel {
 
         loadDefaultData();
     }
+    private String[] getTextureList() {
+
+        int start = file.lastIndexOf("G_START") + 1;
+        int end = file.lastIndexOf("G_END");
+
+        String[] list = new String[end - start];
+
+        for (int i = start; i < end; i++) {
+            list[i-start] = file.getEntry(i).getName();
+        }
+
+        return list;
+    }
 
     private void loadDefaultData() {
         solidCheckBox.setSelected(tile.solid);
@@ -296,6 +311,8 @@ public class EditTilePrompt extends JPanel {
             tile.arg2 = (int) arg2Spinner.getValue();
             tile.repeat = repeatCheckBox.isSelected();
             tile.tag = (int) tagSpinner.getValue();
+
+            tile.graphicname = (String) textureComboBox.getSelectedItem();
         }
 
         hostFrame.dispose();
@@ -304,4 +321,14 @@ public class EditTilePrompt extends JPanel {
     private void cancelButtonActionPerformed(ActionEvent evt) {
         hostFrame.dispose();
     }
+
+    private void textureComboBoxActionPerformed(ActionEvent evt) {
+        try {
+            PNGPicture graphic = file.getDataAs((String) textureComboBox.getSelectedItem(), PNGPicture.class);
+            texturePreviewLabel.setIcon(new ImageIcon(graphic.getImage()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -179,6 +179,8 @@ public class EditorScreen implements Screen {
                 e.printStackTrace();
             }
         }
+
+        tile.graphic = WadFuncs.getTexture(file, tile.graphicname);
     }
 
     @Override
