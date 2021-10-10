@@ -3,17 +3,17 @@ package editor.gdx.launch;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
-import core.wad.funcs.WadFuncs;
+import editor.gdx.prompts.EditTilePrompt;
 import net.mtrop.doom.WadFile;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class EditorScreen implements Screen {
@@ -25,8 +25,9 @@ public class EditorScreen implements Screen {
     private SpriteBatch batch;
     private WadFile file;
     private float cameraspeed = 5;
+    private Vector3 mouseInWorld = new Vector3();
 
-    public EditorScreen(LevelEditor editor){
+    public EditorScreen(LevelEditor editor) {
         this.editor = editor;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
@@ -89,7 +90,35 @@ public class EditorScreen implements Screen {
         camera.update();
         //System.out.println(camera.position.x + ", " + camera.position.y);
 
+        mouseInWorld.x = Gdx.input.getX();
+        mouseInWorld.y = Gdx.input.getY();
+        mouseInWorld.z = 0;
+        camera.unproject(mouseInWorld);
 
+        if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+            makeTilePrompt((int)(mouseInWorld.x), (int)(mouseInWorld.y));
+        } else if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
+            makeTilePrompt((int)(mouseInWorld.x), (int)(mouseInWorld.y));
+        }
+
+    }
+
+    private void makeTilePrompt(int x, int y) {
+
+        int tilex = x/64;
+        int tiley = y/64;
+
+        if (x < 0) {tilex--;}
+        if (y < 0) {tiley--;}
+
+        System.out.println("Map tile is " + tilex + ", " + tiley);
+        System.out.println("Mouse is at " + x + ", " + y);
+
+        JFrame prompt = new JFrame("Make Level Tile");
+        prompt.setContentPane(new EditTilePrompt());
+        prompt.setSize(430, 360);
+        prompt.setResizable(false);
+        prompt.setVisible(true);
     }
 
     @Override
@@ -115,6 +144,5 @@ public class EditorScreen implements Screen {
 
     @Override
     public void dispose() {
-
     }
 }
