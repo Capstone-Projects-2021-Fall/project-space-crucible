@@ -5,14 +5,19 @@ import net.mtrop.doom.WadFile;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class LevelData {
-    String name;
+    private String name = "";
     int levelnumber;
-    private HashMap<LevelTile.TilePosition, LevelTile> tiles = new HashMap<>();
+    private ArrayList<LevelTile> tiles = new ArrayList<>();
     private ArrayList<LevelObject> objects = new ArrayList<>();
+
+
+    //New level from scratch
+    public LevelData(int levelnumber) {
+        name = "Level " + levelnumber;
+    }
 
     public LevelData(WadFile file, int levelnumber) throws IOException {
         this.levelnumber = levelnumber;
@@ -22,7 +27,7 @@ public class LevelData {
         try {
             leveldata = file.getTextData(entry, Charset.defaultCharset());
         } catch (IOException e) {
-            System.out.println("Coudl not read entry \"" + entry + "\" from " + file.getFileName() + "!");
+            System.out.println("Could not read entry \"" + entry + "\" from " + file.getFileName() + "!");
             e.printStackTrace();
         }
 
@@ -36,16 +41,32 @@ public class LevelData {
             } else if (line.equals("floortile {")) {
                 readTile(stringReader, file);
             } else if (line.equals("object {")) {
-                readObject(stringReader, file);
+                readObject(stringReader);
             } else if (!line.isEmpty()){
                 System.out.println("Error: unrecognized level data!");
                 throw new IOException();
             }
         }
+
+        System.out.println(name);
     }
 
-    public HashMap<LevelTile.TilePosition, LevelTile> getTiles() {
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<LevelTile> getTiles() {
         return tiles;
+    }
+
+    public LevelTile getTile(int x, int y) {
+        for (LevelTile tile : tiles) {
+            if (tile.pos.x == x && tile.pos.y == y) {
+                return tile;
+            }
+        }
+
+        return null;
     }
 
     public ArrayList<LevelObject> getObjects() {
@@ -53,7 +74,7 @@ public class LevelData {
     }
 
     //Reads a map object from level data
-    private void readObject(Scanner stringReader, WadFile file) throws IOException {
+    private void readObject(Scanner stringReader) throws IOException {
 
         int type = 0, xpos = 0, ypos = 0, tag = 0;
         float angle = 0;
@@ -198,15 +219,19 @@ public class LevelData {
 
         LevelTile.TilePosition pos = new LevelTile.TilePosition(xpos, ypos);
         LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag, file);
-        tiles.put(pos, tile);
+        tiles.add(tile);
+    }
+
+    public void setName(String newname) {
+        name = newname;
     }
 
     public String toString() {
 
         String ret = "";
 
-        for (LevelTile.TilePosition pos : tiles.keySet()) {
-            ret = ret.concat(tiles.get(pos).toString() + "\n");
+        for (LevelTile tile : tiles) {
+            ret = ret.concat(tile.toString() + "\n");
         }
 
         for (LevelObject obj : objects) {

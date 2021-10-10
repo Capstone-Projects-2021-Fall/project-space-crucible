@@ -3,11 +3,8 @@ package core.gdx.wad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -15,13 +12,9 @@ import core.game.logic.Entity;
 import core.game.logic.PlayerPawn;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
-import core.wad.funcs.GameSprite;
-import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
 
 public class GameScreen implements Screen {
 
@@ -90,7 +83,7 @@ public class GameScreen implements Screen {
         mouseInWorld2D.x = mouseInWorld3D.x;
         mouseInWorld2D.y = mouseInWorld3D.y;
         player.getPos().angle = mouseInWorld2D.angleDeg(); //Turn the vector2 into a degree angle
-        System.out.println(player.getPos().angle + ", " + player.getPos().x + ", " + player.getPos().y);
+        //System.out.println(player.getPos().angle + ", " + player.getPos().x + ", " + player.getPos().y);
 
         camera.position.set(player.getPos().x + player.getWidth()/(float)2.0,
                 player.getPos().y + player.getHeight()/(float)2.0, 0);
@@ -120,10 +113,11 @@ public class GameScreen implements Screen {
     }
 
     private void worldDraw() {
-        level.getTiles().forEach((pos, tile)->
-                batch.draw(tile.getTileTexture(),
-                pos.x * LevelTile.TILE_SIZE,
-                pos.y * LevelTile.TILE_SIZE));
+        for (LevelTile tile : level.getTiles()) {
+            batch.draw(tile.graphic,
+                    tile.pos.x * LevelTile.TILE_SIZE,
+                    tile.pos.y * LevelTile.TILE_SIZE);
+        }
     }
 
     @Override
