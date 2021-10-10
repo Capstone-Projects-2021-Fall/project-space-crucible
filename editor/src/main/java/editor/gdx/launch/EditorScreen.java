@@ -57,6 +57,7 @@ public class EditorScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         checkShortcuts();
+        checkControls();
         moveCamera();
 
         batch.setProjectionMatrix(camera.combined);
@@ -80,6 +81,29 @@ public class EditorScreen implements Screen {
             }
         }
         sr.end();
+    }
+
+    private void checkControls() {
+
+        int x = (int)(mouseInWorld.x);
+        int y = (int)(mouseInWorld.y);
+
+        int tilex = x/LevelTile.TILE_SIZE;
+        int tiley = y/LevelTile.TILE_SIZE;
+
+        if (x < 0) {tilex--;}
+        if (y < 0) {tiley--;}
+
+        System.out.println("Map tile is " + tilex + ", " + tiley);
+        System.out.println("Mouse is at " + x + ", " + y);
+
+        if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+            editTilePrompt(tilex, tiley);
+        } else if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
+
+            LevelTile tile = level.getTile(tilex, tiley);
+            level.getTiles().remove(tile);
+        }
     }
 
     private void checkShortcuts() {
@@ -114,13 +138,6 @@ public class EditorScreen implements Screen {
         mouseInWorld.y = Gdx.input.getY();
         mouseInWorld.z = 0;
         camera.unproject(mouseInWorld);
-
-        if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-            editTilePrompt((int)(mouseInWorld.x), (int)(mouseInWorld.y));
-        } else if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
-            editTilePrompt((int)(mouseInWorld.x), (int)(mouseInWorld.y));
-        }
-
     }
 
     private void worldDraw() {
@@ -131,22 +148,15 @@ public class EditorScreen implements Screen {
         }
     }
 
-    private void editTilePrompt(int x, int y) {
-
-        int tilex = x/LevelTile.TILE_SIZE;
-        int tiley = y/LevelTile.TILE_SIZE;
-
-        if (x < 0) {tilex--;}
-        if (y < 0) {tiley--;}
-
-        System.out.println("Map tile is " + tilex + ", " + tiley);
-        System.out.println("Mouse is at " + x + ", " + y);
+    private void editTilePrompt(int tilex, int tiley) {
 
         LevelTile tile = level.getTile(tilex, tiley);
 
         if (tile == null) {
-            System.out.println("NULL!");
-            return;
+            tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley),
+                    false, "WALL1", 0, 0,
+                    0, 0, false, 0 , file);
+            level.getTiles().add(tile);
         }
 
         EditorFrame prompt = new EditorFrame(this);
