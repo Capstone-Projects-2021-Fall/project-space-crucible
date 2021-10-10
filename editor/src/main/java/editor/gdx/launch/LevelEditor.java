@@ -2,6 +2,7 @@ package editor.gdx.launch;
 
 import com.badlogic.gdx.Game;
 import core.level.info.LevelData;
+import editor.gdx.prompts.EditorFrame;
 import editor.gdx.prompts.FilePrompt;
 import net.mtrop.doom.WadFile;
 
@@ -13,7 +14,7 @@ public class LevelEditor extends Game {
 
     @Override
     public void create() {
-        JDialog prompt = new JDialog();
+        EditorFrame prompt = new EditorFrame(this);
         WadFile file = null;
 
         prompt.setContentPane(new FilePrompt(file, prompt, this));

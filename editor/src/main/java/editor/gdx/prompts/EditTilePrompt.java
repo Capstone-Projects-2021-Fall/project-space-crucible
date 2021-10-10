@@ -1,5 +1,7 @@
 package editor.gdx.prompts;
 
+import editor.gdx.launch.EditorScreen;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,11 +31,14 @@ public class EditTilePrompt extends JPanel {
     private JSpinner tagSpinner;
     private JComboBox<String> textureComboBox;
     private JLabel texturePreviewLabel;
-    private JFrame hostFrame;
 
-    public EditTilePrompt(JFrame hostFrame) {
+    private EditorFrame hostFrame;
+    private EditorScreen screen;
+
+    public EditTilePrompt(EditorFrame hostFrame, EditorScreen screen) {
 
         this.hostFrame = hostFrame;
+        this.screen = screen;
 
         mainPanel = new JPanel();
         previewPanel = new JPanel();

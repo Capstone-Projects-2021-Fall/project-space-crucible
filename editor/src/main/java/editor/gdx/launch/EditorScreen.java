@@ -12,9 +12,12 @@ import core.level.info.LevelData;
 import core.level.info.LevelTile;
 import editor.gdx.prompts.EditTilePrompt;
 
+import editor.gdx.prompts.EditorFrame;
 import net.mtrop.doom.WadFile;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class EditorScreen implements Screen {
 
@@ -109,12 +112,20 @@ public class EditorScreen implements Screen {
         System.out.println("Map tile is " + tilex + ", " + tiley);
         System.out.println("Mouse is at " + x + ", " + y);
 
-        JFrame prompt = new JFrame("Make Level Tile");
-        prompt.setContentPane(new EditTilePrompt(prompt));
+        EditorFrame prompt = new EditorFrame(this);
+        prompt.setContentPane(new EditTilePrompt(prompt, this));
         prompt.setSize(430, 360);
         prompt.setResizable(false);
         prompt.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         prompt.setVisible(true);
+
+        synchronized (this) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

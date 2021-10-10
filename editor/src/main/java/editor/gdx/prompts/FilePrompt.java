@@ -10,7 +10,7 @@ import java.io.IOException;
 public class FilePrompt extends JPanel {
 
     private WadFile file;
-    private final JDialog host;
+    private final EditorFrame host;
     private final LevelEditor editor;
 
     private JButton chooseButton;
@@ -21,7 +21,7 @@ public class FilePrompt extends JPanel {
     private JLabel levelLabel;
     private JSpinner levelSpinner;
 
-    public FilePrompt(WadFile file, JDialog host, LevelEditor editor) {
+    public FilePrompt(WadFile file, EditorFrame host, LevelEditor editor) {
 
         this.file = file;
         this.host = host;
@@ -109,11 +109,6 @@ public class FilePrompt extends JPanel {
     }
 
     private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {
-
-        System.out.println(levelSpinner.getValue());
-        synchronized (editor) {
-            editor.notifyAll();
-        }
         host.dispose();
     }
 }
