@@ -6,12 +6,14 @@ import net.mtrop.doom.WadFile;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public class FilePrompt extends JPanel {
 
     private WadFile file;
     private final EditorFrame host;
     private final LevelEditor editor;
+    private Integer level;
 
     private JButton chooseButton;
     private JFileChooser fileChooser;
@@ -20,12 +22,15 @@ public class FilePrompt extends JPanel {
     private JButton openButton;
     private JLabel levelLabel;
     private JSpinner levelSpinner;
+    private final Map<String, Object> levelInfo;
 
-    public FilePrompt(WadFile file, EditorFrame host, LevelEditor editor) {
+    public FilePrompt(EditorFrame host, LevelEditor editor, Map<String, Object> levelInfo) {
 
-        this.file = file;
         this.host = host;
         this.editor = editor;
+        this.file = null;
+        this.level = null;
+        this.levelInfo = levelInfo;
 
         fileChooser = new JFileChooser();
         label = new JLabel();
@@ -109,6 +114,13 @@ public class FilePrompt extends JPanel {
     }
 
     private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        level = (Integer)(levelSpinner.getValue());
+
+        synchronized (levelInfo) {
+            levelInfo.put("file", file);
+            levelInfo.put("level", level);
+        }
+
         host.dispose();
     }
 }

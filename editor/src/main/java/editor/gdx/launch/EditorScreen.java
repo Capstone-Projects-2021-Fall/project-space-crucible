@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
+import core.wad.funcs.WadFuncs;
 import editor.gdx.prompts.EditTilePrompt;
 
 import editor.gdx.prompts.EditorFrame;
@@ -28,11 +29,12 @@ public class EditorScreen implements Screen {
     private float cameraspeed = 5;
     private Vector3 mouseInWorld = new Vector3();
 
-    private WadFile file = null;
-    private LevelData level = null;
+    private WadFile file;
+    private LevelData level;
 
-    public EditorScreen(LevelEditor editor) {
+    public EditorScreen(LevelEditor editor, WadFile file, Integer levelnum) {
         this.editor = editor;
+        this.file = file;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
@@ -40,6 +42,7 @@ public class EditorScreen implements Screen {
         batch = new SpriteBatch();
         sr = new ShapeRenderer();
 
+        level = WadFuncs.loadLevel(file, levelnum);
     }
 
     @Override
@@ -52,6 +55,11 @@ public class EditorScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         moveCamera();
+
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        worldDraw();
+        batch.end();
 
         sr.setProjectionMatrix(camera.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
@@ -69,10 +77,6 @@ public class EditorScreen implements Screen {
             }
         }
         sr.end();
-
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        batch.end();
     }
 
     private void moveCamera() {
@@ -101,10 +105,17 @@ public class EditorScreen implements Screen {
 
     }
 
+    private void worldDraw() {
+        level.getTiles().forEach((pos, tile)->
+                batch.draw(tile.getTileTexture(),
+                        pos.x * LevelTile.TILE_SIZE,
+                        pos.y * LevelTile.TILE_SIZE));
+    }
+
     private void makeTilePrompt(int x, int y) {
 
-        int tilex = x/64;
-        int tiley = y/64;
+        int tilex = x/LevelTile.TILE_SIZE;
+        int tiley = y/LevelTile.TILE_SIZE;
 
         if (x < 0) {tilex--;}
         if (y < 0) {tiley--;}

@@ -7,6 +7,7 @@ import editor.gdx.prompts.FilePrompt;
 import net.mtrop.doom.WadFile;
 
 import javax.swing.*;
+import java.util.*;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class LevelEditor extends Game {
@@ -15,9 +16,9 @@ public class LevelEditor extends Game {
     @Override
     public void create() {
         EditorFrame prompt = new EditorFrame(this);
-        WadFile file = null;
+        Map<String, Object> levelInfo = Collections.synchronizedMap(new HashMap<>());
 
-        prompt.setContentPane(new FilePrompt(file, prompt, this));
+        prompt.setContentPane(new FilePrompt(prompt, this, levelInfo));
         prompt.setSize(430, 360);
         prompt.setResizable(false);
         prompt.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -31,7 +32,8 @@ public class LevelEditor extends Game {
             }
         }
 
-        editorScreen = new EditorScreen(this);
+        editorScreen = new EditorScreen(this, (WadFile) (levelInfo.get("file")),
+                (Integer)(levelInfo.get("level")));
         setScreen(editorScreen);
     }
 }
