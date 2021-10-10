@@ -2,6 +2,7 @@ package editor.gdx.prompts;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class EditTilePrompt extends JPanel {
 
@@ -28,8 +29,11 @@ public class EditTilePrompt extends JPanel {
     private JSpinner tagSpinner;
     private JComboBox<String> textureComboBox;
     private JLabel texturePreviewLabel;
+    private JFrame hostFrame;
 
-    public EditTilePrompt() {
+    public EditTilePrompt(JFrame hostFrame) {
+
+        this.hostFrame = hostFrame;
 
         mainPanel = new JPanel();
         previewPanel = new JPanel();
@@ -201,8 +205,10 @@ public class EditTilePrompt extends JPanel {
         buttonPanel.setBorder(BorderFactory.createEtchedBorder());
 
         cancelButton.setText("Cancel");
+        cancelButton.addActionListener(evt1 -> cancelButtonActionPerformed(evt1));
 
         okButton.setText("OK");
+        okButton.addActionListener(evt -> okButtonActionPerformed(evt));
 
         GroupLayout buttonPanelLayout = new GroupLayout(buttonPanel);
         buttonPanel.setLayout(buttonPanelLayout);
@@ -244,5 +250,13 @@ public class EditTilePrompt extends JPanel {
                                 .addComponent(buttonPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
+    }
+
+    private void okButtonActionPerformed(ActionEvent evt) {
+        hostFrame.dispose();
+    }
+
+    private void cancelButtonActionPerformed(ActionEvent evt) {
+        hostFrame.dispose();
     }
 }

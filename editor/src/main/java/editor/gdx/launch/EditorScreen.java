@@ -115,9 +115,10 @@ public class EditorScreen implements Screen {
         System.out.println("Mouse is at " + x + ", " + y);
 
         JFrame prompt = new JFrame("Make Level Tile");
-        prompt.setContentPane(new EditTilePrompt());
+        prompt.setContentPane(new EditTilePrompt(prompt));
         prompt.setSize(430, 360);
         prompt.setResizable(false);
+        prompt.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         prompt.setVisible(true);
     }
 
