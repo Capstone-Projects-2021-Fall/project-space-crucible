@@ -11,41 +11,36 @@ import com.badlogic.gdx.math.Vector3;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
 import editor.gdx.prompts.EditTilePrompt;
+
 import net.mtrop.doom.WadFile;
 
 import javax.swing.*;
-import java.io.IOException;
 
 public class EditorScreen implements Screen {
 
     private LevelEditor editor;
     private OrthographicCamera camera;
-    private LevelData level;
     private ShapeRenderer sr;
     private SpriteBatch batch;
-    private WadFile file;
     private float cameraspeed = 5;
     private Vector3 mouseInWorld = new Vector3();
 
+    private WadFile file = null;
+    private LevelData level = null;
+
     public EditorScreen(LevelEditor editor) {
         this.editor = editor;
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
         camera.position.set(0, 0, 0);
         batch = new SpriteBatch();
         sr = new ShapeRenderer();
 
-
-        try {
-            file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void show() {
-
     }
 
     @Override

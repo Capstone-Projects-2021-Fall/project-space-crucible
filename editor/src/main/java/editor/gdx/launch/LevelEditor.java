@@ -1,6 +1,9 @@
 package editor.gdx.launch;
 
 import com.badlogic.gdx.Game;
+import core.level.info.LevelData;
+import editor.gdx.prompts.FilePrompt;
+import net.mtrop.doom.WadFile;
 
 import javax.swing.*;
 
@@ -10,10 +13,21 @@ public class LevelEditor extends Game {
 
     @Override
     public void create() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
+        JDialog prompt = new JDialog();
+        WadFile file = null;
+
+        prompt.setContentPane(new FilePrompt(file, prompt, this));
+        prompt.setSize(430, 360);
+        prompt.setResizable(false);
+        prompt.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        prompt.setVisible(true);
+
+        synchronized (this) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         editorScreen = new EditorScreen(this);
