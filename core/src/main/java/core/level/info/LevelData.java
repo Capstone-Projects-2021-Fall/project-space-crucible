@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class LevelData {
     String name;
     int levelnumber;
-    private HashMap<LevelTile.TilePosition, LevelTile> tiles = new HashMap<>();
+    private ArrayList<LevelTile> tiles = new ArrayList<>();
     private ArrayList<LevelObject> objects = new ArrayList<>();
 
     public LevelData(WadFile file, int levelnumber) throws IOException {
@@ -44,8 +44,18 @@ public class LevelData {
         }
     }
 
-    public HashMap<LevelTile.TilePosition, LevelTile> getTiles() {
+    public ArrayList<LevelTile> getTiles() {
         return tiles;
+    }
+
+    public LevelTile getTile(int x, int y) {
+        for (LevelTile tile : tiles) {
+            if (tile.pos.x == x && tile.pos.y == y) {
+                return tile;
+            }
+        }
+
+        return null;
     }
 
     public ArrayList<LevelObject> getObjects() {
@@ -198,15 +208,15 @@ public class LevelData {
 
         LevelTile.TilePosition pos = new LevelTile.TilePosition(xpos, ypos);
         LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag, file);
-        tiles.put(pos, tile);
+        tiles.add(tile);
     }
 
     public String toString() {
 
         String ret = "";
 
-        for (LevelTile.TilePosition pos : tiles.keySet()) {
-            ret = ret.concat(tiles.get(pos).toString() + "\n");
+        for (LevelTile tile : tiles) {
+            ret = ret.concat(tile.toString() + "\n");
         }
 
         for (LevelObject obj : objects) {

@@ -1,10 +1,18 @@
 package editor.gdx.prompts;
 
+import core.level.info.LevelTile;
 import editor.gdx.launch.EditorScreen;
+import net.mtrop.doom.WadFile;
+import net.mtrop.doom.graphics.PNGPicture;
+import net.mtrop.doom.graphics.Picture;
+import net.mtrop.doom.util.GraphicUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Map;
 
 public class EditTilePrompt extends JPanel {
 
@@ -34,11 +42,18 @@ public class EditTilePrompt extends JPanel {
 
     private EditorFrame hostFrame;
     private EditorScreen screen;
+    private Map<String, Object> tileinfo;
+    private LevelTile tile;
+    private WadFile file;
 
-    public EditTilePrompt(EditorFrame hostFrame, EditorScreen screen) {
+    public EditTilePrompt(EditorFrame hostFrame, EditorScreen screen, Map<String, Object> tileinfo,
+                          LevelTile tile, WadFile file) {
 
         this.hostFrame = hostFrame;
         this.screen = screen;
+        this.tileinfo = tileinfo;
+        this.tile = tile;
+        this.file = file;
 
         mainPanel = new JPanel();
         previewPanel = new JPanel();
@@ -255,9 +270,29 @@ public class EditTilePrompt extends JPanel {
                                 .addComponent(buttonPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
+
+        loadDefaultData();
     }
 
-    private void okButtonActionPerformed(ActionEvent evt) {
+    private void loadDefaultData() {
+        solidCheckBox.setSelected(tile.solid);
+        lightSpinner.setValue(tile.light);
+        effectSpinner.setValue(tile.effect);
+        arg1Spinner.setValue(tile.arg1);
+        arg2Spinner.setValue(tile.arg2);
+        repeatCheckBox.setSelected(tile.repeat);
+        tagSpinner.setValue(tile.tag);
+
+        try {
+            PNGPicture graphic = file.getDataAs(tile.graphicname, PNGPicture.class);
+            texturePreviewLabel.setIcon(new ImageIcon(graphic.getImage()));
+            textureComboBox.setSelectedItem(tile.graphicname);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+        private void okButtonActionPerformed(ActionEvent evt) {
         hostFrame.dispose();
     }
 

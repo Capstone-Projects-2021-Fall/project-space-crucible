@@ -120,10 +120,11 @@ public class GameScreen implements Screen {
     }
 
     private void worldDraw() {
-        level.getTiles().forEach((pos, tile)->
-                batch.draw(tile.getTileTexture(),
-                pos.x * LevelTile.TILE_SIZE,
-                pos.y * LevelTile.TILE_SIZE));
+        for (LevelTile tile : level.getTiles()) {
+            batch.draw(tile.graphic,
+                    tile.pos.x * LevelTile.TILE_SIZE,
+                    tile.pos.y * LevelTile.TILE_SIZE);
+        }
     }
 
     @Override

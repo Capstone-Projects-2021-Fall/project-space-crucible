@@ -20,16 +20,16 @@ public class LevelTile {
         }
     }
 
-    final private TilePosition pos;
-    private boolean solid;
-    private Texture graphic;
-    private String graphicname;
-    private int light;
-    private int effect;
-    private int arg1;
-    private int arg2;
-    private boolean repeat;
-    private int tag;
+    final public TilePosition pos;
+    public boolean solid;
+    public Texture graphic;
+    public String graphicname;
+    public int light;
+    public int effect;
+    public int arg1;
+    public int arg2;
+    public boolean repeat;
+    public int tag;
 
     public LevelTile(TilePosition pos, boolean solid, String tex, int light, int effect, int arg1, int arg2,
                      boolean repeat, int tag, WadFile file) {
@@ -44,10 +44,6 @@ public class LevelTile {
 
         graphicname = tex;
         graphic = WadFuncs.getTexture(file, tex);
-    }
-
-    public Texture getTileTexture() {
-        return graphic;
     }
 
     public String toString() {

@@ -19,6 +19,9 @@ import net.mtrop.doom.WadFile;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditorScreen implements Screen {
 
@@ -106,10 +109,11 @@ public class EditorScreen implements Screen {
     }
 
     private void worldDraw() {
-        level.getTiles().forEach((pos, tile)->
-                batch.draw(tile.getTileTexture(),
-                        pos.x * LevelTile.TILE_SIZE,
-                        pos.y * LevelTile.TILE_SIZE));
+        for (LevelTile tile : level.getTiles()) {
+            batch.draw(tile.graphic,
+                    tile.pos.x * LevelTile.TILE_SIZE,
+                    tile.pos.y * LevelTile.TILE_SIZE);
+        }
     }
 
     private void makeTilePrompt(int x, int y) {
@@ -123,8 +127,16 @@ public class EditorScreen implements Screen {
         System.out.println("Map tile is " + tilex + ", " + tiley);
         System.out.println("Mouse is at " + x + ", " + y);
 
+        Map<String, Object> tileInfo = Collections.synchronizedMap(new HashMap<>());
+        LevelTile tile = level.getTile(tilex, tiley);
+
+        if (tile == null) {
+            System.out.println("NULL!");
+            return;
+        }
+
         EditorFrame prompt = new EditorFrame(this);
-        prompt.setContentPane(new EditTilePrompt(prompt, this));
+        prompt.setContentPane(new EditTilePrompt(prompt, this, tileInfo, tile, file));
         prompt.setSize(430, 360);
         prompt.setResizable(false);
         prompt.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
