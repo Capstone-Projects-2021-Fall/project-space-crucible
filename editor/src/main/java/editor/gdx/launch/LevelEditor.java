@@ -1,7 +1,6 @@
 package editor.gdx.launch;
 
 import com.badlogic.gdx.Game;
-import core.level.info.LevelData;
 import editor.gdx.prompts.EditorFrame;
 import editor.gdx.prompts.FilePrompt;
 import net.mtrop.doom.WadFile;

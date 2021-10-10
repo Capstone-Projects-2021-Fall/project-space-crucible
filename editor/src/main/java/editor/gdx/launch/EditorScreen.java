@@ -17,11 +17,6 @@ import editor.gdx.prompts.EditorFrame;
 import net.mtrop.doom.WadFile;
 
 import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 public class EditorScreen implements Screen {
 
@@ -101,9 +96,9 @@ public class EditorScreen implements Screen {
         camera.unproject(mouseInWorld);
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-            makeTilePrompt((int)(mouseInWorld.x), (int)(mouseInWorld.y));
+            editTilePrompt((int)(mouseInWorld.x), (int)(mouseInWorld.y));
         } else if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
-            makeTilePrompt((int)(mouseInWorld.x), (int)(mouseInWorld.y));
+            editTilePrompt((int)(mouseInWorld.x), (int)(mouseInWorld.y));
         }
 
     }
@@ -116,7 +111,7 @@ public class EditorScreen implements Screen {
         }
     }
 
-    private void makeTilePrompt(int x, int y) {
+    private void editTilePrompt(int x, int y) {
 
         int tilex = x/LevelTile.TILE_SIZE;
         int tiley = y/LevelTile.TILE_SIZE;
@@ -127,7 +122,6 @@ public class EditorScreen implements Screen {
         System.out.println("Map tile is " + tilex + ", " + tiley);
         System.out.println("Mouse is at " + x + ", " + y);
 
-        Map<String, Object> tileInfo = Collections.synchronizedMap(new HashMap<>());
         LevelTile tile = level.getTile(tilex, tiley);
 
         if (tile == null) {
@@ -136,7 +130,7 @@ public class EditorScreen implements Screen {
         }
 
         EditorFrame prompt = new EditorFrame(this);
-        prompt.setContentPane(new EditTilePrompt(prompt, this, tileInfo, tile, file));
+        prompt.setContentPane(new EditTilePrompt(prompt, this, tile, file));
         prompt.setSize(430, 360);
         prompt.setResizable(false);
         prompt.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

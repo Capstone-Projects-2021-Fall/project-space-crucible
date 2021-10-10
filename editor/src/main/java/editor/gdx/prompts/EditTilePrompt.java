@@ -4,13 +4,10 @@ import core.level.info.LevelTile;
 import editor.gdx.launch.EditorScreen;
 import net.mtrop.doom.WadFile;
 import net.mtrop.doom.graphics.PNGPicture;
-import net.mtrop.doom.graphics.Picture;
-import net.mtrop.doom.util.GraphicUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
 
@@ -42,16 +39,13 @@ public class EditTilePrompt extends JPanel {
 
     private EditorFrame hostFrame;
     private EditorScreen screen;
-    private Map<String, Object> tileinfo;
-    private LevelTile tile;
-    private WadFile file;
+    private final LevelTile tile;
+    private final WadFile file;
 
-    public EditTilePrompt(EditorFrame hostFrame, EditorScreen screen, Map<String, Object> tileinfo,
-                          LevelTile tile, WadFile file) {
+    public EditTilePrompt(EditorFrame hostFrame, EditorScreen screen, LevelTile tile, WadFile file) {
 
         this.hostFrame = hostFrame;
         this.screen = screen;
-        this.tileinfo = tileinfo;
         this.tile = tile;
         this.file = file;
 
@@ -293,6 +287,17 @@ public class EditTilePrompt extends JPanel {
     }
 
         private void okButtonActionPerformed(ActionEvent evt) {
+
+        synchronized (tile) {
+            tile.solid = solidCheckBox.isSelected();
+            tile.light = (int) lightSpinner.getValue();
+            tile.effect = (int) effectSpinner.getValue();
+            tile.arg1 = (int) arg1Spinner.getValue();
+            tile.arg2 = (int) arg2Spinner.getValue();
+            tile.repeat = repeatCheckBox.isSelected();
+            tile.tag = (int) tagSpinner.getValue();
+        }
+
         hostFrame.dispose();
     }
 
