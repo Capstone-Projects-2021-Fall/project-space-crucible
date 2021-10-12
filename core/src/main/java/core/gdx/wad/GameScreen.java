@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import core.game.logic.Entity;
 import core.game.logic.EntityState;
+import core.game.logic.GameLogic;
 import core.game.logic.PlayerPawn;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
@@ -23,11 +24,7 @@ import java.util.TimerTask;
 
 public class GameScreen implements Screen {
 
-    //launcher = myGame
-    private MyGDxTest game;
-
     PlayerPawn player;
-    Timer gameTimer;
 
     //screen
     OrthographicCamera camera;
@@ -40,40 +37,26 @@ public class GameScreen implements Screen {
     //graphics
     SpriteBatch batch;
 
-    //Player Speed
-    public static final float SPEED = 120;
-
-    //character movement
-
-    public GameScreen(MyGDxTest game) {
+    public GameScreen() {
         WadFile file;
 
         try {
             file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
-            String path = file.getFileAbsolutePath();
-            this.game=game;
             camera = new OrthographicCamera();
             camera.setToOrtho(false, 1920, 1080);
             batch = new SpriteBatch();
-
             level = new LevelData(file, 1);
-            loadSprites(file);
+            WadFuncs.loadSprites(file);
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         //Temporarily hard-code statelist for proof-of-concept.
-        loadStates();
-        player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 100, 32, 56);
+        WadFuncs.loadStates();
+        player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 120, 32, 56);
         Entity.entityList.add(player);
-        gameTimer = new Timer();
-        gameTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                gameTick();
-            }
-        }, Entity.TIC);
+        GameLogic.start();
     }
 
     @Override
@@ -85,9 +68,6 @@ public class GameScreen implements Screen {
 
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        //This updates the player on the screen
-        movementUpdate();
 
         //This centers the camera to the player
         //Get the angle where the mouse is pointing to on the screen in relation to where the player is
@@ -111,43 +91,11 @@ public class GameScreen implements Screen {
 
         //Draw game world in the background
         worldDraw();
-        batch.draw(player.getCurrentSprite(), player.getPos().x, player.getPos().y);
+
+        for (Entity e : Entity.entityList) {
+            batch.draw(e.getCurrentSprite(), e.getPos().x, e.getPos().y);
+        }
         batch.end();
-    }
-
-    private void movementUpdate(){
-        //Input handling with polling method
-        //This handles all the keys pressed with the keyboard.
-
-        //Is a movement key is CURRENTLY pressed, move player.
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
-            player.getPos().x -= SPEED * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
-            player.getPos().x += SPEED * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
-            player.getPos().y += SPEED * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
-            player.getPos().y -= SPEED * Gdx.graphics.getDeltaTime();
-
-        if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            player.setState(player.getStates()[Entity.MISSILE]);
-        }
-
-        //If player is IDLE and is hitting a move key, set WALK state
-        //Otherwise, if player is NOT MOVING and NOT DOING SOMETHING ELSE, set IDLE state
-        if(player.getCurrentFrame() == 'A' && player.getRemainingStateTics() == -1
-            && (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)
-            || Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)
-            || Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)
-            || Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))) {
-                player.setState(player.getStates()[Entity.WALK]);
-        } else if (player.getCurrentFrame() <= 'D'
-            && !(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
-            && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
-            && !(Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
-            && !(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))) {
-                player.setState(player.getStates()[Entity.IDLE]);
-        }
     }
 
     private void worldDraw() {
@@ -176,48 +124,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-        gameTimer.cancel();
-        gameTimer.purge();
+        GameLogic.stop();
     }
 
     @Override
     public void dispose() {
-    }
-
-    private void loadSprites(WadFile file) {
-        //For now, just load player sprites. I'll generalize this later.
-        GameSprite.spriteMap.put("PLAY", new GameSprite(file, "PLAY"));
-    }
-
-    private void loadStates() {
-        EntityState.stateList.add(new EntityState("PLAY", 'A', -1, 0)); //0
-        EntityState.stateList.add(new EntityState("PLAY", 'A', 8, 2));  //1
-        EntityState.stateList.add(new EntityState("PLAY", 'B', 8, 3));  //2
-        EntityState.stateList.add(new EntityState("PLAY", 'C', 8, 4));  //3
-        EntityState.stateList.add(new EntityState("PLAY", 'D', 8, 1));  //4
-        EntityState.stateList.add(new EntityState("PLAY", 'E', 12, 0)); //5
-        EntityState.stateList.add(new EntityState("PLAY", 'F', 6, 5));  //6
-        EntityState.stateList.add(new EntityState("PLAY", 'G', 4, 8));  //7
-        EntityState.stateList.add(new EntityState("PLAY", 'G', 4, 0));  //8
-        EntityState.stateList.add(new EntityState("PLAY", 'H', 10, 10));//9
-        EntityState.stateList.add(new EntityState("PLAY", 'I', 10, 11));//10
-        EntityState.stateList.add(new EntityState("PLAY", 'J', 10, 12));//11
-        EntityState.stateList.add(new EntityState("PLAY", 'K', 10, 13));//12
-        EntityState.stateList.add(new EntityState("PLAY", 'L', 10, 14));//13
-        EntityState.stateList.add(new EntityState("PLAY", 'M', 10, 15));//14
-        EntityState.stateList.add(new EntityState("PLAY", 'N', -1, 15));//15
-    }
-
-    private void gameTick() {
-        for (Entity e : Entity.entityList) {
-            e.decrementTics();
-        }
-
-        gameTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                gameTick();
-            }
-        }, Entity.TIC);
     }
 }

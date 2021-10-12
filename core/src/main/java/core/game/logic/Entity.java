@@ -63,6 +63,8 @@ public abstract class Entity {
 
     public int getRemainingStateTics() {return remainingStateTics;}
 
+    public int getSpeed() {return speed;}
+
     public Sprite getCurrentSprite() {return currentState.getSprite().getFrame(currentState.getFrame(), pos.angle);}
 
     public Character getCurrentFrame() {return currentState.getFrame();}
