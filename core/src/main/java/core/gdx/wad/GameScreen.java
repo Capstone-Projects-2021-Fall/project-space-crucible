@@ -14,6 +14,7 @@ import core.game.logic.PlayerPawn;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
 import core.wad.funcs.GameSprite;
+import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
 import java.io.IOException;

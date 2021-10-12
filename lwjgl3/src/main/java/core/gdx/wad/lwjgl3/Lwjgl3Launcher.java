@@ -1,8 +1,12 @@
 package core.gdx.wad.lwjgl3;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import core.gdx.wad.MyGDxTest;
+
+import static com.badlogic.gdx.Gdx.audio;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
