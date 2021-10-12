@@ -61,7 +61,11 @@ public abstract class Entity {
         return width;
     }
 
+    public int getRemainingStateTics() {return remainingStateTics;}
+
     public Sprite getCurrentSprite() {return currentState.getSprite().getFrame(currentState.getFrame(), pos.angle);}
+
+    public Character getCurrentFrame() {return currentState.getFrame();}
 
     public Position getPos() {
         return pos;
@@ -71,23 +75,20 @@ public abstract class Entity {
         return states;
     }
 
+    public void setState(Integer state) {
+        currentState = EntityState.stateList.get(state);
+        remainingStateTics = currentState.getDuration();
+    }
+
+
     public void decrementTics() {
 
         if (remainingStateTics > 0) {
             remainingStateTics--;
         }
-
-        System.out.println("Remaining: " + remainingStateTics);
-
         if (remainingStateTics == 0) {
             setState(currentState.getNextState());
         }
     }
 
-    public void setState(Integer state) {
-        currentState = EntityState.stateList.get(state);
-        remainingStateTics = currentState.getDuration();
-
-        System.out.println("State " + state + "\nDuration: " + currentState.getDuration());
-    }
 }

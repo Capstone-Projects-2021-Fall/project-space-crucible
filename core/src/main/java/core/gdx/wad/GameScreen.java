@@ -118,6 +118,8 @@ public class GameScreen implements Screen {
     private void movementUpdate(){
         //Input handling with polling method
         //This handles all the keys pressed with the keyboard.
+
+        //Is a movement key is CURRENTLY pressed, move player.
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
             player.getPos().x -= SPEED * Gdx.graphics.getDeltaTime();
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
@@ -129,6 +131,22 @@ public class GameScreen implements Screen {
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             player.setState(player.getStates()[Entity.MISSILE]);
+        }
+
+        //If player is IDLE and is hitting a move key, set WALK state
+        //Otherwise, if player is NOT MOVING and NOT DOING SOMETHING ELSE, set IDLE state
+        if(player.getCurrentFrame() == 'A' && player.getRemainingStateTics() == -1
+            && (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)
+            || Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)
+            || Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)
+            || Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))) {
+                player.setState(player.getStates()[Entity.WALK]);
+        } else if (player.getCurrentFrame() <= 'D'
+            && !(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
+            && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
+            && !(Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
+            && !(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))) {
+                player.setState(player.getStates()[Entity.IDLE]);
         }
     }
 
@@ -173,10 +191,10 @@ public class GameScreen implements Screen {
 
     private void loadStates() {
         EntityState.stateList.add(new EntityState("PLAY", 'A', -1, 0)); //0
-        EntityState.stateList.add(new EntityState("PLAY", 'A', 4, 2));  //1
-        EntityState.stateList.add(new EntityState("PLAY", 'B', 4, 3));  //2
-        EntityState.stateList.add(new EntityState("PLAY", 'C', 4, 4));  //3
-        EntityState.stateList.add(new EntityState("PLAY", 'D', 4, 1));  //4
+        EntityState.stateList.add(new EntityState("PLAY", 'A', 8, 2));  //1
+        EntityState.stateList.add(new EntityState("PLAY", 'B', 8, 3));  //2
+        EntityState.stateList.add(new EntityState("PLAY", 'C', 8, 4));  //3
+        EntityState.stateList.add(new EntityState("PLAY", 'D', 8, 1));  //4
         EntityState.stateList.add(new EntityState("PLAY", 'E', 12, 0)); //5
         EntityState.stateList.add(new EntityState("PLAY", 'F', 6, 5));  //6
         EntityState.stateList.add(new EntityState("PLAY", 'G', 4, 8));  //7
