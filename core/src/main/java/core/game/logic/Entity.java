@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import core.wad.funcs.GameSprite;
 import net.mtrop.doom.WadFile;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,7 +17,9 @@ public abstract class Entity {
     final public static int PAIN = 4;
     final public static int DIE = 5;
 
-    final static double TIC = 1.0 / 35.0;
+    final public static long TIC = 18;
+
+    final public static ArrayList<Entity> entityList = new ArrayList<>();
 
     public static class Position {
         public int x;
@@ -36,6 +39,7 @@ public abstract class Entity {
     private int width;
     private int height;
     private EntityState currentState;
+    private int remainingStateTics;
     private Integer[] states;
 
     //Like sprites, each state is only stored once in a global ArrayList, which is memory-efficient.
@@ -67,19 +71,23 @@ public abstract class Entity {
         return states;
     }
 
+    public void decrementTics() {
+
+        if (remainingStateTics > 0) {
+            remainingStateTics--;
+        }
+
+        System.out.println("Remaining: " + remainingStateTics);
+
+        if (remainingStateTics == 0) {
+            setState(currentState.getNextState());
+        }
+    }
+
     public void setState(Integer state) {
         currentState = EntityState.stateList.get(state);
+        remainingStateTics = currentState.getDuration();
 
         System.out.println("State " + state + "\nDuration: " + currentState.getDuration());
-
-        if (currentState.getDuration() != -1) {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    setState(currentState.getNextState());
-                }
-            }, (long)((currentState.getDuration() * TIC) * 1000));
-        }
     }
 }

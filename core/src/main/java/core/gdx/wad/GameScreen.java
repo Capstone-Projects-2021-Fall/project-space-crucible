@@ -18,6 +18,8 @@ import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameScreen implements Screen {
 
@@ -25,6 +27,7 @@ public class GameScreen implements Screen {
     private MyGDxTest game;
 
     PlayerPawn player;
+    Timer gameTimer;
 
     //screen
     OrthographicCamera camera;
@@ -63,6 +66,14 @@ public class GameScreen implements Screen {
         //Temporarily hard-code statelist for proof-of-concept.
         loadStates();
         player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 100, 32, 56);
+        Entity.entityList.add(player);
+        gameTimer = new Timer();
+        gameTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                gameTick();
+            }
+        }, Entity.TIC);
     }
 
     @Override
@@ -147,12 +158,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
+        gameTimer.cancel();
+        gameTimer.purge();
     }
 
     @Override
     public void dispose() {
-
     }
 
     private void loadSprites(WadFile file) {
@@ -179,4 +190,16 @@ public class GameScreen implements Screen {
         EntityState.stateList.add(new EntityState("PLAY", 'N', -1, 15));//15
     }
 
+    private void gameTick() {
+        for (Entity e : Entity.entityList) {
+            e.decrementTics();
+        }
+
+        gameTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                gameTick();
+            }
+        }, Entity.TIC);
+    }
 }
