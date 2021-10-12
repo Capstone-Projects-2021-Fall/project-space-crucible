@@ -1,7 +1,6 @@
 package core.gdx.wad;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,54 +8,35 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import core.game.logic.Entity;
-import core.game.logic.EntityState;
 import core.game.logic.GameLogic;
 import core.game.logic.PlayerPawn;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
-import core.wad.funcs.GameSprite;
-import core.wad.funcs.WadFuncs;
-import net.mtrop.doom.WadFile;
-
-import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class GameScreen implements Screen {
 
+    Thread gameLogic;
+
+    //Player and level
     PlayerPawn player;
+    LevelData level;
+
 
     //screen
     OrthographicCamera camera;
     private final Vector2 mouseInWorld2D = new Vector2();
     private final Vector3 mouseInWorld3D = new Vector3();
 
-    //Level
-    LevelData level;
-
     //graphics
     SpriteBatch batch;
 
-    public GameScreen() {
-        WadFile file;
-
-        try {
-            file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
-            camera = new OrthographicCamera();
-            camera.setToOrtho(false, 1920, 1080);
-            batch = new SpriteBatch();
-            level = new LevelData(file, 1);
-            WadFuncs.loadSprites(file);
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Temporarily hard-code statelist for proof-of-concept.
-        WadFuncs.loadStates();
-        player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 120, 32, 56);
-        Entity.entityList.add(player);
-        GameLogic.start();
+    public GameScreen(Thread gameLogic, PlayerPawn player, LevelData level) {
+        this.gameLogic = gameLogic;
+        this.player = player;
+        this.level = level;
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 1920, 1080);
+        batch = new SpriteBatch();
     }
 
     @Override
@@ -92,9 +72,10 @@ public class GameScreen implements Screen {
         //Draw game world in the background
         worldDraw();
 
-        for (Entity e : Entity.entityList) {
+        for (Entity e : GameLogic.entityList) {
             batch.draw(e.getCurrentSprite(), e.getPos().x, e.getPos().y);
         }
+
         batch.end();
     }
 
@@ -124,7 +105,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-        GameLogic.stop();
+        gameLogic.interrupt();
     }
 
     @Override

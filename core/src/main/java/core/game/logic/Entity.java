@@ -19,8 +19,6 @@ public abstract class Entity {
 
     final public static long TIC = 18;
 
-    final public static ArrayList<Entity> entityList = new ArrayList<>();
-
     public static class Position {
         public int x;
         public int y;
@@ -78,7 +76,7 @@ public abstract class Entity {
     }
 
     public void setState(Integer state) {
-        currentState = EntityState.stateList.get(state);
+        currentState = GameLogic.stateList.get(state);
         remainingStateTics = currentState.getDuration();
     }
 

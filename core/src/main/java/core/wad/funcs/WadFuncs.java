@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.ByteArray;
 import core.game.logic.EntityState;
+import core.game.logic.GameLogic;
 import core.level.info.LevelData;
 import net.mtrop.doom.WadFile;
 import net.mtrop.doom.graphics.PNGPicture;
@@ -73,26 +74,26 @@ public class WadFuncs {
     }
 
     public static void loadStates() {
-        EntityState.stateList.add(new EntityState("PLAY", 'A', -1, 0)); //0
-        EntityState.stateList.add(new EntityState("PLAY", 'A', 8, 2));  //1
-        EntityState.stateList.add(new EntityState("PLAY", 'B', 8, 3));  //2
-        EntityState.stateList.add(new EntityState("PLAY", 'C', 8, 4));  //3
-        EntityState.stateList.add(new EntityState("PLAY", 'D', 8, 1));  //4
-        EntityState.stateList.add(new EntityState("PLAY", 'E', 12, 0)); //5
-        EntityState.stateList.add(new EntityState("PLAY", 'F', 6, 5));  //6
-        EntityState.stateList.add(new EntityState("PLAY", 'G', 4, 8));  //7
-        EntityState.stateList.add(new EntityState("PLAY", 'G', 4, 0));  //8
-        EntityState.stateList.add(new EntityState("PLAY", 'H', 10, 10));//9
-        EntityState.stateList.add(new EntityState("PLAY", 'I', 10, 11));//10
-        EntityState.stateList.add(new EntityState("PLAY", 'J', 10, 12));//11
-        EntityState.stateList.add(new EntityState("PLAY", 'K', 10, 13));//12
-        EntityState.stateList.add(new EntityState("PLAY", 'L', 10, 14));//13
-        EntityState.stateList.add(new EntityState("PLAY", 'M', 10, 15));//14
-        EntityState.stateList.add(new EntityState("PLAY", 'N', -1, 15));//15
+        GameLogic.stateList.add(new EntityState("PLAY", 'A', -1, 0)); //0
+        GameLogic.stateList.add(new EntityState("PLAY", 'A', 8, 2));  //1
+        GameLogic.stateList.add(new EntityState("PLAY", 'B', 8, 3));  //2
+        GameLogic.stateList.add(new EntityState("PLAY", 'C', 8, 4));  //3
+        GameLogic.stateList.add(new EntityState("PLAY", 'D', 8, 1));  //4
+        GameLogic.stateList.add(new EntityState("PLAY", 'E', 12, 0)); //5
+        GameLogic.stateList.add(new EntityState("PLAY", 'F', 6, 5));  //6
+        GameLogic.stateList.add(new EntityState("PLAY", 'G', 4, 8));  //7
+        GameLogic.stateList.add(new EntityState("PLAY", 'G', 4, 0));  //8
+        GameLogic.stateList.add(new EntityState("PLAY", 'H', 10, 10));//9
+        GameLogic.stateList.add(new EntityState("PLAY", 'I', 10, 11));//10
+        GameLogic.stateList.add(new EntityState("PLAY", 'J', 10, 12));//11
+        GameLogic.stateList.add(new EntityState("PLAY", 'K', 10, 13));//12
+        GameLogic.stateList.add(new EntityState("PLAY", 'L', 10, 14));//13
+        GameLogic.stateList.add(new EntityState("PLAY", 'M', 10, 15));//14
+        GameLogic.stateList.add(new EntityState("PLAY", 'N', -1, 15));//15
     }
 
     public static void loadSprites(WadFile file) {
         //For now, just load player sprites. I'll generalize this later.
-        GameSprite.spriteMap.put("PLAY", new GameSprite(file, "PLAY"));
+        GameLogic.spriteMap.put("PLAY", new GameSprite(file, "PLAY"));
     }
 }

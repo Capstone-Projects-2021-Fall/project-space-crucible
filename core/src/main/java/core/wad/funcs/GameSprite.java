@@ -11,7 +11,6 @@ public class GameSprite {
 
     //Static map of every possible sprite in the game to their 4-character name
     //Since all EntityStates reference the global spriteMap, each sprite is stored only once.
-    final public static Map<String, GameSprite> spriteMap = new HashMap<>();
 
     final private HashMap<Character, GameSpriteFrame> frames;
 

@@ -6,6 +6,11 @@ import com.badlogic.gdx.audio.Sound;
 import core.game.logic.Entity;
 import core.game.logic.GameLogic;
 import core.game.logic.PlayerPawn;
+import core.level.info.LevelData;
+import core.wad.funcs.WadFuncs;
+import net.mtrop.doom.WadFile;
+
+import java.io.IOException;
 
 import static com.badlogic.gdx.Gdx.audio;
 
@@ -13,10 +18,37 @@ import static com.badlogic.gdx.Gdx.audio;
 public class MyGDxTest extends Game {
     public GameScreen gameScreen;
 
+    Thread gameLoop = new Thread() {
+      @Override
+      public void run() {
+          GameLogic.start();
+      }
+
+      @Override
+      public void interrupt() {
+          GameLogic.stop();
+      }
+    };
+
     @Override
     public void create() {
 
-        gameScreen = new GameScreen();
+        LevelData level = null;
+
+        try {
+            WadFile file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
+            level = new LevelData(file, 1);
+            WadFuncs.loadSprites(file);
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        WadFuncs.loadStates();
+        PlayerPawn player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 120, 32, 56);
+        GameLogic.entityList.add(player);
+        gameScreen = new GameScreen(gameLoop, player, level);
         setScreen(gameScreen);
+        gameLoop.start();
     }
 }
