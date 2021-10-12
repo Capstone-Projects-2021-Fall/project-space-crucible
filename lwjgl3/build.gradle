@@ -5,18 +5,22 @@ mainClassName = 'core.gdx.wad.lwjgl3.Lwjgl3Launcher'
 eclipse.project.name = appName + '-lwjgl3'
 sourceCompatibility = 11.0
 
+def os = System.properties['os.name'].toLowerCase()
 
 dependencies {
 	implementation project(':core')
 	implementation project(':editor')
-	implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-	implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+	if (os.contains('mac')) {
+		implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+		implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+	} else {
+		implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+		implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+	}
 	implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 	implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
 	api files('libs/doomstruct-2.14.0.jar')
 }
-
-def os = System.properties['os.name'].toLowerCase()
 
 run {
 	workingDir = rootProject.file('assets').path
