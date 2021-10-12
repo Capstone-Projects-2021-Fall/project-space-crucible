@@ -1,11 +1,11 @@
 package editor.gdx.launch;
 
 import com.badlogic.gdx.Game;
-import editor.gdx.prompts.EditorFrame;
-import editor.gdx.prompts.FilePrompt;
+import com.badlogic.gdx.Gdx;
 import net.mtrop.doom.WadFile;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.*;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -14,25 +14,12 @@ public class LevelEditor extends Game {
 
     @Override
     public void create() {
-        EditorFrame prompt = new EditorFrame(this);
-        Map<String, Object> levelInfo = Collections.synchronizedMap(new HashMap<>());
-
-        prompt.setContentPane(new FilePrompt(prompt, this, levelInfo));
-        prompt.setSize(430, 360);
-        prompt.setResizable(false);
-        prompt.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        prompt.setVisible(true);
-
-        synchronized (this) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        try {
+            editorScreen = new EditorScreen(this, new WadFile(Gdx.files.internal("assets/resource.wad").file()),
+                    1);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        editorScreen = new EditorScreen(this, (WadFile) (levelInfo.get("file")),
-                (Integer)(levelInfo.get("level")));
         setScreen(editorScreen);
     }
 }

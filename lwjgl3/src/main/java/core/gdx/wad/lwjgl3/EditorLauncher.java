@@ -2,12 +2,7 @@ package core.gdx.wad.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import core.level.info.LevelData;
 import editor.gdx.launch.LevelEditor;
-import editor.gdx.prompts.FilePrompt;
-import net.mtrop.doom.WadFile;
-
-import javax.swing.*;
 
 public class EditorLauncher {
     public static void main(String[] args) {

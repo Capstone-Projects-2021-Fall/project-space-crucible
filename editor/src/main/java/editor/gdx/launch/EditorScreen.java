@@ -8,12 +8,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
-import editor.gdx.prompts.EditTilePrompt;
-
-import editor.gdx.prompts.EditorFrame;
+import editor.gdx.windows.EditTileWindow;
 import editor.gdx.write.LevelWriter;
 import net.mtrop.doom.WadFile;
 
@@ -32,6 +36,13 @@ public class EditorScreen implements Screen {
     private WadFile file;
     private LevelData level;
     private Integer levelnum;
+    private boolean windowOpen;
+
+    //UI Stuff
+    private Stage stage = new Stage(new ScreenViewport());
+    final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
+
+    private Window window = new Window("Editor", skin);
 
     public EditorScreen(LevelEditor editor, WadFile file, Integer levelnum) {
         this.editor = editor;
@@ -49,12 +60,12 @@ public class EditorScreen implements Screen {
             level = WadFuncs.loadLevel(file, levelnum);
         } catch (Exception e) {
             level = new LevelData(levelnum);
-
         }
     }
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -87,9 +98,13 @@ public class EditorScreen implements Screen {
             }
         }
         sr.end();
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
     private void checkControls() {
+
+        if (windowOpen) {return;}
 
         int x = (int)(mouseInWorld.x);
         int y = (int)(mouseInWorld.y);
@@ -99,9 +114,6 @@ public class EditorScreen implements Screen {
 
         if (x < 0) {tilex--;}
         if (y < 0) {tiley--;}
-
-        System.out.println("Map tile is " + tilex + ", " + tiley);
-        System.out.println("Mouse is at " + x + ", " + y);
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
             editTilePrompt(tilex, tiley);
@@ -113,6 +125,9 @@ public class EditorScreen implements Screen {
     }
 
     private void checkShortcuts() {
+
+        if (windowOpen) {return;}
+
         if ((Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
 
@@ -165,22 +180,7 @@ public class EditorScreen implements Screen {
             level.getTiles().add(tile);
         }
 
-        EditorFrame prompt = new EditorFrame(this);
-        prompt.setContentPane(new EditTilePrompt(prompt, this, tile, file));
-        prompt.setSize(430, 360);
-        prompt.setResizable(false);
-        prompt.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        prompt.setVisible(true);
-
-        synchronized (this) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        tile.graphic = WadFuncs.getTexture(file, tile.graphicname);
+        stage.addActor(new EditTileWindow("Edit Tile", skin, tile, file));
     }
 
     @Override
