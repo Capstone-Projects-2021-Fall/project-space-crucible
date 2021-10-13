@@ -57,7 +57,7 @@ public class EditorScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        stage.addActor(new LevelChooserWindow("Choose ", skin, file, this));
+        openLevelPrompt();
     }
 
     @Override
@@ -133,6 +133,10 @@ public class EditorScreen implements Screen {
                     e.printStackTrace();
                 }
 
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+                level = null;
+                openLevelPrompt();
+                windowOpen = true;
             }
         }
     }
@@ -177,6 +181,11 @@ public class EditorScreen implements Screen {
 
         stage.addActor(new EditTileWindow("Edit Tile", skin, tile, file, this));
         windowOpen = true;
+    }
+
+    private void openLevelPrompt() {
+        windowOpen = true;
+        stage.addActor(new LevelChooserWindow("Choose ", skin, file, this));
     }
 
     @Override
