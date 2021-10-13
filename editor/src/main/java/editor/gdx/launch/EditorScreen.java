@@ -36,7 +36,7 @@ public class EditorScreen implements Screen {
     private WadFile file;
     private LevelData level;
     private Integer levelnum;
-    private boolean windowOpen;
+    public boolean windowOpen;
 
     //UI Stuff
     private Stage stage = new Stage(new ScreenViewport());
@@ -180,7 +180,8 @@ public class EditorScreen implements Screen {
             level.getTiles().add(tile);
         }
 
-        stage.addActor(new EditTileWindow("Edit Tile", skin, tile, file));
+        stage.addActor(new EditTileWindow("Edit Tile", skin, tile, file, this));
+        windowOpen = true;
     }
 
     @Override

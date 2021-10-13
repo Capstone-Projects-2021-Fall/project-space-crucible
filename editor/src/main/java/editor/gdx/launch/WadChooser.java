@@ -12,13 +12,12 @@ import java.io.IOException;
 
 public class WadChooser extends JFileChooser {
 
-    public WadChooser(JDialog parent) {
+    public WadChooser() {
         super();
         JButton newFileButton = new JButton("New File");
         newFileButton.setSize(64, 64);
         newFileButton.addActionListener(e -> newFile());
         setAccessory(newFileButton);
-
     }
 
     private void newFile() {

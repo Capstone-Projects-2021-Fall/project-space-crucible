@@ -16,26 +16,25 @@ public class EditorLauncher {
 
     public static void main(String[] args) {
 
-        while (true) {
-            try {
-                createApplication();
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.exit(1);
-            }
+        try {
+            createApplication();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 
     private static Lwjgl3Application createApplication() throws IOException {
 
         JDialog dialog = new JDialog();
-        JFileChooser wc = new WadChooser(dialog);
+        JFileChooser wc = new WadChooser();
         dialog.setContentPane(wc);
         dialog.setSize(640, 480);
         dialog.setResizable(false);
         if (wc.showOpenDialog(dialog) != JFileChooser.APPROVE_OPTION) {
             System.exit(0);
         }
+        dialog.dispose();
 
         WadFile file = new WadFile(wc.getSelectedFile());
 

@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
+import editor.gdx.launch.EditorScreen;
 import net.mtrop.doom.WadFile;
 
 public class EditTileWindow extends Window {
@@ -22,11 +23,13 @@ public class EditTileWindow extends Window {
     TextField tagField;
     TextButton okButton;
     TextButton cancelButton;
+    EditorScreen editor;
 
-    public EditTileWindow(String title, Skin skin, LevelTile tile, WadFile file) {
+    public EditTileWindow(String title, Skin skin, LevelTile tile, WadFile file, EditorScreen editor) {
         super(title, skin);
         this.file = file;
         this.tile = tile;
+        this.editor = editor;
 
         setModal(true);
 
@@ -117,6 +120,7 @@ public class EditTileWindow extends Window {
 
     private void close() {
         remove();
+        editor.windowOpen = false;
     }
 
     private void changeTile() {
