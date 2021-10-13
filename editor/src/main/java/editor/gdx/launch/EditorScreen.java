@@ -123,7 +123,7 @@ public class EditorScreen implements Screen {
 
         if (windowOpen) {return;}
 
-        if ((Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))) {
+        if (isCtrlPressed()) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
 
                 try {
@@ -134,9 +134,13 @@ public class EditorScreen implements Screen {
                 }
 
             } else if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-                level = null;
-                openLevelPrompt();
-                windowOpen = true;
+                if (isShiftPressed()) {
+                    level = null;
+                    openLevelPrompt();
+                    windowOpen = true;
+                } else {
+
+                }
             }
         }
     }
@@ -192,6 +196,7 @@ public class EditorScreen implements Screen {
     public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -215,5 +220,12 @@ public class EditorScreen implements Screen {
 
     public void loadLevel() {
         level = WadFuncs.loadLevel(file, levelnum);
+    }
+
+    private boolean isCtrlPressed() {
+        return (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT));
+    }
+    private boolean isShiftPressed() {
+        return (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
     }
 }
