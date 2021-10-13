@@ -18,6 +18,7 @@ import core.level.info.LevelData;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
 import editor.gdx.windows.EditTileWindow;
+import editor.gdx.windows.LevelChooserWindow;
 import editor.gdx.write.LevelWriter;
 import net.mtrop.doom.WadFile;
 
@@ -35,16 +36,14 @@ public class EditorScreen implements Screen {
 
     private WadFile file;
     private LevelData level;
-    private Integer levelnum;
+    public Integer levelnum;
     public boolean windowOpen;
 
     //UI Stuff
     private Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
-    private Window window = new Window("Editor", skin);
-
-    public EditorScreen(LevelEditor editor, WadFile file, Integer levelnum) {
+    public EditorScreen(LevelEditor editor, WadFile file) {
         this.editor = editor;
         this.file = file;
 
@@ -53,19 +52,12 @@ public class EditorScreen implements Screen {
         camera.position.set(0, 0, 0);
         batch = new SpriteBatch();
         sr = new ShapeRenderer();
-
-        this.levelnum = levelnum;
-
-        try {
-            level = WadFuncs.loadLevel(file, levelnum);
-        } catch (Exception e) {
-            level = new LevelData(levelnum);
-        }
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+        stage.addActor(new LevelChooserWindow("Choose ", skin, file, this));
     }
 
     @Override
@@ -79,7 +71,10 @@ public class EditorScreen implements Screen {
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        worldDraw();
+
+        if (level != null) {
+            worldDraw();
+        }
         batch.end();
 
         sr.setProjectionMatrix(camera.combined);
@@ -207,5 +202,9 @@ public class EditorScreen implements Screen {
 
     @Override
     public void dispose() {
+    }
+
+    public void loadLevel() {
+        level = WadFuncs.loadLevel(file, levelnum);
     }
 }

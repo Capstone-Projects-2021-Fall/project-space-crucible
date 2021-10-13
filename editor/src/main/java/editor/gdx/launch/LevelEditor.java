@@ -25,7 +25,7 @@ public class LevelEditor extends Game {
 
     @Override
     public void create() {
-        editorScreen = new EditorScreen(this, file, 1);
+        editorScreen = new EditorScreen(this, file);
         setScreen(editorScreen);
     }
 }
