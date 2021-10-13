@@ -1,7 +1,6 @@
 package core.gdx.wad;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,60 +8,39 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import core.game.logic.Entity;
+import core.game.logic.GameLogic;
 import core.game.logic.PlayerPawn;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
-import core.wad.funcs.WadFuncs;
-import net.mtrop.doom.WadFile;
-
-import java.io.IOException;
 
 public class GameScreen implements Screen {
 
-    //launcher = myGame
-    private MyGDxTest game;
+    Thread gameLogic;
 
+    //Player and level
     PlayerPawn player;
+    LevelData level;
+
 
     //screen
     OrthographicCamera camera;
     private final Vector2 mouseInWorld2D = new Vector2();
     private final Vector3 mouseInWorld3D = new Vector3();
 
-    //Level
-    LevelData level;
-
     //graphics
     SpriteBatch batch;
 
-    //Player Speed
-    public static final float SPEED = 120;
-
-    //character movement
-
-    public GameScreen(MyGDxTest game) {
-        WadFile file;
-
-        try {
-            file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
-            String path = file.getFileAbsolutePath();
-            this.game=game;
-            camera = new OrthographicCamera();
-            camera.setToOrtho(false, 1920, 1080);
-            batch = new SpriteBatch();
-            player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 100, 32, 56,
-                    file, "PLAY");
-
-            level = new LevelData(file, 1);
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public GameScreen(Thread gameLogic, PlayerPawn player, LevelData level) {
+        this.gameLogic = gameLogic;
+        this.player = player;
+        this.level = level;
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 1920, 1080);
+        batch = new SpriteBatch();
     }
 
     @Override
     public void show() {
-
     }
 
     @Override
@@ -70,9 +48,6 @@ public class GameScreen implements Screen {
 
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        //This updates the player on the screen
-        movementUpdate();
 
         //This centers the camera to the player
         //Get the angle where the mouse is pointing to on the screen in relation to where the player is
@@ -96,21 +71,12 @@ public class GameScreen implements Screen {
 
         //Draw game world in the background
         worldDraw();
-        batch.draw(player.getSprite('A', player.getPos().angle), player.getPos().x, player.getPos().y);
-        batch.end();
-    }
 
-    private void movementUpdate(){
-        //Input handling with polling method
-        //This handles all the keys pressed with the keyboard.
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
-            player.getPos().x -= SPEED * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
-            player.getPos().x += SPEED * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
-            player.getPos().y += SPEED * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
-            player.getPos().y -= SPEED * Gdx.graphics.getDeltaTime();
+        for (Entity e : GameLogic.entityList) {
+            batch.draw(e.getCurrentSprite(), e.getPos().x, e.getPos().y);
+        }
+
+        batch.end();
     }
 
     private void worldDraw() {
@@ -139,11 +105,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
+        gameLogic.interrupt();
     }
 
     @Override
     public void dispose() {
-
     }
 }

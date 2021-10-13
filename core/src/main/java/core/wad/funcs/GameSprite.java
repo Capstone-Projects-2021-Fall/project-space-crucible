@@ -5,8 +5,12 @@ import net.mtrop.doom.WadEntry;
 import net.mtrop.doom.WadFile;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class GameSprite {
+
+    //Static map of every possible sprite in the game to their 4-character name
+    //Since all EntityStates reference the global spriteMap, each sprite is stored only once.
 
     final private HashMap<Character, GameSpriteFrame> frames;
 
