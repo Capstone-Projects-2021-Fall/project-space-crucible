@@ -1,13 +1,10 @@
 package core.gdx.wad.lwjgl3;
 
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import core.gdx.wad.MyGDxTest;
 
-/** Launches the desktop (LWJGL3) application. */
+/** Launches the desktop (LWJGL) application. */
 public class LegacyLauncher {
 	public static void main(String[] args) {
 		createApplication();
