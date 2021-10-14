@@ -41,7 +41,7 @@ public class MyGDxTest extends Game {
             Array<WadFile> wads = new Array<>();
             wads.add(file);
             level = new LevelData(file, 1, wads);
-            WadFuncs.loadSprites(file);
+            WadFuncs.loadSprites(wads);
             file.close();
         } catch (IOException e) {
             e.printStackTrace();

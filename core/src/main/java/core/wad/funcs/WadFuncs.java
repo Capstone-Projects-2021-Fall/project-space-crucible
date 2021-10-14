@@ -62,10 +62,10 @@ public class WadFuncs {
         return new Texture(pix);
     }
 
-    public static Texture getTexture(Array<WadFile> resources, String name) {
+    public static Texture getTexture(Array<WadFile> wads, String name) {
         WadFile file = null;
 
-        for (WadFile w : resources) {
+        for (WadFile w : wads) {
             if (w.contains(name)) {
                 file = w;
             }
@@ -76,6 +76,10 @@ public class WadFuncs {
 
     public static Sprite getSprite(WadFile file, String name) {
         return new Sprite(getTexture(file, name));
+    }
+
+    public static Sprite getSprite(Array<WadFile> wads, String name) {
+        return new Sprite(getTexture(wads, name));
     }
 
     public static LevelData loadLevel(WadFile file, int levelnum, Array<WadFile> wads) {
@@ -111,8 +115,8 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState("PLAY", 'N', -1, 15));//15
     }
 
-    public static void loadSprites(WadFile file) {
+    public static void loadSprites(Array<WadFile> wads) {
         //For now, just load player sprites. I'll generalize this later.
-        GameLogic.spriteMap.put("PLAY", new GameSprite(file, "PLAY"));
+        GameLogic.spriteMap.put("PLAY", new GameSprite(wads, "PLAY"));
     }
 }
