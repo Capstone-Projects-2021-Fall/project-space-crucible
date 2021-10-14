@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import core.game.logic.GameLogic;
 import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
@@ -213,6 +214,11 @@ public class EditorScreen implements Screen {
 
     public void loadLevel() {
         level = WadFuncs.loadLevel(file, levelnum, resources);
+
+        WadFuncs.loadSprites(file);
+        WadFuncs.loadStates();
+        WadFuncs.setEntityTypes();
+        GameLogic.loadEntities(level);
     }
 
     public void loadNewLevel(String name, Integer level) {

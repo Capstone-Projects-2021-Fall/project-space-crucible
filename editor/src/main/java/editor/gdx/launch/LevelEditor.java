@@ -1,6 +1,8 @@
 package editor.gdx.launch;
 
 import com.badlogic.gdx.Game;
+import core.game.logic.GameLogic;
+import core.wad.funcs.WadFuncs;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class LevelEditor extends Game {
