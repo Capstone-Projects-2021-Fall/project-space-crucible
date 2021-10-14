@@ -8,13 +8,13 @@ import static com.badlogic.gdx.Gdx.audio;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class MyGDxTest extends Game {
-    public GameScreen gameScreen;
+    public TitleScreen titleScreen;
 
     @Override
     public void create() {
 
 
-        gameScreen = new GameScreen(this);
-        setScreen(gameScreen);
+        titleScreen = new TitleScreen(this);
+        setScreen(titleScreen);
     }
 }
