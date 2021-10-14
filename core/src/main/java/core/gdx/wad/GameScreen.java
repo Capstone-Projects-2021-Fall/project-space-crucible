@@ -30,9 +30,9 @@ public class GameScreen implements Screen {
     //graphics
     SpriteBatch batch;
 
-    public GameScreen(Thread gameLogic, PlayerPawn player, LevelData level) {
+    public GameScreen(Thread gameLogic, LevelData level) {
         this.gameLogic = gameLogic;
-        this.player = player;
+        this.player = GameLogic.getPlayer(0);
         this.level = level;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);

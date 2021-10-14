@@ -42,12 +42,13 @@ public class MyGDxTest extends Game {
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(1);
         }
 
         WadFuncs.loadStates();
-        PlayerPawn player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 120, 32, 56);
-        GameLogic.entityList.add(player);
-        gameScreen = new GameScreen(gameLoop, player, level);
+        WadFuncs.setEntityTypes();
+        GameLogic.loadEntities(level);
+        gameScreen = new GameScreen(gameLoop, level);
         setScreen(gameScreen);
         gameLoop.start();
     }

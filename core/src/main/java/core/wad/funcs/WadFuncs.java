@@ -9,8 +9,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.ByteArray;
+import core.game.logic.Entity;
 import core.game.logic.EntityState;
 import core.game.logic.GameLogic;
+import core.game.logic.PlayerPawn;
 import core.level.info.LevelData;
 import net.mtrop.doom.WadFile;
 import net.mtrop.doom.graphics.PNGPicture;
@@ -71,6 +73,10 @@ public class WadFuncs {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void setEntityTypes() {
+        GameLogic.entityType.add(PlayerPawn.class); // 0
     }
 
     public static void loadStates() {

@@ -39,15 +39,17 @@ public abstract class Entity {
     private EntityState currentState;
     private int remainingStateTics;
     private Integer[] states;
+    private int tag;
 
     //Like sprites, each state is only stored once in a global ArrayList, which is memory-efficient.
-    public Entity (int health, Position pos, int speed, int width, int height, Integer[] states) {
+    public Entity (int health, Position pos, int speed, int width, int height, Integer[] states, int tag) {
         this.health = health;
         this.pos = pos;
         this.speed = speed;
         this.width = width;
         this.height = height;
         this.states = states;
+        this.tag = tag;
         setState(this.states[IDLE]);
     }
 
@@ -62,6 +64,8 @@ public abstract class Entity {
     public int getRemainingStateTics() {return remainingStateTics;}
 
     public int getSpeed() {return speed;}
+
+    public int getTag() {return tag;}
 
     public Sprite getCurrentSprite() {return currentState.getSprite().getFrame(currentState.getFrame(), pos.angle);}
 

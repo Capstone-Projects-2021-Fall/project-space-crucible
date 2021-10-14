@@ -6,8 +6,21 @@ import net.mtrop.doom.WadFile;
 
 public class PlayerPawn extends Entity {
 
-    public PlayerPawn(int health, Position pos, int speed, int width, int height) {
-        super(health, pos, speed, width, height, new Integer[]{0, 1, 5, 6, 7, 9});
+    final private static int HEALTH = 100;
+    final private static int SPEED = 120;
+    final private static int WIDTH = 32;
+    final private static int HEIGHT = 56;
+
+    final private static int IDLESTATE = 0;
+    final private static int WALKSTATE = 1;
+    final private static int MELEESTATE = 5;
+    final private static int MISSILESTATE = 6;
+    final private static int PAINSTATE = 7;
+    final private static int DEATHSTATE = 9;
+
+    public PlayerPawn(Position pos, int tag) {
+        super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
+                new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag);
     }
 
 
