@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import editor.gdx.launch.EditorScreen;
 import net.mtrop.doom.WadFile;
+import net.mtrop.doom.util.WadUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,6 +61,7 @@ public class FileChooserWindow extends Window {
 
                     try {
                         newFile.createNewFile();
+                        WadFile.createWadFile(newFile);
                     } catch (IOException e) {
                         System.out.println("Could not create file " + newFile.getAbsolutePath());
                     }
@@ -99,6 +101,7 @@ public class FileChooserWindow extends Window {
         row();
         fileList = new List<>(skin);
         scrollPane = new ScrollPane(fileList, skin);
+        scrollPane.setFadeScrollBars(false);
 
         fileList.addListener(new ClickListener() {
             @Override
