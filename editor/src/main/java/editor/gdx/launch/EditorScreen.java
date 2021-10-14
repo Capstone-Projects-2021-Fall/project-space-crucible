@@ -41,7 +41,7 @@ public class EditorScreen implements Screen {
     public boolean windowOpen;
 
     //UI Stuff
-    private Stage stage = new Stage(new ScreenViewport());
+    public Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
     public EditorScreen(LevelEditor editor) {

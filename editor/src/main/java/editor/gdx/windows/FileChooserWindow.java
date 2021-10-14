@@ -22,8 +22,70 @@ public class FileChooserWindow extends Window {
     private List<String> fileList;
     private Table buttonTable;
     private CheckBox hideFiles;
+    private TextButton addFileButton;
     private TextButton okButton;
     private TextButton cancelButton;
+
+    private class FileNamerWindow extends Window {
+
+        private File currentDir;
+        private FileChooserWindow parent;
+        private TextField name;
+        private TextButton okButton;
+        private TextButton cancelButton;
+
+        public FileNamerWindow(Skin skin, File currentDir, FileChooserWindow parent) {
+            super("Name new file:", skin);
+            this.currentDir = currentDir;
+            this.parent = parent;
+            setModal(true);
+            name = new TextField("newwad", skin);
+            add(name);
+            add(new Label(".wad", skin));
+            row();
+            okButton = new TextButton("OK", skin);
+
+            okButton.addListener(new ClickListener() {
+
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+
+                    File newFile = new File(currentDir.getAbsolutePath() + "/" + name.getText() + ".wad");
+
+                    if (newFile.exists()) {
+                        System.out.println("That file already exists.");
+                        return;
+                    }
+
+                    try {
+                        newFile.createNewFile();
+                    } catch (IOException e) {
+                        System.out.println("Could not create file " + newFile.getAbsolutePath());
+                    }
+
+                    parent.updateList();
+                    remove();
+                }
+
+            });
+
+            add(okButton);
+            cancelButton = new TextButton("Cancel", skin);
+
+            cancelButton.addListener(new ClickListener() {
+
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    remove();
+                }
+            });
+
+            add(cancelButton);
+            pack();
+        }
+    }
 
     public FileChooserWindow(String title, Skin skin, EditorScreen editor) {
         super(title, skin);
@@ -62,6 +124,19 @@ public class FileChooserWindow extends Window {
         add(hideFiles);
         row();
         buttonTable = new Table(skin);
+
+        addFileButton = new TextButton("+", skin);
+
+        addFileButton.addListener(new ClickListener() {
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                addNewFile();
+            }
+        });
+
+        buttonTable.add(addFileButton);
         okButton = new TextButton("OK", skin);
         okButton.setDisabled(true);
 
@@ -91,7 +166,6 @@ public class FileChooserWindow extends Window {
         pack();
         updateList();
     }
-
     private void updateList() {
         Array<String> listMembers = new Array<>();
         Array<String> directoryNames = new Array<>();
@@ -148,6 +222,11 @@ public class FileChooserWindow extends Window {
             }
         }
     }
+
+    private void addNewFile() {
+        editor.stage.addActor(new FileNamerWindow(getSkin(), currentDir, this));
+    }
+
 
     private void chooseFile() {
 
