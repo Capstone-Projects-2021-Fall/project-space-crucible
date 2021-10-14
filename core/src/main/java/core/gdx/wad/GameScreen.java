@@ -68,23 +68,9 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
         batch.begin();
-
-        //Draw game world in the background
-        worldDraw();
-
-        for (Entity e : GameLogic.entityList) {
-            batch.draw(e.getCurrentSprite(), e.getPos().x, e.getPos().y);
-        }
-
+        RenderFuncs.worldDraw(batch, level);
+        RenderFuncs.entityDraw(batch);
         batch.end();
-    }
-
-    private void worldDraw() {
-        for (LevelTile tile : level.getTiles()) {
-            batch.draw(tile.graphic,
-                    tile.pos.x * LevelTile.TILE_SIZE,
-                    tile.pos.y * LevelTile.TILE_SIZE);
-        }
     }
 
     @Override

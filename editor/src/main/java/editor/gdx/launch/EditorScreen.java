@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
@@ -72,12 +73,12 @@ public class EditorScreen implements Screen {
         if (level != null) {
             batch.setProjectionMatrix(camera.combined);
             batch.begin();
-            worldDraw();
+            RenderFuncs.worldDraw(batch, level);
             batch.end();
 
             sr.setProjectionMatrix(camera.combined);
             sr.begin(ShapeRenderer.ShapeType.Line);
-            gridDraw();
+            RenderFuncs.gridDraw(camera, sr);
             sr.end();
         }
 
@@ -154,30 +155,6 @@ public class EditorScreen implements Screen {
         mouseInWorld.y = Gdx.input.getY();
         mouseInWorld.z = 0;
         camera.unproject(mouseInWorld);
-    }
-
-    private void worldDraw() {
-        for (LevelTile tile : level.getTiles()) {
-            batch.draw(tile.graphic,
-                    tile.pos.x * LevelTile.TILE_SIZE,
-                    tile.pos.y * LevelTile.TILE_SIZE);
-        }
-    }
-
-    private void gridDraw() {
-        for (float x = camera.position.x - camera.viewportWidth/2; x < camera.position.x + camera.viewportWidth/2; x += 1.0) {
-            if (((int)x) % LevelTile.TILE_SIZE == 0) {
-                sr.line(x, camera.position.y + (camera.viewportHeight/2),
-                        x, camera.position.y - (camera.viewportHeight/2));
-            }
-        }
-
-        for (float y = camera.position.y - camera.viewportHeight/2; y < camera.position.y + camera.viewportWidth/2; y+= 1.0) {
-            if (((int)y) % LevelTile.TILE_SIZE == 0) {
-                sr.line(camera.position.x + (camera.viewportWidth/2), y,
-                        camera.position.x - (camera.viewportWidth/2), y);
-            }
-        }
     }
 
     private void editTilePrompt(int tilex, int tiley) {
