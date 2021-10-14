@@ -78,9 +78,9 @@ public class WadFuncs {
         return new Sprite(getTexture(file, name));
     }
 
-    public static LevelData loadLevel(WadFile file, int levelnum) {
+    public static LevelData loadLevel(WadFile file, int levelnum, Array<WadFile> wads) {
         try {
-            return new LevelData(file, levelnum);
+            return new LevelData(file, levelnum, wads);
         } catch (IOException e) {
             System.out.println("Could not load LEVEL" + levelnum);
             e.printStackTrace();

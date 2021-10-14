@@ -14,7 +14,7 @@ public class LevelData {
     int levelnumber;
     private ArrayList<LevelTile> tiles = new ArrayList<>();
     private ArrayList<LevelObject> objects = new ArrayList<>();
-
+    private Array<WadFile> wads;
 
     //New level from scratch
     public LevelData(int levelnumber) {
@@ -27,26 +27,9 @@ public class LevelData {
         this.levelnumber = levelnumber;
     }
 
-    //In editor mode, check all .WADs for textures
-    public LevelData(Array<WadFile> resources, int levelnumber) {
-        WadFile file = null;
-
-        for (WadFile w : resources) {
-            if (w.contains("LEVEL" + levelnumber)) {
-                System.out.println("LEVEL" + levelnumber);
-                file = w;
-            }
-        }
-
-        try {
-            new LevelData(file, levelnumber);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public LevelData(WadFile file, int levelnumber) throws IOException {
+    public LevelData(WadFile file, int levelnumber, Array<WadFile> wads) throws IOException {
         this.levelnumber = levelnumber;
+        this.wads = wads;
         String entry = "LEVEL" + levelnumber;
         String leveldata = "";
 
@@ -244,7 +227,7 @@ public class LevelData {
         }
 
         LevelTile.TilePosition pos = new LevelTile.TilePosition(xpos, ypos);
-        LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag, file);
+        LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag, wads);
         tiles.add(tile);
     }
 

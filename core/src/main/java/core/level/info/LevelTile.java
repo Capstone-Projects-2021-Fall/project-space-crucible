@@ -33,7 +33,7 @@ public class LevelTile {
     public int tag;
 
     public LevelTile(TilePosition pos, boolean solid, String tex, int light, int effect, int arg1, int arg2,
-                     boolean repeat, int tag, WadFile file) {
+                     boolean repeat, int tag, Array<WadFile> wads) {
         this.pos = pos;
         this.solid = solid;
         this.light = light;
@@ -44,22 +44,7 @@ public class LevelTile {
         this.tag = tag;
 
         graphicname = tex;
-        graphic = WadFuncs.getTexture(file, tex);
-    }
-
-    public LevelTile(TilePosition pos, boolean solid, String tex, int light, int effect, int arg1, int arg2,
-                     boolean repeat, int tag, Array<WadFile> resources) {
-        this.pos = pos;
-        this.solid = solid;
-        this.light = light;
-        this.effect = effect;
-        this.arg1 = arg1;
-        this.arg2 = arg2;
-        this.repeat = repeat;
-        this.tag = tag;
-
-        graphicname = tex;
-        graphic = WadFuncs.getTexture(resources, tex);
+        graphic = WadFuncs.getTexture(wads, tex);
     }
 
     public String toString() {

@@ -212,7 +212,7 @@ public class EditorScreen implements Screen {
     }
 
     public void loadLevel() {
-        level = WadFuncs.loadLevel(file, levelnum);
+        level = WadFuncs.loadLevel(file, levelnum, resources);
     }
 
     public void loadNewLevel(String name, Integer level) {
