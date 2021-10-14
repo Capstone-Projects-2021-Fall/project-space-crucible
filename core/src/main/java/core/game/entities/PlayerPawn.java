@@ -1,8 +1,7 @@
-package core.game.logic;
+package core.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import net.mtrop.doom.WadFile;
 
 public class PlayerPawn extends Entity {
 

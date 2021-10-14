@@ -1,13 +1,11 @@
 package core.game.logic;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import core.gdx.wad.MyGDxTest;
+import core.game.entities.Entity;
+import core.game.entities.PlayerPawn;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.wad.funcs.GameSprite;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class GameLogic {

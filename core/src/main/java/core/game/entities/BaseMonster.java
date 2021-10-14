@@ -1,4 +1,4 @@
-package core.game.logic;
+package core.game.entities;
 
 public abstract class BaseMonster extends Entity {
 

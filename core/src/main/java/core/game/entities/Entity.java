@@ -1,6 +1,8 @@
-package core.game.logic;
+package core.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import core.game.logic.EntityState;
+import core.game.logic.GameLogic;
 import core.wad.funcs.GameSprite;
 import net.mtrop.doom.WadFile;
 

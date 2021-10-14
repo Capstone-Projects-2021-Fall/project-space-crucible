@@ -1,27 +1,18 @@
 package core.wad.funcs;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.AudioDevice;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ByteArray;
+import core.game.entities.PlayerPawn;
+import core.game.entities.Worm;
 import core.game.logic.*;
 import core.level.info.LevelData;
 import net.mtrop.doom.WadFile;
 import net.mtrop.doom.graphics.PNGPicture;
-import net.mtrop.doom.sound.DMXSound;
-import net.mtrop.doom.util.SoundUtils;
 
-import javax.imageio.ImageIO;
-import javax.sound.sampled.*;
 import java.io.*;
-
-import static com.badlogic.gdx.Gdx.audio;
 
 public class WadFuncs {
 
