@@ -228,6 +228,10 @@ public class EditorScreen implements Screen {
         level = WadFuncs.loadLevel(file, levelnum);
     }
 
+    public void loadNewLevel(String name, Integer level) {
+        this.level = new LevelData(name, level);
+    }
+
     private boolean isCtrlPressed() {
         return (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT));
     }

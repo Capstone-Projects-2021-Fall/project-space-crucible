@@ -27,6 +27,7 @@ public class FileChooserWindow extends Window {
     private TextButton okButton;
     private TextButton cancelButton;
 
+    //A dialog that pops up to crate new files
     private class FileNamerWindow extends Window {
 
         private File currentDir;

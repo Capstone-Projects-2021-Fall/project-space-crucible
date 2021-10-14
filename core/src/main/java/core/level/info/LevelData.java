@@ -19,6 +19,12 @@ public class LevelData {
         name = "Level " + levelnumber;
     }
 
+    //New level from scratch, with a name
+    public LevelData(String name, int levelnumber) {
+        this.name = name;
+        this.levelnumber = levelnumber;
+    }
+
     public LevelData(WadFile file, int levelnumber) throws IOException {
         this.levelnumber = levelnumber;
         String entry = "LEVEL" + levelnumber;
