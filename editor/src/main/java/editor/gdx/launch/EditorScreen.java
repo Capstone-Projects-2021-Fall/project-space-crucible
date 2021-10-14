@@ -69,30 +69,18 @@ public class EditorScreen implements Screen {
         checkControls();
         moveCamera();
 
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-
         if (level != null) {
+            batch.setProjectionMatrix(camera.combined);
+            batch.begin();
             worldDraw();
-        }
-        batch.end();
+            batch.end();
 
-        sr.setProjectionMatrix(camera.combined);
-        sr.begin(ShapeRenderer.ShapeType.Line);
-        for (float x = camera.position.x - camera.viewportWidth/2; x < camera.position.x + camera.viewportWidth/2; x += 1.0) {
-            if (((int)x) % LevelTile.TILE_SIZE == 0) {
-                sr.line(x, camera.position.y + (camera.viewportHeight/2),
-                        x, camera.position.y - (camera.viewportHeight/2));
-            }
+            sr.setProjectionMatrix(camera.combined);
+            sr.begin(ShapeRenderer.ShapeType.Line);
+            gridDraw();
+            sr.end();
         }
 
-        for (float y = camera.position.y - camera.viewportHeight/2; y < camera.position.y + camera.viewportWidth/2; y+= 1.0) {
-            if (((int)y) % LevelTile.TILE_SIZE == 0) {
-                sr.line(camera.position.x + (camera.viewportWidth/2), y,
-                        camera.position.x - (camera.viewportWidth/2), y);
-            }
-        }
-        sr.end();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
@@ -173,6 +161,22 @@ public class EditorScreen implements Screen {
             batch.draw(tile.graphic,
                     tile.pos.x * LevelTile.TILE_SIZE,
                     tile.pos.y * LevelTile.TILE_SIZE);
+        }
+    }
+
+    private void gridDraw() {
+        for (float x = camera.position.x - camera.viewportWidth/2; x < camera.position.x + camera.viewportWidth/2; x += 1.0) {
+            if (((int)x) % LevelTile.TILE_SIZE == 0) {
+                sr.line(x, camera.position.y + (camera.viewportHeight/2),
+                        x, camera.position.y - (camera.viewportHeight/2));
+            }
+        }
+
+        for (float y = camera.position.y - camera.viewportHeight/2; y < camera.position.y + camera.viewportWidth/2; y+= 1.0) {
+            if (((int)y) % LevelTile.TILE_SIZE == 0) {
+                sr.line(camera.position.x + (camera.viewportWidth/2), y,
+                        camera.position.x - (camera.viewportWidth/2), y);
+            }
         }
     }
 
