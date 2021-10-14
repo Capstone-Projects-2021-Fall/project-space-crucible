@@ -18,6 +18,7 @@ import core.level.info.LevelData;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
 import editor.gdx.windows.EditTileWindow;
+import editor.gdx.windows.FileChooserWindow;
 import editor.gdx.windows.LevelChooserWindow;
 import editor.gdx.write.LevelWriter;
 import net.mtrop.doom.WadFile;
@@ -34,7 +35,7 @@ public class EditorScreen implements Screen {
     private float cameraspeed = 5;
     private Vector3 mouseInWorld = new Vector3();
 
-    private WadFile file;
+    public WadFile file = null;
     private LevelData level;
     public Integer levelnum;
     public boolean windowOpen;
@@ -43,9 +44,8 @@ public class EditorScreen implements Screen {
     private Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
-    public EditorScreen(LevelEditor editor, WadFile file) {
+    public EditorScreen(LevelEditor editor) {
         this.editor = editor;
-        this.file = file;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
@@ -57,7 +57,7 @@ public class EditorScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        openLevelPrompt();
+        openFilePrompt();
     }
 
     @Override
@@ -139,7 +139,8 @@ public class EditorScreen implements Screen {
                     openLevelPrompt();
                     windowOpen = true;
                 } else {
-
+                    openFilePrompt();
+                    windowOpen = true;
                 }
             }
         }
@@ -187,7 +188,12 @@ public class EditorScreen implements Screen {
         windowOpen = true;
     }
 
-    private void openLevelPrompt() {
+    public void openFilePrompt() {
+        windowOpen = true;
+        stage.addActor(new FileChooserWindow("Choose File:", skin, this));
+    }
+
+    public void openLevelPrompt() {
         windowOpen = true;
         stage.addActor(new LevelChooserWindow("Choose ", skin, file, this));
     }
