@@ -33,6 +33,7 @@ public class LevelData {
 
         for (WadFile w : resources) {
             if (w.contains("LEVEL" + levelnumber)) {
+                System.out.println("LEVEL" + levelnumber);
                 file = w;
             }
         }
@@ -73,7 +74,7 @@ public class LevelData {
             }
         }
 
-        System.out.println(name);
+        System.out.println(leveldata);
     }
 
     public String getName() {

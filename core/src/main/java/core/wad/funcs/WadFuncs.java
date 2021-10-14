@@ -88,11 +88,6 @@ public class WadFuncs {
         }
     }
 
-    public static LevelData loadLevel(Array<WadFile> resources, int levelnum) {
-
-        return new LevelData(resources, levelnum);
-    }
-
     public static void setEntityTypes() {
         GameLogic.entityType.add(PlayerPawn.class); // 0
     }

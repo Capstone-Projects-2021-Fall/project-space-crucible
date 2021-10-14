@@ -76,6 +76,7 @@ public class EditorScreen implements Screen {
             batch.setProjectionMatrix(camera.combined);
             batch.begin();
             RenderFuncs.worldDraw(batch, level);
+            RenderFuncs.entityDraw(batch);
             batch.end();
 
             sr.setProjectionMatrix(camera.combined);
@@ -211,7 +212,7 @@ public class EditorScreen implements Screen {
     }
 
     public void loadLevel() {
-        level = WadFuncs.loadLevel(resources, levelnum);
+        level = WadFuncs.loadLevel(file, levelnum);
     }
 
     public void loadNewLevel(String name, Integer level) {
