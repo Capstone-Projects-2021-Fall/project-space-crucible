@@ -55,7 +55,7 @@ public class GameLogic {
 
         for (LevelObject obj : level.getObjects()) {
             try {
-                entityList.add(entityType.get(obj.tag)
+                entityList.add(entityType.get(obj.type)
                         .getConstructor(Entity.Position.class, int.class)
                         .newInstance(obj.pos, obj.tag));
             } catch (Exception e) {
