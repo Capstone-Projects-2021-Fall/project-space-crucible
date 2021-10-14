@@ -147,6 +147,9 @@ public class EditorScreen implements Screen {
     }
 
     private void moveCamera() {
+
+        if (windowOpen) {return;}
+
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
             camera.position.set(camera.position.x - cameraspeed, camera.position.y, 0);
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
@@ -230,6 +233,7 @@ public class EditorScreen implements Screen {
 
     public void loadNewLevel(String name, Integer level) {
         this.level = new LevelData(name, level);
+        levelnum = level;
     }
 
     private boolean isCtrlPressed() {

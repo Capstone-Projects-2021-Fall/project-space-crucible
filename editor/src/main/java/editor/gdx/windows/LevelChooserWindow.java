@@ -58,7 +58,7 @@ public class LevelChooserWindow extends Window {
                     } else if (levelNumToName.containsKey(name.getText())) {
                         System.out.println("Level name taken, please pick another,");
                     } else {
-                        parent.openNewLevel(name.getName(), Integer.parseInt(levelnum.getText()));
+                        parent.openNewLevel(name.getText(), Integer.parseInt(levelnum.getText()));
                         remove();
                     }
                 }
