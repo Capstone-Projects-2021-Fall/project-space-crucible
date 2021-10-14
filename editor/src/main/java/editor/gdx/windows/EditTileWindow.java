@@ -1,8 +1,11 @@
 package editor.gdx.windows;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.*;
+import com.badlogic.gdx.utils.Array;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
 import editor.gdx.launch.EditorScreen;
@@ -10,7 +13,7 @@ import net.mtrop.doom.WadFile;
 
 public class EditTileWindow extends Window {
 
-    WadFile file;
+    Array<WadFile> resources;
     LevelTile tile;
     Image tileTexture;
     SelectBox<String> textureList;
@@ -25,9 +28,9 @@ public class EditTileWindow extends Window {
     TextButton cancelButton;
     EditorScreen editor;
 
-    public EditTileWindow(String title, Skin skin, LevelTile tile, WadFile file, EditorScreen editor) {
+    public EditTileWindow(String title, Skin skin, LevelTile tile, Array<WadFile> resources, EditorScreen editor) {
         super(title, skin);
-        this.file = file;
+        this.resources = resources;
         this.tile = tile;
         this.editor = editor;
 
@@ -38,6 +41,14 @@ public class EditTileWindow extends Window {
         textureList = new SelectBox<>(skin);
         textureList.setItems(getTextureList());
         textureList.setSelected(tile.graphicname);
+
+        textureList.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                changePreview();
+            }
+        });
+
         add(textureList);
         row();
         solidCheckBox = new CheckBox("Solid", skin);
@@ -104,15 +115,29 @@ public class EditTileWindow extends Window {
 
     }
 
-    private String[] getTextureList() {
+    private void changePreview() {
 
-        int start = file.lastIndexOf("G_START") + 1;
-        int end = file.lastIndexOf("G_END");
+        tileTexture.setDrawable(new TextureRegionDrawable(WadFuncs.getTexture(resources, textureList.getSelected())));
+    }
 
-        String[] list = new String[end - start];
+    private Array<String> getTextureList() {
 
-        for (int i = start; i < end; i++) {
-            list[i-start] = file.getEntry(i).getName();
+        Array<String> list = new Array<>();
+
+        for (WadFile w : resources) {
+
+            if (!w.contains("G_START") || !w.contains("G_END")) {continue;}
+
+            int start = w.lastIndexOf("G_START") + 1;
+            int end = w.lastIndexOf("G_END");
+
+            for (int i = start; i < end; i++) {
+
+                if (!list.contains(w.getEntry(i).getName(), false)) {
+                    list.add(w.getEntry(i).getName());
+                    System.out.println(w.getEntry(i).getName());
+                }
+            }
         }
 
         return list;
@@ -125,7 +150,7 @@ public class EditTileWindow extends Window {
 
     private void changeTile() {
         tile.graphicname = textureList.getSelected();
-        tile.graphic = WadFuncs.getTexture(file, tile.graphicname);
+        tile.graphic = WadFuncs.getTexture(resources, tile.graphicname);
         tile.solid = solidCheckBox.isChecked();
         tile.light = (int) lightSlider.getValue();
         tile.effect = Integer.parseInt(effectField.getText());

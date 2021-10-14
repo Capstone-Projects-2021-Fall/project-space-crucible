@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ByteArray;
 import core.game.logic.Entity;
 import core.game.logic.EntityState;
@@ -61,6 +62,18 @@ public class WadFuncs {
         return new Texture(pix);
     }
 
+    public static Texture getTexture(Array<WadFile> resources, String name) {
+        WadFile file = null;
+
+        for (WadFile w : resources) {
+            if (w.contains(name)) {
+                file = w;
+            }
+        }
+
+        return getTexture(file, name);
+    }
+
     public static Sprite getSprite(WadFile file, String name) {
         return new Sprite(getTexture(file, name));
     }
@@ -73,6 +86,11 @@ public class WadFuncs {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static LevelData loadLevel(Array<WadFile> resources, int levelnum) {
+
+        return new LevelData(resources, levelnum);
     }
 
     public static void setEntityTypes() {

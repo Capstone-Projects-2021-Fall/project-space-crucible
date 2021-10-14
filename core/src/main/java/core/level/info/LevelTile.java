@@ -1,6 +1,7 @@
 package core.level.info;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Array;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
@@ -44,6 +45,21 @@ public class LevelTile {
 
         graphicname = tex;
         graphic = WadFuncs.getTexture(file, tex);
+    }
+
+    public LevelTile(TilePosition pos, boolean solid, String tex, int light, int effect, int arg1, int arg2,
+                     boolean repeat, int tag, Array<WadFile> resources) {
+        this.pos = pos;
+        this.solid = solid;
+        this.light = light;
+        this.effect = effect;
+        this.arg1 = arg1;
+        this.arg2 = arg2;
+        this.repeat = repeat;
+        this.tag = tag;
+
+        graphicname = tex;
+        graphic = WadFuncs.getTexture(resources, tex);
     }
 
     public String toString() {

@@ -1,11 +1,13 @@
 package core.level.info;
 
+import com.badlogic.gdx.utils.Array;
 import net.mtrop.doom.WadFile;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
 
 public class LevelData {
     private String name = "";
@@ -23,6 +25,23 @@ public class LevelData {
     public LevelData(String name, int levelnumber) {
         this.name = name;
         this.levelnumber = levelnumber;
+    }
+
+    //In editor mode, check all .WADs for textures
+    public LevelData(Array<WadFile> resources, int levelnumber) {
+        WadFile file = null;
+
+        for (WadFile w : resources) {
+            if (w.contains("LEVEL" + levelnumber)) {
+                file = w;
+            }
+        }
+
+        try {
+            new LevelData(file, levelnumber);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public LevelData(WadFile file, int levelnumber) throws IOException {

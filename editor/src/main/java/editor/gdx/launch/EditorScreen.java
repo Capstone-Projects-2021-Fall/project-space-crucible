@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelData;
@@ -37,6 +38,7 @@ public class EditorScreen implements Screen {
     private Vector3 mouseInWorld = new Vector3();
 
     public WadFile file = null;
+    public Array<WadFile> resources = new Array<>();
     private LevelData level;
     public Integer levelnum;
     public boolean windowOpen;
@@ -164,11 +166,11 @@ public class EditorScreen implements Screen {
         if (tile == null) {
             tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley),
                     false, "WALL1", 0, 0,
-                    0, 0, false, 0 , file);
+                    0, 0, false, 0 , resources);
             level.getTiles().add(tile);
         }
 
-        stage.addActor(new EditTileWindow("Edit Tile", skin, tile, file, this));
+        stage.addActor(new EditTileWindow("Edit Tile", skin, tile, resources, this));
         windowOpen = true;
     }
 
@@ -209,7 +211,7 @@ public class EditorScreen implements Screen {
     }
 
     public void loadLevel() {
-        level = WadFuncs.loadLevel(file, levelnum);
+        level = WadFuncs.loadLevel(resources, levelnum);
     }
 
     public void loadNewLevel(String name, Integer level) {
