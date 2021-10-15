@@ -7,11 +7,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import core.game.logic.Entity;
 import core.game.logic.GameLogic;
-import core.game.logic.PlayerPawn;
+import core.game.entities.PlayerPawn;
 import core.level.info.LevelData;
-import core.level.info.LevelTile;
 
 public class GameScreen implements Screen {
 
