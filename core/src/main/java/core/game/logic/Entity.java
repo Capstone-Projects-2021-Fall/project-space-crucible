@@ -16,6 +16,7 @@ public abstract class Entity {
     final public static int MISSILE = 3;
     final public static int PAIN = 4;
     final public static int DIE = 5;
+    final public static int NEXTLEVEL = 6;
 
     final public static long TIC = 18;
 
