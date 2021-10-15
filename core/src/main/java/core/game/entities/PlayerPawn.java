@@ -1,13 +1,26 @@
-package core.game.logic;
+package core.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import net.mtrop.doom.WadFile;
+import core.game.logic.GameLogic;
 
 public class PlayerPawn extends Entity {
 
-    public PlayerPawn(int health, Position pos, int speed, int width, int height) {
-        super(health, pos, speed, width, height, new Integer[]{0, 1, 5, 6, 7, 9});
+    final private static int HEALTH = 100;
+    final private static int SPEED = 120;
+    final private static int WIDTH = 32;
+    final private static int HEIGHT = 56;
+
+    final public static int IDLESTATE = 0;
+    final public static int WALKSTATE = 1;
+    final public static int MELEESTATE = 5;
+    final public static int MISSILESTATE = 6;
+    final public static int PAINSTATE = 7;
+    final public static int DEATHSTATE = 9;
+
+    public PlayerPawn(Position pos, int tag) {
+        super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
+                new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag);
     }
 
 
@@ -34,6 +47,8 @@ public class PlayerPawn extends Entity {
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             setState(getStates()[Entity.MISSILE]);
+            ((BaseMonster) GameLogic.entityList.get(1)).setTarget(GameLogic.entityList.get(0));
+            GameLogic.entityList.get(1).setState(Worm.WALKSTATE);
         }
 
         //If player is IDLE and is hitting a move key, set WALK state
@@ -44,7 +59,7 @@ public class PlayerPawn extends Entity {
                 || Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)
                 || Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))) {
             setState(getStates()[Entity.WALK]);
-        } else if (getCurrentFrame() <= 'D'
+        } else if (getCurrentFrame() <= 'D' && getRemainingStateTics() != -1
                 && !(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
                 && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
                 && !(Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))

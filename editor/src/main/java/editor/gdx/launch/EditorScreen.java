@@ -8,12 +8,21 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import core.game.logic.GameLogic;
+import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
-import editor.gdx.prompts.EditTilePrompt;
-
-import editor.gdx.prompts.EditorFrame;
+import editor.gdx.windows.EditTileWindow;
+import editor.gdx.windows.FileChooserWindow;
+import editor.gdx.windows.LevelChooserWindow;
 import editor.gdx.write.LevelWriter;
 import net.mtrop.doom.WadFile;
 
@@ -29,32 +38,30 @@ public class EditorScreen implements Screen {
     private float cameraspeed = 5;
     private Vector3 mouseInWorld = new Vector3();
 
-    private WadFile file;
+    public WadFile file = null;
+    public Array<WadFile> resources = new Array<>();
     private LevelData level;
-    private Integer levelnum;
+    public Integer levelnum;
+    public boolean windowOpen;
 
-    public EditorScreen(LevelEditor editor, WadFile file, Integer levelnum) {
+    //UI Stuff
+    public Stage stage = new Stage(new ScreenViewport());
+    final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
+
+    public EditorScreen(LevelEditor editor) {
         this.editor = editor;
-        this.file = file;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
         camera.position.set(0, 0, 0);
         batch = new SpriteBatch();
         sr = new ShapeRenderer();
-
-        this.levelnum = levelnum;
-
-        try {
-            level = WadFuncs.loadLevel(file, levelnum);
-        } catch (Exception e) {
-            level = new LevelData(levelnum);
-
-        }
     }
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
+        openFilePrompt();
     }
 
     @Override
@@ -66,30 +73,26 @@ public class EditorScreen implements Screen {
         checkControls();
         moveCamera();
 
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        worldDraw();
-        batch.end();
+        if (level != null) {
+            batch.setProjectionMatrix(camera.combined);
+            batch.begin();
+            RenderFuncs.worldDraw(batch, level);
+            RenderFuncs.entityDraw(batch);
+            batch.end();
 
-        sr.setProjectionMatrix(camera.combined);
-        sr.begin(ShapeRenderer.ShapeType.Line);
-        for (float x = camera.position.x - camera.viewportWidth/2; x < camera.position.x + camera.viewportWidth/2; x += 1.0) {
-            if (((int)x) % LevelTile.TILE_SIZE == 0) {
-                sr.line(x, camera.position.y + (camera.viewportHeight/2),
-                        x, camera.position.y - (camera.viewportHeight/2));
-            }
+            sr.setProjectionMatrix(camera.combined);
+            sr.begin(ShapeRenderer.ShapeType.Line);
+            RenderFuncs.gridDraw(camera, sr);
+            sr.end();
         }
 
-        for (float y = camera.position.y - camera.viewportHeight/2; y < camera.position.y + camera.viewportWidth/2; y+= 1.0) {
-            if (((int)y) % LevelTile.TILE_SIZE == 0) {
-                sr.line(camera.position.x + (camera.viewportWidth/2), y,
-                        camera.position.x - (camera.viewportWidth/2), y);
-            }
-        }
-        sr.end();
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
     private void checkControls() {
+
+        if (windowOpen) {return;}
 
         int x = (int)(mouseInWorld.x);
         int y = (int)(mouseInWorld.y);
@@ -99,9 +102,6 @@ public class EditorScreen implements Screen {
 
         if (x < 0) {tilex--;}
         if (y < 0) {tiley--;}
-
-        System.out.println("Map tile is " + tilex + ", " + tiley);
-        System.out.println("Mouse is at " + x + ", " + y);
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
             editTilePrompt(tilex, tiley);
@@ -113,7 +113,10 @@ public class EditorScreen implements Screen {
     }
 
     private void checkShortcuts() {
-        if ((Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))) {
+
+        if (windowOpen) {return;}
+
+        if (isCtrlPressed()) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
 
                 try {
@@ -123,11 +126,23 @@ public class EditorScreen implements Screen {
                     e.printStackTrace();
                 }
 
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+                if (isShiftPressed()) {
+                    level = null;
+                    openLevelPrompt();
+                    windowOpen = true;
+                } else {
+                    openFilePrompt();
+                    windowOpen = true;
+                }
             }
         }
     }
 
     private void moveCamera() {
+
+        if (windowOpen) {return;}
+
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
             camera.position.set(camera.position.x - cameraspeed, camera.position.y, 0);
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
@@ -146,14 +161,6 @@ public class EditorScreen implements Screen {
         camera.unproject(mouseInWorld);
     }
 
-    private void worldDraw() {
-        for (LevelTile tile : level.getTiles()) {
-            batch.draw(tile.graphic,
-                    tile.pos.x * LevelTile.TILE_SIZE,
-                    tile.pos.y * LevelTile.TILE_SIZE);
-        }
-    }
-
     private void editTilePrompt(int tilex, int tiley) {
 
         LevelTile tile = level.getTile(tilex, tiley);
@@ -161,32 +168,36 @@ public class EditorScreen implements Screen {
         if (tile == null) {
             tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley),
                     false, "WALL1", 0, 0,
-                    0, 0, false, 0 , file);
+                    0, 0, false, 0 , resources);
             level.getTiles().add(tile);
         }
 
-        EditorFrame prompt = new EditorFrame(this);
-        prompt.setContentPane(new EditTilePrompt(prompt, this, tile, file));
-        prompt.setSize(430, 360);
-        prompt.setResizable(false);
-        prompt.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        prompt.setVisible(true);
+        stage.addActor(new EditTileWindow("Edit Tile", skin, tile, resources, this));
+        windowOpen = true;
+    }
 
-        synchronized (this) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+    public void openFilePrompt() {
+        windowOpen = true;
+        stage.addActor(new FileChooserWindow("Choose File:", skin, this));
+    }
+
+    public void openLevelPrompt() {
+
+        if (checkForNoTextures()) {
+            System.out.println("No textures found. Try loading a resource file.");
+            openFilePrompt();
+            return;
         }
 
-        tile.graphic = WadFuncs.getTexture(file, tile.graphicname);
+        windowOpen = true;
+        stage.addActor(new LevelChooserWindow("Choose ", skin, file, this));
     }
 
     @Override
     public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -206,5 +217,38 @@ public class EditorScreen implements Screen {
 
     @Override
     public void dispose() {
+    }
+
+    public void loadLevel() {
+        level = WadFuncs.loadLevel(file, levelnum, resources);
+
+        WadFuncs.loadSprites(resources);
+        WadFuncs.loadStates();
+        WadFuncs.setEntityTypes();
+        GameLogic.loadEntities(level);
+    }
+
+    public void loadNewLevel(String name, Integer level) {
+        this.level = new LevelData(name, level);
+        levelnum = level;
+    }
+
+    private boolean checkForNoTextures() {
+
+        for (WadFile w : resources) {
+
+            if (w.contains("G_START") && w.contains("G_END")) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isCtrlPressed() {
+        return (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT));
+    }
+    private boolean isShiftPressed() {
+        return (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
     }
 }
