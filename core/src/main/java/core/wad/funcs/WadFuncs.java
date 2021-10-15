@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Array;
 import core.game.entities.PlayerPawn;
 import core.game.entities.Worm;
+import core.game.entities.actions.A_PrintMessage;
 import core.game.logic.*;
 import core.level.info.LevelData;
 import net.mtrop.doom.WadFile;
@@ -86,43 +87,43 @@ public class WadFuncs {
     }
 
     public static void loadStates() {
-        GameLogic.stateList.add(new EntityState("PLAY", 'A', -1, 0));   //0
-        GameLogic.stateList.add(new EntityState("PLAY", 'A', 8, 2));    //1
-        GameLogic.stateList.add(new EntityState("PLAY", 'B', 8, 3));    //2
-        GameLogic.stateList.add(new EntityState("PLAY", 'C', 8, 4));    //3
-        GameLogic.stateList.add(new EntityState("PLAY", 'D', 8, 1));    //4
-        GameLogic.stateList.add(new EntityState("PLAY", 'E', 12, 0));   //5
-        GameLogic.stateList.add(new EntityState("PLAY", 'F', 6, 5));    //6
-        GameLogic.stateList.add(new EntityState("PLAY", 'G', 4, 8));    //7
-        GameLogic.stateList.add(new EntityState("PLAY", 'G', 4, 0));    //8
-        GameLogic.stateList.add(new EntityState("PLAY", 'H', 10, 10));  //9
-        GameLogic.stateList.add(new EntityState("PLAY", 'I', 10, 11));  //10
-        GameLogic.stateList.add(new EntityState("PLAY", 'J', 10, 12));  //11
-        GameLogic.stateList.add(new EntityState("PLAY", 'K', 10, 13));  //12
-        GameLogic.stateList.add(new EntityState("PLAY", 'L', 10, 14));  //13
-        GameLogic.stateList.add(new EntityState("PLAY", 'M', 10, 15));  //14
-        GameLogic.stateList.add(new EntityState("PLAY", 'N', -1, 15));  //15
-        GameLogic.stateList.add(new EntityState("SARG", 'A', 10, 17));  //16
-        GameLogic.stateList.add(new EntityState("SARG", 'B', 10, 16));  //17
-        GameLogic.stateList.add(new EntityState("SARG", 'A', 2, 19));   //18
-        GameLogic.stateList.add(new EntityState("SARG", 'A', 2, 20));   //19
-        GameLogic.stateList.add(new EntityState("SARG", 'B', 2, 21));   //20
-        GameLogic.stateList.add(new EntityState("SARG", 'B', 2, 22));   //21
-        GameLogic.stateList.add(new EntityState("SARG", 'C', 2, 23));   //22
-        GameLogic.stateList.add(new EntityState("SARG", 'C', 2, 24));   //23
-        GameLogic.stateList.add(new EntityState("SARG", 'D', 2, 25));   //24
-        GameLogic.stateList.add(new EntityState("SARG", 'D', 2, 18));   //25
-        GameLogic.stateList.add(new EntityState("SARG", 'E', 8, 27));   //26
-        GameLogic.stateList.add(new EntityState("SARG", 'F', 8, 28));   //27
-        GameLogic.stateList.add(new EntityState("SARG", 'G', 8, 18));   //28
-        GameLogic.stateList.add(new EntityState("SARG", 'H', 2, 30));   //29
-        GameLogic.stateList.add(new EntityState("SARG", 'H', 2, 18));   //30
-        GameLogic.stateList.add(new EntityState("SARG", 'I', 8, 32));   //31
-        GameLogic.stateList.add(new EntityState("SARG", 'J', 8, 33));   //32
-        GameLogic.stateList.add(new EntityState("SARG", 'K', 4, 34));   //33
-        GameLogic.stateList.add(new EntityState("SARG", 'L', 4, 35));   //34
-        GameLogic.stateList.add(new EntityState("SARG", 'M', 4, 36));   //35
-        GameLogic.stateList.add(new EntityState("SARG", 'N', -1, 36));
+        GameLogic.stateList.add(new EntityState("PLAY", 'A', -1, 0, new A_PrintMessage("Standing")));   //0
+        GameLogic.stateList.add(new EntityState("PLAY", 'A', 8, 2, null));    //1
+        GameLogic.stateList.add(new EntityState("PLAY", 'B', 8, 3, null));    //2
+        GameLogic.stateList.add(new EntityState("PLAY", 'C', 8, 4, null));    //3
+        GameLogic.stateList.add(new EntityState("PLAY", 'D', 8, 1, null));    //4
+        GameLogic.stateList.add(new EntityState("PLAY", 'E', 12, 0, null));   //5
+        GameLogic.stateList.add(new EntityState("PLAY", 'F', 6, 5, null));    //6
+        GameLogic.stateList.add(new EntityState("PLAY", 'G', 4, 8, null));    //7
+        GameLogic.stateList.add(new EntityState("PLAY", 'G', 4, 0, null));    //8
+        GameLogic.stateList.add(new EntityState("PLAY", 'H', 10, 10, null));  //9
+        GameLogic.stateList.add(new EntityState("PLAY", 'I', 10, 11, null));  //10
+        GameLogic.stateList.add(new EntityState("PLAY", 'J', 10, 12, null));  //11
+        GameLogic.stateList.add(new EntityState("PLAY", 'K', 10, 13, null));  //12
+        GameLogic.stateList.add(new EntityState("PLAY", 'L', 10, 14, null));  //13
+        GameLogic.stateList.add(new EntityState("PLAY", 'M', 10, 15, null));  //14
+        GameLogic.stateList.add(new EntityState("PLAY", 'N', -1, 15, null));  //15
+        GameLogic.stateList.add(new EntityState("SARG", 'A', 10, 17, new A_PrintMessage("Standing")));  //16
+        GameLogic.stateList.add(new EntityState("SARG", 'B', 10, 16, null));  //17
+        GameLogic.stateList.add(new EntityState("SARG", 'A', 2, 19, null));   //18
+        GameLogic.stateList.add(new EntityState("SARG", 'A', 2, 20, null));   //19
+        GameLogic.stateList.add(new EntityState("SARG", 'B', 2, 21, null));   //20
+        GameLogic.stateList.add(new EntityState("SARG", 'B', 2, 22, null));   //21
+        GameLogic.stateList.add(new EntityState("SARG", 'C', 2, 23, null));   //22
+        GameLogic.stateList.add(new EntityState("SARG", 'C', 2, 24, null));   //23
+        GameLogic.stateList.add(new EntityState("SARG", 'D', 2, 25, null));   //24
+        GameLogic.stateList.add(new EntityState("SARG", 'D', 2, 18, null));   //25
+        GameLogic.stateList.add(new EntityState("SARG", 'E', 8, 27, null));   //26
+        GameLogic.stateList.add(new EntityState("SARG", 'F', 8, 28, null));   //27
+        GameLogic.stateList.add(new EntityState("SARG", 'G', 8, 18, null));   //28
+        GameLogic.stateList.add(new EntityState("SARG", 'H', 2, 30, null));   //29
+        GameLogic.stateList.add(new EntityState("SARG", 'H', 2, 18, null));   //30
+        GameLogic.stateList.add(new EntityState("SARG", 'I', 8, 32, null));   //31
+        GameLogic.stateList.add(new EntityState("SARG", 'J', 8, 33, null));   //32
+        GameLogic.stateList.add(new EntityState("SARG", 'K', 4, 34, null));   //33
+        GameLogic.stateList.add(new EntityState("SARG", 'L', 4, 35, null));   //34
+        GameLogic.stateList.add(new EntityState("SARG", 'M', 4, 36, null));   //35
+        GameLogic.stateList.add(new EntityState("SARG", 'N', -1, 36, null));
     }
 
     public static void loadSprites(Array<WadFile> wads) {

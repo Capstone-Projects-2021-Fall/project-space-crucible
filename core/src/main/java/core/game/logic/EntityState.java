@@ -1,5 +1,6 @@
 package core.game.logic;
 
+import core.game.entities.actions.StateAction;
 import core.wad.funcs.GameSprite;
 
 public class EntityState {
@@ -10,12 +11,14 @@ public class EntityState {
     private Character frame;
     private Integer duration;
     private Integer nextState;
+    private StateAction action;
 
-    public EntityState(String spriteName, Character frame, Integer duration, Integer nextState) {
+    public EntityState(String spriteName, Character frame, Integer duration, Integer nextState, StateAction action) {
         sprite = GameLogic.spriteMap.get(spriteName);
         this.frame = frame;
         this.duration = duration;
         this.nextState = nextState;
+        this.action = action;
     }
 
     public GameSprite getSprite() {
@@ -33,4 +36,6 @@ public class EntityState {
     public Integer getNextState() {
         return nextState;
     }
+
+    public StateAction getAction() {return action;}
 }

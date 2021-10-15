@@ -84,6 +84,8 @@ public abstract class Entity {
     public void setState(Integer state) {
         currentState = GameLogic.stateList.get(state);
         remainingStateTics = currentState.getDuration();
+
+        if (currentState.getAction() != null) {currentState.getAction().run(this, null);}
     }
 
 
