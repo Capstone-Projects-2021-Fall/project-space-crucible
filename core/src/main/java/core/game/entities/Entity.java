@@ -1,11 +1,13 @@
 package core.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
 import core.game.logic.EntityState;
 import core.game.logic.GameLogic;
 import core.wad.funcs.GameSprite;
 import net.mtrop.doom.WadFile;
 
+import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -79,6 +81,11 @@ public abstract class Entity {
 
     public Integer[] getStates() {
         return states;
+    }
+
+    public Rectangle getBounds() {
+        Rectangle bounds = new Rectangle(pos.x, pos.y, width, height);
+        return bounds;
     }
 
     public void setState(Integer state) {
