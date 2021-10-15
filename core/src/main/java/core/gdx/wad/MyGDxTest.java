@@ -13,17 +13,18 @@ import java.io.IOException;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class MyGDxTest extends Game {
     public GameScreen gameScreen;
+    public TitleScreen titleScreen;
 
     Thread gameLoop = new Thread() {
-      @Override
-      public void run() {
-          GameLogic.start();
-      }
+        @Override
+        public void run() {
+            GameLogic.start();
+        }
 
-      @Override
-      public void interrupt() {
-          GameLogic.stop();
-      }
+        @Override
+        public void interrupt() {
+            GameLogic.stop();
+        }
     };
 
     @Override
@@ -46,8 +47,11 @@ public class MyGDxTest extends Game {
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
         GameLogic.loadEntities(level);
-        gameScreen = new GameScreen(gameLoop, level);
-        setScreen(gameScreen);
+      gameScreen = new GameScreen(gameLoop, level);
+      setScreen(gameScreen);
+
+//      titleScreen = new TitleScreen(gameLoop, level);
+//      setScreen(titleScreen);
         gameLoop.start();
     }
 }
