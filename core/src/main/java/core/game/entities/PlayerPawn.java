@@ -28,7 +28,7 @@ public class PlayerPawn extends Entity {
         //Input handling with polling method
         //This handles all the keys pressed with the keyboard.
 
-        //Debug keys- play, pain, death animations, and level change
+        //Debug keys- play, pain And death animations
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             setState(getStates()[Entity.PAIN]);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.K)) {
