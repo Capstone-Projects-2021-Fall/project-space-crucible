@@ -1,7 +1,9 @@
 package core.game.logic;
 
+import core.game.entities.BaseMonster;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
+import core.game.entities.Worm;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.wad.funcs.GameSprite;
@@ -60,7 +62,6 @@ public class GameLogic {
                 e.printStackTrace();
             }
         }
-
     }
 
     public static PlayerPawn getPlayer(int tag) {

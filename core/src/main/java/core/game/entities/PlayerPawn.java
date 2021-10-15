@@ -2,6 +2,7 @@ package core.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import core.game.logic.GameLogic;
 
 public class PlayerPawn extends Entity {
 
@@ -10,12 +11,12 @@ public class PlayerPawn extends Entity {
     final private static int WIDTH = 32;
     final private static int HEIGHT = 56;
 
-    final private static int IDLESTATE = 0;
-    final private static int WALKSTATE = 1;
-    final private static int MELEESTATE = 5;
-    final private static int MISSILESTATE = 6;
-    final private static int PAINSTATE = 7;
-    final private static int DEATHSTATE = 9;
+    final public static int IDLESTATE = 0;
+    final public static int WALKSTATE = 1;
+    final public static int MELEESTATE = 5;
+    final public static int MISSILESTATE = 6;
+    final public static int PAINSTATE = 7;
+    final public static int DEATHSTATE = 9;
 
     public PlayerPawn(Position pos, int tag) {
         super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
@@ -46,6 +47,8 @@ public class PlayerPawn extends Entity {
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             setState(getStates()[Entity.MISSILE]);
+            ((BaseMonster) GameLogic.entityList.get(1)).setTarget(GameLogic.entityList.get(0));
+            GameLogic.entityList.get(1).setState(Worm.WALKSTATE);
         }
 
         //If player is IDLE and is hitting a move key, set WALK state

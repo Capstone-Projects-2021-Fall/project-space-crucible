@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Array;
 import core.game.entities.PlayerPawn;
 import core.game.entities.Worm;
+import core.game.entities.actions.A_Chase;
 import core.game.entities.actions.A_PrintMessage;
 import core.game.logic.*;
 import core.level.info.LevelData;
@@ -105,14 +106,14 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState("PLAY", 'N', -1, 15, null));  //15
         GameLogic.stateList.add(new EntityState("SARG", 'A', 10, 17, new A_PrintMessage("Standing")));  //16
         GameLogic.stateList.add(new EntityState("SARG", 'B', 10, 16, null));  //17
-        GameLogic.stateList.add(new EntityState("SARG", 'A', 2, 19, null));   //18
-        GameLogic.stateList.add(new EntityState("SARG", 'A', 2, 20, null));   //19
-        GameLogic.stateList.add(new EntityState("SARG", 'B', 2, 21, null));   //20
-        GameLogic.stateList.add(new EntityState("SARG", 'B', 2, 22, null));   //21
-        GameLogic.stateList.add(new EntityState("SARG", 'C', 2, 23, null));   //22
-        GameLogic.stateList.add(new EntityState("SARG", 'C', 2, 24, null));   //23
-        GameLogic.stateList.add(new EntityState("SARG", 'D', 2, 25, null));   //24
-        GameLogic.stateList.add(new EntityState("SARG", 'D', 2, 18, null));   //25
+        GameLogic.stateList.add(new EntityState("SARG", 'A', 2, 19, new A_Chase()));   //18
+        GameLogic.stateList.add(new EntityState("SARG", 'A', 2, 20, new A_Chase()));   //19
+        GameLogic.stateList.add(new EntityState("SARG", 'B', 2, 21, new A_Chase()));   //20
+        GameLogic.stateList.add(new EntityState("SARG", 'B', 2, 22, new A_Chase()));   //21
+        GameLogic.stateList.add(new EntityState("SARG", 'C', 2, 23, new A_Chase()));   //22
+        GameLogic.stateList.add(new EntityState("SARG", 'C', 2, 24, new A_Chase()));   //23
+        GameLogic.stateList.add(new EntityState("SARG", 'D', 2, 25, new A_Chase()));   //24
+        GameLogic.stateList.add(new EntityState("SARG", 'D', 2, 18, new A_Chase()));   //25
         GameLogic.stateList.add(new EntityState("SARG", 'E', 8, 27, null));   //26
         GameLogic.stateList.add(new EntityState("SARG", 'F', 8, 28, null));   //27
         GameLogic.stateList.add(new EntityState("SARG", 'G', 8, 18, null));   //28
