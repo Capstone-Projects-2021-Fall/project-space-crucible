@@ -28,14 +28,11 @@ public class MyGDxTest extends Game {
 
     @Override
     public void create() {
-
-        LevelData level = null;
-
         try {
             WadFile file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
             Array<WadFile> wads = new Array<>();
             wads.add(file);
-            level = new LevelData(file, 1, wads);
+            GameLogic.loadLevels(file, wads);
             WadFuncs.loadSprites(wads);
             file.close();
         } catch (IOException e) {
@@ -45,8 +42,7 @@ public class MyGDxTest extends Game {
 
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
-        GameLogic.loadEntities(level);
-        gameScreen = new GameScreen(gameLoop, level);
+        gameScreen = new GameScreen(gameLoop);
         setScreen(gameScreen);
         gameLoop.start();
     }
