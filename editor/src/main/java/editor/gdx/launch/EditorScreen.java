@@ -182,6 +182,13 @@ public class EditorScreen implements Screen {
     }
 
     public void openLevelPrompt() {
+
+        if (checkForNoTextures()) {
+            System.out.println("No textures found. Try loading a resource file.");
+            openFilePrompt();
+            return;
+        }
+
         windowOpen = true;
         stage.addActor(new LevelChooserWindow("Choose ", skin, file, this));
     }
@@ -224,6 +231,18 @@ public class EditorScreen implements Screen {
     public void loadNewLevel(String name, Integer level) {
         this.level = new LevelData(name, level);
         levelnum = level;
+    }
+
+    private boolean checkForNoTextures() {
+
+        for (WadFile w : resources) {
+
+            if (w.contains("G_START") && w.contains("G_END")) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private boolean isCtrlPressed() {

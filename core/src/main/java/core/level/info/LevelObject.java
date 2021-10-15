@@ -1,6 +1,6 @@
 package core.level.info;
 
-import core.game.logic.Entity;
+import core.game.entities.Entity;
 
 public class LevelObject {
 

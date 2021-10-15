@@ -3,7 +3,7 @@ package core.gdx.wad;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import core.game.logic.Entity;
+import core.game.entities.Entity;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
