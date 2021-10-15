@@ -59,6 +59,8 @@ public class GameLogic {
 
     public static void loadEntities(LevelData level) {
 
+        entityList.clear();
+
         for (LevelObject obj : level.getObjects()) {
             try {
                 entityList.add(entityType.get(obj.type)
