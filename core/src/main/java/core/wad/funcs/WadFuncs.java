@@ -8,9 +8,12 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ByteArray;
+import core.game.logic.Entity;
 import core.game.logic.EntityState;
 import core.game.logic.GameLogic;
+import core.game.logic.PlayerPawn;
 import core.level.info.LevelData;
 import net.mtrop.doom.WadFile;
 import net.mtrop.doom.graphics.PNGPicture;
@@ -59,18 +62,38 @@ public class WadFuncs {
         return new Texture(pix);
     }
 
+    public static Texture getTexture(Array<WadFile> wads, String name) {
+        WadFile file = null;
+
+        for (WadFile w : wads) {
+            if (w.contains(name)) {
+                file = w;
+            }
+        }
+
+        return getTexture(file, name);
+    }
+
     public static Sprite getSprite(WadFile file, String name) {
         return new Sprite(getTexture(file, name));
     }
 
-    public static LevelData loadLevel(WadFile file, int levelnum) {
+    public static Sprite getSprite(Array<WadFile> wads, String name) {
+        return new Sprite(getTexture(wads, name));
+    }
+
+    public static LevelData loadLevel(WadFile file, int levelnum, Array<WadFile> wads) {
         try {
-            return new LevelData(file, levelnum);
+            return new LevelData(file, levelnum, wads);
         } catch (IOException e) {
             System.out.println("Could not load LEVEL" + levelnum);
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void setEntityTypes() {
+        GameLogic.entityType.add(PlayerPawn.class); // 0
     }
 
     public static void loadStates() {
@@ -92,8 +115,8 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState("PLAY", 'N', -1, 15));//15
     }
 
-    public static void loadSprites(WadFile file) {
+    public static void loadSprites(Array<WadFile> wads) {
         //For now, just load player sprites. I'll generalize this later.
-        GameLogic.spriteMap.put("PLAY", new GameSprite(file, "PLAY"));
+        GameLogic.spriteMap.put("PLAY", new GameSprite(wads, "PLAY"));
     }
 }

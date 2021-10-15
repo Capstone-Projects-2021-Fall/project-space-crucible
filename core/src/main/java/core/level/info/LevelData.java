@@ -1,26 +1,35 @@
 package core.level.info;
 
+import com.badlogic.gdx.utils.Array;
 import net.mtrop.doom.WadFile;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
 
 public class LevelData {
     private String name = "";
     int levelnumber;
     private ArrayList<LevelTile> tiles = new ArrayList<>();
     private ArrayList<LevelObject> objects = new ArrayList<>();
-
+    private Array<WadFile> wads;
 
     //New level from scratch
     public LevelData(int levelnumber) {
         name = "Level " + levelnumber;
     }
 
-    public LevelData(WadFile file, int levelnumber) throws IOException {
+    //New level from scratch, with a name
+    public LevelData(String name, int levelnumber) {
+        this.name = name;
         this.levelnumber = levelnumber;
+    }
+
+    public LevelData(WadFile file, int levelnumber, Array<WadFile> wads) throws IOException {
+        this.levelnumber = levelnumber;
+        this.wads = wads;
         String entry = "LEVEL" + levelnumber;
         String leveldata = "";
 
@@ -48,7 +57,7 @@ public class LevelData {
             }
         }
 
-        System.out.println(name);
+        System.out.println(leveldata);
     }
 
     public String getName() {
@@ -218,7 +227,7 @@ public class LevelData {
         }
 
         LevelTile.TilePosition pos = new LevelTile.TilePosition(xpos, ypos);
-        LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag, file);
+        LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag, wads);
         tiles.add(tile);
     }
 

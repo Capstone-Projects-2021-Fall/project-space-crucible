@@ -3,6 +3,7 @@ package core.gdx.wad;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.utils.Array;
 import core.game.logic.Entity;
 import core.game.logic.GameLogic;
 import core.game.logic.PlayerPawn;
@@ -37,17 +38,20 @@ public class MyGDxTest extends Game {
 
         try {
             WadFile file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
-            level = new LevelData(file, 1);
-            WadFuncs.loadSprites(file);
+            Array<WadFile> wads = new Array<>();
+            wads.add(file);
+            level = new LevelData(file, 1, wads);
+            WadFuncs.loadSprites(wads);
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(1);
         }
 
         WadFuncs.loadStates();
-        PlayerPawn player = new PlayerPawn(100, new Entity.Position(0, 0, 0), 120, 32, 56);
-        GameLogic.entityList.add(player);
-        gameScreen = new GameScreen(gameLoop, player, level);
+        WadFuncs.setEntityTypes();
+        GameLogic.loadEntities(level);
+        gameScreen = new GameScreen(gameLoop, level);
         setScreen(gameScreen);
         gameLoop.start();
     }

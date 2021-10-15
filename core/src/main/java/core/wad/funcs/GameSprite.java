@@ -1,6 +1,7 @@
 package core.wad.funcs;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.utils.Array;
 import net.mtrop.doom.WadEntry;
 import net.mtrop.doom.WadFile;
 
@@ -35,61 +36,64 @@ public class GameSprite {
         }
     }
 
-    public GameSprite(WadFile file, String name) {
+    public GameSprite(Array<WadFile> wads, String name) {
         frames = new HashMap<>();
 
-        //Go through all sprites in the WAD (they are between the above markers)
-        for (WadEntry entry : file) {
+        //Go through all WADs
+        for (WadFile file : wads) {
+            //Go through all sprites in the WAD (they are between the above markers)
+            for (WadEntry entry : file) {
 
-            //Find all of them with this sprite's name
-            if (entry.getName().startsWith(name)) {
+                //Find all of them with this sprite's name
+                if (entry.getName().startsWith(name)) {
 
-                String entryName = entry.getName();
+                    String entryName = entry.getName();
 
-                //Get frame letter and angle from name
-                Character frame = entryName.charAt(4);
-                int angle = Integer.parseInt(entryName.substring(5, 6));
+                    //Get frame letter and angle from name
+                    Character frame = entryName.charAt(4);
+                    int angle = Integer.parseInt(entryName.substring(5, 6));
 
-                if (!frames.containsKey(frame)) {
-                    frames.put(frame, new GameSpriteFrame());
-                }
-
-                //Angle 0- same direction always
-                if (angle == 0) {
-                    frames.get(frame).setSprite(WadFuncs.getSprite(file, entryName));
-                } else {
-                    frames.get(frame).setSprite(angle - 1, WadFuncs.getSprite(file, entryName));
-                }
-
-                //If the name is 8 long, also produce a flipped sprite for a different frame
-                if (entryName.length() > 6) {
-                    Character frame2 = entryName.charAt(6);
-                    int angle2 = Integer.parseInt(entryName.substring(7));
-
-                    if (!frames.containsKey(frame2)) {
-                        frames.put(frame2, new GameSpriteFrame());
+                    if (!frames.containsKey(frame)) {
+                        frames.put(frame, new GameSpriteFrame());
                     }
-                    Sprite sprite = WadFuncs.getSprite(file, entryName);
-                    sprite.flip(true, false);
 
-                    //Again, check for angle 0
-                    if (angle2 == 0) {
-                        frames.get(frame2).setSprite(sprite);
-                    } else
-                        frames.get(frame2).setSprite(angle2 - 1, sprite);
+                    //Angle 0- same direction always
+                    if (angle == 0) {
+                        frames.get(frame).setSprite(WadFuncs.getSprite(file, entryName));
+                    } else {
+                        frames.get(frame).setSprite(angle - 1, WadFuncs.getSprite(file, entryName));
+                    }
+
+                    //If the name is 8 long, also produce a flipped sprite for a different frame
+                    if (entryName.length() > 6) {
+                        Character frame2 = entryName.charAt(6);
+                        int angle2 = Integer.parseInt(entryName.substring(7));
+
+                        if (!frames.containsKey(frame2)) {
+                            frames.put(frame2, new GameSpriteFrame());
+                        }
+                        Sprite sprite = WadFuncs.getSprite(file, entryName);
+                        sprite.flip(true, false);
+
+                        //Again, check for angle 0
+                        if (angle2 == 0) {
+                            frames.get(frame2).setSprite(sprite);
+                        } else
+                            frames.get(frame2).setSprite(angle2 - 1, sprite);
+                    }
                 }
             }
+
+            //Make sure all frames have graphics for all angles
+            frames.forEach((k, v) -> {
+                for (int i = 0; i < 8; i++) {
+                    if (v.sprites[i] == null) {
+                        System.out.println("Sprite " + name + " has incomplete angles for frame " + k + ".");
+                        throw new NullPointerException();
+                    }
+                }
+            });
         }
-
-        //Make sure all frames have graphics for all angles
-        frames.forEach((k, v) -> {
-            for (int i = 0; i < 8; i++) {
-                if (v.sprites[i] == null) {
-                    System.out.println("Sprite " + name + " has incomplete angles for frame " + k + ".");
-                    throw new NullPointerException();
-                }
-            }
-        });
     }
 
     public Sprite getFrame(Character frame, float angle) {

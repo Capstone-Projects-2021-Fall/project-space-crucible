@@ -2,16 +2,16 @@ package core.gdx.wad.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import core.gdx.wad.MyGDxTest;
+import editor.gdx.launch.LevelEditor;
 
 /** Launches the desktop (LWJGL) application. */
-public class LegacyLauncher {
+public class LegacyEditorLauncher {
 	public static void main(String[] args) {
 		createApplication();
 	}
 
-	private static LwjglApplication createApplication() {
-		return new LwjglApplication(new MyGDxTest(), getDefaultConfiguration());
+	private static LwjglApplication createApplication()  {
+		return new LwjglApplication(new LevelEditor(), getDefaultConfiguration());
 	}
 
 	private static LwjglApplicationConfiguration getDefaultConfiguration() {
