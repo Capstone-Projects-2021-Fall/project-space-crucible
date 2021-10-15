@@ -27,6 +27,10 @@ public class LevelData {
         this.levelnumber = levelnumber;
     }
 
+    public int getLevelnumber() {
+        return this.levelnumber;
+    }
+
     public LevelData(WadFile file, int levelnumber, Array<WadFile> wads) throws IOException {
         this.levelnumber = levelnumber;
         this.wads = wads;

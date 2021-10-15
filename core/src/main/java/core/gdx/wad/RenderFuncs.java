@@ -12,7 +12,7 @@ public class RenderFuncs {
 
     public static void worldDraw(SpriteBatch batch, LevelData level) {
         for (LevelTile tile : level.getTiles()) {
-            batch.draw(tile.graphic,
+             batch.draw(tile.graphic,
                     tile.pos.x * LevelTile.TILE_SIZE,
                     tile.pos.y * LevelTile.TILE_SIZE);
         }

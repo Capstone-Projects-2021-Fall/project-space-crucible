@@ -26,7 +26,7 @@ public class GameLogic {
 
     public static void start() {
         gameTimer = new Timer();
-        gameTimer.schedule(new TimerTask() {
+        gameTimer.schedule( new TimerTask() {
             @Override
             public void run() {
                 gameTick();
