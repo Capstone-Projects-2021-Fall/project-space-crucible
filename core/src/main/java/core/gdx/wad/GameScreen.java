@@ -19,7 +19,6 @@ public class GameScreen implements Screen {
     PlayerPawn player;
     LevelData level;
 
-
     //screen
     OrthographicCamera camera;
     private final Vector2 mouseInWorld2D = new Vector2();
