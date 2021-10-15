@@ -15,9 +15,8 @@ public class GameScreen implements Screen {
 
     Thread gameLogic;
 
-    //Player and level
+    //Player
     PlayerPawn player;
-    LevelData level;
 
 
     //screen
@@ -28,10 +27,10 @@ public class GameScreen implements Screen {
     //graphics
     SpriteBatch batch;
 
-    public GameScreen(Thread gameLogic, LevelData level) {
+    public GameScreen(Thread gameLogic) {
         this.gameLogic = gameLogic;
+        GameLogic.loadEntities(GameLogic.currentLevel);
         this.player = GameLogic.getPlayer(0);
-        this.level = level;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
         batch = new SpriteBatch();
@@ -66,7 +65,7 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
         batch.begin();
-        RenderFuncs.worldDraw(batch, level);
+        RenderFuncs.worldDraw(batch, GameLogic.currentLevel);
         RenderFuncs.entityDraw(batch);
         batch.end();
     }
