@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import core.level.info.LevelData;
 import core.wad.funcs.WadFuncs;
 import editor.gdx.launch.EditorScreen;
+import editor.gdx.windows.actors.NumberField;
 import net.mtrop.doom.WadEntry;
 import net.mtrop.doom.WadFile;
 
@@ -25,7 +26,7 @@ public class LevelChooserWindow extends Window {
     private class NewLevelWindow extends Window {
 
         private TextField name;
-        private TextField levelnum;
+        private NumberField levelnum;
         private TextButton okButton;
         private TextButton cancelButton;
         private Map<String, Integer> levelNumToName;
@@ -41,8 +42,7 @@ public class LevelChooserWindow extends Window {
             add(name);
             row();
 
-            levelnum = new TextField("", skin);
-            levelnum.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
+            levelnum = new NumberField("", skin, "");
             add(new Label("Level Number:", skin));
             add(levelnum);
             row();
