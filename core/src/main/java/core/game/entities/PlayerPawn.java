@@ -3,6 +3,7 @@ package core.game.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
+import core.game.entities.actions.A_Chase;
 import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
@@ -64,9 +65,10 @@ public class PlayerPawn extends Entity {
             setState(getStates()[Entity.MISSILE]);
 
             //Only do this if entity 1 exists, is a monster, and is idle
-            if (GameLogic.entityList.get(1) != null && GameLogic.entityList.get(1) instanceof BaseMonster
-                && GameLogic.entityList.get(1).getCurrentFrame() == 'A'
-                && GameLogic.entityList.get(1).remainingStateTics == -1) {
+            if (GameLogic.entityList.get(1) != null
+                && GameLogic.entityList.get(1) instanceof BaseMonster
+                && GameLogic.entityList.get(1).getCurrentFrame() < 'C'
+                && GameLogic.entityList.get(1).currentState.getAction() == null) {
 
                 GameLogic.entityList.get(1).setState(Worm.WALKSTATE);
                 ((BaseMonster) GameLogic.entityList.get(1)).setTarget(GameLogic.entityList.get(0));
