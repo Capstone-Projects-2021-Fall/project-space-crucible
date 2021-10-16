@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
+import core.level.info.LevelData;
 
 public class PlayerPawn extends Entity {
 
@@ -29,11 +30,13 @@ public class PlayerPawn extends Entity {
         //Input handling with polling method
         //This handles all the keys pressed with the keyboard.
 
-        //Debug keys- play pain and death animations
+        //Debug keys- play, pain And death animations
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             setState(getStates()[Entity.PAIN]);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.K)) {
             setState(getStates()[Entity.DIE]);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+            GameLogic.currentLevel = getNewLevelData();
         }
 
         //Is a movement key is CURRENTLY pressed, move player.
@@ -69,5 +72,10 @@ public class PlayerPawn extends Entity {
         }
 
         //CollisionLogic.entityCollision(Entity,Entity);
+    }
+
+    private LevelData getNewLevelData() {
+        int newLevel = GameLogic.currentLevel.getLevelnumber() + 1;
+        return GameLogic.levels.get(newLevel);
     }
 }
