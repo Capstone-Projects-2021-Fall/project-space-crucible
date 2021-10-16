@@ -16,7 +16,7 @@ import core.level.info.LevelData;
 
 public class GameScreen implements Screen {
 
-    Thread gameLogic;
+    Thread gameLoop;
 
     //screen
     OrthographicCamera camera;
@@ -28,8 +28,8 @@ public class GameScreen implements Screen {
     //graphics
     SpriteBatch batch;
 
-    public GameScreen(Thread gameLogic) {
-        this.gameLogic = gameLogic;
+    public GameScreen(Thread gameLoop) {
+        this.gameLoop = gameLoop;
         GameLogic.loadEntities(GameLogic.currentLevel);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
@@ -107,7 +107,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-        gameLogic.interrupt();
+        gameLoop.interrupt();
     }
 
     @Override
