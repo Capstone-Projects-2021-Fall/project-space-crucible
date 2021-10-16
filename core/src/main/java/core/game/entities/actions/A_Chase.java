@@ -3,6 +3,7 @@ package core.game.entities.actions;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import core.game.entities.Entity;
+import core.game.logic.CollisionLogic;
 
 //Enemy chases its target. If target is null (no target), for whatever reason, set state to Idle and abort.
 public class A_Chase implements StateAction {
@@ -26,5 +27,7 @@ public class A_Chase implements StateAction {
 
         caller.getPos().x += caller.getSpeed() * distance.x;
         caller.getPos().y += caller.getSpeed() * distance.y;
+
+        CollisionLogic.entityCollision(caller,target);
     }
 }

@@ -2,6 +2,7 @@ package core.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 
 public class PlayerPawn extends Entity {
@@ -66,5 +67,7 @@ public class PlayerPawn extends Entity {
                 && !(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))) {
             setState(getStates()[Entity.IDLE]);
         }
+
+        //CollisionLogic.entityCollision(Entity,Entity);
     }
 }
