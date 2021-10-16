@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.Array;
+import core.game.logic.GameLogic;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
 import editor.gdx.launch.EditorScreen;

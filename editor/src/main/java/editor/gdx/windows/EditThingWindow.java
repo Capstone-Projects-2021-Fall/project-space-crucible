@@ -17,7 +17,7 @@ public class EditThingWindow extends Window {
     Entity entity;
     LevelObject obj;
     EditorScreen editor;
-    //Image sprite;
+    Image sprite;
     NumberField typeField;
     NumberField xField;
     NumberField yField;
@@ -43,9 +43,9 @@ public class EditThingWindow extends Window {
 
         add(new Label("Thing:", skin));
         row();
-        //sprite = new Image(entity.getCurrentSprite());
+        sprite = new Image(entity.getCurrentSprite());
         typeField = new NumberField(Integer.toString(obj.type), skin);
-        //add(sprite);
+        add(sprite);
         add(typeField);
         row();
         add(new Label("X:", skin));
@@ -57,7 +57,7 @@ public class EditThingWindow extends Window {
         add(yField);
         row();
         add(new Label("Angle:", skin));
-        angleField = new NumberField(Float.toString(entity.getPos().x), skin);
+        angleField = new NumberField(Float.toString(entity.getPos().angle), skin);
         add(angleField);
         row();
         add(new Label("Singleplayer:", skin));
@@ -130,6 +130,15 @@ public class EditThingWindow extends Window {
 
     private void changeThing() {
 
+        try {
+            Float.parseFloat(xField.getText());
+            Float.parseFloat(yField.getText());
+            Float.parseFloat(angleField.getText());
+        } catch (NumberFormatException n) {
+            System.out.println("Position fields are not readable, try again");
+            return;
+        }
+
         obj.type = Integer.parseInt(typeField.getText());
         obj.pos.x = Float.parseFloat(xField.getText());
         obj.pos.y = Float.parseFloat(yField.getText());
@@ -143,7 +152,7 @@ public class EditThingWindow extends Window {
         obj.skill[4] = skill5Check.isChecked();
         obj.ambush = ambushCheck.isChecked();
         obj.tag = Integer.parseInt(tagField.getText());
-        editor.loadLevel();
+        GameLogic.loadEntities(editor.level);
         close();
     }
 

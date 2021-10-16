@@ -45,7 +45,7 @@ public class EditorScreen implements Screen {
 
     public WadFile file = null;
     public Array<WadFile> resources = new Array<>();
-    private LevelData level;
+    public LevelData level;
     public Integer levelnum;
     public boolean windowOpen;
 
@@ -112,6 +112,7 @@ public class EditorScreen implements Screen {
 
             Rectangle mouseBounds = new Rectangle(x, y, 1, 1);
 
+            //If you clicked on an object, edit it.
             for (Entity e : GameLogic.entityList) {
                 if (mouseBounds.overlaps(e.getBounds())) {
                     LevelObject obj = level.getObjects().get(GameLogic.entityList.indexOf(e));

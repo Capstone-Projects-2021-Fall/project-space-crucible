@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class NumberField extends TextField {
 
-    final private static TextField.TextFieldFilter numberFilter = new TextField.TextFieldFilter.DigitsOnlyFilter();
+    final private static TextField.TextFieldFilter numberFilter = new DigitsPlusNegativeFilter();
 
     public NumberField(String text, Skin skin) {
         super(text, skin);
