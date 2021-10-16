@@ -1,10 +1,17 @@
 package core.server;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Net;
+import com.badlogic.gdx.input.GestureDetector;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import core.game.entities.PlayerPawn;
+import core.server.Network.*;
+
 
 import java.io.IOException;
 
@@ -13,18 +20,13 @@ public class SpaceClient extends Listener {
 
     Client client;
     static String ip = "localhost";
-    //Ports for clients to listen on
-
-    static boolean messageRec = false;
-    static String message = "";
 
     public SpaceClient(){
         System.out.println("Connecting to the server!");
         //Create a client object
         client = new Client();
         client.start();
-
-        //register the packet object
+        //register the packets
         Network.register(client);
 
         client.addListener(new ThreadedListener(new Listener() {
@@ -32,18 +34,19 @@ public class SpaceClient extends Listener {
             }
 
             public void received (Connection connection, Object object) {
-                if (object instanceof Network.AddPlayer) {
-                    Network.AddPlayer msg = (Network.AddPlayer) object;
-//                    ui.addCharacter(msg.player);
+                if (object instanceof AddPlayer) {
+                    AddPlayer msg = (AddPlayer) object;
+                    addPlayer(msg.player);
                     return;
                 }
-                if (object instanceof Network.UpdatePlayer) {
-//                    ui.updateCharacter((Network.UpdatePlayer)object);
+                if (object instanceof UpdatePlayer) {
+                    updatePlayer((UpdatePlayer) object);
                     return;
                 }
-                if (object instanceof Network.RemovePlayer) {
-                    Network.RemovePlayer msg = (Network.RemovePlayer) object;
-//                    ui.removeCharacter(msg.id);
+                if (object instanceof RemovePlayer) {
+                    //msg contains the player tag
+                    RemovePlayer msg = (RemovePlayer) object;
+                    removePlayer(msg.id);
                     return;
                 }
             }
@@ -52,13 +55,46 @@ public class SpaceClient extends Listener {
             }
         }));
 
+
         //Connect the client to the server
         try {
             client.connect(5000, ip, Network.tcpPort, Network.udpPort);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //This loop will handle all the movement from the player and send it to the server as a MovePlayer instance
+        while(true){
+            UpdateMovement();
+        }
     }
+
+    public void addPlayer(PlayerPawn player){
+        //Add the player to the game
+    }
+    public void updatePlayer(UpdatePlayer msg){
+        //Update the player
+    }
+    public void removePlayer(int playerTag){
+        //Remove the player entity from the game
+    }
+
+    public void UpdateMovement(){
+        Network.MovePlayer msg = new Network.MovePlayer();
+        int speed = 120;
+        msg = null;
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
+            msg.x -= speed * Gdx.graphics.getDeltaTime();
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
+            msg.x += speed * Gdx.graphics.getDeltaTime();
+        if(Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
+            msg.y += speed * Gdx.graphics.getDeltaTime();
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
+            msg.y -= speed * Gdx.graphics.getDeltaTime();
+
+        if(msg != null)
+            client.sendTCP(msg);
+    }
+
 
     public static void main(String[] args) throws Exception{
         new SpaceClient();
