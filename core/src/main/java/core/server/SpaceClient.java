@@ -34,21 +34,27 @@ public class SpaceClient extends Listener {
             }
 
             public void received (Connection connection, Object object) {
-                if (object instanceof AddPlayer) {
-                    AddPlayer msg = (AddPlayer) object;
-                    addPlayer(msg.player);
-                    return;
-                }
+//                if (object instanceof AddPlayer) {
+//                    AddPlayer msg = (AddPlayer) object;
+//                    addPlayer(msg.player);
+//                    return;
+//                }
                 if (object instanceof UpdatePlayer) {
                     updatePlayer((UpdatePlayer) object);
                     return;
                 }
-                if (object instanceof RemovePlayer) {
-                    //msg contains the player tag
-                    RemovePlayer msg = (RemovePlayer) object;
-                    removePlayer(msg.id);
-                    return;
-                }
+//                if (object instanceof RemovePlayer) {
+//                    //msg contains the player tag
+//                    RemovePlayer msg = (RemovePlayer) object;
+//                    removePlayer(msg.id);
+//                    return;
+//                }
+                //If the server sends RenderData object update the client's gamescreen
+//                if(object instanceof RenderData){
+//                    RenderData packet = (RenderData) object;
+//                    renderData(packet);
+//                    return;
+//                }
             }
             public void disconnected (Connection connection) {
                 System.exit(0);
@@ -65,7 +71,13 @@ public class SpaceClient extends Listener {
         //This loop will handle all the movement from the player and send it to the server as a MovePlayer instance
         while(true){
             UpdateMovement();
+            break;
         }
+    }
+
+    private void renderData(RenderData packet) {
+        //Render the client screen
+
     }
 
     public void addPlayer(PlayerPawn player){
@@ -73,23 +85,28 @@ public class SpaceClient extends Listener {
     }
     public void updatePlayer(UpdatePlayer msg){
         //Update the player
+        System.out.println("x:" + msg.x + " y: " + msg.y);
+        return;
     }
     public void removePlayer(int playerTag){
         //Remove the player entity from the game
     }
 
     public void UpdateMovement(){
-        Network.MovePlayer msg = new Network.MovePlayer();
+
+        MovePlayer msg = new MovePlayer();
+        msg.x = 1;
+        msg.y = 1;
         int speed = 120;
-        msg = null;
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
-            msg.x -= speed * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
-            msg.x += speed * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
-            msg.y += speed * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
-            msg.y -= speed * Gdx.graphics.getDeltaTime();
+
+//        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
+//            msg.x -= speed * Gdx.graphics.getDeltaTime();
+//        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
+//            msg.x += speed * Gdx.graphics.getDeltaTime();
+//        if(Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
+//            msg.y += speed * Gdx.graphics.getDeltaTime();
+//        if(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
+//            msg.y -= speed * Gdx.graphics.getDeltaTime();
 
         if(msg != null)
             client.sendTCP(msg);
