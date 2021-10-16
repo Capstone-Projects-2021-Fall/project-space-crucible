@@ -7,6 +7,6 @@ public class DigitsPlusNegativeFilter extends TextField.TextFieldFilter.DigitsOn
     @Override
     public boolean acceptChar(TextField field, char c) {
 
-        return super.acceptChar(field, c) || c == '-';
+        return super.acceptChar(field, c) || c == '-' || c == '.';
     }
 }

@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
+import core.game.entities.PlayerPawn;
 import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.gdx.wad.RenderFuncs;
@@ -110,6 +111,19 @@ public class EditorScreen implements Screen {
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
 
+            if (isShiftPressed()) {
+                LevelObject newObj = new LevelObject(0, x, y, 0, true, true,
+                        new boolean[]{true, true, true, true, true}, false, 0);
+                level.getObjects().add(newObj);
+
+                Entity newThing = new PlayerPawn(new Entity.Position(x, y, 0), 0);
+                GameLogic.entityList.add(newThing);
+
+                GameLogic.loadEntities(level);
+                editThingPrompt(newObj, newThing);
+                return;
+            }
+
             Rectangle mouseBounds = new Rectangle(x, y, 1, 1);
 
             //If you clicked on an object, edit it.
@@ -123,6 +137,18 @@ public class EditorScreen implements Screen {
 
             editTilePrompt(tilex, tiley);
         } else if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
+
+            Rectangle mouseBounds = new Rectangle(x, y, 1, 1);
+
+            for (Entity e : GameLogic.entityList) {
+                if (mouseBounds.overlaps(e.getBounds())) {
+                    int index = GameLogic.entityList.indexOf(e);
+                    GameLogic.entityList.remove(index);
+                    level.getObjects().remove(index);
+                    GameLogic.loadEntities(level);
+                    return;
+                }
+            }
 
             LevelTile tile = level.getTile(tilex, tiley);
             level.getTiles().remove(tile);
