@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,11 +16,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import core.game.entities.Entity;
+import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelData;
+import core.level.info.LevelObject;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
+import editor.gdx.windows.EditThingWindow;
 import editor.gdx.windows.EditTileWindow;
 import editor.gdx.windows.FileChooserWindow;
 import editor.gdx.windows.LevelChooserWindow;
@@ -69,9 +74,9 @@ public class EditorScreen implements Screen {
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        moveCamera();
         checkShortcuts();
         checkControls();
-        moveCamera();
 
         if (level != null) {
             batch.setProjectionMatrix(camera.combined);
@@ -94,16 +99,27 @@ public class EditorScreen implements Screen {
 
         if (windowOpen) {return;}
 
-        int x = (int)(mouseInWorld.x);
-        int y = (int)(mouseInWorld.y);
+        float x = (int)(mouseInWorld.x);
+        float y = (int)(mouseInWorld.y);
 
-        int tilex = x/LevelTile.TILE_SIZE;
-        int tiley = y/LevelTile.TILE_SIZE;
+        int tilex = (int) x/LevelTile.TILE_SIZE;
+        int tiley = (int) y/LevelTile.TILE_SIZE;
 
         if (x < 0) {tilex--;}
         if (y < 0) {tiley--;}
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+
+            Rectangle mouseBounds = new Rectangle(x, y, 1, 1);
+
+            for (Entity e : GameLogic.entityList) {
+                if (mouseBounds.overlaps(e.getBounds())) {
+                    LevelObject obj = level.getObjects().get(GameLogic.entityList.indexOf(e));
+                    editThingPrompt(obj, e);
+                    return;
+                }
+            }
+
             editTilePrompt(tilex, tiley);
         } else if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
 
@@ -173,6 +189,11 @@ public class EditorScreen implements Screen {
         }
 
         stage.addActor(new EditTileWindow("Edit Tile", skin, tile, resources, this));
+        windowOpen = true;
+    }
+
+    private void editThingPrompt(LevelObject obj, Entity e) {
+        stage.addActor(new EditThingWindow("Edit Thing", skin, e, obj, resources, this));
         windowOpen = true;
     }
 

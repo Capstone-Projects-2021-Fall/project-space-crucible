@@ -29,14 +29,17 @@ public class EditTileWindow extends Window {
     TextButton cancelButton;
     EditorScreen editor;
 
+    //Creates a new EditTileWindow instance
     public EditTileWindow(String title, Skin skin, LevelTile tile, Array<WadFile> resources, EditorScreen editor) {
         super(title, skin);
         this.resources = resources;
         this.tile = tile;
         this.editor = editor;
 
+        //Focus this window
         setModal(true);
 
+        //Set the image preview to the tile's texture
         tileTexture = new Image(tile.graphic);
         add(tileTexture);
         textureList = new SelectBox<>(skin);
@@ -50,6 +53,7 @@ public class EditTileWindow extends Window {
             }
         });
 
+        //Add buttons, fields, etc.
         add(textureList);
         row();
         solidCheckBox = new CheckBox("Solid", skin);
@@ -62,15 +66,15 @@ public class EditTileWindow extends Window {
         add(lightSlider);
         row();
         add(new Label("Effect:", skin));
-        effectField = new NumberField("Effect:", skin, Integer.toString(tile.effect));
+        effectField = new NumberField(Integer.toString(tile.effect), skin);
         add(effectField);
         row();
         add(new Label("Arg 1:", skin));
-        arg1Field = new NumberField("Arg 1:", skin, Integer.toString(tile.arg1));
+        arg1Field = new NumberField(Integer.toString(tile.arg1), skin);
         add(arg1Field);
         row();
         add(new Label("Arg 2:", skin));
-        arg2Field = new NumberField("Arg 2:", skin, Integer.toString(tile.arg2));
+        arg2Field = new NumberField(Integer.toString(tile.arg2), skin);
         add(arg2Field);
         row();
         repeatCheckBox = new CheckBox("Repeat", skin);
@@ -78,7 +82,7 @@ public class EditTileWindow extends Window {
         add(repeatCheckBox);
         row();
         add(new Label("Tag:", skin));
-        tagField = new NumberField("Tag:", skin, Integer.toString(tile.tag));
+        tagField = new NumberField(Integer.toString(tile.tag), skin);
         add(tagField);
         row();
         okButton = new TextButton("OK", skin);

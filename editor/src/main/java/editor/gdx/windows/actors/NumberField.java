@@ -7,9 +7,8 @@ public class NumberField extends TextField {
 
     final private static TextField.TextFieldFilter numberFilter = new TextField.TextFieldFilter.DigitsOnlyFilter();
 
-    public NumberField(String text, Skin skin, String startText) {
+    public NumberField(String text, Skin skin) {
         super(text, skin);
         setTextFieldFilter(numberFilter);
-        setText(startText);
     }
 }

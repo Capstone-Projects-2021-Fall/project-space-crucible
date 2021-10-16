@@ -42,7 +42,7 @@ public class LevelChooserWindow extends Window {
             add(name);
             row();
 
-            levelnum = new NumberField("", skin, "");
+            levelnum = new NumberField("", skin);
             add(new Label("Level Number:", skin));
             add(levelnum);
             row();
