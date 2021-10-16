@@ -89,7 +89,8 @@ public class LevelData {
     //Reads a map object from level data
     private void readObject(Scanner stringReader) throws IOException {
 
-        int type = 0, xpos = 0, ypos = 0, tag = 0;
+        int type = 0, tag = 0;
+        float xpos = 0, ypos = 0;
         float angle = 0;
         boolean singleplayer = false, cooperative = false, ambush = false;
         boolean[] skill = {false, false, false, false, false};
@@ -106,10 +107,10 @@ public class LevelData {
                 type = Integer.parseInt(rawvalue);
                 objectdata[0] = true;
             } else if (line.startsWith("xpos")) {
-                xpos = Integer.parseInt(rawvalue);
+                xpos = Float.parseFloat(rawvalue);
                 objectdata[1] = true;
             } else if (line.startsWith("ypos")) {
-                ypos = Integer.parseInt(rawvalue);
+                ypos = Float.parseFloat(rawvalue);
                 objectdata[2] = true;
             } else if (line.startsWith("angle")) {
                 angle = Float.parseFloat(rawvalue);

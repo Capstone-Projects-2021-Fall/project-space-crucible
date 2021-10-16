@@ -12,7 +12,7 @@ public class LevelObject {
     public boolean ambush;
     public int tag;
 
-    public LevelObject(int type, int xpos, int ypos, float angle, boolean singleplayer, boolean cooperative, boolean[] skill,
+    public LevelObject(int type, float xpos, float ypos, float angle, boolean singleplayer, boolean cooperative, boolean[] skill,
                        boolean ambush, int tag) {
         this.type = type;
         pos = new Entity.Position(xpos, ypos, angle);

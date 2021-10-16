@@ -6,9 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.Array;
+import core.game.logic.GameLogic;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
 import editor.gdx.launch.EditorScreen;
+import editor.gdx.windows.actors.NumberField;
 import net.mtrop.doom.WadFile;
 
 public class EditTileWindow extends Window {
@@ -19,23 +21,26 @@ public class EditTileWindow extends Window {
     SelectBox<String> textureList;
     CheckBox solidCheckBox;
     Slider lightSlider;
-    TextField effectField;
-    TextField arg1Field;
-    TextField arg2Field;
+    NumberField effectField;
+    NumberField arg1Field;
+    NumberField arg2Field;
     CheckBox repeatCheckBox;
-    TextField tagField;
+    NumberField tagField;
     TextButton okButton;
     TextButton cancelButton;
     EditorScreen editor;
 
+    //Creates a new EditTileWindow instance
     public EditTileWindow(String title, Skin skin, LevelTile tile, Array<WadFile> resources, EditorScreen editor) {
         super(title, skin);
         this.resources = resources;
         this.tile = tile;
         this.editor = editor;
 
+        //Focus this window
         setModal(true);
 
+        //Set the image preview to the tile's texture
         tileTexture = new Image(tile.graphic);
         add(tileTexture);
         textureList = new SelectBox<>(skin);
@@ -49,6 +54,7 @@ public class EditTileWindow extends Window {
             }
         });
 
+        //Add buttons, fields, etc.
         add(textureList);
         row();
         solidCheckBox = new CheckBox("Solid", skin);
@@ -61,21 +67,15 @@ public class EditTileWindow extends Window {
         add(lightSlider);
         row();
         add(new Label("Effect:", skin));
-        effectField = new TextField("Effect:", skin);
-        effectField.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
-        effectField.setText(Integer.toString(tile.effect));
+        effectField = new NumberField(Integer.toString(tile.effect), skin);
         add(effectField);
         row();
         add(new Label("Arg 1:", skin));
-        arg1Field = new TextField("Arg 1:", skin);
-        arg1Field.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
-        arg1Field.setText(Integer.toString(tile.arg1));
+        arg1Field = new NumberField(Integer.toString(tile.arg1), skin);
         add(arg1Field);
         row();
         add(new Label("Arg 2:", skin));
-        arg2Field = new TextField("Arg 2:", skin);
-        arg2Field.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
-        arg2Field.setText(Integer.toString(tile.arg2));
+        arg2Field = new NumberField(Integer.toString(tile.arg2), skin);
         add(arg2Field);
         row();
         repeatCheckBox = new CheckBox("Repeat", skin);
@@ -83,9 +83,7 @@ public class EditTileWindow extends Window {
         add(repeatCheckBox);
         row();
         add(new Label("Tag:", skin));
-        tagField = new TextField("Tag:", skin);
-        tagField.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
-        tagField.setText(Integer.toString(tile.tag));
+        tagField = new NumberField(Integer.toString(tile.tag), skin);
         add(tagField);
         row();
         okButton = new TextButton("OK", skin);
