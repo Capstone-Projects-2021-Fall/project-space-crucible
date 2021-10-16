@@ -1,11 +1,13 @@
 package core.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
 import core.game.logic.EntityState;
 import core.game.logic.GameLogic;
 import core.wad.funcs.GameSprite;
 import net.mtrop.doom.WadFile;
 
+import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -42,6 +44,7 @@ public abstract class Entity {
     protected int remainingStateTics;
     private Integer[] states;
     private int tag;
+    private Rectangle bound;
 
     //Like sprites, each state is only stored once in a global ArrayList, which is memory-efficient.
     public Entity (int health, Position pos, int speed, int width, int height, Integer[] states, int tag) {
@@ -52,6 +55,7 @@ public abstract class Entity {
         this.height = height;
         this.states = states;
         this.tag = tag;
+        bound = new Rectangle(pos.x, pos.y, width, height);
         setState(this.states[IDLE]);
     }
 
@@ -80,6 +84,8 @@ public abstract class Entity {
     public Integer[] getStates() {
         return states;
     }
+
+    public Rectangle getBounds() {return bound;}
 
     public void setState(Integer state) {
         currentState = GameLogic.stateList.get(state);

@@ -2,6 +2,8 @@ package core.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Rectangle;
+import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
 
@@ -38,15 +40,27 @@ public class PlayerPawn extends Entity {
             GameLogic.currentLevel = getNewLevelData();
         }
 
+        float checkPosX = getPos().x;
+        float checkPosY = getPos().y;
+
         //Is a movement key is CURRENTLY pressed, move player.
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
-            getPos().x -= getSpeed() * Gdx.graphics.getDeltaTime();
+            checkPosX -= getSpeed() * Gdx.graphics.getDeltaTime();
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
-            getPos().x += getSpeed() * Gdx.graphics.getDeltaTime();
+            checkPosX += getSpeed() * Gdx.graphics.getDeltaTime();
         if(Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
-            getPos().y += getSpeed() * Gdx.graphics.getDeltaTime();
+            checkPosY += getSpeed() * Gdx.graphics.getDeltaTime();
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
-            getPos().y -= getSpeed() * Gdx.graphics.getDeltaTime();
+            checkPosY -= getSpeed() * Gdx.graphics.getDeltaTime();
+
+        Rectangle newBounds = new Rectangle(checkPosX, checkPosY, getWidth(), getHeight());
+
+        if(CollisionLogic.entityCollision(newBounds, this) == null){
+            getPos().x = checkPosX;
+            getPos().y = checkPosY;
+            getBounds().set(newBounds);
+            System.out.println("No collision\n");
+        }
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             setState(getStates()[Entity.MISSILE]);
@@ -69,6 +83,8 @@ public class PlayerPawn extends Entity {
                 && !(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))) {
             setState(getStates()[Entity.IDLE]);
         }
+
+        //CollisionLogic.entityCollision(Entity,Entity);
     }
 
     private LevelData getNewLevelData() {

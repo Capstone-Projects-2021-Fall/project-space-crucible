@@ -12,6 +12,8 @@ import java.io.IOException;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class MyGDxTest extends Game {
+
+    public TitleScreen titleScreen;
     public GameScreen gameScreen;
 
     //This is the thread that runs the Game Logic. It is separate from the rendering code.
@@ -53,8 +55,11 @@ public class MyGDxTest extends Game {
         //Load prepare all Entity logic, open game screen and initiate game loop.
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
-        gameScreen = new GameScreen(gameLoop);
-        setScreen(gameScreen);
+
+        titleScreen = new TitleScreen(this, gameLoop);
+        setScreen(titleScreen);
+//        gameScreen = new GameScreen(gameLoop);
+//        setScreen(gameScreen);
         gameLoop.start();
     }
 }
