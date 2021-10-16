@@ -132,5 +132,6 @@ public class WadFuncs {
         //For now, just load player sprites. I'll generalize this later.
         GameLogic.spriteMap.put("PLAY", new GameSprite(wads, "PLAY"));
         GameLogic.spriteMap.put("SARG", new GameSprite(wads, "SARG"));
+        GameLogic.spriteMap.put("BAL1", new GameSprite(wads, "BAL1"));
     }
 }

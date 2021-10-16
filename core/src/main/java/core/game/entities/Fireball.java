@@ -2,7 +2,7 @@ package core.game.entities;
 
 public class Fireball extends Projectile {
 
-    final private static int SPEED = 120;
+    final private static int SPEED = 20;
     final private static int WIDTH = 32;
     final private static int HEIGHT = 56;
     final private static int DAMAGE = 25;
