@@ -1,10 +1,9 @@
 package core.game.logic;
 
 import com.badlogic.gdx.utils.Array;
-import core.game.entities.BaseMonster;
+import com.badlogic.gdx.utils.Queue;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
-import core.game.entities.Worm;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.wad.funcs.GameSprite;
@@ -18,6 +17,8 @@ public class GameLogic {
 
     private static Timer gameTimer;
     final public static ArrayList<Entity> entityList = new ArrayList<>();
+    final public static Queue<Entity> newEntityQueue = new Queue<>();
+    final public static Queue<Entity> deleteEntityQueue = new Queue<>();
     final public static Map<String, GameSprite> spriteMap = new HashMap<>();
     final public static ArrayList<EntityState> stateList = new ArrayList<>();
     final public static ArrayList<Class<? extends Entity>> entityType = new ArrayList<>();
@@ -41,12 +42,23 @@ public class GameLogic {
     }
 
     private static void gameTick() {
+
+        //Update all existing entities first
         for (Entity e : GameLogic.entityList) {
             e.decrementTics();
 
             if (e instanceof PlayerPawn) {
                 ((PlayerPawn) e).movementUpdate();
             }
+        }
+
+        //Now add and remove all queued new entities
+        while (!newEntityQueue.isEmpty()) {
+            entityList.add(newEntityQueue.removeFirst());
+        }
+
+        while (!deleteEntityQueue.isEmpty()) {
+            entityList.remove(deleteEntityQueue.removeFirst());
         }
 
         gameTimer.schedule(new TimerTask() {
