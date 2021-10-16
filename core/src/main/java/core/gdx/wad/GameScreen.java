@@ -1,12 +1,15 @@
 package core.gdx.wad;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import core.game.entities.Entity;
 import core.game.logic.GameLogic;
 import core.game.entities.PlayerPawn;
 import core.level.info.LevelData;
@@ -19,6 +22,8 @@ public class GameScreen implements Screen {
     OrthographicCamera camera;
     private final Vector2 mouseInWorld2D = new Vector2();
     private final Vector3 mouseInWorld3D = new Vector3();
+    ShapeRenderer sr = new ShapeRenderer();
+    boolean showBoxes = false;
 
     //graphics
     SpriteBatch batch;
@@ -63,6 +68,25 @@ public class GameScreen implements Screen {
         RenderFuncs.worldDraw(batch, GameLogic.currentLevel);
         RenderFuncs.entityDraw(batch);
         batch.end();
+
+        if (showBoxes) {
+            showBoxes();
+        }
+
+        if (showBoxes) {showBoxes();}
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS)) {
+            showBoxes = !showBoxes;
+        }
+    }
+
+    private void showBoxes() {
+        sr.setProjectionMatrix(camera.combined);
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        for (Entity e : GameLogic.entityList) {
+            sr.rect(e.getBounds().x, e.getBounds().y, e.getBounds().width, e.getBounds().height);
+        }
+        sr.end();
     }
 
     @Override

@@ -55,6 +55,7 @@ public abstract class Entity {
         this.height = height;
         this.states = states;
         this.tag = tag;
+        bound = new Rectangle(pos.x, pos.y, width, height);
         setState(this.states[IDLE]);
     }
 
@@ -84,10 +85,7 @@ public abstract class Entity {
         return states;
     }
 
-    public Rectangle getBounds() {
-        Rectangle bounds = new Rectangle(pos.x, pos.y-height, width, height);
-        return bounds;
-    }
+    public Rectangle getBounds() {return bound;}
 
     public void setState(Integer state) {
         currentState = GameLogic.stateList.get(state);
