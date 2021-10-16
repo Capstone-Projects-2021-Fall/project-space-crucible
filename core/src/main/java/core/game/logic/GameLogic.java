@@ -16,7 +16,7 @@ import java.util.*;
 
 public class GameLogic {
 
-    private static Timer gameTimer; //This timer runs the game logic at constant intervals.
+    private static Timer gameTimer;
     final public static ArrayList<Entity> entityList = new ArrayList<>();
     final public static Map<String, GameSprite> spriteMap = new HashMap<>();
     final public static ArrayList<EntityState> stateList = new ArrayList<>();
@@ -24,10 +24,9 @@ public class GameLogic {
     final public static Map<Integer, LevelData> levels = new HashMap<>();
     public static LevelData currentLevel = null;
 
-    //Initiate game logic by starting the timer.
     public static void start() {
         gameTimer = new Timer();
-        gameTimer.schedule(new TimerTask() {
+        gameTimer.schedule( new TimerTask() {
             @Override
             public void run() {
                 gameTick();
@@ -35,15 +34,12 @@ public class GameLogic {
         }, Entity.TIC);
     }
 
-    //Stop the timer, halting game logic.
     public static void stop() {
 
         gameTimer.cancel();
         gameTimer.purge();
     }
 
-    //Advance all game logic by one tic. This is currently hardcoded as every 18 milliseconds.
-    //Each time gameTick is called, it automatically schedules the next call.
     private static void gameTick() {
         for (Entity e : GameLogic.entityList) {
             e.decrementTics();
@@ -61,7 +57,6 @@ public class GameLogic {
         }, Entity.TIC);
     }
 
-    //Loads all entities that are placed on the current map and clears any from the last map.
     public static void loadEntities(LevelData level) {
 
         entityList.clear();
@@ -77,7 +72,6 @@ public class GameLogic {
         }
     }
 
-    //Loads all levels from the .WAD, including object, tile, and texture data.
     public static void loadLevels(WadFile file, Array<WadFile> wads) {
 
         for (WadEntry we : file) {
@@ -94,7 +88,6 @@ public class GameLogic {
         currentLevel = levels.get(1);
     }
 
-    //Gives the player by the given number.
     public static PlayerPawn getPlayer(int tag) {
 
         for (Entity e : entityList) {
@@ -106,3 +99,4 @@ public class GameLogic {
         return null;
     }
 }
+
