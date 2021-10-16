@@ -44,6 +44,7 @@ public abstract class Entity {
     protected int remainingStateTics;
     private Integer[] states;
     private int tag;
+    private Rectangle bound;
 
     //Like sprites, each state is only stored once in a global ArrayList, which is memory-efficient.
     public Entity (int health, Position pos, int speed, int width, int height, Integer[] states, int tag) {
@@ -84,7 +85,7 @@ public abstract class Entity {
     }
 
     public Rectangle getBounds() {
-        Rectangle bounds = new Rectangle(pos.x, pos.y, width, height);
+        Rectangle bounds = new Rectangle(pos.x, pos.y-height, width, height);
         return bounds;
     }
 

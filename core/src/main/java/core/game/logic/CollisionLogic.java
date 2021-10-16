@@ -4,18 +4,23 @@ import com.badlogic.gdx.math.Rectangle;
 import core.game.entities.Entity;
 import core.level.info.LevelTile;
 
+import java.util.ArrayList;
+
 public class CollisionLogic {
 
-    public static void entityCollision(Entity entity1, Entity entity2){
-        if(entity1.getBounds().overlaps(entity2.getBounds())){
-            /*code here to block entity from advancing*/
-            System.out.println("Hey there.\n");
+    public static Entity entityCollision(Rectangle bounds, Entity entity){
+        Entity collidedEntity = null;
+        for(Entity entity2 : GameLogic.entityList){
+            if(entity==entity2){
+                continue;
+            }
+            if(bounds.overlaps(entity2.getBounds())){
+                collidedEntity = entity2;
+                System.out.println("Hey there.\n");
+                break;
+            }
         }
-    }
-
-
-    public static void entityTileCollisionOccurred(Entity entity, LevelTile levelTile){
-
+        return collidedEntity;
     }
 
 
