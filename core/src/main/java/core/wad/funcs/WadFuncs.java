@@ -124,12 +124,14 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState("SARG", 'K', 4, 34, null));   //33
         GameLogic.stateList.add(new EntityState("SARG", 'L', 4, 35, null));   //34
         GameLogic.stateList.add(new EntityState("SARG", 'M', 4, 36, null));   //35
-        GameLogic.stateList.add(new EntityState("SARG", 'N', -1, 36, null));
+        GameLogic.stateList.add(new EntityState("SARG", 'N', -1, 36, null));  //36
+        GameLogic.stateList.add(new EntityState("BAL1", 'A', -1, 37, null));  //37
     }
 
     public static void loadSprites(Array<WadFile> wads) {
         //For now, just load player sprites. I'll generalize this later.
         GameLogic.spriteMap.put("PLAY", new GameSprite(wads, "PLAY"));
         GameLogic.spriteMap.put("SARG", new GameSprite(wads, "SARG"));
+        GameLogic.spriteMap.put("BAL1", new GameSprite(wads, "BAL1"));
     }
 }

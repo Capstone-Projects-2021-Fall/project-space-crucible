@@ -81,6 +81,12 @@ public abstract class Entity {
         return pos;
     }
 
+    public void setPos(float x, float y, Rectangle bounds) {
+        getPos().x = x;
+        getPos().y = y;
+        getBounds().set(bounds);
+    }
+
     public Integer[] getStates() {
         return states;
     }
@@ -88,12 +94,29 @@ public abstract class Entity {
     public Rectangle getBounds() {return bound;}
 
     public void setState(Integer state) {
+
+        //nextState == -1 means remove after state call.
+        if (state == -1) {
+            GameLogic.deleteEntityQueue.addLast(this);
+            return;
+        }
+
         currentState = GameLogic.stateList.get(state);
         remainingStateTics = currentState.getDuration();
 
         if (currentState.getAction() != null) {currentState.getAction().run(this, null);}
     }
 
+    //Damage this Entity. Set painstate if non-lethal, deathstate if lethal.
+    public void takeDamage(Entity cause, int damage) {
+        health -= damage;
+
+        if (health <= 0) {
+            setState(getStates()[DIE]);
+        } else {
+            setState(getStates()[PAIN]);
+        }
+    }
 
     public void decrementTics() {
 

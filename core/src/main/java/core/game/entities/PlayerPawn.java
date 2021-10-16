@@ -3,6 +3,7 @@ package core.game.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
+import core.game.entities.actions.A_Chase;
 import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
@@ -56,16 +57,26 @@ public class PlayerPawn extends Entity {
         Rectangle newBounds = new Rectangle(checkPosX, checkPosY, getWidth(), getHeight());
 
         if(CollisionLogic.entityCollision(newBounds, this) == null){
-            getPos().x = checkPosX;
-            getPos().y = checkPosY;
-            getBounds().set(newBounds);
+            setPos(checkPosX, checkPosY, newBounds);
             System.out.println("No collision\n");
         }
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             setState(getStates()[Entity.MISSILE]);
-            ((BaseMonster) GameLogic.entityList.get(1)).setTarget(GameLogic.entityList.get(0));
-            GameLogic.entityList.get(1).setState(Worm.WALKSTATE);
+
+            //Only do this if entity 1 exists, is a monster, and is idle
+            if (GameLogic.entityList.get(1) != null
+                && GameLogic.entityList.get(1) instanceof BaseMonster
+                && GameLogic.entityList.get(1).getCurrentFrame() < 'C'
+                && GameLogic.entityList.get(1).currentState.getAction() == null) {
+
+                GameLogic.entityList.get(1).setState(Worm.WALKSTATE);
+                ((BaseMonster) GameLogic.entityList.get(1)).setTarget(GameLogic.entityList.get(0));
+            }
+
+            GameLogic.newEntityQueue.addLast(
+                    new Fireball(new Position(getPos().x + 10, getPos().y + 10, getPos().angle), this)
+            );
         }
 
         //If player is IDLE and is hitting a move key, set WALK state
