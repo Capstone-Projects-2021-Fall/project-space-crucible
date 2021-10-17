@@ -82,8 +82,8 @@ public class EditorScreen implements Screen {
         if (level != null) {
             batch.setProjectionMatrix(camera.combined);
             batch.begin();
-            RenderFuncs.worldDraw(batch, level);
-            RenderFuncs.entityDraw(batch);
+            RenderFuncs.worldDraw(batch, level.getTiles());
+            RenderFuncs.entityDraw(batch, GameLogic.entityList);
             batch.end();
 
             sr.setProjectionMatrix(camera.combined);

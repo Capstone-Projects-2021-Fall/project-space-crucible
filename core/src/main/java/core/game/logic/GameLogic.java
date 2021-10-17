@@ -2,13 +2,17 @@ package core.game.logic;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import com.esotericsoftware.kryonet.Server;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
+import core.server.Network;
 import core.wad.funcs.GameSprite;
 import net.mtrop.doom.WadEntry;
 import net.mtrop.doom.WadFile;
+
+import core.server.Network.RenderData;
 
 import java.io.IOException;
 import java.util.*;
@@ -16,6 +20,7 @@ import java.util.*;
 public class GameLogic {
 
     private static Timer gameTimer;
+    public static Boolean isSinglePlayer = true;
     final public static ArrayList<Entity> entityList = new ArrayList<>();
     final public static Queue<Entity> newEntityQueue = new Queue<>();
     final public static Queue<Entity> deleteEntityQueue = new Queue<>();
@@ -24,8 +29,10 @@ public class GameLogic {
     final public static ArrayList<Class<? extends Entity>> entityType = new ArrayList<>();
     final public static Map<Integer, LevelData> levels = new HashMap<>();
     public static LevelData currentLevel = null;
+    private static Server server;
 
-    public static void start() {
+    public static void start(Server s) {
+        server = s;
         gameTimer = new Timer();
         gameTimer.schedule( new TimerTask() {
             @Override
@@ -42,6 +49,7 @@ public class GameLogic {
     }
 
     private static void gameTick() {
+
 
         //Update all existing entities first
         for (Entity e : GameLogic.entityList) {
@@ -61,12 +69,22 @@ public class GameLogic {
             entityList.remove(deleteEntityQueue.removeFirst());
         }
 
+        if(!isSinglePlayer){
+            //Send render data packet
+            RenderData renderData = new RenderData();
+            renderData.entityList = GameLogic.entityList;
+            renderData.tiles = GameLogic.currentLevel.getTiles();
+            renderData.playerPawn = getPlayer(0);
+            server.sendToAllTCP(renderData);
+        }
+
         gameTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 gameTick();
             }
         }, Entity.TIC);
+
     }
 
     public static void loadEntities(LevelData level) {

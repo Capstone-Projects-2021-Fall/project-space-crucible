@@ -58,8 +58,12 @@ public class TitleScreen implements Screen {
         batch.draw(texture,15,15);
         if(Gdx.input.getX() > 260 && Gdx.input.getX() < 350 && Gdx.input.getY() > 250 && Gdx.input.getY() < 300){
             if(Gdx.input.isTouched()){
-                game.setScreen(new GameScreen(gameLoop));
+                game.setScreen(new GameScreen(gameLoop,true));
                 dispose();
+            }
+        }else if(Gdx.input.getX() > 260 && Gdx.input.getX() < 350 && Gdx.input.getY() > 300 && Gdx.input.getY() < 350){
+            if(Gdx.input.isTouched()){
+                game.setScreen(new GameScreen(null, false));
             }
         }
         batch.end();

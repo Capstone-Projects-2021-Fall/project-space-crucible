@@ -1,20 +1,22 @@
 package core.server;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
-import core.server.Network.UpdatePlayer;
-import core.server.Network.MovePlayer;
-import core.server.Network.AddPlayer;
-import core.server.Network.RemovePlayer;
+import core.game.logic.GameLogic;
 import core.server.Network.InputData;
 import core.server.Network.RenderData;
+import core.wad.funcs.WadFuncs;
+import net.mtrop.doom.WadFile;
 
 
-
+import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 
@@ -22,10 +24,23 @@ public class SpaceServer extends Listener {
 
     //Server Object
     Server server;
-    HashSet<PlayerPawn> connected = new HashSet();
-    //Player count
+    HashSet<Connection> connected = new HashSet();
 
-    public SpaceServer() throws IOException {
+    //Game loop
+
+    Thread gameLoop = new Thread() {
+        @Override
+        public void run() {
+            GameLogic.start(server);
+        }
+
+        @Override
+        public void interrupt() {
+            GameLogic.stop();
+        }
+    };
+
+    public SpaceServer(int playerCount) throws IOException {
         server = new Server() {
             protected Connection newConnection() {
                 // By providing our own connection implementation, we can store per
@@ -33,6 +48,33 @@ public class SpaceServer extends Listener {
                 return new PlayerConnection();
             }
         };
+
+        GameLogic.isSinglePlayer = false;
+
+        //Loading the wad files
+        try {
+
+            //Read the default .WAD. "wads" will eventually be used to store any loaded mods as well as the base .WAD.
+            //We only read the .WAD once and take all the information that we need.
+            System.out.println(System.getProperty("user.dir"));
+            WadFile file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
+            Array<WadFile> wads = new Array<>();
+            wads.add(file);
+
+            //Load all of the level data and the graphics before closing the .WAD
+            GameLogic.loadLevels(file, wads);
+            WadFuncs.loadSprites(wads);
+
+            //When we add add-on support we will also close other files inside of 'wads"
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        //Load prepare all Entity logic, open game screen and initiate game loop.
+        WadFuncs.loadStates();
+        WadFuncs.setEntityTypes();
         Network.register(server);
 
         server.addListener(new Listener(){
@@ -41,80 +83,26 @@ public class SpaceServer extends Listener {
             public void connected(Connection c){
                 System.out.println("Client connected: " + c.getRemoteAddressTCP().getHostString());
                 PlayerConnection connection = (PlayerConnection) c;
-                PlayerPawn player = connection.player;
-
+                connected.add(c);
                 //Wait for everyone to connect
-                //Once everyone is connected create a thread for the game loop
-                //run the game logic
-                //once the game is over set screen state to main menu
-//                if(connected.size() != )
+                if(connected.size() == playerCount && !gameLoop.isAlive()){
+                    gameLoop.start();
+                }
 
-
-                //If the player with the same tag already exists reject the connection
-//                for(PlayerPawn otherPlayer: connected) {
-//                    if(otherPlayer.getTag() == player.getTag()) {
-//                        c.close();
-//                        return;
-//                    }
-//                }
-                //Load the player in the game server side
-//                player = loadPlayer(c.getID());
-
-                //Add existing client's player entity to newly connected client
-//                for(PlayerPawn otherPlayer: connected){
-//                    AddPlayer addPlayer = new AddPlayer();
-//                    addPlayer.player = player;
-//                    connection.sendTCP(addPlayer);
-//                }
-                connected.add(player);
-
-                //Add newly connected client's player entity to all existing client
-//                AddPlayer addPlayer = new Network.AddPlayer();
-//                addPlayer.player = player;
-//                server.sendToAllTCP(addPlayer);
             }
             //When the client sends a packet to the server handle it
             public void received(Connection c, Object packetData) {
                 PlayerConnection connection = (PlayerConnection) c;
-                PlayerPawn player = connection.player;
 
-                if(packetData instanceof MovePlayer){
-                    //Move the player in the server
-                    MovePlayer msg = (MovePlayer) packetData;
-//                    player.getPos().x += msg.x;
-//                    player.getPos().y += msg.y;
-
-                    System.out.println("x:" + msg.x + " y: " + msg.y);
-
-                    //send the player movement back to the clients
-                    UpdatePlayer update = new UpdatePlayer();
-//                    update.id = player.getTag();
-//                    update.x = player.getPos().x;
-//                    update.y = player.getPos().y;
-                    update.x = msg.x;
-                    update.y = msg.y;
-                    update.id = 0;
-                    server.sendToAllTCP(update);
-                    return;
+                //update player movement based on the input
+                if(packetData instanceof InputData){
+                    InputData input = (InputData) packetData;
+                    connection.playerInput = input;
                 }
-
-//                if(packetData instanceof InputData){
-//                    InputData input = (InputData) packetData;
-//                    //update player movement based on the input
-//
-//                    RenderData renderData = new RenderData();
-//                    //Update render data to send back to client
-//                    c.sendTCP(renderData);
-//                }
             }
             //This method will run when a client disconnects from the server, remove the character from the game
             public void disconnected(Connection c){
                 PlayerConnection connection = (PlayerConnection) c;
-//                if(connection.player != null){
-//                    RemovePlayer removePlayer = new RemovePlayer();
-//                    removePlayer.id = connection.player.getTag();
-//                    server.sendToAllTCP(removePlayer);
-//                }
                 System.out.println("Client disconnected! " + c.getID());
             }
         });
@@ -123,19 +111,22 @@ public class SpaceServer extends Listener {
         System.out.println("Server is running");
     }
 
-    PlayerPawn loadPlayer(int id){
-        //Load player in the game
-        Entity.Position pos = new Entity.Position(0,0,0);
-        PlayerPawn player = new PlayerPawn(pos,0);
-        return player;
-    }
-
     static class PlayerConnection extends Connection{
-        public PlayerPawn player;
+        public InputData playerInput;
     }
 
     public static void main (String[] args) throws IOException {
-        new SpaceServer();
+        int playerCount;
+        try {
+            playerCount= Integer.parseInt(args[0]);
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+            return;
+        }
+        if(playerCount == 0){
+            playerCount = 2;
+        }
+        new ServerGame(playerCount);
     }
 
 }

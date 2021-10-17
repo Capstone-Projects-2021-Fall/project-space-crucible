@@ -20,7 +20,7 @@ public class MyGDxTest extends Game {
     Thread gameLoop = new Thread() {
       @Override
       public void run() {
-          GameLogic.start();
+          GameLogic.start(null);
       }
 
       @Override

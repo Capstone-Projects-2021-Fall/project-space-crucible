@@ -13,6 +13,10 @@ import core.game.entities.Entity;
 import core.game.logic.GameLogic;
 import core.game.entities.PlayerPawn;
 import core.level.info.LevelData;
+import core.server.Network;
+import core.server.SpaceClient;
+import core.server.SpaceServer;
+import core.server.Network.RenderData;
 
 public class GameScreen implements Screen {
 
@@ -24,16 +28,27 @@ public class GameScreen implements Screen {
     private final Vector3 mouseInWorld3D = new Vector3();
     ShapeRenderer sr = new ShapeRenderer();
     boolean showBoxes = false;
+    boolean isSinglePlayer = true;
+    SpaceClient client;
+    RenderData renderData = new RenderData();
+
+
+    float angle = 0;
 
     //graphics
     SpriteBatch batch;
 
-    public GameScreen(Thread gameLoop) {
+    public GameScreen(Thread gameLoop, boolean isSinglePlayer) {
         this.gameLoop = gameLoop;
         GameLogic.loadEntities(GameLogic.currentLevel);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
         batch = new SpriteBatch();
+        this.isSinglePlayer = isSinglePlayer;
+        if(!isSinglePlayer){
+            client = new SpaceClient(this);
+        }
+
     }
 
     @Override
@@ -55,8 +70,9 @@ public class GameScreen implements Screen {
         camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
         mouseInWorld2D.x = mouseInWorld3D.x;
         mouseInWorld2D.y = mouseInWorld3D.y;
-        GameLogic.getPlayer(0).getPos().angle = mouseInWorld2D.angleDeg(); //Turn the vector2 into a degree angle
-        //System.out.println(player.getPos().angle + ", " + player.getPos().x + ", " + player.getPos().y);
+        angle = mouseInWorld2D.angleDeg();
+        if(isSinglePlayer)
+            GameLogic.getPlayer(0).getPos().angle = angle; //Turn the vector2 into a degree angle
 
         camera.position.set(GameLogic.getPlayer(0).getPos().x + GameLogic.getPlayer(0).getWidth()/(float)2.0,
                 GameLogic.getPlayer(0).getPos().y + GameLogic.getPlayer(0).getHeight()/(float)2.0, 0);
@@ -65,8 +81,13 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
         batch.begin();
-        RenderFuncs.worldDraw(batch, GameLogic.currentLevel);
-        RenderFuncs.entityDraw(batch);
+        if(isSinglePlayer) {
+            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles());
+            RenderFuncs.entityDraw(batch, GameLogic.entityList);
+        }else{
+            RenderFuncs.worldDraw(batch, renderData.tiles);
+            RenderFuncs.entityDraw(batch, renderData.entityList);
+        }
         batch.end();
 
         if (showBoxes) {
@@ -78,6 +99,8 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS)) {
             showBoxes = !showBoxes;
         }
+        if(!isSinglePlayer)
+            client.getInput();
     }
 
     private void showBoxes() {
@@ -107,10 +130,19 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-        gameLoop.interrupt();
+        if(gameLoop != null)
+            gameLoop.interrupt();
     }
 
     @Override
     public void dispose() {
+    }
+
+    public float getAngle() {
+        return angle;
+    }
+
+    public void setRenderData(RenderData object) {
+        renderData = object;
     }
 }

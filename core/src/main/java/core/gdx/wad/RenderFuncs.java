@@ -8,17 +8,19 @@ import core.game.logic.GameLogic;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
 
+import java.util.ArrayList;
+
 public class RenderFuncs {
 
-    public static void worldDraw(SpriteBatch batch, LevelData level) {
-        for (LevelTile tile : level.getTiles()) {
+    public static void worldDraw(SpriteBatch batch, ArrayList <LevelTile> tiles) {
+        for (LevelTile tile : tiles) {
             batch.draw(tile.graphic,
                     tile.pos.x * LevelTile.TILE_SIZE,
                     tile.pos.y * LevelTile.TILE_SIZE);
         }
     }
 
-    public static void entityDraw(SpriteBatch batch) {
+    public static void entityDraw(SpriteBatch batch, ArrayList <Entity> entities) {
 
         for (Entity e : GameLogic.entityList) {
             batch.draw(e.getCurrentSprite(), e.getPos().x, e.getPos().y);
