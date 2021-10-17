@@ -24,8 +24,6 @@ public class A_Chase implements StateAction {
         caller.getPos().angle = distance.angleDeg();
         distance.nor();
 
-        System.out.println(distance.x + " x  " + distance.y + " y");
-
         float checkPosX = caller.getPos().x + caller.getSpeed() * distance.x;
         float checkPosY = caller.getPos().y + caller.getSpeed() * distance.y;
         Rectangle newBounds = new Rectangle(checkPosX, checkPosY, caller.getWidth(), caller.getHeight());

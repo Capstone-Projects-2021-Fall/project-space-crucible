@@ -88,7 +88,7 @@ public class WadFuncs {
     }
 
     public static void loadStates() {
-        GameLogic.stateList.add(new EntityState("PLAY", 'A', -1, 0, new A_PrintMessage("Standing")));   //0
+        GameLogic.stateList.add(new EntityState("PLAY", 'A', -1, 0, null));   //0
         GameLogic.stateList.add(new EntityState("PLAY", 'A', 8, 2, null));    //1
         GameLogic.stateList.add(new EntityState("PLAY", 'B', 8, 3, null));    //2
         GameLogic.stateList.add(new EntityState("PLAY", 'C', 8, 4, null));    //3
@@ -104,7 +104,7 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState("PLAY", 'L', 10, 14, null));  //13
         GameLogic.stateList.add(new EntityState("PLAY", 'M', 10, 15, null));  //14
         GameLogic.stateList.add(new EntityState("PLAY", 'N', -1, 15, null));  //15
-        GameLogic.stateList.add(new EntityState("SARG", 'A', 10, 17, new A_PrintMessage("Standing")));  //16
+        GameLogic.stateList.add(new EntityState("SARG", 'A', 10, 17, null));  //16
         GameLogic.stateList.add(new EntityState("SARG", 'B', 10, 16, null));  //17
         GameLogic.stateList.add(new EntityState("SARG", 'A', 2, 19, new A_Chase()));   //18
         GameLogic.stateList.add(new EntityState("SARG", 'A', 2, 20, new A_Chase()));   //19

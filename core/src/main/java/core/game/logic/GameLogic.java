@@ -7,6 +7,7 @@ import core.game.entities.PlayerPawn;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.wad.funcs.GameSprite;
+import core.wad.funcs.MIDIFuncs;
 import net.mtrop.doom.WadEntry;
 import net.mtrop.doom.WadFile;
 
@@ -96,8 +97,11 @@ public class GameLogic {
                 }
             }
         }
+    }
 
-        currentLevel = levels.get(1);
+    public static void changeLevel(LevelData level) {
+        currentLevel = level;
+        MIDIFuncs.playMIDI(level.getMIDI());
     }
 
     public static PlayerPawn getPlayer(int tag) {

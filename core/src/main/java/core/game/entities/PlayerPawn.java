@@ -38,7 +38,7 @@ public class PlayerPawn extends Entity {
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.K)) {
             setState(getStates()[Entity.DIE]);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
-            GameLogic.currentLevel = getNewLevelData();
+            GameLogic.changeLevel(getNewLevelData());
         }
 
         float checkPosX = getPos().x;
@@ -59,7 +59,6 @@ public class PlayerPawn extends Entity {
         if(CollisionLogic.entityCollision(newBounds, this) == null
             && CollisionLogic.entityTileCollision(newBounds,this) == null){
             setPos(checkPosX, checkPosY, newBounds);
-            System.out.println("No collision\n");
         }
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {

@@ -43,9 +43,10 @@ public class MyGDxTest extends Game {
             wads.add(file);
 
             //Load all of the level data and the graphics before closing the .WAD
+            MIDIFuncs.startSequencer();
+            MIDIFuncs.loadMIDIs(wads);
             GameLogic.loadLevels(file, wads);
             WadFuncs.loadSprites(wads);
-            MIDIFuncs.loadMIDIs(wads);
 
             //When we add add-on support we will also close other files inside of 'wads"
             file.close();

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import core.game.logic.GameLogic;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
@@ -63,6 +64,7 @@ public class TitleScreen implements Screen {
         batch.draw(texture,15,15);
         if(Gdx.input.getX() > 260 && Gdx.input.getX() < 350 && Gdx.input.getY() > 180 && Gdx.input.getY() < 250){
             if(Gdx.input.isTouched()){
+                GameLogic.changeLevel(GameLogic.levels.get(1));
                 game.setScreen(new GameScreen(gameLoop));
                 dispose();
             }

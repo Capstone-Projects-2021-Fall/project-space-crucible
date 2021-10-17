@@ -20,13 +20,17 @@ public class MIDIFuncs {
     public static void startSequencer() {
         try {
             sequencer = MidiSystem.getSequencer();
+            sequencer.open();
         } catch (MidiUnavailableException e) {
             System.out.println("Could not get MIDI sequencer. Will continue without music.");
         }
     }
 
     public static void playMIDI(String name) {
-        if (sequencer == null) {return;}
+        if (sequencer == null || name == null || name.equals("")) {
+            System.out.println(name);
+            return;
+        }
         if (sequencer.isRunning()) {sequencer.stop();}
 
         try {
@@ -42,6 +46,7 @@ public class MIDIFuncs {
 
     public static void stopMIDI() {
         if (sequencer.isRunning()) {sequencer.stop();}
+        sequencer.close();
     }
 
     public static void loadMIDIs(Array<WadFile> wads) {
@@ -56,6 +61,7 @@ public class MIDIFuncs {
             for (int i = start; i < end; i++) {
 
                 try {
+                    System.out.println(w.getEntry(i).getName());
                     gameMIDIs.put(w.getEntry(i).getName(), w.getData(i));
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -13,6 +13,7 @@ import core.game.entities.Entity;
 import core.game.logic.GameLogic;
 import core.game.entities.PlayerPawn;
 import core.level.info.LevelData;
+import core.wad.funcs.MIDIFuncs;
 
 public class GameScreen implements Screen {
 
@@ -108,6 +109,7 @@ public class GameScreen implements Screen {
     @Override
     public void hide() {
         gameLoop.interrupt();
+        MIDIFuncs.stopMIDI();
     }
 
     @Override

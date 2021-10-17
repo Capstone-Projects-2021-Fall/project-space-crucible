@@ -22,7 +22,6 @@ public class CollisionLogic {
             }
             if(bounds.overlaps(entity2.getBounds())){
                 collidedEntity = entity2;
-                System.out.println("Hey there.\n");
                 break;
             }
         }
@@ -40,7 +39,6 @@ public class CollisionLogic {
 
                 if(bounds.overlaps(tileBounds)) {
                     collidedTile = levelTile;
-                    System.out.println("Stop you've violated the law\n");
                     break;
                 }
             }
