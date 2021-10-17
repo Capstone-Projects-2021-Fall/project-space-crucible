@@ -32,6 +32,9 @@ public class PlayerPawn extends Entity {
 
     public void movementUpdate(boolean[] controls) {
 
+        if(controls == null){
+            return;
+        }
         //Debug keys- play, pain And death animations
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             setState(getStates()[Entity.PAIN]);
@@ -45,6 +48,7 @@ public class PlayerPawn extends Entity {
         float checkPosY = getPos().y;
 
         //Is a movement key is CURRENTLY pressed, move player.
+
         if(controls[GameLogic.LEFT])
             checkPosX -= getSpeed() * Gdx.graphics.getDeltaTime();
         if(controls[GameLogic.RIGHT])
