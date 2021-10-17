@@ -25,9 +25,9 @@ public class SpaceServer extends Listener {
     //Server Object
     Server server;
     HashSet<Connection> connected = new HashSet();
+    private final int maxLobbies = 100;
 
     //Game loop
-
     Thread gameLoop = new Thread() {
         @Override
         public void run() {
