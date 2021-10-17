@@ -1,22 +1,14 @@
 package core.server;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.Array;
-import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-import core.game.entities.Entity;
-import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
 import core.server.Network.InputData;
-import core.server.Network.RenderData;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
-
-
-import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 
@@ -26,6 +18,7 @@ public class SpaceServer extends Listener {
     Server server;
     Network.ClientData clientData;
     public static HashSet<Integer> connected = new HashSet();
+    private final int maxLobbies = 100;
 
     //Game loop
     Thread gameLoop = new Thread() {
