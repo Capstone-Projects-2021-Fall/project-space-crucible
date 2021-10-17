@@ -11,7 +11,6 @@ public class ServerGame extends Game{
     public ServerGame(int playerCount) {
         super();
         this.playerCount = playerCount;
-        create();
     }
 
     @Override
