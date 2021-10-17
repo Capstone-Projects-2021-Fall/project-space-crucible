@@ -33,7 +33,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(Thread gameLoop) {
         this.gameLoop = gameLoop;
-        GameLogic.loadEntities(GameLogic.currentLevel);
+        GameLogic.loadEntities(GameLogic.currentLevel, false);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
         batch = new SpriteBatch();

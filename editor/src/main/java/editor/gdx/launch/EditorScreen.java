@@ -119,7 +119,7 @@ public class EditorScreen implements Screen {
                 Entity newThing = new PlayerPawn(new Entity.Position(x, y, 0), 0);
                 GameLogic.entityList.add(newThing);
 
-                GameLogic.loadEntities(level);
+                GameLogic.loadEntities(level, true);
                 editThingPrompt(newObj, newThing);
                 return;
             }
@@ -145,7 +145,7 @@ public class EditorScreen implements Screen {
                     int index = GameLogic.entityList.indexOf(e);
                     GameLogic.entityList.remove(index);
                     level.getObjects().remove(index);
-                    GameLogic.loadEntities(level);
+                    GameLogic.loadEntities(level, true);
                     return;
                 }
             }
@@ -273,7 +273,7 @@ public class EditorScreen implements Screen {
         WadFuncs.loadSprites(resources);
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
-        GameLogic.loadEntities(level);
+        GameLogic.loadEntities(level, true);
     }
 
     public void loadNewLevel(String name, Integer level) {

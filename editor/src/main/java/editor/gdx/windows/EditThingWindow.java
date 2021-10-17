@@ -152,7 +152,7 @@ public class EditThingWindow extends Window {
         obj.skill[4] = skill5Check.isChecked();
         obj.ambush = ambushCheck.isChecked();
         obj.tag = Integer.parseInt(tagField.getText());
-        GameLogic.loadEntities(editor.level);
+        GameLogic.loadEntities(editor.level, true);
         close();
     }
 

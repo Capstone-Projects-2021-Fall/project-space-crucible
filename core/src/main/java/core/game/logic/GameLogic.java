@@ -90,11 +90,15 @@ public class GameLogic {
         ticCounter++;
     }
 
-    public static void loadEntities(LevelData level) {
+    public static void loadEntities(LevelData level, boolean editor) {
 
         entityList.clear();
 
         for (LevelObject obj : level.getObjects()) {
+
+            //Skip object if it is not on this difficulty. Always show everything in the editor
+            if (!obj.skill[difficulty] && !editor) {continue;}
+
             try {
                 entityList.add(entityType.get(obj.type)
                         .getConstructor(Entity.Position.class, int.class)
@@ -132,7 +136,7 @@ public class GameLogic {
         goingToNextLevel = false;
         switchingLevels = false;
         nextLevel = null;
-        loadEntities(currentLevel);
+        loadEntities(currentLevel, false);
         gameTimer.schedule( new TimerTask() {
             @Override
             public void run() {
