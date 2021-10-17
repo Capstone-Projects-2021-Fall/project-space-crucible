@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
+import core.wad.funcs.MIDIFuncs;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
@@ -44,6 +45,7 @@ public class MyGDxTest extends Game {
             //Load all of the level data and the graphics before closing the .WAD
             GameLogic.loadLevels(file, wads);
             WadFuncs.loadSprites(wads);
+            MIDIFuncs.loadMIDIs(wads);
 
             //When we add add-on support we will also close other files inside of 'wads"
             file.close();
