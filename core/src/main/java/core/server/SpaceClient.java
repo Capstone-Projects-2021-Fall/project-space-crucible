@@ -54,6 +54,7 @@ public class SpaceClient extends Listener {
         InputData inputData = new InputData();
         inputData.controls = controls;
         inputData.angle = screen.getAngle();
+        System.out.println("Angle sent: " + inputData.angle);
         client.sendTCP(inputData);
     }
 

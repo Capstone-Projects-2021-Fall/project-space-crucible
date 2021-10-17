@@ -63,7 +63,6 @@ public class SpaceServer extends Listener {
 
             //Load all of the level data and the graphics before closing the .WAD
             GameLogic.loadLevels(file, wads);
-            WadFuncs.loadSprites(wads);
 
             //When we add add-on support we will also close other files inside of 'wads"
             file.close();
@@ -101,6 +100,7 @@ public class SpaceServer extends Listener {
                     InputData input = (InputData) packetData;
                     connection.playerInput = input;
                     GameLogic.controls = input.controls;
+                    System.out.println("Angle received: " + input.angle);
                     GameLogic.getPlayer(0).getPos().angle = input.angle;
                 }
             }
@@ -118,19 +118,4 @@ public class SpaceServer extends Listener {
     static class PlayerConnection extends Connection{
         public InputData playerInput;
     }
-
-    public static void main (String[] args) {
-        int playerCount;
-        try {
-            playerCount= Integer.parseInt(args[0]);
-        }catch (NumberFormatException e){
-            e.printStackTrace();
-            return;
-        }
-        if(playerCount == 0){
-            playerCount = 2;
-        }
-        new ServerGame(playerCount);
-    }
-
 }

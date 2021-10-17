@@ -67,8 +67,13 @@ public class GameScreen implements Screen {
         //This centers the camera to the player
         //Get the angle where the mouse is pointing to on the screen in relation to where the player is
         //Referenced code - https://stackoverflow.com/questions/16381031/get-cursor-position-in-libgdx
-        mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(0).getPos().x;
-        mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(0).getPos().y;
+        if (isSinglePlayer) {
+            mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(0).getPos().x;
+            mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(0).getPos().y;
+        } else if(renderData.tiles != null && renderData.entityList != null) {
+            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(0).getPos().x;
+            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(0).getPos().y;
+        }
         mouseInWorld3D.z = 0;
         camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
         mouseInWorld2D.x = mouseInWorld3D.x;

@@ -1,25 +1,24 @@
 package core.gdx.wad.lwjgl3;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
+import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import core.gdx.wad.MyGDxTest;
 import core.server.ServerGame;
 
-/** Launches the desktop (LWJGL3) application. */
+/** Launches the headless server application. */
 public class ServerLauncher {
 	public static void main(String[] args) {
 		createApplication(args);
 	}
 
-	private static Lwjgl3Application createApplication(String [] args) {
-		return new Lwjgl3Application(new ServerGame(Integer.parseInt(args[0])), getDefaultConfiguration());
+	private static Application createApplication(String [] args) {
+		return new HeadlessApplication(new ServerGame(Integer.parseInt(args[0])), getDefaultConfiguration());
 	}
 
-	private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
-		Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
-		configuration.setTitle("Space Crucible");
-		configuration.setWindowedMode(640, 480);
-		configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
-		return configuration;
+	private static HeadlessApplicationConfiguration getDefaultConfiguration() {
+		return new HeadlessApplicationConfiguration();
 	}
 }
