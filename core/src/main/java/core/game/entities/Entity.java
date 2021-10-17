@@ -65,6 +65,8 @@ public abstract class Entity {
         setState(this.states[IDLE]);
     }
 
+    public int getHealth() {return health;}
+
     public int getHeight() {
         return height;
     }

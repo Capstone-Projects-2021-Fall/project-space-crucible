@@ -14,9 +14,18 @@ public class A_Chase implements StateAction {
     @Override
     public void run(Entity caller, Entity target) {
 
-        if (target == null)
+        if (target == null || target.getHealth() <= 0)
         {
             caller.setState(caller.getStates()[Entity.IDLE]);
+            return;
+        }
+
+        Vector2 distance = new Vector2();
+        distance.x = target.getPos().x - caller.getPos().x;
+        distance.y = target.getPos().y - caller.getPos().y;
+
+        if (distance.len() <= 64f) {
+            caller.setState(caller.getStates()[Entity.MELEE]);
             return;
         }
 
@@ -28,9 +37,6 @@ public class A_Chase implements StateAction {
             caller.setState(caller.getStates()[Entity.MISSILE]);
         }
 
-        Vector2 distance = new Vector2();
-        distance.x = target.getPos().x - caller.getPos().x;
-        distance.y = target.getPos().y - caller.getPos().y;
         caller.getPos().angle = distance.angleDeg();
         distance.nor();
 
