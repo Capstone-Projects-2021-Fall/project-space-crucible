@@ -23,10 +23,8 @@ public class Network {
         kryo.register(PlayerPawn.class);
         kryo.register(Input.class);
         kryo.register(core.level.info.LevelTile.class);
+        kryo.register(core.level.info.LevelTile.TilePosition.class);
         kryo.register(core.game.entities.Entity.class);
-        kryo.register(com.badlogic.gdx.graphics.Texture.class);
-        kryo.register(com.badlogic.gdx.graphics.glutils.PixmapTextureData.class);
-        kryo.register(com.badlogic.gdx.graphics.Pixmap$Format.class);
 
     }
 

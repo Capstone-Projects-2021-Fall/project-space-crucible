@@ -272,6 +272,7 @@ public class EditorScreen implements Screen {
 
         WadFuncs.loadSprites(resources);
         WadFuncs.loadStates();
+        WadFuncs.loadTextures(resources);
         WadFuncs.setEntityTypes();
         GameLogic.loadEntities(level);
     }

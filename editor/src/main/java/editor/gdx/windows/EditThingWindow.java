@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import core.game.entities.Entity;
 import core.game.logic.GameLogic;
+import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelObject;
 import editor.gdx.launch.EditorScreen;
 import editor.gdx.windows.actors.NumberField;
@@ -43,7 +44,7 @@ public class EditThingWindow extends Window {
 
         add(new Label("Thing:", skin));
         row();
-        sprite = new Image(entity.getCurrentSprite());
+        sprite = new Image(RenderFuncs.spriteMap.get(entity.getCurrentSprite()).getFrame(entity.getCurrentFrame(), entity.getPos().angle));
         typeField = new NumberField(Integer.toString(obj.type), skin);
         add(sprite);
         add(typeField);

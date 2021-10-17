@@ -23,7 +23,6 @@ public class LevelTile {
 
     final public TilePosition pos;
     public boolean solid;
-    public Texture graphic;
     public String graphicname;
     public int light;
     public int effect;
@@ -44,7 +43,6 @@ public class LevelTile {
         this.tag = tag;
 
         graphicname = tex;
-        graphic = WadFuncs.getTexture(wads, tex);
     }
 
     public String toString() {

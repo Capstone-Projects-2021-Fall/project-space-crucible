@@ -24,7 +24,6 @@ public class GameLogic {
     final public static ArrayList<Entity> entityList = new ArrayList<>();
     final public static Queue<Entity> newEntityQueue = new Queue<>();
     final public static Queue<Entity> deleteEntityQueue = new Queue<>();
-    final public static Map<String, GameSprite> spriteMap = new HashMap<>();
     final public static ArrayList<EntityState> stateList = new ArrayList<>();
     final public static ArrayList<Class<? extends Entity>> entityType = new ArrayList<>();
     final public static Map<Integer, LevelData> levels = new HashMap<>();

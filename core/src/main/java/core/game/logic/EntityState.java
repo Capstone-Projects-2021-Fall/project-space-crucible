@@ -7,23 +7,21 @@ public class EntityState {
 
     //Static ArrayList of all game states
 
-    private GameSprite sprite;
+    private String spriteName;
     private Character frame;
     private Integer duration;
     private Integer nextState;
     private StateAction action;
 
     public EntityState(String spriteName, Character frame, Integer duration, Integer nextState, StateAction action) {
-        sprite = GameLogic.spriteMap.get(spriteName);
+        this.spriteName = spriteName;
         this.frame = frame;
         this.duration = duration;
         this.nextState = nextState;
         this.action = action;
     }
 
-    public GameSprite getSprite() {
-        return sprite;
-    }
+    public String getSprite() {return spriteName;}
 
     public Character getFrame() {
         return frame;
