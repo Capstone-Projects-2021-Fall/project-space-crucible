@@ -91,6 +91,7 @@ public class SpaceServer extends Listener {
                     GameLogic.currentLevel = GameLogic.levels.get(1);
                     gameLoop.start();
                 }
+
             }
             //When the client sends a packet to the server handle it
             public void received(Connection c, Object packetData) {
