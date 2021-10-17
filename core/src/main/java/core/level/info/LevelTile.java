@@ -15,6 +15,8 @@ public class LevelTile {
         public int x;
         public int y;
 
+        public TilePosition(){
+        }
         public TilePosition (int x, int y) {
             this.x = x;
             this.y = y;
@@ -30,6 +32,10 @@ public class LevelTile {
     public int arg2;
     public boolean repeat;
     public int tag;
+
+    public LevelTile(){
+        pos = new LevelTile.TilePosition();
+    }
 
     public LevelTile(TilePosition pos, boolean solid, String tex, int light, int effect, int arg1, int arg2,
                      boolean repeat, int tag, Array<WadFile> wads) {

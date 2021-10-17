@@ -20,12 +20,10 @@ public class Network {
         kryo.register(RenderData.class);
         kryo.register(InputData.class);
         kryo.register(java.util.ArrayList.class);
-        kryo.register(PlayerPawn.class);
         kryo.register(Input.class);
         kryo.register(core.level.info.LevelTile.class);
         kryo.register(core.level.info.LevelTile.TilePosition.class);
         kryo.register(core.game.entities.Entity.class);
-
     }
 
     //Send this to the CLIENT
@@ -37,7 +35,7 @@ public class Network {
 
     //Send this to the SERVER
     public static class InputData {
-        public Input playerInput; //This has the .isKeyPressed, etc methods.
+        public boolean[] controls;
         public float angle;
     }
 }

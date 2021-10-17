@@ -84,7 +84,8 @@ public class GameScreen implements Screen {
         if(isSinglePlayer) {
             RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles());
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
-        }else{
+
+        }else if(renderData.tiles != null && renderData.entityList != null){
             RenderFuncs.worldDraw(batch, renderData.tiles);
             RenderFuncs.entityDraw(batch, renderData.entityList);
         }
