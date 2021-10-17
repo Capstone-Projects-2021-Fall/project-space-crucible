@@ -59,7 +59,7 @@ public class TitleScreen implements Screen {
         //this is for testing using the input based on screen size instead of hardcoded pixels
         ShapeRenderer shapeRenderer = new ShapeRenderer();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.rect(camera.viewportWidth/9, camera.viewportHeight/5, 200,100);
+        shapeRenderer.rect(camera.viewportWidth/9+40, camera.viewportHeight/5+25, 120,50);
         batch.draw(texture,15,15);
         if(Gdx.input.getX() > 260 && Gdx.input.getX() < 350 && Gdx.input.getY() > 180 && Gdx.input.getY() < 250){
             if(Gdx.input.isTouched()){
