@@ -73,9 +73,7 @@ public class PlayerPawn extends Entity {
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             setState(getStates()[Entity.MISSILE]);
-            GameLogic.newEntityQueue.addLast(
-                    new Fireball(new Position(getPos().x + 10, getPos().y + 10, getPos().angle), this)
-            );
+            hitScanAttack(getPos().angle, 20);
         }
 
         //If player is IDLE and is hitting a move key, set WALK state

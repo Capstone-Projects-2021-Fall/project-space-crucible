@@ -16,7 +16,7 @@ public class A_Look implements StateAction {
         Vector2 startPoint = caller.getCenter();
 
         for (float angle = refAngle-45; angle != refAngle + 45; angle += 9) {
-            Entity e = CollisionLogic.hitscanLine(startPoint.x, startPoint.y, angle, caller);
+            Entity e = CollisionLogic.hitscanLine(startPoint.x, startPoint.y, angle, caller, false);
 
             if (e != null) {
                 ((BaseMonster) caller).setTarget(e);

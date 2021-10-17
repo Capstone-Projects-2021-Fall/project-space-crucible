@@ -127,7 +127,18 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState(34,"SARG", 'L', 4, 35, new A_Fall()));   //34
         GameLogic.stateList.add(new EntityState(35,"SARG", 'M', 4, 36, null));   //35
         GameLogic.stateList.add(new EntityState(36,"SARG", 'N', -1, 36, null));  //36
-        GameLogic.stateList.add(new EntityState(37,"BAL1", 'A', -1, 37, null));  //37
+        GameLogic.stateList.add(new EntityState(37,"BAL1", 'A', 4, 38, null));  //37
+        GameLogic.stateList.add(new EntityState(38,"BAL1", 'B', 4, 37, null));  //38
+        GameLogic.stateList.add(new EntityState(39,"BAL1", 'C', 4, 40, null));  //39
+        GameLogic.stateList.add(new EntityState(40,"BAL1", 'D', 4, 41, null));  //40
+        GameLogic.stateList.add(new EntityState(41,"BAL1", 'E', 4, -1, null));  //41
+        GameLogic.stateList.add(new EntityState(42,"BLUD", 'C', 6, 43, null));  //42
+        GameLogic.stateList.add(new EntityState(43,"BLUD", 'B', 6, 44, null));  //43
+        GameLogic.stateList.add(new EntityState(44,"BLUD", 'A', 6, -1, null));  //44
+        GameLogic.stateList.add(new EntityState(45,"PUFF", 'A', 4, 46, null));  //45
+        GameLogic.stateList.add(new EntityState(46,"PUFF", 'B', 4, 47, null));  //46
+        GameLogic.stateList.add(new EntityState(47,"PUFF", 'C', 4, 48, null));  //47
+        GameLogic.stateList.add(new EntityState(48,"PUFF", 'D', 4, -1, null));  //48
     }
 
     public static void loadSprites(Array<WadFile> wads) {
@@ -135,5 +146,7 @@ public class WadFuncs {
         GameLogic.spriteMap.put("PLAY", new GameSprite(wads, "PLAY"));
         GameLogic.spriteMap.put("SARG", new GameSprite(wads, "SARG"));
         GameLogic.spriteMap.put("BAL1", new GameSprite(wads, "BAL1"));
+        GameLogic.spriteMap.put("PUFF", new GameSprite(wads, "PUFF"));
+        GameLogic.spriteMap.put("BLUD", new GameSprite(wads, "BLUD"));
     }
 }

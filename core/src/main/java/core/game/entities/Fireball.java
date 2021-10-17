@@ -12,7 +12,7 @@ public class Fireball extends Projectile {
     final public static int MELEESTATE = -1;
     final public static int MISSILESTATE = -1;
     final public static int PAINSTATE = -1;
-    final public static int DEATHSTATE = -1;
+    final public static int DEATHSTATE = 39;
 
     public Fireball(Position pos, Entity owner) {
         super(pos, SPEED, WIDTH, HEIGHT,

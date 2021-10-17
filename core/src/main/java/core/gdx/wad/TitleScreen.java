@@ -66,6 +66,7 @@ public class TitleScreen implements Screen {
             if(Gdx.input.isTouched()){
                 GameLogic.changeLevel(GameLogic.levels.get(1));
                 game.setScreen(new GameScreen(gameLoop));
+                gameLoop.start();
                 dispose();
             }
         }

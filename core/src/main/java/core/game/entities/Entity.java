@@ -3,6 +3,7 @@ package core.game.entities;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import core.game.logic.CollisionLogic;
 import core.game.logic.EntityState;
 import core.game.logic.GameLogic;
 import core.wad.funcs.GameSprite;
@@ -136,10 +137,24 @@ public abstract class Entity {
             remainingStateTics--;
         }
         if (remainingStateTics == 0) {
-            setState(currentState.getNextState());
+
+            if (currentState.getNextState() != -1) {
+                setState(currentState.getNextState());
+            } else {
+                GameLogic.deleteEntityQueue.addLast(this);
+            }
         }
     }
 
     public boolean getFlag(long flag) {return (flags & flag) == 1;}
 
+    public void hitScanAttack(float angle, int damage) {
+
+        Vector2 startPoint = getCenter();
+        Entity hit = CollisionLogic.hitscanLine(startPoint.x, startPoint.y, angle, this, true);
+
+        if (hit != null) {
+            hit.takeDamage(this, damage);
+        }
+    }
 }

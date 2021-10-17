@@ -27,6 +27,8 @@ public abstract class Projectile extends Entity {
     public void decrementTics() {
         super.decrementTics();
 
+        if (currentState.getIndex() >= getStates()[DIE]) {return;}
+
         float checkPosX = (float) (getPos().x + getSpeed() * Math.cos(Math.toRadians(getPos().angle)));
         float checkPosY = (float) (getPos().y + getSpeed() * Math.sin(Math.toRadians(getPos().angle)));
         Rectangle newBounds = new Rectangle(checkPosX, checkPosY, getWidth(), getHeight());
