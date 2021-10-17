@@ -29,6 +29,13 @@ public class GameLogic {
     static LevelData nextLevel = null;
     public static boolean switchingLevels = false;
     public static int ticCounter = 0;
+    public static int difficulty = 2;
+
+    final public static int BABY = 0;
+    final public static int EASY = 1;
+    final public static int MEDIUM = 2;
+    final public static int HARD = 3;
+    final public static int NIGHTMARE = 4;
 
     public static void start() {
         MIDIFuncs.playMIDI(currentLevel.getMIDI());
