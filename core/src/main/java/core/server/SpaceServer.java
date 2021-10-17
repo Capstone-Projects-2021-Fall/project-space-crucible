@@ -75,6 +75,7 @@ public class SpaceServer extends Listener {
         //Load prepare all Entity logic, open game screen and initiate game loop.
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
+        GameLogic.loadEntities(GameLogic.currentLevel);
         Network.register(server);
 
         server.addListener(new Listener(){
@@ -86,6 +87,7 @@ public class SpaceServer extends Listener {
                 connected.add(c);
                 //Wait for everyone to connect
                 if(connected.size() == playerCount && !gameLoop.isAlive()){
+                    GameLogic.currentLevel = GameLogic.levels.get(1);
                     gameLoop.start();
                 }
 
@@ -98,6 +100,8 @@ public class SpaceServer extends Listener {
                 if(packetData instanceof InputData){
                     InputData input = (InputData) packetData;
                     connection.playerInput = input;
+                    GameLogic.controls = input.controls;
+                    GameLogic.getPlayer(0).getPos().angle = input.angle;
                 }
             }
             //This method will run when a client disconnects from the server, remove the character from the game
@@ -115,7 +119,7 @@ public class SpaceServer extends Listener {
         public InputData playerInput;
     }
 
-    public static void main (String[] args) throws IOException {
+    public static void main (String[] args) {
         int playerCount;
         try {
             playerCount= Integer.parseInt(args[0]);

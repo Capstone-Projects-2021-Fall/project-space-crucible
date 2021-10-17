@@ -14,6 +14,8 @@ public class Worm extends BaseMonster {
     final public static int PAINSTATE = 29;
     final public static int DEATHSTATE = 31;
 
+    public Worm(){}
+
     public Worm(Position pos, int tag) {
         super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
                 new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag);

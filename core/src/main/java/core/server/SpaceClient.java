@@ -34,8 +34,6 @@ public class SpaceClient extends Listener {
                 //If the server sends RenderData object update the client's gamescreen
                 if(object instanceof RenderData){
                     screen.setRenderData((RenderData) object);
-
-                    return;
                 }
             }
             public void disconnected (Connection connection) {
@@ -50,16 +48,11 @@ public class SpaceClient extends Listener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //This loop will handle all the movement from the player
-        while(true){
-
-            break;
-        }
     }
 
-    public void getInput(){
+    public void getInput(boolean[] controls){
         InputData inputData = new InputData();
-        inputData.playerInput = Gdx.input;
+        inputData.controls = controls;
         inputData.angle = screen.getAngle();
         client.sendTCP(inputData);
     }

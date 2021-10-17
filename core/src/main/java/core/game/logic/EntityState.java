@@ -13,6 +13,8 @@ public class EntityState {
     private Integer nextState;
     private StateAction action;
 
+    public EntityState(){}
+
     public EntityState(String spriteName, Character frame, Integer duration, Integer nextState, StateAction action) {
         this.spriteName = spriteName;
         this.frame = frame;

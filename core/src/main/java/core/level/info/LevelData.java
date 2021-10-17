@@ -60,8 +60,6 @@ public class LevelData {
                 throw new IOException();
             }
         }
-
-        System.out.println(leveldata);
     }
 
     public String getName() {

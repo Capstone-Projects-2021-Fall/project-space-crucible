@@ -28,7 +28,7 @@ public class GameScreen implements Screen {
     private final Vector3 mouseInWorld3D = new Vector3();
     ShapeRenderer sr = new ShapeRenderer();
     boolean showBoxes = false;
-    boolean isSinglePlayer = true;
+    boolean isSinglePlayer;
     SpaceClient client;
     RenderData renderData = new RenderData();
 
@@ -53,6 +53,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        if (isSinglePlayer) {
+            gameLoop.start();
+        }
     }
 
     @Override
@@ -74,8 +77,13 @@ public class GameScreen implements Screen {
         if(isSinglePlayer)
             GameLogic.getPlayer(0).getPos().angle = angle; //Turn the vector2 into a degree angle
 
-        camera.position.set(GameLogic.getPlayer(0).getPos().x + GameLogic.getPlayer(0).getWidth()/(float)2.0,
-                GameLogic.getPlayer(0).getPos().y + GameLogic.getPlayer(0).getHeight()/(float)2.0, 0);
+        if(isSinglePlayer) {
+            camera.position.set(GameLogic.getPlayer(0).getPos().x + GameLogic.getPlayer(0).getWidth() / (float) 2.0,
+                    GameLogic.getPlayer(0).getPos().y + GameLogic.getPlayer(0).getHeight() / (float) 2.0, 0);
+        } else if(renderData.tiles != null && renderData.entityList != null){
+            camera.position.set(getPlayer(0).getPos().x + getPlayer(0).getWidth() / (float) 2.0,
+                    getPlayer(0).getPos().y + getPlayer(0).getHeight() / (float) 2.0, 0);
+        }
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
@@ -100,10 +108,12 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS)) {
             showBoxes = !showBoxes;
         }
-        if(!isSinglePlayer)
-            client.getInput();
+        if(!isSinglePlayer) {
+            client.getInput(getControls());
+        } else {
+            GameLogic.controls = getControls();
+        }
     }
-
     private void showBoxes() {
         sr.setProjectionMatrix(camera.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
@@ -145,5 +155,26 @@ public class GameScreen implements Screen {
 
     public void setRenderData(RenderData object) {
         renderData = object;
+    }
+
+    private boolean[] getControls() {
+        boolean[] controls = new boolean[5];
+        controls[GameLogic.UP] = Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP);
+        controls[GameLogic.DOWN] = Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN);
+        controls[GameLogic.LEFT] = Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT);
+        controls[GameLogic.RIGHT] = Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+        controls[GameLogic.SHOOT] = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
+
+        return controls;
+    }
+
+    private PlayerPawn getPlayer(int tag) {
+
+        for (Entity e : renderData.entityList) {
+            if (e instanceof PlayerPawn && e.getTag() == tag) {
+                return (PlayerPawn) e;
+            }
+        }
+        return null;
     }
 }

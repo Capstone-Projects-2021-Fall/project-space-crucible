@@ -28,6 +28,8 @@ public abstract class Entity {
         public float y;
         public float angle;
 
+        public Position(){}
+
         public Position(float x, float y, float angle) {
             this.x = x;
             this.y = y;
@@ -45,6 +47,8 @@ public abstract class Entity {
     private Integer[] states;
     private int tag;
     private Rectangle bound;
+
+    public Entity(){}
 
     //Like sprites, each state is only stored once in a global ArrayList, which is memory-efficient.
     public Entity (int health, Position pos, int speed, int width, int height, Integer[] states, int tag) {

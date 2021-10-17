@@ -61,6 +61,5 @@ public class MyGDxTest extends Game {
         setScreen(titleScreen);
 //        gameScreen = new GameScreen(gameLoop);
 //        setScreen(gameScreen);
-        gameLoop.start();
     }
 }

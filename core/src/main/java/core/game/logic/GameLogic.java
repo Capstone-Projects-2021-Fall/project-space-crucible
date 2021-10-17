@@ -29,6 +29,13 @@ public class GameLogic {
     final public static Map<Integer, LevelData> levels = new HashMap<>();
     public static LevelData currentLevel = null;
     private static Server server;
+    public static boolean[] controls;
+
+    final public static int UP = 0;
+    final public static int DOWN = 1;
+    final public static int LEFT = 2;
+    final public static int RIGHT = 3;
+    final public static int SHOOT = 4;
 
     public static void start(Server s) {
         server = s;
@@ -48,14 +55,12 @@ public class GameLogic {
     }
 
     private static void gameTick() {
-
-
         //Update all existing entities first
         for (Entity e : GameLogic.entityList) {
             e.decrementTics();
 
             if (e instanceof PlayerPawn) {
-                ((PlayerPawn) e).movementUpdate();
+                ((PlayerPawn) e).movementUpdate(controls);
             }
         }
 
