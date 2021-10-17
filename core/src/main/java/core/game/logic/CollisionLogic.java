@@ -1,11 +1,13 @@
 package core.game.logic;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import core.game.entities.Entity;
 import core.game.entities.Projectile;
 import core.level.info.LevelTile;
 
-import java.util.ArrayList;
+import javax.swing.text.Position;
 
 public class CollisionLogic {
 
@@ -25,6 +27,20 @@ public class CollisionLogic {
             }
         }
         return collidedEntity;
+    }
+
+    public static LevelTile entityTileCollision(Entity entity){
+        LevelTile collidedTile = null;
+        for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
+            if(levelTile.solid==true){
+                if(entity.getPos()==(Position)levelTile.pos){
+                    collidedTile = levelTile;
+                    System.out.println("Stop you've violated the law\n");
+                    break;
+                }
+            }
+        }
+        return collidedTile;
     }
 
 
