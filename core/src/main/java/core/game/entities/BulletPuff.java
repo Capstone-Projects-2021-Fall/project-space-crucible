@@ -1,4 +1,4 @@
-package core.game.entities.actions;
+package core.game.entities;
 
 import core.game.entities.Entity;
 

@@ -5,12 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Array;
+import core.game.entities.Fireball;
 import core.game.entities.PlayerPawn;
+import core.game.entities.Serpentipede;
 import core.game.entities.Worm;
-import core.game.entities.actions.A_Chase;
-import core.game.entities.actions.A_Fall;
-import core.game.entities.actions.A_Look;
-import core.game.entities.actions.A_PrintMessage;
+import core.game.entities.actions.*;
 import core.game.logic.*;
 import core.level.info.LevelData;
 import net.mtrop.doom.WadFile;
@@ -86,7 +85,8 @@ public class WadFuncs {
 
     public static void setEntityTypes() {
         GameLogic.entityType.add(PlayerPawn.class); // 0
-        GameLogic.entityType.add(Worm.class);
+        GameLogic.entityType.add(Worm.class); // 1
+        GameLogic.entityType.add(Serpentipede.class); //2
     }
 
     public static void loadStates() {
@@ -139,6 +139,26 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState(46,"PUFF", 'B', 4, 47, null));  //46
         GameLogic.stateList.add(new EntityState(47,"PUFF", 'C', 4, 48, null));  //47
         GameLogic.stateList.add(new EntityState(48,"PUFF", 'D', 4, -1, null));  //48
+        GameLogic.stateList.add(new EntityState(49,"TROO", 'A', 10, 50, new A_Look()));  //49
+        GameLogic.stateList.add(new EntityState(50,"TROO", 'B', 10, 49, new A_Look()));  //50
+        GameLogic.stateList.add(new EntityState(51,"TROO", 'A', 3, 52, new A_Chase()));   //51
+        GameLogic.stateList.add(new EntityState(52,"TROO", 'A', 3, 53, new A_Chase()));   //52
+        GameLogic.stateList.add(new EntityState(53,"TROO", 'B', 3, 54, new A_Chase()));   //53
+        GameLogic.stateList.add(new EntityState(54,"TROO", 'B', 3, 55, new A_Chase()));   //54
+        GameLogic.stateList.add(new EntityState(55,"TROO", 'C', 3, 56, new A_Chase()));   //55
+        GameLogic.stateList.add(new EntityState(56,"TROO", 'C', 3, 57, new A_Chase()));   //56
+        GameLogic.stateList.add(new EntityState(57,"TROO", 'D', 3, 58, new A_Chase()));   //57
+        GameLogic.stateList.add(new EntityState(58,"TROO", 'D', 3, 51, new A_Chase()));   //58
+        GameLogic.stateList.add(new EntityState(59,"TROO", 'E', 8, 60, new A_FaceTarget()));   //59
+        GameLogic.stateList.add(new EntityState(60,"TROO", 'F', 8, 61, new A_FaceTarget()));   //60
+        GameLogic.stateList.add(new EntityState(61,"TROO", 'G', 8, 51, new A_Projectile(Fireball.class)));   //61
+        GameLogic.stateList.add(new EntityState(62,"TROO", 'H', 2, 63, null));   //62
+        GameLogic.stateList.add(new EntityState(63,"TROO", 'H', 2, 51, null));   //63
+        GameLogic.stateList.add(new EntityState(64,"TROO", 'I', 8, 65, null));   //64
+        GameLogic.stateList.add(new EntityState(65,"TROO", 'J', 8, 66, null));   //65
+        GameLogic.stateList.add(new EntityState(66,"TROO", 'K', 6, 67, null));   //66
+        GameLogic.stateList.add(new EntityState(67,"TROO", 'L', 6, 68, new A_Fall()));   //67
+        GameLogic.stateList.add(new EntityState(68,"TROO", 'M', -1, 68, null));   //68
     }
 
     public static void loadSprites(Array<WadFile> wads) {
@@ -148,5 +168,6 @@ public class WadFuncs {
         GameLogic.spriteMap.put("BAL1", new GameSprite(wads, "BAL1"));
         GameLogic.spriteMap.put("PUFF", new GameSprite(wads, "PUFF"));
         GameLogic.spriteMap.put("BLUD", new GameSprite(wads, "BLUD"));
+        GameLogic.spriteMap.put("TROO", new GameSprite(wads, "TROO"));
     }
 }
