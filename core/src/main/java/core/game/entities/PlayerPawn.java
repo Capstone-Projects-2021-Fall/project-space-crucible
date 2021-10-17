@@ -24,7 +24,8 @@ public class PlayerPawn extends Entity {
 
     public PlayerPawn(Position pos, int tag) {
         super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
-                new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag);
+                new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag,
+                SOLID);
     }
 
 

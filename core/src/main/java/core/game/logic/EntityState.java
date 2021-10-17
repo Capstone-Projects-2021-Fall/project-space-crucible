@@ -4,7 +4,6 @@ import core.game.entities.actions.StateAction;
 import core.wad.funcs.GameSprite;
 
 public class EntityState {
-
     //Static ArrayList of all game states
 
     private GameSprite sprite;
@@ -12,8 +11,10 @@ public class EntityState {
     private Integer duration;
     private Integer nextState;
     private StateAction action;
+    private Integer index;
 
-    public EntityState(String spriteName, Character frame, Integer duration, Integer nextState, StateAction action) {
+    public EntityState(Integer index, String spriteName, Character frame, Integer duration, Integer nextState, StateAction action) {
+        this.index = index;
         sprite = GameLogic.spriteMap.get(spriteName);
         this.frame = frame;
         this.duration = duration;
@@ -38,4 +39,6 @@ public class EntityState {
     }
 
     public StateAction getAction() {return action;}
+
+    public Integer getIndex() {return index;}
 }

@@ -17,7 +17,8 @@ public class CollisionLogic {
 
             //No collision with self OR owner (if projectile)
             if(entity==entity2
-                || entity instanceof Projectile && ((Projectile) entity).getOwner() == entity2){
+                || entity instanceof Projectile && ((Projectile) entity).getOwner() == entity2
+                || !entity2.getFlag(Entity.SOLID)){
                 continue;
             }
             if(bounds.overlaps(entity2.getBounds())){

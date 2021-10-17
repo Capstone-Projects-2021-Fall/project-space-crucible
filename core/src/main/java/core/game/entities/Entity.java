@@ -23,6 +23,8 @@ public abstract class Entity {
 
     final public static long TIC = 18;
 
+    final public static long SOLID = 1;
+
     public static class Position {
         public float x;
         public float y;
@@ -45,9 +47,10 @@ public abstract class Entity {
     private Integer[] states;
     private int tag;
     private Rectangle bound;
+    public long flags;
 
     //Like sprites, each state is only stored once in a global ArrayList, which is memory-efficient.
-    public Entity (int health, Position pos, int speed, int width, int height, Integer[] states, int tag) {
+    public Entity (int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags) {
         this.health = health;
         this.pos = pos;
         this.speed = speed;
@@ -55,6 +58,7 @@ public abstract class Entity {
         this.height = height;
         this.states = states;
         this.tag = tag;
+        this.flags = flags;
         bound = new Rectangle(pos.x, pos.y, width, height);
         setState(this.states[IDLE]);
     }
@@ -109,6 +113,9 @@ public abstract class Entity {
 
     //Damage this Entity. Set painstate if non-lethal, deathstate if lethal.
     public void takeDamage(Entity cause, int damage) {
+
+        if (currentState.getIndex() > getStates()[DIE]) {return;}
+
         health -= damage;
 
         if (health <= 0) {
@@ -127,5 +134,7 @@ public abstract class Entity {
             setState(currentState.getNextState());
         }
     }
+
+    public boolean getFlag(long flag) {return (flags & flag) == 1;}
 
 }
