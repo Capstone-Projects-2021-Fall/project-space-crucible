@@ -1,5 +1,6 @@
 package core.gdx.wad;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import core.game.entities.Entity;
+import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.game.entities.PlayerPawn;
 import core.level.info.LevelData;

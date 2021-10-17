@@ -9,6 +9,7 @@ import core.game.entities.PlayerPawn;
 import core.game.entities.Worm;
 import core.game.entities.actions.A_Chase;
 import core.game.entities.actions.A_Fall;
+import core.game.entities.actions.A_Look;
 import core.game.entities.actions.A_PrintMessage;
 import core.game.logic.*;
 import core.level.info.LevelData;
@@ -105,8 +106,8 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState(13,"PLAY", 'L', 10, 14, null));  //13
         GameLogic.stateList.add(new EntityState(14,"PLAY", 'M', 10, 15, null));  //14
         GameLogic.stateList.add(new EntityState(15,"PLAY", 'N', -1, 15, null));  //15
-        GameLogic.stateList.add(new EntityState(16,"SARG", 'A', 10, 17, null));  //16
-        GameLogic.stateList.add(new EntityState(17,"SARG", 'B', 10, 16, null));  //17
+        GameLogic.stateList.add(new EntityState(16,"SARG", 'A', 10, 17, new A_Look()));  //16
+        GameLogic.stateList.add(new EntityState(17,"SARG", 'B', 10, 16, new A_Look()));  //17
         GameLogic.stateList.add(new EntityState(18,"SARG", 'A', 2, 19, new A_Chase()));   //18
         GameLogic.stateList.add(new EntityState(19,"SARG", 'A', 2, 20, new A_Chase()));   //19
         GameLogic.stateList.add(new EntityState(20,"SARG", 'B', 2, 21, new A_Chase()));   //20

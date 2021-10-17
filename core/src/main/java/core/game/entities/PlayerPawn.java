@@ -59,7 +59,7 @@ public class PlayerPawn extends Entity {
         Rectangle newBounds = new Rectangle(checkPosX, getPos().y, getWidth(), getHeight());
 
         if(CollisionLogic.entityCollision(newBounds, this) == null
-            && CollisionLogic.entityTileCollision(newBounds,this) == null){
+            && CollisionLogic.entityTileCollision(newBounds, this) == null){
             setPos(checkPosX, getPos().y, newBounds);
         }
 
@@ -67,23 +67,12 @@ public class PlayerPawn extends Entity {
         newBounds.set(getPos().x, checkPosY, getWidth(), getHeight());
 
         if(CollisionLogic.entityCollision(newBounds, this) == null
-                && CollisionLogic.entityTileCollision(newBounds,this) == null){
+                && CollisionLogic.entityTileCollision(newBounds, this) == null){
             setPos(getPos().x, checkPosY, newBounds);
         }
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             setState(getStates()[Entity.MISSILE]);
-
-            //Only do this if entity 1 exists, is a monster, and is idle
-            if (GameLogic.entityList.get(1) != null
-                && GameLogic.entityList.get(1) instanceof BaseMonster
-                && GameLogic.entityList.get(1).getCurrentFrame() < 'C'
-                && GameLogic.entityList.get(1).currentState.getAction() == null) {
-
-                GameLogic.entityList.get(1).setState(Worm.WALKSTATE);
-                ((BaseMonster) GameLogic.entityList.get(1)).setTarget(GameLogic.entityList.get(0));
-            }
-
             GameLogic.newEntityQueue.addLast(
                     new Fireball(new Position(getPos().x + 10, getPos().y + 10, getPos().angle), this)
             );

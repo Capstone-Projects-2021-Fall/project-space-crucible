@@ -2,6 +2,7 @@ package core.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import core.game.logic.EntityState;
 import core.game.logic.GameLogic;
 import core.wad.funcs.GameSprite;
@@ -96,6 +97,10 @@ public abstract class Entity {
     }
 
     public Rectangle getBounds() {return bound;}
+
+    public Vector2 getCenter() {
+        return new Vector2(pos.x + (width/2f), pos.y + (height/2f));
+    }
 
     public void setState(Integer state) {
 
