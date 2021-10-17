@@ -30,7 +30,8 @@ public class A_Chase implements StateAction {
         float checkPosY = caller.getPos().y + caller.getSpeed() * distance.y;
         Rectangle newBounds = new Rectangle(checkPosX, checkPosY, caller.getWidth(), caller.getHeight());
 
-        if(CollisionLogic.entityCollision(newBounds, caller) == null){
+        if(CollisionLogic.entityCollision(newBounds, caller) == null
+            && CollisionLogic.entityTileCollision(newBounds, caller) == null) {
             caller.setPos(checkPosX, checkPosY, newBounds);
         }
     }
