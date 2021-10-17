@@ -54,11 +54,20 @@ public class PlayerPawn extends Entity {
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
             checkPosY -= getSpeed() * Gdx.graphics.getDeltaTime();
 
-        Rectangle newBounds = new Rectangle(checkPosX, checkPosY, getWidth(), getHeight());
+        //Check only x first
+        Rectangle newBounds = new Rectangle(checkPosX, getPos().y, getWidth(), getHeight());
 
         if(CollisionLogic.entityCollision(newBounds, this) == null
             && CollisionLogic.entityTileCollision(newBounds,this) == null){
-            setPos(checkPosX, checkPosY, newBounds);
+            setPos(checkPosX, getPos().y, newBounds);
+        }
+
+        //Check y now
+        newBounds.set(getPos().x, checkPosY, getWidth(), getHeight());
+
+        if(CollisionLogic.entityCollision(newBounds, this) == null
+                && CollisionLogic.entityTileCollision(newBounds,this) == null){
+            setPos(getPos().x, checkPosY, newBounds);
         }
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {

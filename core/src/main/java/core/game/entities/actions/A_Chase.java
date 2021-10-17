@@ -26,11 +26,21 @@ public class A_Chase implements StateAction {
 
         float checkPosX = caller.getPos().x + caller.getSpeed() * distance.x;
         float checkPosY = caller.getPos().y + caller.getSpeed() * distance.y;
-        Rectangle newBounds = new Rectangle(checkPosX, checkPosY, caller.getWidth(), caller.getHeight());
+
+        //Check only x first
+        Rectangle newBounds = new Rectangle(checkPosX, caller.getPos().y, caller.getWidth(), caller.getHeight());
 
         if(CollisionLogic.entityCollision(newBounds, caller) == null
-            && CollisionLogic.entityTileCollision(newBounds, caller) == null) {
-            caller.setPos(checkPosX, checkPosY, newBounds);
+                && CollisionLogic.entityTileCollision(newBounds,caller) == null){
+            caller.setPos(checkPosX, caller.getPos().y, newBounds);
+        }
+
+        //Check y now
+        newBounds.set(caller.getPos().x, checkPosY, caller.getWidth(), caller.getHeight());
+
+        if(CollisionLogic.entityCollision(newBounds, caller) == null
+                && CollisionLogic.entityTileCollision(newBounds,caller) == null){
+            caller.setPos(caller.getPos().x, checkPosY, newBounds);
         }
     }
 }
