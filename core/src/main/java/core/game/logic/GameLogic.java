@@ -17,7 +17,7 @@ import java.util.*;
 public class GameLogic {
 
     private static Timer gameTimer;
-    final public static ArrayList<Entity> entityList = new ArrayList<>();
+    public static ArrayList<Entity> entityList = new ArrayList<>();
     final public static Queue<Entity> newEntityQueue = new Queue<>();
     final public static Queue<Entity> deleteEntityQueue = new Queue<>();
     final public static Map<String, GameSprite> spriteMap = new HashMap<>();
@@ -25,8 +25,13 @@ public class GameLogic {
     final public static ArrayList<Class<? extends Entity>> entityType = new ArrayList<>();
     final public static Map<Integer, LevelData> levels = new HashMap<>();
     public static LevelData currentLevel = null;
+    static boolean goingToNextLevel = false;
+    static LevelData nextLevel = null;
+    public static boolean switchingLevels = false;
+    public static int ticCounter = 0;
 
     public static void start() {
+        MIDIFuncs.playMIDI(currentLevel.getMIDI());
         gameTimer = new Timer();
         gameTimer.schedule( new TimerTask() {
             @Override
@@ -48,6 +53,7 @@ public class GameLogic {
         for (Entity e : GameLogic.entityList) {
             e.decrementTics();
 
+            //Check ticCounter because Concurrency error might occur if player shoots on first tic.
             if (e instanceof PlayerPawn) {
                 ((PlayerPawn) e).movementUpdate();
             }
@@ -62,12 +68,19 @@ public class GameLogic {
             entityList.remove(deleteEntityQueue.removeFirst());
         }
 
-        gameTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                gameTick();
-            }
-        }, Entity.TIC);
+        if (!goingToNextLevel) {
+            gameTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    gameTick();
+                }
+            }, Entity.TIC);
+        } else {
+            switchingLevels = true;
+            changeLevel(nextLevel);
+        }
+
+        ticCounter++;
     }
 
     public static void loadEntities(LevelData level) {
@@ -78,7 +91,7 @@ public class GameLogic {
             try {
                 entityList.add(entityType.get(obj.type)
                         .getConstructor(Entity.Position.class, int.class)
-                        .newInstance(obj.pos, obj.tag));
+                        .newInstance(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -97,11 +110,28 @@ public class GameLogic {
                 }
             }
         }
+
+        currentLevel = levels.get(1);
     }
 
     public static void changeLevel(LevelData level) {
         currentLevel = level;
-        MIDIFuncs.playMIDI(level.getMIDI());
+        if (MIDIFuncs.sequencer.isRunning()) {
+            MIDIFuncs.stopMIDI();
+        }
+        if (level.getMIDI() != null) {
+            MIDIFuncs.playMIDI(level.getMIDI());
+        }
+        goingToNextLevel = false;
+        switchingLevels = false;
+        nextLevel = null;
+        loadEntities(currentLevel);
+        gameTimer.schedule( new TimerTask() {
+            @Override
+            public void run() {
+                gameTick();
+            }
+        }, Entity.TIC);
     }
 
     public static PlayerPawn getPlayer(int tag) {
@@ -113,6 +143,11 @@ public class GameLogic {
         }
 
         return null;
+    }
+
+    public static void readyChangeLevel(LevelData newLevelData) {
+        goingToNextLevel = true;
+        nextLevel = newLevelData;
     }
 }
 

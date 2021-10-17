@@ -5,7 +5,9 @@ import core.game.entities.Entity;
 public class LevelObject {
 
     public int type;
-    public Entity.Position pos;
+    public float xpos;
+    public float ypos;
+    public float angle;
     public boolean singleplayer;
     public boolean cooperative;
     public boolean[] skill;
@@ -15,7 +17,9 @@ public class LevelObject {
     public LevelObject(int type, float xpos, float ypos, float angle, boolean singleplayer, boolean cooperative, boolean[] skill,
                        boolean ambush, int tag) {
         this.type = type;
-        pos = new Entity.Position(xpos, ypos, angle);
+        this.xpos = xpos;
+        this.ypos = ypos;
+        this.angle = angle;
         this.singleplayer = singleplayer;
         this.cooperative = cooperative;
         this.skill = skill;
@@ -25,7 +29,7 @@ public class LevelObject {
 
     public String toString() {
         return "Type: " + type + "\n"
-                + "Position: " + pos.x + ", " + pos.y + "\n"
+                + "Position: " + xpos + ", " + ypos + "\n"
                 + "Singleplayer: " + singleplayer + "\n"
                 + "Cooperative: " + cooperative + "\n"
                 + "Skills: " + skill[0] + ", " + skill[1] + ", " + skill[2] + ", " + skill[3] + ", " + skill[4] + "\n"

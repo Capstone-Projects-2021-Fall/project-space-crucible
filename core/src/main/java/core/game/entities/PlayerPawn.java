@@ -34,26 +34,24 @@ public class PlayerPawn extends Entity {
         //This handles all the keys pressed with the keyboard.
 
         //Debug keys- play, pain And death animations
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-            setState(getStates()[Entity.PAIN]);
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.K)) {
-            setState(getStates()[Entity.DIE]);
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
-            GameLogic.changeLevel(getNewLevelData());
+        if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+            GameLogic.readyChangeLevel(getNewLevelData());
         }
 
         float checkPosX = getPos().x;
         float checkPosY = getPos().y;
 
         //Is a movement key is CURRENTLY pressed, move player.
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
-            checkPosX -= getSpeed() * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
-            checkPosX += getSpeed() * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
-            checkPosY += getSpeed() * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
-            checkPosY -= getSpeed() * Gdx.graphics.getDeltaTime();
+        if (getHealth() > 0) {
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
+                checkPosX -= getSpeed() * Gdx.graphics.getDeltaTime();
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
+                checkPosX += getSpeed() * Gdx.graphics.getDeltaTime();
+            if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
+                checkPosY += getSpeed() * Gdx.graphics.getDeltaTime();
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
+                checkPosY -= getSpeed() * Gdx.graphics.getDeltaTime();
+        }
 
         //Check only x first
         Rectangle newBounds = new Rectangle(checkPosX, getPos().y, getWidth(), getHeight());
@@ -72,8 +70,12 @@ public class PlayerPawn extends Entity {
         }
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            setState(getStates()[Entity.MISSILE]);
-            hitScanAttack(getPos().angle, 20);
+            if (getHealth() > 0 && GameLogic.ticCounter > 0) {
+                setState(getStates()[Entity.MISSILE]);
+                hitScanAttack(getPos().angle, 20);
+            } else if (getRemainingStateTics() == -1) {
+                GameLogic.readyChangeLevel(GameLogic.currentLevel);
+            }
         }
 
         //If player is IDLE and is hitting a move key, set WALK state

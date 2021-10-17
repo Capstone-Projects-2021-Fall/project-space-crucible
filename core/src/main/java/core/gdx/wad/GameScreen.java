@@ -41,6 +41,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        gameLoop.start();
     }
 
     @Override
@@ -48,6 +49,8 @@ public class GameScreen implements Screen {
 
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (GameLogic.switchingLevels || GameLogic.getPlayer(0) == null) {return;}
 
         //This centers the camera to the player
         //Get the angle where the mouse is pointing to on the screen in relation to where the player is
@@ -112,6 +115,7 @@ public class GameScreen implements Screen {
     public void hide() {
         gameLoop.interrupt();
         MIDIFuncs.stopMIDI();
+        MIDIFuncs.closeSequencer();
     }
 
     @Override

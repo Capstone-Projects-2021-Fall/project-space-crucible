@@ -140,9 +140,9 @@ public class EditThingWindow extends Window {
         }
 
         obj.type = Integer.parseInt(typeField.getText());
-        obj.pos.x = Float.parseFloat(xField.getText());
-        obj.pos.y = Float.parseFloat(yField.getText());
-        obj.pos.angle = Float.parseFloat(angleField.getText());
+        obj.xpos = Float.parseFloat(xField.getText());
+        obj.ypos = Float.parseFloat(yField.getText());
+        obj.angle = Float.parseFloat(angleField.getText());
         obj.singleplayer = singleCheck.isChecked();
         obj.cooperative = coopCheck.isChecked();
         obj.skill[0] = skill1Check.isChecked();

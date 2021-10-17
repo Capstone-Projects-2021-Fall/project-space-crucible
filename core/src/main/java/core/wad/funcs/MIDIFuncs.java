@@ -46,6 +46,9 @@ public class MIDIFuncs {
 
     public static void stopMIDI() {
         if (sequencer.isRunning()) {sequencer.stop();}
+    }
+
+    public static void closeSequencer() {
         sequencer.close();
     }
 

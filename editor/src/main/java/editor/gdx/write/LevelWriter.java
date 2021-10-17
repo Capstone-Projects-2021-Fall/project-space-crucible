@@ -36,9 +36,9 @@ public class LevelWriter {
         for (LevelObject obj : data.getObjects()) {
             rawLevelData += "object {\n"
             + "type = " + obj.type + "\n"
-            + "xpos = " + obj.pos.x + "\n"
-            + "ypos = " + obj.pos.y + "\n"
-            + "angle = " + obj.pos.angle + "\n"
+            + "xpos = " + obj.xpos + "\n"
+            + "ypos = " + obj.ypos + "\n"
+            + "angle = " + obj.angle + "\n"
             + "single = " + obj.singleplayer + "\n"
             + "coop = " + obj.cooperative + "\n"
             + "skill1 = " + obj.skill[0] + "\n"
