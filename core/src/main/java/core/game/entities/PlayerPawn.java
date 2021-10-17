@@ -56,7 +56,8 @@ public class PlayerPawn extends Entity {
 
         Rectangle newBounds = new Rectangle(checkPosX, checkPosY, getWidth(), getHeight());
 
-        if(CollisionLogic.entityCollision(newBounds, this) == null){
+        if(CollisionLogic.entityCollision(newBounds, this) == null
+            && CollisionLogic.entityTileCollision(newBounds,this) == null){
             setPos(checkPosX, checkPosY, newBounds);
             System.out.println("No collision\n");
         }

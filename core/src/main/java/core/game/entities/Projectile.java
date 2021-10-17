@@ -30,6 +30,12 @@ public abstract class Projectile extends Entity {
         float checkPosX = (float) (getPos().x + getSpeed() * Math.cos(Math.toRadians(getPos().angle)));
         float checkPosY = (float) (getPos().y + getSpeed() * Math.sin(Math.toRadians(getPos().angle)));
         Rectangle newBounds = new Rectangle(checkPosX, checkPosY, getWidth(), getHeight());
+
+        if (CollisionLogic.entityTileCollision(newBounds, this) != null) {
+            setState(getStates()[DIE]);
+            return;
+        }
+
         Entity hit = CollisionLogic.entityCollision(newBounds, this);
 
         if(hit == null){

@@ -29,11 +29,16 @@ public class CollisionLogic {
         return collidedEntity;
     }
 
-    public static LevelTile entityTileCollision(Entity entity){
+    public static LevelTile entityTileCollision(Rectangle bounds, Entity entity){
         LevelTile collidedTile = null;
         for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
-            if(levelTile.solid==true){
-                if(entity.getPos()==(Position)levelTile.pos){
+            if(levelTile.solid) {
+                Rectangle tileBounds
+                        = new Rectangle(levelTile.pos.x * LevelTile.TILE_SIZE,
+                                        levelTile.pos.y * LevelTile.TILE_SIZE,
+                                            LevelTile.TILE_SIZE, LevelTile.TILE_SIZE);
+
+                if(bounds.overlaps(tileBounds)) {
                     collidedTile = levelTile;
                     System.out.println("Stop you've violated the law\n");
                     break;
