@@ -11,6 +11,7 @@ import java.util.logging.Level;
 
 public class LevelData {
     private String name = "";
+    private String midi = "";
     int levelnumber;
     private ArrayList<LevelTile> tiles = new ArrayList<>();
     private ArrayList<LevelObject> objects = new ArrayList<>();
@@ -51,6 +52,8 @@ public class LevelData {
 
             if (line.startsWith("name")) {
                 this.name = line.substring(line.indexOf("= ") + 2);
+            } else if (line.startsWith("midi")) {
+                this.midi = line.substring(line.indexOf("= ") + 2);
             } else if (line.equals("floortile {")) {
                 readTile(stringReader, file);
             } else if (line.equals("object {")) {
@@ -60,8 +63,6 @@ public class LevelData {
                 throw new IOException();
             }
         }
-
-        System.out.println(leveldata);
     }
 
     public String getName() {
@@ -253,6 +254,10 @@ public class LevelData {
         }
 
         return ret;
+    }
+
+    public String getMIDI() {
+        return midi;
     }
 }
 

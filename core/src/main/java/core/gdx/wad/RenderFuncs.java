@@ -20,6 +20,7 @@ public class RenderFuncs {
 
     public static void entityDraw(SpriteBatch batch) {
 
+        while (GameLogic.midTic) {}
         for (Entity e : GameLogic.entityList) {
             batch.draw(e.getCurrentSprite(), e.getPos().x, e.getPos().y);
         }

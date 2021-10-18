@@ -9,8 +9,8 @@ public abstract class Projectile extends Entity {
     private Entity owner;
 
     //Projectiles have no health or tag.
-    public Projectile(Position pos, int speed, int width, int height, Integer[] states, Entity owner, int damage) {
-        super(-1, pos, speed, width, height, states, -1);
+    public Projectile(Position pos, int speed, int width, int height, Integer[] states, Entity owner, int damage, long flags) {
+        super(-1, pos, speed, width, height, states, -1, flags);
         this.owner = owner;
         this.damage = damage;
     }
@@ -26,6 +26,8 @@ public abstract class Projectile extends Entity {
     @Override
     public void decrementTics() {
         super.decrementTics();
+
+        if (currentState.getIndex() >= getStates()[DIE]) {return;}
 
         float checkPosX = (float) (getPos().x + getSpeed() * Math.cos(Math.toRadians(getPos().angle)));
         float checkPosY = (float) (getPos().y + getSpeed() * Math.sin(Math.toRadians(getPos().angle)));

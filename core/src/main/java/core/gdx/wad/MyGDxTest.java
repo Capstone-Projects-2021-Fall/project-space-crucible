@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
+import core.wad.funcs.MIDIFuncs;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
@@ -42,6 +43,8 @@ public class MyGDxTest extends Game {
             wads.add(file);
 
             //Load all of the level data and the graphics before closing the .WAD
+            MIDIFuncs.startSequencer();
+            MIDIFuncs.loadMIDIs(wads);
             GameLogic.loadLevels(file, wads);
             WadFuncs.loadSprites(wads);
 
@@ -60,6 +63,5 @@ public class MyGDxTest extends Game {
         setScreen(titleScreen);
 //        gameScreen = new GameScreen(gameLoop);
 //        setScreen(gameScreen);
-        gameLoop.start();
     }
 }

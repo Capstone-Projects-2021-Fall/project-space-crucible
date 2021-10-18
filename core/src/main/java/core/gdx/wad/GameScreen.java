@@ -1,5 +1,6 @@
 package core.gdx.wad;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -10,9 +11,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import core.game.entities.Entity;
+import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.game.entities.PlayerPawn;
 import core.level.info.LevelData;
+import core.wad.funcs.MIDIFuncs;
 
 public class GameScreen implements Screen {
 
@@ -30,7 +33,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(Thread gameLoop) {
         this.gameLoop = gameLoop;
-        GameLogic.loadEntities(GameLogic.currentLevel);
+        GameLogic.loadEntities(GameLogic.currentLevel, false);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
         batch = new SpriteBatch();
@@ -38,10 +41,13 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        gameLoop.start();
     }
 
     @Override
     public void render(float delta) {
+
+        if (GameLogic.switchingLevels || GameLogic.getPlayer(0) == null) {return;}
 
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -108,6 +114,9 @@ public class GameScreen implements Screen {
     @Override
     public void hide() {
         gameLoop.interrupt();
+        MIDIFuncs.stopMIDI();
+        MIDIFuncs.closeSequencer();
+        System.exit(0);
     }
 
     @Override
