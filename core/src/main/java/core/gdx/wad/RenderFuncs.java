@@ -32,6 +32,9 @@ public class RenderFuncs {
         for (Entity e : entities) {
             batch.draw(RenderFuncs.spriteMap.get(e.getCurrentSprite()).getFrame(e.getCurrentFrame(), e.getPos().angle),
                     e.getPos().x, e.getPos().y);
+        while (GameLogic.midTic) {}
+        for (Entity e : GameLogic.entityList) {
+            batch.draw(e.getCurrentSprite(), e.getPos().x, e.getPos().y);
         }
     }
 

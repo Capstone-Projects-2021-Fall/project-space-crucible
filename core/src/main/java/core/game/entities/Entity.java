@@ -2,6 +2,8 @@ package core.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import core.game.logic.CollisionLogic;
 import core.game.logic.EntityState;
 import core.game.logic.GameLogic;
 import core.wad.funcs.GameSprite;
@@ -22,6 +24,8 @@ public abstract class Entity {
     final public static int DIE = 5;
 
     final public static long TIC = 18;
+
+    final public static long SOLID = 1;
 
     public static class Position {
         public float x;
@@ -47,11 +51,12 @@ public abstract class Entity {
     private Integer[] states;
     private int tag;
     private Rectangle bound;
+    public long flags;
 
     public Entity(){}
 
     //Like sprites, each state is only stored once in a global ArrayList, which is memory-efficient.
-    public Entity (int health, Position pos, int speed, int width, int height, Integer[] states, int tag) {
+    public Entity (int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags) {
         this.health = health;
         this.pos = pos;
         this.speed = speed;
@@ -59,9 +64,12 @@ public abstract class Entity {
         this.height = height;
         this.states = states;
         this.tag = tag;
+        this.flags = flags;
         bound = new Rectangle(pos.x, pos.y, width, height);
         setState(this.states[IDLE]);
     }
+
+    public int getHealth() {return health;}
 
     public int getHeight() {
         return height;
@@ -97,6 +105,10 @@ public abstract class Entity {
 
     public Rectangle getBounds() {return bound;}
 
+    public Vector2 getCenter() {
+        return new Vector2(pos.x + (width/2f), pos.y + (height/2f));
+    }
+
     public void setState(Integer state) {
 
         //nextState == -1 means remove after state call.
@@ -113,6 +125,9 @@ public abstract class Entity {
 
     //Damage this Entity. Set painstate if non-lethal, deathstate if lethal.
     public void takeDamage(Entity cause, int damage) {
+
+        if (currentState.getIndex() > getStates()[DIE]) {return;}
+
         health -= damage;
 
         if (health <= 0) {
@@ -128,7 +143,12 @@ public abstract class Entity {
             remainingStateTics--;
         }
         if (remainingStateTics == 0) {
-            setState(currentState.getNextState());
+
+            if (currentState.getNextState() != -1) {
+                setState(currentState.getNextState());
+            } else {
+                GameLogic.deleteEntityQueue.addLast(this);
+            }
         }
     }
 
@@ -160,5 +180,16 @@ public abstract class Entity {
         }
 
         return Integer.toString(spriteAngle);
+    }
+    public boolean getFlag(long flag) {return (flags & flag) == 1;}
+
+    public void hitScanAttack(float angle, int damage) {
+
+        Vector2 startPoint = getCenter();
+        Entity hit = CollisionLogic.hitscanLine(startPoint.x, startPoint.y, angle, this, true);
+
+        if (hit != null) {
+            hit.takeDamage(this, damage);
+        }
     }
 }

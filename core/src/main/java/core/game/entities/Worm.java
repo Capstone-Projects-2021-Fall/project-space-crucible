@@ -3,7 +3,7 @@ package core.game.entities;
 public class Worm extends BaseMonster {
 
     final private static int HEALTH = 150;
-    final private static int SPEED = 3;
+    final private static int SPEED = 8;
     final private static int WIDTH = 30;
     final private static int HEIGHT = 56;
 
@@ -18,6 +18,7 @@ public class Worm extends BaseMonster {
 
     public Worm(Position pos, int tag) {
         super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
-                new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag);
+                new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag,
+                SOLID);
     }
 }

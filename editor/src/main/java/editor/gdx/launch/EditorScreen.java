@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -49,10 +50,38 @@ public class EditorScreen implements Screen {
     public LevelData level;
     public Integer levelnum;
     public boolean windowOpen;
+    private CopiedTileData copiedTileData = null;
 
     //UI Stuff
     public Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
+
+    private class CopiedTileData {
+        public boolean solid;
+        public Texture graphic;
+        public String graphicname;
+        public int light;
+        public int effect;
+        public int arg1;
+        public int arg2;
+        public boolean repeat;
+        public int tag;
+
+        public CopiedTileData(boolean solid, String tex, int light, int effect, int arg1, int arg2,
+                              boolean repeat, int tag, Array<WadFile> wads) {
+
+            this.solid = solid;
+            this.light = light;
+            this.effect = effect;
+            this.arg1 = arg1;
+            this.arg2 = arg2;
+            this.repeat = repeat;
+            this.tag = tag;
+
+            graphicname = tex;
+            graphic = WadFuncs.getTexture(wads, tex);
+        }
+    }
 
     public EditorScreen(LevelEditor editor) {
         this.editor = editor;
@@ -119,16 +148,14 @@ public class EditorScreen implements Screen {
                 Entity newThing = new PlayerPawn(new Entity.Position(x, y, 0), 0);
                 GameLogic.entityList.add(newThing);
 
-                GameLogic.loadEntities(level);
+                GameLogic.loadEntities(level, true);
                 editThingPrompt(newObj, newThing);
                 return;
             }
 
-            Rectangle mouseBounds = new Rectangle(x, y, 1, 1);
-
             //If you clicked on an object, edit it.
             for (Entity e : GameLogic.entityList) {
-                if (mouseBounds.overlaps(e.getBounds())) {
+                if (e.getBounds().contains(x, y)) {
                     LevelObject obj = level.getObjects().get(GameLogic.entityList.indexOf(e));
                     editThingPrompt(obj, e);
                     return;
@@ -138,14 +165,12 @@ public class EditorScreen implements Screen {
             editTilePrompt(tilex, tiley);
         } else if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
 
-            Rectangle mouseBounds = new Rectangle(x, y, 1, 1);
-
             for (Entity e : GameLogic.entityList) {
-                if (mouseBounds.overlaps(e.getBounds())) {
+                if (e.getBounds().contains(x, y)) {
                     int index = GameLogic.entityList.indexOf(e);
                     GameLogic.entityList.remove(index);
                     level.getObjects().remove(index);
-                    GameLogic.loadEntities(level);
+                    GameLogic.loadEntities(level, true);
                     return;
                 }
             }
@@ -158,6 +183,16 @@ public class EditorScreen implements Screen {
     private void checkShortcuts() {
 
         if (windowOpen) {return;}
+
+        float x = (int)(mouseInWorld.x);
+        float y = (int)(mouseInWorld.y);
+
+        int tilex = (int) x/LevelTile.TILE_SIZE;
+        int tiley = (int) y/LevelTile.TILE_SIZE;
+
+        if (x < 0) {tilex--;}
+        if (y < 0) {tiley--;}
+
 
         if (isCtrlPressed()) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
@@ -178,6 +213,17 @@ public class EditorScreen implements Screen {
                     openFilePrompt();
                     windowOpen = true;
                 }
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+                System.out.println("Copy!");
+                LevelTile tile = level.getTile(tilex, tiley);
+                if (tile != null) {
+                    copiedTileData = new CopiedTileData(tile.solid, tile.graphicname, tile.light,
+                            tile.effect, tile.arg1, tile.arg2, tile.repeat, tile.tag, resources);
+                    System.out.println(copiedTileData);
+                }
+            } else  if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
+                if (copiedTileData == null) {return;}
+                pasteTile(tilex, tiley);
             }
         }
     }
@@ -210,7 +256,7 @@ public class EditorScreen implements Screen {
 
         if (tile == null) {
             tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley),
-                    false, "WALL1", 0, 0,
+                    false, "TAN1", 0, 0,
                     0, 0, false, 0 , resources);
             level.getTiles().add(tile);
         }
@@ -274,7 +320,7 @@ public class EditorScreen implements Screen {
         WadFuncs.loadStates();
         WadFuncs.loadTextures(resources);
         WadFuncs.setEntityTypes();
-        GameLogic.loadEntities(level);
+        GameLogic.loadEntities(level, true);
     }
 
     public void loadNewLevel(String name, Integer level) {
@@ -292,6 +338,28 @@ public class EditorScreen implements Screen {
         }
 
         return true;
+    }
+
+    private void pasteTile(int tilex, int tiley) {
+
+        LevelTile tile = level.getTile(tilex, tiley);
+
+        if (tile != null) {
+            tile.graphicname = copiedTileData.graphicname;
+            tile.graphic = WadFuncs.getTexture(resources, tile.graphicname);
+            tile.solid = copiedTileData.solid;
+            tile.light = copiedTileData.light;
+            tile.effect = copiedTileData.effect;
+            tile.arg1 = copiedTileData.arg1;
+            tile.arg2 = copiedTileData.arg2;
+            tile.repeat = copiedTileData.repeat;
+            tile.tag = copiedTileData.tag;
+        } else {
+            tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley), copiedTileData.solid,
+                    copiedTileData.graphicname, copiedTileData.light, copiedTileData.effect, copiedTileData.arg1,
+                    copiedTileData.arg2, copiedTileData.repeat, copiedTileData.tag, resources);
+            level.getTiles().add(tile);
+        }
     }
 
     private boolean isCtrlPressed() {

@@ -6,17 +6,25 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import core.game.logic.GameLogic;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
 import java.io.IOException;
 
 public class TitleScreen implements Screen {
-    private MyGDxTest game;
+    public MyGDxTest game;
     OrthographicCamera camera;
     SpriteBatch batch;
     Texture texture;
     Thread gameLoop;
+    public Stage stage = new Stage(new ScreenViewport());
+    final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
+    public boolean remove = false;
 
     public TitleScreen(MyGDxTest game, Thread gameLoop) {
         WadFile file;
@@ -40,11 +48,17 @@ public class TitleScreen implements Screen {
 
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta) {
+
+        if (remove) {
+            game.setScreen(new GameScreen(gameLoop));
+            dispose();
+        }
+
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -55,9 +69,14 @@ public class TitleScreen implements Screen {
         batch.enableBlending();
         //drawing sprite background
         batch.begin();
+        //this is for testing using the input based on screen size instead of hardcoded pixels
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.rect(camera.viewportWidth/9+40, camera.viewportHeight/5+25, 120,50);
         batch.draw(texture,15,15);
-        if(Gdx.input.getX() > 260 && Gdx.input.getX() < 350 && Gdx.input.getY() > 250 && Gdx.input.getY() < 300){
+        if(Gdx.input.getX() > 260 && Gdx.input.getX() < 350 && Gdx.input.getY() > 180 && Gdx.input.getY() < 250){
             if(Gdx.input.isTouched()){
+                stage.addActor(new ChooseDifficultyWindow("Choose Difficulty:", skin, this));
                 game.setScreen(new GameScreen(gameLoop,true));
                 dispose();
             }
@@ -67,11 +86,14 @@ public class TitleScreen implements Screen {
             }
         }
         batch.end();
+        shapeRenderer.end();
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -86,7 +108,9 @@ public class TitleScreen implements Screen {
 
     @Override
     public void hide() {
-
+        if (!remove) {
+            System.exit(0);
+        }
     }
 
     @Override
