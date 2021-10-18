@@ -102,7 +102,9 @@ public class TitleScreen implements Screen {
 
     @Override
     public void hide() {
-
+        if (!remove) {
+            System.exit(0);
+        }
     }
 
     @Override

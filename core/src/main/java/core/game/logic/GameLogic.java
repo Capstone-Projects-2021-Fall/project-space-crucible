@@ -1,13 +1,16 @@
 package core.game.logic;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
+import core.level.info.LevelTile;
 import core.wad.funcs.GameSprite;
 import core.wad.funcs.MIDIFuncs;
+import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadEntry;
 import net.mtrop.doom.WadFile;
 
@@ -28,6 +31,7 @@ public class GameLogic {
     static boolean goingToNextLevel = false;
     static LevelData nextLevel = null;
     public static boolean switchingLevels = false;
+    public static boolean midTic = false;
     public static int ticCounter = 0;
     public static int difficulty = 2;
 
@@ -66,6 +70,7 @@ public class GameLogic {
             }
         }
 
+        midTic = true;
         //Now add and remove all queued new entities
         while (!newEntityQueue.isEmpty()) {
             entityList.add(newEntityQueue.removeFirst());
@@ -74,6 +79,7 @@ public class GameLogic {
         while (!deleteEntityQueue.isEmpty()) {
             entityList.remove(deleteEntityQueue.removeFirst());
         }
+        midTic = false;
 
         if (!goingToNextLevel) {
             gameTimer.schedule(new TimerTask() {

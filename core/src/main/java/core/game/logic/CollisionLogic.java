@@ -28,15 +28,21 @@ public class CollisionLogic {
     public static LevelTile entityTileCollision(Rectangle bounds, Entity entity){
         LevelTile collidedTile = null;
         for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
-            if(levelTile.solid) {
+            if(levelTile.solid || levelTile.effect > 0) {
                 Rectangle tileBounds
                         = new Rectangle(levelTile.pos.x * LevelTile.TILE_SIZE,
                                         levelTile.pos.y * LevelTile.TILE_SIZE,
                                             LevelTile.TILE_SIZE, LevelTile.TILE_SIZE);
 
                 if(bounds.overlaps(tileBounds)) {
-                    collidedTile = levelTile;
-                    break;
+
+                    if (levelTile.solid) {
+                        collidedTile = levelTile;
+                        break;
+                    } else if(levelTile.effect == 1) {
+                        collidedTile = levelTile;
+                        GameLogic.readyChangeLevel(GameLogic.levels.get(GameLogic.currentLevel.getLevelnumber()+1));
+                    }
                 }
             }
         }
