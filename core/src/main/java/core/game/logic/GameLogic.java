@@ -31,7 +31,6 @@ public class GameLogic {
     static boolean goingToNextLevel = false;
     static LevelData nextLevel = null;
     public static boolean switchingLevels = false;
-    public static boolean midTic = false;
     public static int ticCounter = 0;
     public static int difficulty = 2;
 
@@ -70,7 +69,6 @@ public class GameLogic {
             }
         }
 
-        midTic = true;
         //Now add and remove all queued new entities
         while (!newEntityQueue.isEmpty()) {
             entityList.add(newEntityQueue.removeFirst());
@@ -79,7 +77,6 @@ public class GameLogic {
         while (!deleteEntityQueue.isEmpty()) {
             entityList.remove(deleteEntityQueue.removeFirst());
         }
-        midTic = false;
 
         if (!goingToNextLevel) {
             gameTimer.schedule(new TimerTask() {

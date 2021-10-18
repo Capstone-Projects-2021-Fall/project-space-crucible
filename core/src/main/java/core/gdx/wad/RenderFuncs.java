@@ -8,6 +8,8 @@ import core.game.logic.GameLogic;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
 
+import java.util.ConcurrentModificationException;
+
 public class RenderFuncs {
 
     public static void worldDraw(SpriteBatch batch, LevelData level) {
@@ -20,10 +22,11 @@ public class RenderFuncs {
 
     public static void entityDraw(SpriteBatch batch) {
 
-        while (GameLogic.midTic) {}
-        for (Entity e : GameLogic.entityList) {
-            batch.draw(e.getCurrentSprite(), e.getPos().x, e.getPos().y);
-        }
+        try {
+            for (Entity e : GameLogic.entityList) {
+                batch.draw(e.getCurrentSprite(), e.getPos().x, e.getPos().y);
+            }
+        } catch (ConcurrentModificationException ignored) {}
     }
 
     public static void gridDraw(OrthographicCamera camera, ShapeRenderer sr) {
