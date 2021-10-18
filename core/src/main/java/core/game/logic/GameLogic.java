@@ -37,7 +37,6 @@ public class GameLogic {
     static boolean goingToNextLevel = false;
     static LevelData nextLevel = null;
     public static boolean switchingLevels = false;
-    public static boolean midTic = false;
     public static int ticCounter = 0;
     public static int difficulty = 2;
 

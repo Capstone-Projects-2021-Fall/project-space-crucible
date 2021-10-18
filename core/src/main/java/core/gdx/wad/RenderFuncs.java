@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.ConcurrentModificationException;
+
 public class RenderFuncs {
 
     final public static Map<String, GameSprite> spriteMap = new HashMap<>();
@@ -29,13 +31,11 @@ public class RenderFuncs {
 
     public static void entityDraw(SpriteBatch batch, ArrayList <Entity> entities) {
 
-        for (Entity e : entities) {
-            batch.draw(RenderFuncs.spriteMap.get(e.getCurrentSprite()).getFrame(e.getCurrentFrame(), e.getPos().angle),
-                    e.getPos().x, e.getPos().y);
-        while (GameLogic.midTic) {}
-        for (Entity e : GameLogic.entityList) {
-            batch.draw(e.getCurrentSprite(), e.getPos().x, e.getPos().y);
-        }
+        try {
+            for (Entity e : GameLogic.entityList) {
+                batch.draw(e.getCurrentSprite(), e.getPos().x, e.getPos().y);
+            }
+        } catch (ConcurrentModificationException ignored) {}
     }
 
     public static void gridDraw(OrthographicCamera camera, ShapeRenderer sr) {
