@@ -151,11 +151,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
+        if(gameLoop != null)
+            gameLoop.interrupt();
         MIDIFuncs.stopMIDI();
         MIDIFuncs.closeSequencer();
         System.exit(0);
-        if(gameLoop != null)
-            gameLoop.interrupt();
     }
 
     @Override

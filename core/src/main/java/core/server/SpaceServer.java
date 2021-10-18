@@ -74,7 +74,7 @@ public class SpaceServer extends Listener {
         //Load prepare all Entity logic, open game screen and initiate game loop.
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
-        GameLogic.loadEntities(GameLogic.currentLevel);
+        GameLogic.loadEntities(GameLogic.currentLevel, false);
         Network.register(server);
 
         server.addListener(new Listener(){
@@ -100,7 +100,6 @@ public class SpaceServer extends Listener {
                     InputData input = (InputData) packetData;
                     connection.playerInput = input;
                     GameLogic.controls = input.controls;
-                    System.out.println("Angle received: " + input.angle);
                     GameLogic.getPlayer(0).getPos().angle = input.angle;
                 }
             }

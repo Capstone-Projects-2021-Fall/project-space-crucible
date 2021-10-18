@@ -17,7 +17,7 @@ public class EntityState {
 
     public EntityState(Integer index, String spriteName, Character frame, Integer duration, Integer nextState, StateAction action) {
         this.index = index;
-        sprite = GameLogic.spriteMap.get(spriteName);
+        this.spriteName = spriteName;
         this.frame = frame;
         this.duration = duration;
         this.nextState = nextState;

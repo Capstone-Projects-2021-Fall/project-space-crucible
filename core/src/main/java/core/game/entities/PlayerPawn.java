@@ -73,23 +73,13 @@ public class PlayerPawn extends Entity {
             setPos(getPos().x, checkPosY, newBounds);
         }
 
-        if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+        if(controls[GameLogic.SHOOT]) {
+
             if (getHealth() > 0 && GameLogic.ticCounter > 0) {
                 setState(getStates()[Entity.MISSILE]);
                 hitScanAttack(getPos().angle, 20);
             } else if (getRemainingStateTics() == -1) {
                 GameLogic.readyChangeLevel(GameLogic.currentLevel);
-        if(controls[GameLogic.SHOOT]) {
-            setState(getStates()[Entity.MISSILE]);
-
-            //Only do this if entity 1 exists, is a monster, and is idle
-            if (GameLogic.entityList.get(1) != null
-                && GameLogic.entityList.get(1) instanceof BaseMonster
-                && GameLogic.entityList.get(1).getCurrentFrame() < 'C'
-                && GameLogic.entityList.get(1).currentState.getAction() == null) {
-
-                GameLogic.entityList.get(1).setState(Worm.WALKSTATE);
-                ((BaseMonster) GameLogic.entityList.get(1)).setTarget(GameLogic.entityList.get(0));
             }
         }
 

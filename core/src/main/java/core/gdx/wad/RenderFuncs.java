@@ -32,8 +32,8 @@ public class RenderFuncs {
     public static void entityDraw(SpriteBatch batch, ArrayList <Entity> entities) {
 
         try {
-            for (Entity e : GameLogic.entityList) {
-                batch.draw(e.getCurrentSprite(), e.getPos().x, e.getPos().y);
+            for (Entity e : entities) {
+                batch.draw(spriteMap.get(e.getCurrentSprite()).getFrame(e.getCurrentFrame(), e.getPos().angle), e.getPos().x, e.getPos().y);
             }
         } catch (ConcurrentModificationException ignored) {}
     }

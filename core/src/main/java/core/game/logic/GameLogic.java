@@ -54,7 +54,13 @@ public class GameLogic {
 
     public static void start(Server s) {
         server = s;
-        MIDIFuncs.playMIDI(currentLevel.getMIDI());
+        if (isSinglePlayer) {
+            MIDIFuncs.playMIDI(currentLevel.getMIDI());
+        } else {
+            Network.MIDIData midi = new Network.MIDIData();
+            midi.midi = currentLevel.getMIDI();
+            server.sendToAllTCP(midi);
+        }
         gameTimer = new Timer();
         gameTimer.schedule( new TimerTask() {
             @Override
@@ -98,13 +104,6 @@ public class GameLogic {
             renderData.playerPawn = getPlayer(0);
             server.sendToAllTCP(renderData);
         }
-
-        gameTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                gameTick();
-            }
-        }, Entity.TIC);
 
         if (!goingToNextLevel) {
             gameTimer.schedule(new TimerTask() {
@@ -158,11 +157,17 @@ public class GameLogic {
 
     public static void changeLevel(LevelData level) {
         currentLevel = level;
-        if (MIDIFuncs.sequencer.isRunning()) {
-            MIDIFuncs.stopMIDI();
-        }
-        if (level.getMIDI() != null) {
-            MIDIFuncs.playMIDI(level.getMIDI());
+        if (isSinglePlayer) {
+            if (MIDIFuncs.sequencer.isRunning()) {
+                MIDIFuncs.stopMIDI();
+            }
+            if (level.getMIDI() != null) {
+                MIDIFuncs.playMIDI(level.getMIDI());
+            }
+        } else {
+            Network.MIDIData midi = new Network.MIDIData();
+            midi.midi = level.getMIDI();
+            server.sendToAllTCP(midi);
         }
         goingToNextLevel = false;
         switchingLevels = false;

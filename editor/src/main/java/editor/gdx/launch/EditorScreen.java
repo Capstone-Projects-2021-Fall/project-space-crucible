@@ -346,7 +346,6 @@ public class EditorScreen implements Screen {
 
         if (tile != null) {
             tile.graphicname = copiedTileData.graphicname;
-            tile.graphic = WadFuncs.getTexture(resources, tile.graphicname);
             tile.solid = copiedTileData.solid;
             tile.light = copiedTileData.light;
             tile.effect = copiedTileData.effect;

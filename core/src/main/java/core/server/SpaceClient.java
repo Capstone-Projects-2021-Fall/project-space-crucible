@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import core.gdx.wad.GameScreen;
 import core.server.Network.*;
+import core.wad.funcs.MIDIFuncs;
 
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class SpaceClient extends Listener {
     public SpaceClient(GameScreen screen){
         System.out.println("Connecting to the server!");
         //Create a client object
-        client = new Client();
+        client = new Client(20000, 20000);
         client.start();
         //register the packets
         Network.register(client);
@@ -34,6 +35,12 @@ public class SpaceClient extends Listener {
                 //If the server sends RenderData object update the client's gamescreen
                 if(object instanceof RenderData){
                     screen.setRenderData((RenderData) object);
+                } else if (object instanceof MIDIData) {
+                    if (((MIDIData) object).midi != null && !((MIDIData) object).midi.equals("") ) {
+                        MIDIFuncs.playMIDI(((MIDIData) object).midi);
+                    } else {
+                        MIDIFuncs.stopMIDI();
+                    }
                 }
             }
             public void disconnected (Connection connection) {
@@ -54,7 +61,6 @@ public class SpaceClient extends Listener {
         InputData inputData = new InputData();
         inputData.controls = controls;
         inputData.angle = screen.getAngle();
-        System.out.println("Angle sent: " + inputData.angle);
         client.sendTCP(inputData);
     }
 
