@@ -35,7 +35,9 @@ public class PlayerPawn extends Entity {
 
         //Debug keys- play, pain And death animations
         if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
-            GameLogic.readyChangeLevel(getNewLevelData());
+            if (GameLogic.levels.get(GameLogic.currentLevel.getLevelnumber()+1) != null) {
+                GameLogic.readyChangeLevel(getNewLevelData());
+            }
         }
 
         float checkPosX = getPos().x;
