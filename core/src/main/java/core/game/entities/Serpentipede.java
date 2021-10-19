@@ -18,6 +18,7 @@ public class Serpentipede extends BaseMonster {
 
     public Serpentipede(Position pos, int tag) {
         super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
-                new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag, SOLID);
+                new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag, SOLID,
+                    new String[]{"DSBGSIT1", "DSPOPAIN", "DSBGDTH1", "DSBGACT"});
     }
 }

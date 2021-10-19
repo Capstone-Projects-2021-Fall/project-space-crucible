@@ -23,6 +23,8 @@ public class PlayerPawn extends Entity {
     final public static int PAINSTATE = 7;
     final public static int DEATHSTATE = 9;
 
+    final public static String PAINSOUND = "DSPLPAIN";
+    final public static String DIESOUND = "DSPLDETH";
 
     public PlayerPawn(){}
 

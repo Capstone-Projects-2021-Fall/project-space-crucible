@@ -42,6 +42,8 @@ public class Network {
         kryo.register(A_Fall.class);
         kryo.register(A_FaceTarget.class);
         kryo.register(A_Chase.class);
+        kryo.register(A_Pain.class);
+        kryo.register(A_Scream.class);
         kryo.register(A_PrintMessage.class);
 
         //Entities
@@ -60,6 +62,7 @@ public class Network {
         kryo.register(java.util.ArrayList.class);
         kryo.register(boolean[].class);
         kryo.register(Integer[].class);
+        kryo.register(String[].class);
     }
 
     //Send this to the CLIENT

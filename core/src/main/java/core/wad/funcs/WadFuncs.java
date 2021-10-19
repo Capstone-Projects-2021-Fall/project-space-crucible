@@ -99,9 +99,9 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState(5,"PLAY", 'E', 12, 0, null));   //5
         GameLogic.stateList.add(new EntityState(6,"PLAY", 'F', 6, 5, null));    //6
         GameLogic.stateList.add(new EntityState(7,"PLAY", 'G', 4, 8, null));    //7
-        GameLogic.stateList.add(new EntityState(8,"PLAY", 'G', 4, 0, null));    //8
+        GameLogic.stateList.add(new EntityState(8,"PLAY", 'G', 4, 0, new A_Pain()));    //8
         GameLogic.stateList.add(new EntityState(9,"PLAY", 'H', 10, 10, null));  //9
-        GameLogic.stateList.add(new EntityState(10,"PLAY", 'I', 10, 11, null));  //10
+        GameLogic.stateList.add(new EntityState(10,"PLAY", 'I', 10, 11, new A_Scream()));  //10
         GameLogic.stateList.add(new EntityState(11,"PLAY", 'J', 10, 12, null));  //11
         GameLogic.stateList.add(new EntityState(12,"PLAY", 'K', 10, 13, null));  //12
         GameLogic.stateList.add(new EntityState(13,"PLAY", 'L', 10, 14, new A_Fall()));  //13
@@ -121,9 +121,9 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState(27,"SARG", 'F', 8, 28, new A_FaceTarget()));   //27
         GameLogic.stateList.add(new EntityState(28,"SARG", 'G', 8, 18, new A_MeleeAttack(25)));   //28
         GameLogic.stateList.add(new EntityState(29,"SARG", 'H', 2, 30, null));   //29
-        GameLogic.stateList.add(new EntityState(30,"SARG", 'H', 2, 18, null));   //30
+        GameLogic.stateList.add(new EntityState(30,"SARG", 'H', 2, 18, new A_Pain()));   //30
         GameLogic.stateList.add(new EntityState(31,"SARG", 'I', 8, 32, null));   //31
-        GameLogic.stateList.add(new EntityState(32,"SARG", 'J', 8, 33, null));   //32
+        GameLogic.stateList.add(new EntityState(32,"SARG", 'J', 8, 33, new A_Scream()));   //32
         GameLogic.stateList.add(new EntityState(33,"SARG", 'K', 4, 34, null));   //33
         GameLogic.stateList.add(new EntityState(34,"SARG", 'L', 4, 35, new A_Fall()));   //34
         GameLogic.stateList.add(new EntityState(35,"SARG", 'M', 4, 36, null));   //35
@@ -154,9 +154,9 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState(60,"TROO", 'F', 8, 61, new A_FaceTarget()));   //60
         GameLogic.stateList.add(new EntityState(61,"TROO", 'G', 8, 51, new A_Projectile(Fireball.class)));   //61
         GameLogic.stateList.add(new EntityState(62,"TROO", 'H', 2, 63, null));   //62
-        GameLogic.stateList.add(new EntityState(63,"TROO", 'H', 2, 51, null));   //63
+        GameLogic.stateList.add(new EntityState(63,"TROO", 'H', 2, 51, new A_Pain()));   //63
         GameLogic.stateList.add(new EntityState(64,"TROO", 'I', 8, 65, null));   //64
-        GameLogic.stateList.add(new EntityState(65,"TROO", 'J', 8, 66, null));   //65
+        GameLogic.stateList.add(new EntityState(65,"TROO", 'J', 8, 66, new A_Scream()));   //65
         GameLogic.stateList.add(new EntityState(66,"TROO", 'K', 6, 67, null));   //66
         GameLogic.stateList.add(new EntityState(67,"TROO", 'L', 6, 68, new A_Fall()));   //67
         GameLogic.stateList.add(new EntityState(68,"TROO", 'M', -1, 68, null));   //68
