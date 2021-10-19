@@ -39,4 +39,10 @@ public abstract class BaseMonster extends Entity {
 
         if (currentState.getAction() != null) {currentState.getAction().run(this, target);}
     }
+
+    @Override
+    public void takeDamage(Entity cause, int damage) {
+        super.takeDamage(cause, damage);
+        target = cause;
+    }
 }
