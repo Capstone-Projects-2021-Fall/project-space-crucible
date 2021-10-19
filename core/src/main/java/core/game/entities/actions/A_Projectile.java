@@ -12,6 +12,7 @@ public class A_Projectile implements StateAction {
 
     Class<? extends Projectile> projectileClass;
 
+    public A_Projectile(){}
     public A_Projectile(Class<? extends Projectile> projectileClass) {
         this.projectileClass = projectileClass;
     }

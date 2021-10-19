@@ -19,6 +19,7 @@ dependencies {
 	}
 	implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 	implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+	implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
 	api files('libs/doomstruct-2.14.0.jar')
 }
 

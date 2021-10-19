@@ -14,6 +14,8 @@ public class Serpentipede extends BaseMonster {
     final public static int PAINSTATE = 62;
     final public static int DEATHSTATE = 64;
 
+    public Serpentipede(){}
+
     public Serpentipede(Position pos, int tag) {
         super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
                 new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag, SOLID);

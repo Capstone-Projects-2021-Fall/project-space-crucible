@@ -32,6 +32,8 @@ public abstract class Entity {
         public float y;
         public float angle;
 
+        public Position(){}
+
         public Position(float x, float y, float angle) {
             this.x = x;
             this.y = y;
@@ -50,6 +52,8 @@ public abstract class Entity {
     private int tag;
     private Rectangle bound;
     public long flags;
+
+    public Entity(){}
 
     //Like sprites, each state is only stored once in a global ArrayList, which is memory-efficient.
     public Entity (int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags) {
@@ -81,7 +85,7 @@ public abstract class Entity {
 
     public int getTag() {return tag;}
 
-    public Sprite getCurrentSprite() {return currentState.getSprite().getFrame(currentState.getFrame(), pos.angle);}
+    public String getCurrentSprite() {return currentState.getSprite();}
 
     public Character getCurrentFrame() {return currentState.getFrame();}
 
@@ -148,6 +152,35 @@ public abstract class Entity {
         }
     }
 
+    public String getSpriteAngle(Character frame, float angle) {
+
+        int spriteAngle = -1;
+
+        if (angle < 22.5 || angle >= 337.5) {
+            spriteAngle = 7;
+        } else if (angle < 337.5 && angle >= 292.5) {
+            spriteAngle = 8;
+        } else if (angle < 292.5 && angle >= 247.5) {
+            spriteAngle = 1;
+        } else if (angle < 247.5 && angle >= 202.5) {
+            spriteAngle = 2;
+        } else if (angle < 202.5 && angle >= 157.5) {
+            spriteAngle = 3;
+        } else if (angle < 157.5 && angle >= 112.5) {
+            spriteAngle = 4;
+        } else if (angle < 112.5 && angle >= 67.5) {
+            spriteAngle = 5;
+        } else if (angle < 67.5 && angle >= 22.5) {
+            spriteAngle = 6;
+        }
+
+        if (spriteAngle == -1) {
+            System.out.println("Angle " + angle + " is impossible.");
+            return null;
+        }
+
+        return Integer.toString(spriteAngle);
+    }
     public boolean getFlag(long flag) {return (flags & flag) == 1;}
 
     public void hitScanAttack(float angle, int damage) {

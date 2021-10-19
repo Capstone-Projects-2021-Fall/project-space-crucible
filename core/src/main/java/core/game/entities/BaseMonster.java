@@ -10,6 +10,8 @@ public abstract class BaseMonster extends Entity {
 
     private Entity target = null;
 
+    public BaseMonster(){}
+
     public BaseMonster(int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags) {
         super(health, pos, speed, width, height, states, tag, flags);
     }

@@ -6,6 +6,7 @@ public class A_PrintMessage implements StateAction{
 
     private String message;
 
+    public A_PrintMessage(){message = "";}
     public A_PrintMessage(String message) {
         this.message = message;
     }

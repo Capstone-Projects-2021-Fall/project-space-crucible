@@ -22,17 +22,20 @@ public class PlayerPawn extends Entity {
     final public static int PAINSTATE = 7;
     final public static int DEATHSTATE = 9;
 
+
+    public PlayerPawn(){}
+
     public PlayerPawn(Position pos, int tag) {
         super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
                 new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag,
                 SOLID);
     }
 
+    public void movementUpdate(boolean[] controls) {
 
-    public void movementUpdate(){
-        //Input handling with polling method
-        //This handles all the keys pressed with the keyboard.
-
+        if(controls == null){
+            return;
+        }
         //Debug keys- play, pain And death animations
         if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
             if (GameLogic.levels.get(GameLogic.currentLevel.getLevelnumber()+1) != null) {
@@ -44,14 +47,15 @@ public class PlayerPawn extends Entity {
         float checkPosY = getPos().y;
 
         //Is a movement key is CURRENTLY pressed, move player.
+
         if (getHealth() > 0) {
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
+            if(controls[GameLogic.LEFT])
                 checkPosX -= getSpeed() * Gdx.graphics.getDeltaTime();
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
+            if(controls[GameLogic.RIGHT])
                 checkPosX += getSpeed() * Gdx.graphics.getDeltaTime();
-            if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
+            if(controls[GameLogic.UP])
                 checkPosY += getSpeed() * Gdx.graphics.getDeltaTime();
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
+            if(controls[GameLogic.DOWN])
                 checkPosY -= getSpeed() * Gdx.graphics.getDeltaTime();
         }
 
@@ -71,7 +75,8 @@ public class PlayerPawn extends Entity {
             setPos(getPos().x, checkPosY, newBounds);
         }
 
-        if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+        if(controls[GameLogic.SHOOT]) {
+
             if (getHealth() > 0 && GameLogic.ticCounter > 0) {
                 setState(getStates()[Entity.MISSILE]);
                 hitScanAttack(getPos().angle, 20);
@@ -83,16 +88,10 @@ public class PlayerPawn extends Entity {
         //If player is IDLE and is hitting a move key, set WALK state
         //Otherwise, if player is NOT MOVING and NOT DOING SOMETHING ELSE, set IDLE state
         if(getCurrentFrame() == 'A' && getRemainingStateTics() == -1
-                && (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)
-                || Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)
-                || Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)
-                || Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))) {
+                && (controls[GameLogic.LEFT] || controls[GameLogic.RIGHT] || controls[GameLogic.UP] || controls[GameLogic.DOWN])) {
             setState(getStates()[Entity.WALK]);
         } else if (getCurrentFrame() <= 'D' && getRemainingStateTics() != -1
-                && !(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
-                && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
-                && !(Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
-                && !(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))) {
+                && !(controls[GameLogic.LEFT]) && !(controls[GameLogic.RIGHT]) && !(controls[GameLogic.UP]) && !(controls[GameLogic.DOWN])) {
             setState(getStates()[Entity.IDLE]);
         }
 

@@ -111,8 +111,8 @@ public class EditorScreen implements Screen {
         if (level != null) {
             batch.setProjectionMatrix(camera.combined);
             batch.begin();
-            RenderFuncs.worldDraw(batch, level);
-            RenderFuncs.entityDraw(batch);
+            RenderFuncs.worldDraw(batch, level.getTiles());
+            RenderFuncs.entityDraw(batch, GameLogic.entityList);
             batch.end();
 
             sr.setProjectionMatrix(camera.combined);
@@ -318,6 +318,7 @@ public class EditorScreen implements Screen {
 
         WadFuncs.loadSprites(resources);
         WadFuncs.loadStates();
+        WadFuncs.loadTextures(resources);
         WadFuncs.setEntityTypes();
         GameLogic.loadEntities(level, true);
     }
@@ -345,7 +346,6 @@ public class EditorScreen implements Screen {
 
         if (tile != null) {
             tile.graphicname = copiedTileData.graphicname;
-            tile.graphic = WadFuncs.getTexture(resources, tile.graphicname);
             tile.solid = copiedTileData.solid;
             tile.light = copiedTileData.light;
             tile.effect = copiedTileData.effect;

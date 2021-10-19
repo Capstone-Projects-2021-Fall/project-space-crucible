@@ -7,6 +7,7 @@ public class A_MeleeAttack implements StateAction {
 
     int damage;
 
+    public A_MeleeAttack(){}
     public A_MeleeAttack(int damage) {
         this.damage = damage;
     }
