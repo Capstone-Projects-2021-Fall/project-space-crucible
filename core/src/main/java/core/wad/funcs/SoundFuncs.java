@@ -14,15 +14,18 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class SoundFuncs {
 
     final private static int SAMPLERATE = 22050;
 
     final public static Map<String, byte[]> gameMIDIs = new HashMap<>();
-    final public static Map<String, short[]> gameSounds = new HashMap<>();
+    final public static Map<String, short[]> soundLumps = new HashMap<>();  //Map lump name to data
+    final public static Map<String, String> gameSounds = new HashMap<>();   //Map nice name to lump name
     public static Sequencer sequencer = null;
 
     public static void startSequencer() {
@@ -59,7 +62,7 @@ public class SoundFuncs {
                 @Override
                 public void run() {
                     super.run();
-                    short[] sound = gameSounds.get(name);
+                    short[] sound = soundLumps.get(gameSounds.get(name));
                     AudioDevice soundPlayer = Gdx.audio.newAudioDevice(SAMPLERATE, true);
                     soundPlayer.writeSamples(sound, 0, sound.length);
                     soundPlayer.dispose();
@@ -107,21 +110,36 @@ public class SoundFuncs {
 
         for (WadFile w : wads) {
 
-            if (!w.contains("FX_START") || !w.contains("FX_END")) {continue;}
+            if (!w.contains("FX_START") || !w.contains("FX_END")
+                || !w.contains("SNDINFO")) {continue;}
 
-            int start = w.lastIndexOf("FX_START") + 1;
-            int end = w.lastIndexOf("FX_END");
+            try {
+                String soundInfo = w.getTextData("SNDINFO", Charset.defaultCharset());
+                Scanner soundReader = new Scanner(soundInfo);
 
-            for (int i = start; i < end; i++) {
+                while (soundReader.hasNextLine()) {
 
-                try {
-                    byte[] rawSound = w.getData(i);
-                    short[] sound = new short[rawSound.length / 2];
-                    ByteBuffer.wrap(rawSound).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(sound);
-                    gameSounds.put(w.getEntry(i).getName(), sound);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    String line = soundReader.nextLine();
+
+                    if (line.isBlank() || line.startsWith("//")) {continue;}
+
+                    String soundName = line.substring(0, line.indexOf(' '));
+                    String soundLump = line.substring(line.indexOf(' ') + 1);
+
+                    //If sound already exists, link nice name to sound lump
+                    //Otherwise put new sound lump and link nice name to that.
+                    if (!soundLumps.containsKey(soundLump)) {
+                        byte[] rawSound = w.getData(soundLump);
+                        short[] sound = new short[rawSound.length / 2];
+                        ByteBuffer.wrap(rawSound).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(sound);
+
+                        soundLumps.put(soundLump, sound);
+                    }
+                    gameSounds.put(soundName, soundLump);
+
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

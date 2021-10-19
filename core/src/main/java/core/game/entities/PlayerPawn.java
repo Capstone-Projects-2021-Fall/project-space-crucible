@@ -23,8 +23,8 @@ public class PlayerPawn extends Entity {
     final public static int PAINSTATE = 7;
     final public static int DEATHSTATE = 9;
 
-    final public static String PAINSOUND = "DSPLPAIN";
-    final public static String DIESOUND = "DSPLDETH";
+    final public static String PAINSOUND = "player/pain";
+    final public static String DIESOUND = "player/die";
 
     public PlayerPawn(){}
 
@@ -83,7 +83,7 @@ public class PlayerPawn extends Entity {
             if (getHealth() > 0 && GameLogic.ticCounter > 0) {
                 setState(getStates()[Entity.MISSILE]);
                 hitScanAttack(getPos().angle, 20);
-                SoundFuncs.playSound("DSPISTOL");
+                SoundFuncs.playSound("pistol/shoot");
             } else if (getRemainingStateTics() == -1) {
                 GameLogic.readyChangeLevel(GameLogic.currentLevel);
             }

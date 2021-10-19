@@ -168,6 +168,7 @@ public class GameLogic {
         goingToNextLevel = false;
         switchingLevels = false;
         nextLevel = null;
+        ticCounter = 0;
         loadEntities(currentLevel, false);
         gameTimer.schedule( new TimerTask() {
             @Override

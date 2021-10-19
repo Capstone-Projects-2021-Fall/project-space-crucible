@@ -19,6 +19,6 @@ public class Worm extends BaseMonster {
     public Worm(Position pos, int tag) {
         super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
                 new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag, SOLID,
-                    new String[]{"DSSGTSIT", "DSDMPAIN", "DSSGTDTH", "DSDMACT"});
+                    new String[]{"worm/see", "worm/pain", "worm/die", "worm/active"});
     }
 }

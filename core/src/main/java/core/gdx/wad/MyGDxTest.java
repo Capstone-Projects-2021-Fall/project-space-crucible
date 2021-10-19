@@ -54,7 +54,7 @@ public class MyGDxTest extends Game {
             GameLogic.loadLevels(file, wads);
             WadFuncs.loadSprites(wads);
             WadFuncs.loadTextures(wads);
-            SoundFuncs.playSound("DSPISTOL");
+            SoundFuncs.playSound("pistol/shoot");
 
             //When we add add-on support we will also close other files inside of 'wads"
             file.close();
