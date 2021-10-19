@@ -3,6 +3,7 @@ package core.wad.funcs;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.AudioDevice;
 import com.badlogic.gdx.utils.Array;
+import core.game.logic.GameLogic;
 import net.mtrop.doom.WadFile;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -52,21 +53,26 @@ public class SoundFuncs {
     }
 
     public static void playSound(String name) {
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                short[] sound = gameSounds.get(name);
-                AudioDevice soundPlayer = Gdx.audio.newAudioDevice(SAMPLERATE, true);
-                soundPlayer.writeSamples(sound,0,sound.length);
-                soundPlayer.dispose();
-                try {
-                    join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+
+        if (GameLogic.isSinglePlayer) {
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    short[] sound = gameSounds.get(name);
+                    AudioDevice soundPlayer = Gdx.audio.newAudioDevice(SAMPLERATE, true);
+                    soundPlayer.writeSamples(sound, 0, sound.length);
+                    soundPlayer.dispose();
+                    try {
+                        join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }.start();
+            }.start();
+        } else {
+            GameLogic.playServerSound(name);
+        }
     }
 
     public static void stopMIDI() {

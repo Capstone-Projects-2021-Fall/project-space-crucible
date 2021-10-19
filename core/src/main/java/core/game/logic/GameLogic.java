@@ -192,5 +192,11 @@ public class GameLogic {
         goingToNextLevel = true;
         nextLevel = newLevelData;
     }
+
+    public static void playServerSound(String name) {
+        Network.SoundData soundData = new Network.SoundData();
+        soundData.sound = name;
+        server.sendToAllTCP(soundData);
+    }
 }
 

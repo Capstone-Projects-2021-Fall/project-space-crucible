@@ -31,15 +31,24 @@ public class SpaceClient extends Listener {
             }
 
             public void received (Connection connection, Object object) {
+
                 //If the server sends RenderData object update the client's gamescreen
                 if(object instanceof RenderData){
                     screen.setRenderData((RenderData) object);
-                } else if (object instanceof MIDIData) {
+                }
+
+                //If server sends MIDIData, change client's music
+                else if (object instanceof MIDIData) {
                     if (((MIDIData) object).midi != null && !((MIDIData) object).midi.equals("") ) {
                         SoundFuncs.playMIDI(((MIDIData) object).midi);
                     } else {
                         SoundFuncs.stopMIDI();
                     }
+                }
+
+                //If server sends SoundData, play sound matching the given name
+                else if (object instanceof SoundData) {
+                    SoundFuncs.playSound(((SoundData) object).sound);
                 }
             }
             public void disconnected (Connection connection) {

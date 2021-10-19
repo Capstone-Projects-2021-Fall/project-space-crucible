@@ -24,6 +24,7 @@ public class Network {
         kryo.register(RenderData.class);
         kryo.register(InputData.class);
         kryo.register(MIDIData.class);
+        kryo.register(SoundData.class);
 
         //Level classes
         kryo.register(core.level.info.LevelTile.class);
@@ -76,5 +77,9 @@ public class Network {
     public static class InputData {
         public boolean[] controls;
         public float angle;
+    }
+
+    public static class SoundData {
+        public String sound;
     }
 }
