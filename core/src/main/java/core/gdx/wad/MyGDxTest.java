@@ -21,7 +21,7 @@ public class MyGDxTest extends Game {
     Thread gameLoop = new Thread() {
       @Override
       public void run() {
-          GameLogic.start();
+          GameLogic.start(null);
       }
 
       @Override
@@ -47,6 +47,7 @@ public class MyGDxTest extends Game {
             MIDIFuncs.loadMIDIs(wads);
             GameLogic.loadLevels(file, wads);
             WadFuncs.loadSprites(wads);
+            WadFuncs.loadTextures(wads);
 
             //When we add add-on support we will also close other files inside of 'wads"
             file.close();

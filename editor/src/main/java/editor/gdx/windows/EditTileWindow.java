@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
+import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
 import editor.gdx.launch.EditorScreen;
@@ -41,7 +42,7 @@ public class EditTileWindow extends Window {
         setModal(true);
 
         //Set the image preview to the tile's texture
-        tileTexture = new Image(tile.graphic);
+        tileTexture = new Image(RenderFuncs.textureMap.get(tile.graphicname));
         add(tileTexture);
         textureList = new SelectBox<>(skin);
         textureList.setItems(getTextureList());
@@ -148,7 +149,6 @@ public class EditTileWindow extends Window {
 
     private void changeTile() {
         tile.graphicname = textureList.getSelected();
-        tile.graphic = WadFuncs.getTexture(resources, tile.graphicname);
         tile.solid = solidCheckBox.isChecked();
         tile.light = (int) lightSlider.getValue();
         tile.effect = Integer.parseInt(effectField.getText());

@@ -25,6 +25,7 @@ public class TitleScreen implements Screen {
     public Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
     public boolean remove = false;
+    public boolean isSinglePlayer = true;
 
     public TitleScreen(MyGDxTest game, Thread gameLoop) {
         WadFile file;
@@ -55,7 +56,7 @@ public class TitleScreen implements Screen {
     public void render(float delta) {
 
         if (remove) {
-            game.setScreen(new GameScreen(gameLoop));
+            game.setScreen(new GameScreen(gameLoop, isSinglePlayer));
             dispose();
         }
 
@@ -77,6 +78,11 @@ public class TitleScreen implements Screen {
         if(Gdx.input.getX() > 260 && Gdx.input.getX() < 350 && Gdx.input.getY() > 180 && Gdx.input.getY() < 250){
             if(Gdx.input.isTouched()){
                 stage.addActor(new ChooseDifficultyWindow("Choose Difficulty:", skin, this));
+            }
+        }else if(Gdx.input.getX() > 260 && Gdx.input.getX() < 350 && Gdx.input.getY() > 300 && Gdx.input.getY() < 350){
+            if(Gdx.input.isTouched()){
+                isSinglePlayer = false;
+                remove = true;
             }
         }
         batch.end();
@@ -102,7 +108,9 @@ public class TitleScreen implements Screen {
 
     @Override
     public void hide() {
+        System.out.println("Remove: " + remove);
         if (!remove) {
+            System.out.println("bye bye");
             System.exit(0);
         }
     }

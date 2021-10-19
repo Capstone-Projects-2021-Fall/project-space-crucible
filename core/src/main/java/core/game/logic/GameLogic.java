@@ -3,10 +3,12 @@ package core.game.logic;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import com.esotericsoftware.kryonet.Server;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
+import core.server.Network;
 import core.level.info.LevelTile;
 import core.wad.funcs.GameSprite;
 import core.wad.funcs.MIDIFuncs;
@@ -14,20 +16,24 @@ import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadEntry;
 import net.mtrop.doom.WadFile;
 
+import core.server.Network.RenderData;
+
 import java.io.IOException;
 import java.util.*;
 
 public class GameLogic {
 
     private static Timer gameTimer;
+    public static Boolean isSinglePlayer = true;
     public static ArrayList<Entity> entityList = new ArrayList<>();
     final public static Queue<Entity> newEntityQueue = new Queue<>();
     final public static Queue<Entity> deleteEntityQueue = new Queue<>();
-    final public static Map<String, GameSprite> spriteMap = new HashMap<>();
     final public static ArrayList<EntityState> stateList = new ArrayList<>();
     final public static ArrayList<Class<? extends Entity>> entityType = new ArrayList<>();
     final public static Map<Integer, LevelData> levels = new HashMap<>();
     public static LevelData currentLevel = null;
+    private static Server server;
+    public static boolean[] controls;
     static boolean goingToNextLevel = false;
     static LevelData nextLevel = null;
     public static boolean switchingLevels = false;
@@ -40,8 +46,21 @@ public class GameLogic {
     final public static int HARD = 3;
     final public static int NIGHTMARE = 4;
 
-    public static void start() {
-        MIDIFuncs.playMIDI(currentLevel.getMIDI());
+    final public static int UP = 0;
+    final public static int DOWN = 1;
+    final public static int LEFT = 2;
+    final public static int RIGHT = 3;
+    final public static int SHOOT = 4;
+
+    public static void start(Server s) {
+        server = s;
+        if (isSinglePlayer) {
+            MIDIFuncs.playMIDI(currentLevel.getMIDI());
+        } else {
+            Network.MIDIData midi = new Network.MIDIData();
+            midi.midi = currentLevel.getMIDI();
+            server.sendToAllTCP(midi);
+        }
         gameTimer = new Timer();
         gameTimer.schedule( new TimerTask() {
             @Override
@@ -58,14 +77,13 @@ public class GameLogic {
     }
 
     private static void gameTick() {
-
         //Update all existing entities first
         for (Entity e : GameLogic.entityList) {
             e.decrementTics();
 
             //Check ticCounter because Concurrency error might occur if player shoots on first tic.
             if (e instanceof PlayerPawn) {
-                ((PlayerPawn) e).movementUpdate();
+                ((PlayerPawn) e).movementUpdate(controls);
             }
         }
 
@@ -76,6 +94,15 @@ public class GameLogic {
 
         while (!deleteEntityQueue.isEmpty()) {
             entityList.remove(deleteEntityQueue.removeFirst());
+        }
+
+        if(!isSinglePlayer){
+            //Send render data packet
+            RenderData renderData = new RenderData();
+            renderData.entityList = GameLogic.entityList;
+            renderData.tiles = GameLogic.currentLevel.getTiles();
+            renderData.playerPawn = getPlayer(0);
+            server.sendToAllTCP(renderData);
         }
 
         if (!goingToNextLevel) {
@@ -130,11 +157,17 @@ public class GameLogic {
 
     public static void changeLevel(LevelData level) {
         currentLevel = level;
-        if (MIDIFuncs.sequencer.isRunning()) {
-            MIDIFuncs.stopMIDI();
-        }
-        if (level.getMIDI() != null) {
-            MIDIFuncs.playMIDI(level.getMIDI());
+        if (isSinglePlayer) {
+            if (MIDIFuncs.sequencer.isRunning()) {
+                MIDIFuncs.stopMIDI();
+            }
+            if (level.getMIDI() != null) {
+                MIDIFuncs.playMIDI(level.getMIDI());
+            }
+        } else {
+            Network.MIDIData midi = new Network.MIDIData();
+            midi.midi = level.getMIDI();
+            server.sendToAllTCP(midi);
         }
         goingToNextLevel = false;
         switchingLevels = false;

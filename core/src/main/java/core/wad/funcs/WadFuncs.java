@@ -11,6 +11,7 @@ import core.game.entities.Serpentipede;
 import core.game.entities.Worm;
 import core.game.entities.actions.*;
 import core.game.logic.*;
+import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelData;
 import net.mtrop.doom.WadFile;
 import net.mtrop.doom.graphics.PNGPicture;
@@ -163,11 +164,27 @@ public class WadFuncs {
 
     public static void loadSprites(Array<WadFile> wads) {
         //For now, just load player sprites. I'll generalize this later.
-        GameLogic.spriteMap.put("PLAY", new GameSprite(wads, "PLAY"));
-        GameLogic.spriteMap.put("SARG", new GameSprite(wads, "SARG"));
-        GameLogic.spriteMap.put("BAL1", new GameSprite(wads, "BAL1"));
-        GameLogic.spriteMap.put("PUFF", new GameSprite(wads, "PUFF"));
-        GameLogic.spriteMap.put("BLUD", new GameSprite(wads, "BLUD"));
-        GameLogic.spriteMap.put("TROO", new GameSprite(wads, "TROO"));
+        RenderFuncs.spriteMap.put("PLAY", new GameSprite(wads, "PLAY"));
+        RenderFuncs.spriteMap.put("SARG", new GameSprite(wads, "SARG"));
+        RenderFuncs.spriteMap.put("BAL1", new GameSprite(wads, "BAL1"));
+        RenderFuncs.spriteMap.put("PUFF", new GameSprite(wads, "PUFF"));
+        RenderFuncs.spriteMap.put("BLUD", new GameSprite(wads, "BLUD"));
+        RenderFuncs.spriteMap.put("TROO", new GameSprite(wads, "TROO"));
+    }
+
+    public static void loadTextures(Array<WadFile> wads) {
+
+        for (WadFile w : wads) {
+
+            if (!w.contains("G_START") || !w.contains("G_END")) {continue;}
+
+            int start = w.lastIndexOf("G_START") + 1;
+            int end = w.lastIndexOf("G_END");
+
+            for (int i = start; i < end; i++) {
+                 RenderFuncs.textureMap.put(w.getEntry(i).getName(), getTexture(w, w.getEntry(i).getName()));
+            }
+        }
+
     }
 }

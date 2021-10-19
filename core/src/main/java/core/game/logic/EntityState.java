@@ -6,25 +6,25 @@ import core.wad.funcs.GameSprite;
 public class EntityState {
     //Static ArrayList of all game states
 
-    private GameSprite sprite;
+    private String spriteName;
     private Character frame;
     private Integer duration;
     private Integer nextState;
     private StateAction action;
     private Integer index;
 
+    public EntityState(){}
+
     public EntityState(Integer index, String spriteName, Character frame, Integer duration, Integer nextState, StateAction action) {
         this.index = index;
-        sprite = GameLogic.spriteMap.get(spriteName);
+        this.spriteName = spriteName;
         this.frame = frame;
         this.duration = duration;
         this.nextState = nextState;
         this.action = action;
     }
 
-    public GameSprite getSprite() {
-        return sprite;
-    }
+    public String getSprite() {return spriteName;}
 
     public Character getFrame() {
         return frame;

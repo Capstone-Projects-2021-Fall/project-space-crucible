@@ -16,6 +16,8 @@ public class BulletPuff extends Entity {
     final public static int PAINSTATE = -1;
     final public static int DEATHSTATE = -1;
 
+    public BulletPuff(){}
+
     public BulletPuff(Position pos) {
         super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
                 new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, 0, 0);
