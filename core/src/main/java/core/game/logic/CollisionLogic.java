@@ -56,11 +56,16 @@ public class CollisionLogic {
         distance.x = (float) Math.cos(Math.toRadians(angle));
         distance.y = (float) Math.sin(Math.toRadians(angle));
 
+        //Advance line until something is hit.
+        //If this locks the game, something is wrong! The world must be exposed to the void.
         while(true) {
+
+            //Check for Entities
             for(Entity entity2 : GameLogic.entityList){
 
+                //Skip source Entity and non-solid Entities
                 if (entity2 == source
-                        || (!entity2.getFlag(Entity.SOLID) && attack)) {continue;}
+                        || (!entity2.getFlag(Entity.SOLID))) {continue;}
 
                 if(entity2.getBounds().contains(xpos, ypos)){
                     if (attack) {
@@ -71,7 +76,10 @@ public class CollisionLogic {
                 }
             }
 
+            //Check for tiles
             for(LevelTile t :GameLogic.currentLevel.getTiles()) {
+
+                //Don't waste time on non-solid tiles
                 if(t.solid) {
                     Rectangle tileBounds
                             = new Rectangle(t.pos.x * LevelTile.TILE_SIZE,
