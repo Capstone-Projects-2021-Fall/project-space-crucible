@@ -1,12 +1,11 @@
 package core.server;
 
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import core.gdx.wad.GameScreen;
 import core.server.Network.*;
-import core.wad.funcs.MIDIFuncs;
+import core.wad.funcs.SoundFuncs;
 
 
 import java.io.IOException;
@@ -37,9 +36,9 @@ public class SpaceClient extends Listener {
                     screen.setRenderData((RenderData) object);
                 } else if (object instanceof MIDIData) {
                     if (((MIDIData) object).midi != null && !((MIDIData) object).midi.equals("") ) {
-                        MIDIFuncs.playMIDI(((MIDIData) object).midi);
+                        SoundFuncs.playMIDI(((MIDIData) object).midi);
                     } else {
-                        MIDIFuncs.stopMIDI();
+                        SoundFuncs.stopMIDI();
                     }
                 }
             }

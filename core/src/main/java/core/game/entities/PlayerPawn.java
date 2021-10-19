@@ -7,6 +7,7 @@ import core.game.entities.actions.A_Chase;
 import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
+import core.wad.funcs.SoundFuncs;
 
 public class PlayerPawn extends Entity {
 
@@ -80,6 +81,7 @@ public class PlayerPawn extends Entity {
             if (getHealth() > 0 && GameLogic.ticCounter > 0) {
                 setState(getStates()[Entity.MISSILE]);
                 hitScanAttack(getPos().angle, 20);
+                SoundFuncs.playSound("DSPISTOL");
             } else if (getRemainingStateTics() == -1) {
                 GameLogic.readyChangeLevel(GameLogic.currentLevel);
             }

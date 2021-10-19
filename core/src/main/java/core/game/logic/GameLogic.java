@@ -1,6 +1,5 @@
 package core.game.logic;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import com.esotericsoftware.kryonet.Server;
@@ -9,10 +8,7 @@ import core.game.entities.PlayerPawn;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.server.Network;
-import core.level.info.LevelTile;
-import core.wad.funcs.GameSprite;
-import core.wad.funcs.MIDIFuncs;
-import core.wad.funcs.WadFuncs;
+import core.wad.funcs.SoundFuncs;
 import net.mtrop.doom.WadEntry;
 import net.mtrop.doom.WadFile;
 
@@ -55,7 +51,7 @@ public class GameLogic {
     public static void start(Server s) {
         server = s;
         if (isSinglePlayer) {
-            MIDIFuncs.playMIDI(currentLevel.getMIDI());
+            SoundFuncs.playMIDI(currentLevel.getMIDI());
         } else {
             Network.MIDIData midi = new Network.MIDIData();
             midi.midi = currentLevel.getMIDI();
@@ -158,11 +154,11 @@ public class GameLogic {
     public static void changeLevel(LevelData level) {
         currentLevel = level;
         if (isSinglePlayer) {
-            if (MIDIFuncs.sequencer.isRunning()) {
-                MIDIFuncs.stopMIDI();
+            if (SoundFuncs.sequencer.isRunning()) {
+                SoundFuncs.stopMIDI();
             }
             if (level.getMIDI() != null) {
-                MIDIFuncs.playMIDI(level.getMIDI());
+                SoundFuncs.playMIDI(level.getMIDI());
             }
         } else {
             Network.MIDIData midi = new Network.MIDIData();
