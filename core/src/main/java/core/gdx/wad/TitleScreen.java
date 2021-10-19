@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import core.game.logic.GameLogic;
+import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
@@ -26,6 +26,7 @@ public class TitleScreen implements Screen {
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
     public boolean remove = false;
     public boolean isSinglePlayer = true;
+    private boolean windowOpen = false;
 
     public TitleScreen(MyGDxTest game, Thread gameLoop) {
         WadFile file;
@@ -49,6 +50,7 @@ public class TitleScreen implements Screen {
 
     @Override
     public void show() {
+        SoundFuncs.playMIDI("TITLE");
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -76,11 +78,12 @@ public class TitleScreen implements Screen {
         shapeRenderer.rect(camera.viewportWidth/9+40, camera.viewportHeight/5+25, 120,50);
         batch.draw(texture,15,15);
         if(Gdx.input.getX() > 260 && Gdx.input.getX() < 350 && Gdx.input.getY() > 180 && Gdx.input.getY() < 250){
-            if(Gdx.input.isTouched()){
+            if(Gdx.input.isTouched() && !windowOpen){
+                windowOpen = true;
                 stage.addActor(new ChooseDifficultyWindow("Choose Difficulty:", skin, this));
             }
         }else if(Gdx.input.getX() > 260 && Gdx.input.getX() < 350 && Gdx.input.getY() > 300 && Gdx.input.getY() < 350){
-            if(Gdx.input.isTouched()){
+            if(Gdx.input.isTouched() && !windowOpen){
                 isSinglePlayer = false;
                 remove = true;
             }
@@ -108,6 +111,7 @@ public class TitleScreen implements Screen {
 
     @Override
     public void hide() {
+        SoundFuncs.stopMIDI();
         System.out.println("Remove: " + remove);
         if (!remove) {
             System.out.println("bye bye");
