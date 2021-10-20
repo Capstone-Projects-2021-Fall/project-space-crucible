@@ -1,16 +1,15 @@
 package core.server;
 
+import com.esotericsoftware.kryonet.Connection;
+
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.sql.Connection;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LobbyServer {
 
-    //max lobbies per server
-    private int maxPlayersPerLobby = 4;
     private final Map<String, Lobby> lobbies = new ConcurrentHashMap<>();
 
     public LobbyServer(){
@@ -37,12 +36,12 @@ public class LobbyServer {
         return freePort.getLocalPort();
     }
 
-    public void createLobby(){
+    public void createLobby(Connection c){
         final String newLobbyCode = createRandomLobbyCode();
-        final Lobby lobby = Lobby.createLobby(newLobbyCode);
+        final Lobby lobby = Lobby.createLobby(newLobbyCode, 4);
         lobbies.put(lobby.getLobbyCode(), lobby);
         //add the host player to the lobby
-//        lobby.addPlayerToLobby();
+        lobby.addPlayerToLobby(c);
     }
     public void joinLobby(String lobbyCode){
         final Lobby lobby = lobbies.get(lobbyCode);
