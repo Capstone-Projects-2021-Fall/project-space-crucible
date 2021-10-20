@@ -12,7 +12,7 @@ import core.wad.funcs.SoundFuncs;
 public class PlayerPawn extends Entity {
 
     final private static int HEALTH = 100;
-    final private static int SPEED = 120;
+    final private static int SPEED = 160;
     final private static int WIDTH = 32;
     final private static int HEIGHT = 56;
 
@@ -25,6 +25,9 @@ public class PlayerPawn extends Entity {
 
     final public static String PAINSOUND = "player/pain";
     final public static String DIESOUND = "player/die";
+
+    public float velx = 0;
+    public float vely = 0;
 
     public PlayerPawn(){}
 
@@ -53,14 +56,25 @@ public class PlayerPawn extends Entity {
 
         if (getHealth() > 0) {
             if(controls[GameLogic.LEFT])
-                checkPosX -= getSpeed() * Gdx.graphics.getDeltaTime();
+                velx = velx > -getSpeed() ? velx-10 : velx;
+            else if (velx < 0)
+                velx += 10;
             if(controls[GameLogic.RIGHT])
-                checkPosX += getSpeed() * Gdx.graphics.getDeltaTime();
+                velx = velx < getSpeed() ? velx+10 : velx;
+            else if (velx > 0)
+                velx -= 10;
             if(controls[GameLogic.UP])
-                checkPosY += getSpeed() * Gdx.graphics.getDeltaTime();
+                vely = vely < getSpeed() ? vely+10 : vely;
+            else if (vely > 0)
+                vely -= 10;
             if(controls[GameLogic.DOWN])
-                checkPosY -= getSpeed() * Gdx.graphics.getDeltaTime();
+                vely = vely > -getSpeed() ? vely-10 : vely;
+            else if (vely < 0)
+                vely += 10;
         }
+
+        checkPosX += velx * Gdx.graphics.getDeltaTime();
+        checkPosY += vely * Gdx.graphics.getDeltaTime();
 
         //Check only x first
         Rectangle newBounds = new Rectangle(checkPosX, getPos().y, getWidth(), getHeight());
