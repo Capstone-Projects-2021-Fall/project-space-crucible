@@ -128,4 +128,10 @@ public class CollisionLogic {
         }
         return false;
     }
+
+    //Plain collision check with no return values needed
+    public static boolean simpleCollisionCheck(Rectangle bounds, Entity caller) {
+        return CollisionLogic.entityCollision(bounds, caller) == null
+                && CollisionLogic.entityTileCollision(bounds, caller) == null;
+    }
 }

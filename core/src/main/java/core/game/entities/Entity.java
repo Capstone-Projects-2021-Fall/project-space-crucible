@@ -105,9 +105,9 @@ public abstract class Entity {
         return pos;
     }
 
-    public void setPos(float x, float y, Rectangle bounds) {
-        getPos().x = x;
-        getPos().y = y;
+    public void setPos(Rectangle bounds) {
+        getPos().x = bounds.x;
+        getPos().y = bounds.y;
         getBounds().set(bounds);
     }
 

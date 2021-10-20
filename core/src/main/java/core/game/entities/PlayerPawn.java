@@ -67,7 +67,7 @@ public class PlayerPawn extends Entity {
 
         if(CollisionLogic.entityCollision(newBounds, this) == null
             && CollisionLogic.entityTileCollision(newBounds, this) == null){
-            setPos(checkPosX, getPos().y, newBounds);
+            setPos(newBounds);
         }
 
         //Check y now
@@ -75,7 +75,7 @@ public class PlayerPawn extends Entity {
 
         if(CollisionLogic.entityCollision(newBounds, this) == null
                 && CollisionLogic.entityTileCollision(newBounds, this) == null){
-            setPos(getPos().x, checkPosY, newBounds);
+            setPos(newBounds);
         }
 
         if(controls[GameLogic.SHOOT]) {
