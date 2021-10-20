@@ -16,6 +16,7 @@ public class MyGDxTest extends Game {
 
     public TitleScreen titleScreen;
     public GameScreen gameScreen;
+    public MainMenuScreen mainMenu;
 
     //This is the thread that runs the Game Logic. It is separate from the rendering code.
     Thread gameLoop = new Thread() {
@@ -60,8 +61,11 @@ public class MyGDxTest extends Game {
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
 
-        titleScreen = new TitleScreen(this, gameLoop);
-        setScreen(titleScreen);
+//        titleScreen = new TitleScreen(this, gameLoop);
+//        setScreen(titleScreen);
+
+        mainMenu = new MainMenuScreen(this);
+        setScreen(mainMenu);
 //        gameScreen = new GameScreen(gameLoop);
 //        setScreen(gameScreen);
     }
