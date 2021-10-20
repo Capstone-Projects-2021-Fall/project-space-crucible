@@ -4,7 +4,6 @@ import com.esotericsoftware.kryonet.Connection;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.sql.Connection;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
