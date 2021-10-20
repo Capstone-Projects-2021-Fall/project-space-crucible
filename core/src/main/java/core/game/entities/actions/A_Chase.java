@@ -93,7 +93,7 @@ public class A_Chase implements StateAction {
 
         //If the player x is closer, try opposite y direction first, else x. Try other opposite as last resort.
         System.out.println("Distance x: " + distance.x + "\nDistance y: " + distance.y);
-        if (distance.x > distance.y) {
+        if (Math.abs(distance.x) > Math.abs(distance.y)) {
             newBounds.set(startX, startY - (speed * directionY), width, height);
             if (CollisionLogic.simpleCollisionCheck(newBounds, caller)) {
                 caller.getPos().angle = directionY > 0 ? Entity.SOUTH : Entity.NORTH;
