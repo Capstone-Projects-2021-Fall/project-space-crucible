@@ -64,7 +64,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        if (GameLogic.switchingLevels || GameLogic.getPlayer(0) == null) {return;}
+        if (GameLogic.switchingLevels || GameLogic.getPlayer(1) == null) {return;}
 
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -73,11 +73,11 @@ public class GameScreen implements Screen {
         //Get the angle where the mouse is pointing to on the screen in relation to where the player is
         //Referenced code - https://stackoverflow.com/questions/16381031/get-cursor-position-in-libgdx
         if (isSinglePlayer) {
-            mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(0).getPos().x;
-            mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(0).getPos().y;
+            mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(1).getPos().x;
+            mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(1).getPos().y;
         } else if(renderData.tiles != null && renderData.entityList != null) {
-            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(0).getPos().x;
-            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(0).getPos().y;
+            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(1).getPos().x;
+            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(1).getPos().y;
         }
         mouseInWorld3D.z = 0;
         camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
@@ -85,14 +85,14 @@ public class GameScreen implements Screen {
         mouseInWorld2D.y = mouseInWorld3D.y;
         angle = mouseInWorld2D.angleDeg();
         if(isSinglePlayer)
-            GameLogic.getPlayer(0).getPos().angle = angle; //Turn the vector2 into a degree angle
+            GameLogic.getPlayer(1).getPos().angle = angle; //Turn the vector2 into a degree angle
 
         if(isSinglePlayer) {
-            camera.position.set(GameLogic.getPlayer(0).getPos().x + GameLogic.getPlayer(0).getWidth() / (float) 2.0,
-                    GameLogic.getPlayer(0).getPos().y + GameLogic.getPlayer(0).getHeight() / (float) 2.0, 0);
+            camera.position.set(GameLogic.getPlayer(1).getPos().x + GameLogic.getPlayer(1).getWidth() / (float) 2.0,
+                    GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight() / (float) 2.0, 0);
         } else if(renderData.tiles != null && renderData.entityList != null){
-            camera.position.set(getPlayer(0).getPos().x + getPlayer(0).getWidth() / (float) 2.0,
-                    getPlayer(0).getPos().y + getPlayer(0).getHeight() / (float) 2.0, 0);
+            camera.position.set(getPlayer(1).getPos().x + getPlayer(1).getWidth() / (float) 2.0,
+                    getPlayer(1).getPos().y + getPlayer(1).getHeight() / (float) 2.0, 0);
         }
         camera.update();
 
@@ -121,7 +121,7 @@ public class GameScreen implements Screen {
         if(!isSinglePlayer) {
             client.getInput(getControls());
         } else {
-            GameLogic.controls = getControls();
+            GameLogic.getPlayer(1).controls = getControls();
         }
     }
     private void showBoxes() {

@@ -22,6 +22,7 @@ public class PlayerPawn extends Entity {
     final public static int PAINSTATE = 7;
     final public static int DEATHSTATE = 9;
 
+    public boolean[] controls = new boolean[5];
 
     public PlayerPawn(){}
 
@@ -31,7 +32,7 @@ public class PlayerPawn extends Entity {
                 SOLID);
     }
 
-    public void movementUpdate(boolean[] controls) {
+    public void movementUpdate() {
 
         if(controls == null){
             return;

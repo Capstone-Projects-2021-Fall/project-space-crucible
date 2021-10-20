@@ -3,6 +3,7 @@ package core.game.logic;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
@@ -33,7 +34,6 @@ public class GameLogic {
     final public static Map<Integer, LevelData> levels = new HashMap<>();
     public static LevelData currentLevel = null;
     private static Server server;
-    public static boolean[] controls;
     static boolean goingToNextLevel = false;
     static LevelData nextLevel = null;
     public static boolean switchingLevels = false;
@@ -83,7 +83,7 @@ public class GameLogic {
 
             //Check ticCounter because Concurrency error might occur if player shoots on first tic.
             if (e instanceof PlayerPawn) {
-                ((PlayerPawn) e).movementUpdate(controls);
+                ((PlayerPawn) e).movementUpdate();
             }
         }
 
@@ -98,11 +98,13 @@ public class GameLogic {
 
         if(!isSinglePlayer){
             //Send render data packet
-            RenderData renderData = new RenderData();
-            renderData.entityList = GameLogic.entityList;
-            renderData.tiles = GameLogic.currentLevel.getTiles();
-            renderData.playerPawn = getPlayer(0);
-            server.sendToAllTCP(renderData);
+            for (Connection c : server.getConnections()) {
+                RenderData renderData = new RenderData();
+                renderData.entityList = GameLogic.entityList;
+                renderData.tiles = GameLogic.currentLevel.getTiles();
+                renderData.playerPawn = getPlayer(c.getID());
+                server.sendToAllTCP(renderData);
+            }
         }
 
         if (!goingToNextLevel) {
@@ -128,6 +130,12 @@ public class GameLogic {
 
             //Skip object if it is not on this difficulty. Always show everything in the editor
             if (!obj.skill[difficulty] && !editor) {continue;}
+
+            if (obj.type == 0) {
+                if (isSinglePlayer && obj.tag > 1) continue;
+
+                if (server != null && obj.tag > server.getConnections().length) continue;
+            }
 
             try {
                 entityList.add(entityType.get(obj.type)
