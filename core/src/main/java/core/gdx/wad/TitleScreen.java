@@ -41,7 +41,6 @@ public class TitleScreen implements Screen {
             batch = new SpriteBatch();
             texture = WadFuncs.getTexture(file, "TITLESCR"); //title screen
             texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
