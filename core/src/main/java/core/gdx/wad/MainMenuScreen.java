@@ -16,15 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.esotericsoftware.kryonet.Client;
-import core.server.LobbyServer;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
 
@@ -84,28 +75,7 @@ public class MainMenuScreen implements Screen {
         stage.draw(); //Draw the ui
 
         play.addListener(new ClickListener() {
-
-        play.addListener(new ClickListener() {
             @Override
-            public void clicked (InputEvent event, float x, float y) {
-//                game.setScreen(new LobbyScreen(game.mainMenu));
-//                Window lobby = new Window("Lobby", uiSkin);
-//                lobby.setMovable(false);
-//                TextButton joinLobby = new TextButton("Join Lobby", uiSkin);
-//                TextButton back = new TextButton("Back", uiSkin);
-//                lobby.add(joinLobby).row();
-//                lobby.add(back);
-//                lobby.setBounds((Gdx.graphics.getWidth() - 400)/ 2, (Gdx.graphics.getHeight() - 200) / 2, 400, 200);
-//                stage.addActor(lobby);
-//                back.addListener(new ClickListener(){
-//                    public void clicked(InputEvent event, float x, float y) {
-//                        game.setScreen(new MainMenuScreen(game));
-//                    }
-//                });
-//                joinLobby.addListener(new ClickListener(){
-//                    public void clicked(InputEvent event, float x, float y) {
-//                    }
-//                });
             public void clicked (InputEvent event, float x, float y) {
                 System.out.println("CLicked");
                 Window lobby = new Window("Lobby", uiSkin);
@@ -133,10 +103,6 @@ public class MainMenuScreen implements Screen {
                     }
                 });
             }
-            //waiting
-            //get list of connections
-            //get packet with connected plauer
-            //
         });
 
         exit.addListener(new InputListener() {
