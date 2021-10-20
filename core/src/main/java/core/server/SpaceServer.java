@@ -99,8 +99,8 @@ public class SpaceServer extends Listener {
                 if(packetData instanceof InputData){
                     InputData input = (InputData) packetData;
                     connection.playerInput = input;
-                    GameLogic.controls = input.controls;
-                    GameLogic.getPlayer(0).getPos().angle = input.angle;
+                    GameLogic.getPlayer(c.getID()).controls = input.controls;
+                    GameLogic.getPlayer(c.getID()).getPos().angle = input.angle;
                 }
             }
             //This method will run when a client disconnects from the server, remove the character from the game
