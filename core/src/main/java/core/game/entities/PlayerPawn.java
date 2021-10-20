@@ -9,6 +9,8 @@ import core.game.logic.GameLogic;
 import core.level.info.LevelData;
 import core.wad.funcs.SoundFuncs;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class PlayerPawn extends Entity {
 
     final private static int HEALTH = 100;
@@ -79,16 +81,14 @@ public class PlayerPawn extends Entity {
         //Check only x first
         Rectangle newBounds = new Rectangle(checkPosX, getPos().y, getWidth(), getHeight());
 
-        if(CollisionLogic.entityCollision(newBounds, this) == null
-            && CollisionLogic.entityTileCollision(newBounds, this) == null){
+        if(CollisionLogic.simpleCollisionCheck(newBounds, this)){
             setPos(newBounds);
         }
 
         //Check y now
         newBounds.set(getPos().x, checkPosY, getWidth(), getHeight());
 
-        if(CollisionLogic.entityCollision(newBounds, this) == null
-                && CollisionLogic.entityTileCollision(newBounds, this) == null){
+        if(CollisionLogic.simpleCollisionCheck(newBounds, this)){
             setPos(newBounds);
         }
 
@@ -96,7 +96,7 @@ public class PlayerPawn extends Entity {
 
             if (getHealth() > 0 && GameLogic.ticCounter > 0) {
                 setState(getStates()[Entity.MISSILE]);
-                hitScanAttack(getPos().angle, 20);
+                hitScanAttack(getPos().angle, 15);
                 SoundFuncs.playSound("pistol/shoot");
             } else if (getRemainingStateTics() == -1) {
                 GameLogic.readyChangeLevel(GameLogic.currentLevel);

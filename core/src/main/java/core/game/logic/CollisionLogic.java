@@ -103,7 +103,7 @@ public class CollisionLogic {
 
     //Checks FOV for any instance of the given class- make sure they're not dead.
     public static Entity checkFOVForClass(float startx, float starty, float refAngle, Entity caller, Class<? extends Entity> seeking) {
-        for (float angle = refAngle-45; angle != refAngle + 45; angle += 9) {
+        for (float angle = refAngle-90; angle != refAngle + 90; angle += 9) {
             Entity e = CollisionLogic.hitscanLine(startx, starty, angle, caller, false);
             if (e != null) {
 
@@ -117,7 +117,7 @@ public class CollisionLogic {
 
     //Checks FOV for a specific Entity
     public static boolean checkFOVForEntity(float startx, float starty, float refAngle, Entity caller, Entity seeking) {
-        for (float angle = refAngle-45; angle != refAngle + 45; angle += 9) {
+        for (float angle = refAngle-90; angle != refAngle + 90; angle += 9) {
             Entity e = CollisionLogic.hitscanLine(startx, starty, angle, caller, false);
             if (e != null) {
 
