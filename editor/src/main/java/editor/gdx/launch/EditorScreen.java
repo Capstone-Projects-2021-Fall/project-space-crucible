@@ -135,6 +135,12 @@ public class EditorScreen implements Screen {
         if (x < 0) {tilex--;}
         if (y < 0) {tiley--;}
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            selectedObjs.clear();
+            selectedTiles.clear();
+            selecting = false;
+        }
+
         //Check for right click
         if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
             rightClick(x, y, tilex, tiley);

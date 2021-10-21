@@ -17,6 +17,7 @@ public class EditThingWindow extends Window {
     Array<WadFile> resources;
     Entity entity;
     LevelObject obj;
+    Array<LevelObject> objs = new Array<>();
     EditorScreen editor;
     Image sprite;
     NumberField typeField;
@@ -35,12 +36,19 @@ public class EditThingWindow extends Window {
     TextButton okButton;
     TextButton cancelButton;
 
+    public EditThingWindow(String title, Skin skin, Entity entity, Array<LevelObject> objs, Array<WadFile> resources, EditorScreen editor) {
+        this(title, skin, entity, objs.get(0), resources, editor);
+        this.objs = objs;
+    }
+
     public EditThingWindow(String title, Skin skin, Entity entity, LevelObject obj, Array<WadFile> resources, EditorScreen editor) {
         super(title, skin);
         this.resources = resources;
         this.entity = entity;
         this.obj = obj;
         this.editor = editor;
+
+        if (objs.isEmpty()) {objs.add(obj);}
 
         add(new Label("Thing:", skin));
         row();
@@ -140,19 +148,21 @@ public class EditThingWindow extends Window {
             return;
         }
 
-        obj.type = Integer.parseInt(typeField.getText());
-        obj.xpos = Float.parseFloat(xField.getText());
-        obj.ypos = Float.parseFloat(yField.getText());
-        obj.angle = Float.parseFloat(angleField.getText());
-        obj.singleplayer = singleCheck.isChecked();
-        obj.cooperative = coopCheck.isChecked();
-        obj.skill[0] = skill1Check.isChecked();
-        obj.skill[1] = skill2Check.isChecked();
-        obj.skill[2] = skill3Check.isChecked();
-        obj.skill[3] = skill4Check.isChecked();
-        obj.skill[4] = skill5Check.isChecked();
-        obj.ambush = ambushCheck.isChecked();
-        obj.tag = Integer.parseInt(tagField.getText());
+        for (LevelObject lo : objs) {
+            lo.type = Integer.parseInt(typeField.getText());
+            lo.xpos = Float.parseFloat(xField.getText());
+            lo.ypos = Float.parseFloat(yField.getText());
+            lo.angle = Float.parseFloat(angleField.getText());
+            lo.singleplayer = singleCheck.isChecked();
+            lo.cooperative = coopCheck.isChecked();
+            lo.skill[0] = skill1Check.isChecked();
+            lo.skill[1] = skill2Check.isChecked();
+            lo.skill[2] = skill3Check.isChecked();
+            lo.skill[3] = skill4Check.isChecked();
+            lo.skill[4] = skill5Check.isChecked();
+            lo.ambush = ambushCheck.isChecked();
+            lo.tag = Integer.parseInt(tagField.getText());
+        }
         GameLogic.loadEntities(editor.level, true);
         close();
     }
