@@ -51,6 +51,7 @@ public class EditorScreen implements Screen {
     public Integer levelnum;
     public boolean windowOpen;
     private CopiedTileData copiedTileData = null;
+    private CopiedThingData copiedThingData = null;
 
     //UI Stuff
     public Stage stage = new Stage(new ScreenViewport());
@@ -80,6 +81,27 @@ public class EditorScreen implements Screen {
 
             graphicname = tex;
             graphic = WadFuncs.getTexture(wads, tex);
+        }
+    }
+
+    private class CopiedThingData {
+        public int type;
+        public float angle;
+        public boolean singleplayer;
+        public boolean cooperative;
+        public boolean[] skill;
+        public boolean ambush;
+        public int tag;
+
+        public CopiedThingData(int type, float angle, boolean singleplayer,
+                               boolean cooperative, boolean[] skill, boolean ambush, int tag) {
+            this.type = type;
+            this.angle = angle;
+            this.singleplayer = singleplayer;
+            this.cooperative = cooperative;
+            this.skill = skill;
+            this.ambush = ambush;
+            this.tag = tag;
         }
     }
 
@@ -215,15 +237,34 @@ public class EditorScreen implements Screen {
                 }
             } else if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
                 System.out.println("Copy!");
+
+                //If you're hovering on an object, copy it.
+                for (Entity e : GameLogic.entityList) {
+                    if (e.getBounds().contains(x, y)) {
+                        LevelObject obj = level.getObjects().get(GameLogic.entityList.indexOf(e));
+                        copiedThingData = new CopiedThingData(obj.type, obj.angle, obj.singleplayer,
+                                obj.cooperative, obj.skill, obj.ambush, obj.tag);
+                        return;
+                    }
+                }
+
                 LevelTile tile = level.getTile(tilex, tiley);
                 if (tile != null) {
                     copiedTileData = new CopiedTileData(tile.solid, tile.graphicname, tile.light,
                             tile.effect, tile.arg1, tile.arg2, tile.repeat, tile.tag, resources);
-                    System.out.println(copiedTileData);
                 }
             } else  if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
-                if (copiedTileData == null) {return;}
-                pasteTile(tilex, tiley);
+                if (isShiftPressed()) {
+                    if (copiedThingData == null) {
+                        return;
+                    }
+                    pasteThing(x, y);
+                } else {
+                    if (copiedTileData == null) {
+                        return;
+                    }
+                    pasteTile(tilex, tiley);
+                }
             }
         }
     }
@@ -359,6 +400,13 @@ public class EditorScreen implements Screen {
                     copiedTileData.arg2, copiedTileData.repeat, copiedTileData.tag, resources);
             level.getTiles().add(tile);
         }
+    }
+
+    private void pasteThing(float x, float y) {
+        level.getObjects().add(new LevelObject(copiedThingData.type, x, y, copiedThingData.angle,
+                copiedThingData.singleplayer, copiedThingData.cooperative, copiedThingData.skill,
+                copiedThingData.ambush, copiedThingData.tag));
+        GameLogic.loadEntities(level, true);
     }
 
     private boolean isCtrlPressed() {
