@@ -52,6 +52,8 @@ public class EditorScreen implements Screen {
     public boolean windowOpen;
     private CopiedTileData copiedTileData = null;
     private CopiedThingData copiedThingData = null;
+    private boolean dragging = false;
+    private LevelObject dragThing = null;
 
     //UI Stuff
     public Stage stage = new Stage(new ScreenViewport());
@@ -160,6 +162,7 @@ public class EditorScreen implements Screen {
         if (x < 0) {tilex--;}
         if (y < 0) {tiley--;}
 
+        //Check for right click
         if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
 
             if (isShiftPressed()) {
@@ -185,7 +188,10 @@ public class EditorScreen implements Screen {
             }
 
             editTilePrompt(tilex, tiley);
-        } else if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
+        }
+
+        //Check for middle click
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
 
             for (Entity e : GameLogic.entityList) {
                 if (e.getBounds().contains(x, y)) {
@@ -199,6 +205,37 @@ public class EditorScreen implements Screen {
 
             LevelTile tile = level.getTile(tilex, tiley);
             level.getTiles().remove(tile);
+        }
+
+
+        System.out.println("Dragging: " + dragging);
+        //Check for left clip
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+
+            //Check if *just* pressed in particular
+            if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+                //If you clicked on an object, drag it.
+                for (Entity e : GameLogic.entityList) {
+                    if (e.getBounds().contains(x, y)) {
+                        dragThing = level.getObjects().get(GameLogic.entityList.indexOf(e));
+                        dragging = true;
+                        return;
+                    }
+                }
+            } else {
+                if (dragging) {
+                    dragThing.xpos = x;
+                    dragThing.ypos = y;
+                    GameLogic.loadEntities(level, true);
+                }
+            }
+        }
+        //If not holding left click, stop dragging
+        else {
+            if (dragging) {
+                dragging = false;
+                GameLogic.loadEntities(level, true);
+            }
         }
     }
 
