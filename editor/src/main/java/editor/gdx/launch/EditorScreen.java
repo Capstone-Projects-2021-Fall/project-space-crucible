@@ -26,6 +26,8 @@ import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
+import editor.gdx.copy.CopiedThingData;
+import editor.gdx.copy.CopiedTileData;
 import editor.gdx.windows.EditThingWindow;
 import editor.gdx.windows.EditTileWindow;
 import editor.gdx.windows.FileChooserWindow;
@@ -58,54 +60,6 @@ public class EditorScreen implements Screen {
     //UI Stuff
     public Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
-
-    private class CopiedTileData {
-        public boolean solid;
-        public Texture graphic;
-        public String graphicname;
-        public int light;
-        public int effect;
-        public int arg1;
-        public int arg2;
-        public boolean repeat;
-        public int tag;
-
-        public CopiedTileData(boolean solid, String tex, int light, int effect, int arg1, int arg2,
-                              boolean repeat, int tag, Array<WadFile> wads) {
-
-            this.solid = solid;
-            this.light = light;
-            this.effect = effect;
-            this.arg1 = arg1;
-            this.arg2 = arg2;
-            this.repeat = repeat;
-            this.tag = tag;
-
-            graphicname = tex;
-            graphic = WadFuncs.getTexture(wads, tex);
-        }
-    }
-
-    private class CopiedThingData {
-        public int type;
-        public float angle;
-        public boolean singleplayer;
-        public boolean cooperative;
-        public boolean[] skill;
-        public boolean ambush;
-        public int tag;
-
-        public CopiedThingData(int type, float angle, boolean singleplayer,
-                               boolean cooperative, boolean[] skill, boolean ambush, int tag) {
-            this.type = type;
-            this.angle = angle;
-            this.singleplayer = singleplayer;
-            this.cooperative = cooperative;
-            this.skill = skill;
-            this.ambush = ambush;
-            this.tag = tag;
-        }
-    }
 
     public EditorScreen(LevelEditor editor) {
         this.editor = editor;
@@ -164,72 +118,19 @@ public class EditorScreen implements Screen {
 
         //Check for right click
         if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-
-            if (isShiftPressed()) {
-                LevelObject newObj = new LevelObject(0, x, y, 0, true, true,
-                        new boolean[]{true, true, true, true, true}, false, 0);
-                level.getObjects().add(newObj);
-
-                Entity newThing = new PlayerPawn(new Entity.Position(x, y, 0), 0);
-                GameLogic.entityList.add(newThing);
-
-                GameLogic.loadEntities(level, true);
-                editThingPrompt(newObj, newThing);
-                return;
-            }
-
-            //If you clicked on an object, edit it.
-            for (Entity e : GameLogic.entityList) {
-                if (e.getBounds().contains(x, y)) {
-                    LevelObject obj = level.getObjects().get(GameLogic.entityList.indexOf(e));
-                    editThingPrompt(obj, e);
-                    return;
-                }
-            }
-
-            editTilePrompt(tilex, tiley);
+            rightClick(x, y, tilex, tiley);
         }
 
         //Check for middle click
         if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
-
-            for (Entity e : GameLogic.entityList) {
-                if (e.getBounds().contains(x, y)) {
-                    int index = GameLogic.entityList.indexOf(e);
-                    GameLogic.entityList.remove(index);
-                    level.getObjects().remove(index);
-                    GameLogic.loadEntities(level, true);
-                    return;
-                }
-            }
-
-            LevelTile tile = level.getTile(tilex, tiley);
-            level.getTiles().remove(tile);
+            middleClick(x, y, tilex, tiley);
         }
 
-
-        System.out.println("Dragging: " + dragging);
         //Check for left clip
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-
-            //Check if *just* pressed in particular
-            if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-                //If you clicked on an object, drag it.
-                for (Entity e : GameLogic.entityList) {
-                    if (e.getBounds().contains(x, y)) {
-                        dragThing = level.getObjects().get(GameLogic.entityList.indexOf(e));
-                        dragging = true;
-                        return;
-                    }
-                }
-            } else {
-                if (dragging) {
-                    dragThing.xpos = x;
-                    dragThing.ypos = y;
-                    GameLogic.loadEntities(level, true);
-                }
-            }
+            leftClick(x, y, tilex, tiley);
         }
+
         //If not holding left click, stop dragging
         else {
             if (dragging) {
@@ -328,6 +229,7 @@ public class EditorScreen implements Screen {
         camera.unproject(mouseInWorld);
     }
 
+    //Show menu for editing level tiles
     private void editTilePrompt(int tilex, int tiley) {
 
         LevelTile tile = level.getTile(tilex, tiley);
@@ -343,6 +245,7 @@ public class EditorScreen implements Screen {
         windowOpen = true;
     }
 
+    //Edit game Entities
     private void editThingPrompt(LevelObject obj, Entity e) {
         stage.addActor(new EditThingWindow("Edit Thing", skin, e, obj, resources, this));
         windowOpen = true;
@@ -449,7 +352,72 @@ public class EditorScreen implements Screen {
     private boolean isCtrlPressed() {
         return (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT));
     }
+
     private boolean isShiftPressed() {
         return (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
+    }
+
+    private void leftClick(float x, float y, int tilex, int tiley) {
+
+        //Check if *just* pressed in particular
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            //If you clicked on an object, drag it.
+            for (Entity e : GameLogic.entityList) {
+                if (e.getBounds().contains(x, y)) {
+                    dragThing = level.getObjects().get(GameLogic.entityList.indexOf(e));
+                    dragging = true;
+                    return;
+                }
+            }
+        } else {
+            if (dragging) {
+                dragThing.xpos = x;
+                dragThing.ypos = y;
+                GameLogic.loadEntities(level, true);
+            }
+        }
+    }
+
+    private void middleClick(float x, float y, int tilex, int tiley) {
+
+        for (Entity e : GameLogic.entityList) {
+            if (e.getBounds().contains(x, y)) {
+                int index = GameLogic.entityList.indexOf(e);
+                GameLogic.entityList.remove(index);
+                level.getObjects().remove(index);
+                GameLogic.loadEntities(level, true);
+                return;
+            }
+        }
+
+        LevelTile tile = level.getTile(tilex, tiley);
+        level.getTiles().remove(tile);
+    }
+
+    private void rightClick(float x, float y, int tilex, int tiley) {
+
+        if (isShiftPressed()) {
+            LevelObject newObj = new LevelObject(0, x, y, 0, true, true,
+                    new boolean[]{true, true, true, true, true}, false, 0);
+            level.getObjects().add(newObj);
+
+            Entity newThing = new PlayerPawn(new Entity.Position(x, y, 0), 0);
+            GameLogic.entityList.add(newThing);
+
+            GameLogic.loadEntities(level, true);
+            editThingPrompt(newObj, newThing);
+            return;
+        }
+
+        //If you clicked on an object, edit it.
+        for (Entity e : GameLogic.entityList) {
+            if (e.getBounds().contains(x, y)) {
+                LevelObject obj = level.getObjects().get(GameLogic.entityList.indexOf(e));
+                editThingPrompt(obj, e);
+                return;
+            }
+        }
+
+        editTilePrompt(tilex, tiley);
     }
 }
