@@ -3,6 +3,7 @@ package editor.gdx.launch;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,6 +35,7 @@ import editor.gdx.windows.FileChooserWindow;
 import editor.gdx.windows.LevelChooserWindow;
 import editor.gdx.write.LevelWriter;
 import net.mtrop.doom.WadFile;
+import org.lwjgl.system.CallbackI;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -52,10 +54,24 @@ public class EditorScreen implements Screen {
     public LevelData level;
     public Integer levelnum;
     public boolean windowOpen;
+
+    //Copy-paste
     private CopiedTileData copiedTileData = null;
     private CopiedThingData copiedThingData = null;
+
+    //Dragging
     private boolean dragging = false;
     private LevelObject dragThing = null;
+
+    //Selection
+    private boolean selecting = false;
+    private boolean selectThings = false;
+    private float selectionX1 = 0;
+    private float selectionY1 = 0;
+    private float selectionX2 = 0;
+    private float selectionY2 = 0;
+    private Array<LevelObject> selectedObjs = new Array<>();
+    private Array<LevelTile> selectedTiles = new Array<>();
 
     //UI Stuff
     public Stage stage = new Stage(new ScreenViewport());
@@ -95,6 +111,9 @@ public class EditorScreen implements Screen {
 
             sr.setProjectionMatrix(camera.combined);
             sr.begin(ShapeRenderer.ShapeType.Line);
+            if (selecting) {
+                drawSelectionBox();
+            }
             RenderFuncs.gridDraw(camera, sr);
             sr.end();
         }
@@ -131,11 +150,19 @@ public class EditorScreen implements Screen {
             leftClick(x, y, tilex, tiley);
         }
 
-        //If not holding left click, stop dragging
+        //If not holding left click, stop dragging or selecting
         else {
             if (dragging) {
                 dragging = false;
                 GameLogic.loadEntities(level, true);
+            }
+
+            if (selecting) {
+                selectionX2 = x;
+                selectionY2 = y;
+
+                makeSelection();
+                selecting = false;
             }
         }
     }
@@ -361,12 +388,22 @@ public class EditorScreen implements Screen {
 
         //Check if *just* pressed in particular
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            //If you clicked on an object, drag it.
-            for (Entity e : GameLogic.entityList) {
-                if (e.getBounds().contains(x, y)) {
-                    dragThing = level.getObjects().get(GameLogic.entityList.indexOf(e));
-                    dragging = true;
-                    return;
+
+            if (isCtrlPressed()) {
+                selecting = true;
+                selectionX1 = x;
+                selectionY1 = y;
+
+                if (isShiftPressed()) {selectThings = true;}
+
+            } else {
+                //If you clicked on an object, drag it.
+                for (Entity e : GameLogic.entityList) {
+                    if (e.getBounds().contains(x, y)) {
+                        dragThing = level.getObjects().get(GameLogic.entityList.indexOf(e));
+                        dragging = true;
+                        return;
+                    }
                 }
             }
         } else {
@@ -419,5 +456,55 @@ public class EditorScreen implements Screen {
         }
 
         editTilePrompt(tilex, tiley);
+    }
+
+    private void makeSelection() {
+
+        selectedObjs.clear();
+        selectedTiles.clear();
+
+        Rectangle selectionBounds = new Rectangle(
+                Math.min(selectionX1, selectionX2),
+                Math.min(selectionY1, selectionY2),
+                Math.abs(selectionX1 - selectionX2), Math.abs(selectionY1 - selectionY2)
+        );
+
+        if (selectThings) {
+
+            for (Entity e : GameLogic.entityList) {
+                if (selectionBounds.overlaps(e.getBounds())) {
+                    selectedObjs.add(level.getObjects().get(GameLogic.entityList.indexOf(e)));
+                }
+            }
+            //System.out.println(selectedObjs);
+        } else {
+
+            for (LevelTile t : level.getTiles()) {
+                Rectangle tileBounds
+                        = new Rectangle(t.pos.x * LevelTile.TILE_SIZE,
+                        t.pos.y * LevelTile.TILE_SIZE,
+                            LevelTile.TILE_SIZE, LevelTile.TILE_SIZE);
+
+                if (selectionBounds.overlaps(tileBounds)) {
+                    selectedTiles.add(t);
+                }
+            }
+            //System.out.println(selectedTiles);
+        }
+    }
+
+    private void drawSelectionBox() {
+
+        float x = (int)(mouseInWorld.x);
+        float y = (int)(mouseInWorld.y);
+
+        sr.rect(
+                Math.min(x, selectionX1),
+                Math.min(y, selectionY1),
+                Math.abs(x - selectionX1),
+                Math.abs(y - selectionY1),
+                Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE
+        );
+
     }
 }
