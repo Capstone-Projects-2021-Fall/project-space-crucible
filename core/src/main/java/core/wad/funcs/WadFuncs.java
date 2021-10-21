@@ -169,7 +169,7 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState(77,"POSS", 'D', 4, 78, new A_Chase()));   //77
         GameLogic.stateList.add(new EntityState(78,"POSS", 'D', 4, 71, new A_Chase()));   //78
         GameLogic.stateList.add(new EntityState(79, "POSS", 'E', 10, 80, new A_FaceTarget())); // 79
-        GameLogic.stateList.add(new EntityState(80, "POSS", 'F', 8, 81, new A_BulletAttack(15, 9f))); // 80
+        GameLogic.stateList.add(new EntityState(80, "POSS", 'F', 8, 81, new A_BulletAttack(15, 15f, "pistol/shoot"))); // 80
         GameLogic.stateList.add(new EntityState(81, "POSS", 'E', 8, 71, new A_FaceTarget())); // 81
         GameLogic.stateList.add(new EntityState(82,"POSS", 'G', 3, 83, null));   //82
         GameLogic.stateList.add(new EntityState(83,"POSS", 'G', 3, 71, new A_Pain()));   //83
