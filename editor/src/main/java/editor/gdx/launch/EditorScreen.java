@@ -111,7 +111,7 @@ public class EditorScreen implements Screen {
 
             sr.setProjectionMatrix(camera.combined);
             sr.begin(ShapeRenderer.ShapeType.Line);
-            if (selecting) {
+            if (selecting || !selectedTiles.isEmpty() || !selectedObjs.isEmpty()) {
                 drawSelectionBox();
             }
             RenderFuncs.gridDraw(camera, sr);
@@ -394,7 +394,7 @@ public class EditorScreen implements Screen {
                 selectionX1 = x;
                 selectionY1 = y;
 
-                if (isShiftPressed()) {selectThings = true;}
+                selectThings = isShiftPressed();
 
             } else {
                 //If you clicked on an object, drag it.
@@ -498,13 +498,25 @@ public class EditorScreen implements Screen {
         float x = (int)(mouseInWorld.x);
         float y = (int)(mouseInWorld.y);
 
-        sr.rect(
-                Math.min(x, selectionX1),
-                Math.min(y, selectionY1),
-                Math.abs(x - selectionX1),
-                Math.abs(y - selectionY1),
-                Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE
-        );
+        Color color = selectThings ? Color.GREEN : Color.BLUE;
+
+        if (selecting) {
+            sr.rect(
+                    Math.min(x, selectionX1),
+                    Math.min(y, selectionY1),
+                    Math.abs(x - selectionX1),
+                    Math.abs(y - selectionY1),
+                   color, color, color, color
+            );
+        } else {
+            sr.rect(
+                    Math.min(selectionX2, selectionX1),
+                    Math.min(selectionY2, selectionY1),
+                    Math.abs(selectionX2 - selectionX1),
+                    Math.abs(selectionY2 - selectionY1),
+                    color, color, color, color
+            );
+        }
 
     }
 }
