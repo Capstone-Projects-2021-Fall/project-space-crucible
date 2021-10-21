@@ -14,11 +14,16 @@ public class Worm extends BaseMonster {
     final public static int PAINSTATE = 29;
     final public static int DEATHSTATE = 31;
 
+    final private static String seeSound = "worm/see";
+    final private static String painSound = "worm/pain";
+    final private static String dieSound = "worm/die";
+    final private static String activeSound = "worm/active";
+
     public Worm(){}
 
     public Worm(Position pos, int tag) {
         super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
                 new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag, SOLID,
-                    new String[]{"worm/see", "worm/pain", "worm/die", "worm/active"});
+                new String[]{seeSound, painSound, dieSound, activeSound});
     }
 }
