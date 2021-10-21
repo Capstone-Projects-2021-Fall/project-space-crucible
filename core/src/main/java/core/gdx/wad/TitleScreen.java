@@ -6,11 +6,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import core.game.logic.GameLogic;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
@@ -47,6 +50,33 @@ public class TitleScreen implements Screen {
         }
     }
 
+    public static class StartMenu extends Window {
+
+        public StartMenu(String title, Skin skin, TitleScreen titleScreen) {
+            super(title, skin);
+            setModal(true);
+            List<String> startList = new List<>(skin);
+            startList.setHeight(1000);
+            startList.setWidth(500);
+            startList.setPosition(500, 500);
+            startList.setItems("Start", "Co-op", "Settings");
+            add(startList);
+            row();
+            TextButton button = new TextButton("Confirm", skin);
+            add(button);
+            pack();
+
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    remove();
+                    titleScreen.remove = true;
+                }
+            });
+        }
+    }
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -70,11 +100,8 @@ public class TitleScreen implements Screen {
         batch.enableBlending();
         //drawing sprite background
         batch.begin();
-        //this is for testing using the input based on screen size instead of hardcoded pixels
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.rect(camera.viewportWidth/9+40, camera.viewportHeight/5+25, 120,50);
         batch.draw(texture,15,15);
+        stage.addActor(new StartMenu("Main Menu", skin, this));
         if(Gdx.input.getX() > 260 && Gdx.input.getX() < 350 && Gdx.input.getY() > 180 && Gdx.input.getY() < 250){
             if(Gdx.input.isTouched()){
                 stage.addActor(new ChooseDifficultyWindow("Choose Difficulty:", skin, this));
@@ -86,7 +113,6 @@ public class TitleScreen implements Screen {
             }
         }
         batch.end();
-        shapeRenderer.end();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
