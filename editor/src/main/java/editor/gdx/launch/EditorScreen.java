@@ -284,6 +284,11 @@ public class EditorScreen implements Screen {
         windowOpen = true;
     }
 
+    private void editThingPrompt(Array<LevelObject> objs, Entity e) {
+        stage.addActor(new EditThingWindow("Edit Thing", skin, e, objs, resources, this));
+        windowOpen = true;
+    }
+
     public void openFilePrompt() {
         windowOpen = true;
         stage.addActor(new FileChooserWindow("Choose File:", skin, this));
@@ -438,6 +443,12 @@ public class EditorScreen implements Screen {
     }
 
     private void rightClick(float x, float y, int tilex, int tiley) {
+
+        //First check if anything is selected
+        if (!selectedObjs.isEmpty()) {
+            editThingPrompt(selectedObjs, GameLogic.entityList.get(level.getObjects().indexOf(selectedObjs.get(0))));
+            return;
+        }
 
         if (isShiftPressed()) {
             LevelObject newObj = new LevelObject(0, x, y, 0, true, true,

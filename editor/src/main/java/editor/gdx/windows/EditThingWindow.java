@@ -57,14 +57,6 @@ public class EditThingWindow extends Window {
         add(sprite);
         add(typeField);
         row();
-        add(new Label("X:", skin));
-        xField = new NumberField(Float.toString(entity.getPos().x), skin);
-        add(xField);
-        row();
-        add(new Label("Y:", skin));
-        yField = new NumberField(Float.toString(entity.getPos().y), skin);
-        add(yField);
-        row();
         add(new Label("Angle:", skin));
         angleField = new NumberField(Float.toString(entity.getPos().angle), skin);
         add(angleField);
@@ -140,8 +132,6 @@ public class EditThingWindow extends Window {
     private void changeThing() {
 
         try {
-            Float.parseFloat(xField.getText());
-            Float.parseFloat(yField.getText());
             Float.parseFloat(angleField.getText());
         } catch (NumberFormatException n) {
             System.out.println("Position fields are not readable, try again");
@@ -150,8 +140,8 @@ public class EditThingWindow extends Window {
 
         for (LevelObject lo : objs) {
             lo.type = Integer.parseInt(typeField.getText());
-            lo.xpos = Float.parseFloat(xField.getText());
-            lo.ypos = Float.parseFloat(yField.getText());
+            //lo.xpos = Float.parseFloat(xField.getText());
+            //lo.ypos = Float.parseFloat(yField.getText());
             lo.angle = Float.parseFloat(angleField.getText());
             lo.singleplayer = singleCheck.isChecked();
             lo.cooperative = coopCheck.isChecked();
