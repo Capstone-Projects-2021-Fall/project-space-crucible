@@ -18,6 +18,7 @@ public class EditTileWindow extends Window {
 
     Array<WadFile> resources;
     LevelTile tile;
+    Array<LevelTile> tiles = new Array<>();
     Image tileTexture;
     SelectBox<String> textureList;
     CheckBox solidCheckBox;
@@ -31,12 +32,19 @@ public class EditTileWindow extends Window {
     TextButton cancelButton;
     EditorScreen editor;
 
+    public EditTileWindow(String title, Skin skin, Array<LevelTile> tiles, Array<WadFile> resources, EditorScreen editor) {
+        this(title, skin, tiles.get(0), resources, editor);
+        this.tiles = tiles;
+    }
+
     //Creates a new EditTileWindow instance
     public EditTileWindow(String title, Skin skin, LevelTile tile, Array<WadFile> resources, EditorScreen editor) {
         super(title, skin);
         this.resources = resources;
         this.tile = tile;
         this.editor = editor;
+
+        if (tiles.isEmpty()) {tiles.add(tile);}
 
         //Focus this window
         setModal(true);
@@ -148,15 +156,17 @@ public class EditTileWindow extends Window {
     }
 
     private void changeTile() {
-        tile.graphicname = textureList.getSelected();
-        tile.solid = solidCheckBox.isChecked();
-        tile.light = (int) lightSlider.getValue();
-        tile.effect = Integer.parseInt(effectField.getText());
-        tile.arg1 = Integer.parseInt(arg1Field.getText());
-        tile.arg2 = Integer.parseInt(arg2Field.getText());
-        tile.repeat = repeatCheckBox.isChecked();
-        tile.tag = Integer.parseInt(tagField.getText());
 
+        for (LevelTile t : tiles) {
+            t.graphicname = textureList.getSelected();
+            t.solid = solidCheckBox.isChecked();
+            t.light = (int) lightSlider.getValue();
+            t.effect = Integer.parseInt(effectField.getText());
+            t.arg1 = Integer.parseInt(arg1Field.getText());
+            t.arg2 = Integer.parseInt(arg2Field.getText());
+            t.repeat = repeatCheckBox.isChecked();
+            t.tag = Integer.parseInt(tagField.getText());
+        }
         close();
     }
 }

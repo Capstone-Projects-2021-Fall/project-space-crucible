@@ -278,14 +278,19 @@ public class EditorScreen implements Screen {
         windowOpen = true;
     }
 
+    private void editTilePrompt() {
+        stage.addActor(new EditTileWindow("Edit Tiles", skin, selectedTiles, resources, this));
+        windowOpen = true;
+    }
+
     //Edit game Entities
     private void editThingPrompt(LevelObject obj, Entity e) {
         stage.addActor(new EditThingWindow("Edit Thing", skin, e, obj, resources, this));
         windowOpen = true;
     }
 
-    private void editThingPrompt(Array<LevelObject> objs, Entity e) {
-        stage.addActor(new EditThingWindow("Edit Thing", skin, e, objs, resources, this));
+    private void editThingPrompt(Entity e) {
+        stage.addActor(new EditThingWindow("Edit Things", skin, e, selectedObjs, resources, this));
         windowOpen = true;
     }
 
@@ -446,7 +451,12 @@ public class EditorScreen implements Screen {
 
         //First check if anything is selected
         if (!selectedObjs.isEmpty()) {
-            editThingPrompt(selectedObjs, GameLogic.entityList.get(level.getObjects().indexOf(selectedObjs.get(0))));
+            editThingPrompt(GameLogic.entityList.get(level.getObjects().indexOf(selectedObjs.get(0))));
+            return;
+        }
+
+        if (!selectedTiles.isEmpty()) {
+            editTilePrompt();
             return;
         }
 
