@@ -66,13 +66,23 @@ public class TitleScreen implements Screen {
             add(startList);
             row();
             pack();
-            if(Gdx.input.isTouched()){
-                if(Gdx.input.isTouched()){
-
+            startList.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    String clickedItem = startList.getPressedItem();
+                    if(clickedItem==startList.getItemAt(0)){
+                        System.out.println("Start Selected\n");
+                    }
+                    if(clickedItem==startList.getItemAt(1)){
+                        System.out.println("Co-op Selected\n");
+                    }
                 }
-            }
+            });
         }
     }
+
+
+
+
 
     @Override
     public void show() {
