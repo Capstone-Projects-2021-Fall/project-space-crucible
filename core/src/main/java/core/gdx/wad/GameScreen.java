@@ -19,7 +19,6 @@ import core.game.entities.PlayerPawn;
 import core.server.SpaceClient;
 import core.server.Network.RenderData;
 import core.wad.funcs.SoundFuncs;
-import core.wad.funcs.MIDIFuncs;
 import core.server.Network.ClientData;
 
 public class GameScreen implements Screen {
