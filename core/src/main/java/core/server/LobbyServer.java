@@ -36,12 +36,13 @@ public class LobbyServer {
         return freePort.getLocalPort();
     }
 
-    public void createLobby(Connection c){
+    public Lobby createLobby(String hostUsername){
         final String newLobbyCode = createRandomLobbyCode();
-        final Lobby lobby = Lobby.createLobby(newLobbyCode, 4);
+        final Lobby lobby = new Lobby(newLobbyCode, 4);
         lobbies.put(lobby.getLobbyCode(), lobby);
         //add the host player to the lobby
-        lobby.addPlayerToLobby(c);
+        lobby.addPlayerToLobby(hostUsername);
+        return lobby;
     }
     public void joinLobby(String lobbyCode){
         final Lobby lobby = lobbies.get(lobbyCode);

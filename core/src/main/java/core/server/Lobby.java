@@ -16,16 +16,12 @@ public class Lobby {
         this.lobbySize = lobbySize;
     }
 
-    public static Lobby createLobby(String lobbyCode, int lobbySize){
-        return new Lobby(lobbyCode, lobbySize);
-    }
-
     public String getLobbyCode() {
         return lobbyCode;
     }
 
-    public void addPlayerToLobby(Connection c){
-        this.players.put(c.getID(), c);
+    public void addPlayerToLobby(String username){
+//        this.players.put(c.getID(), c);
     }
 
     public void removePlayerFromLobby(Connection c){
