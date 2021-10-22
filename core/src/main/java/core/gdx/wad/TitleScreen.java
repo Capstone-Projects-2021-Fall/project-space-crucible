@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
@@ -14,9 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import core.game.logic.GameLogic;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
+import javax.swing.text.StyledEditorKit;
 import java.io.IOException;
 
 public class TitleScreen implements Screen {
@@ -51,29 +55,22 @@ public class TitleScreen implements Screen {
     }
 
     public static class StartMenu extends Window {
-
         public StartMenu(String title, Skin skin, TitleScreen titleScreen) {
             super(title, skin);
-            setModal(true);
+            setModal(false);
             List<String> startList = new List<>(skin);
-            startList.setHeight(1000);
-            startList.setWidth(500);
-            startList.setPosition(500, 500);
+//            startList.setHeight(1000); //not working
+//            startList.setWidth(500); //not working
+//            startList.setPosition(500, 500); //not working (startMenuActor.setPosition below)
             startList.setItems("Start", "Co-op", "Settings");
             add(startList);
             row();
-            TextButton button = new TextButton("Confirm", skin);
-            add(button);
             pack();
+            if(Gdx.input.isTouched()){
+                if(Gdx.input.isTouched()){
 
-            button.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    super.clicked(event, x, y);
-                    remove();
-                    titleScreen.remove = true;
                 }
-            });
+            }
         }
     }
 
@@ -95,13 +92,14 @@ public class TitleScreen implements Screen {
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-
-        batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
         //drawing sprite background
         batch.begin();
-        batch.draw(texture,15,15);
-        stage.addActor(new StartMenu("Main Menu", skin, this));
+        batch.draw(texture,25,30);
+        Actor startMenuActor = new StartMenu("Main Menu", skin, this);
+        stage.addActor(startMenuActor);
+        startMenuActor.setPosition(270,140);
+        //startMenuActor.setPosition(camera.viewportWidth, camera.viewportHeight); //instead of hardcoded position
         if(Gdx.input.getX() > 260 && Gdx.input.getX() < 350 && Gdx.input.getY() > 180 && Gdx.input.getY() < 250){
             if(Gdx.input.isTouched()){
                 stage.addActor(new ChooseDifficultyWindow("Choose Difficulty:", skin, this));
