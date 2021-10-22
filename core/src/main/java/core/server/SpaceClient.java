@@ -1,12 +1,11 @@
 package core.server;
 
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import core.gdx.wad.GameScreen;
 import core.server.Network.*;
-import core.wad.funcs.MIDIFuncs;
+import core.wad.funcs.SoundFuncs;
 
 
 import java.io.IOException;
@@ -32,15 +31,24 @@ public class SpaceClient extends Listener {
             }
 
             public void received (Connection connection, Object object) {
+
                 //If the server sends RenderData object update the client's gamescreen
                 if(object instanceof RenderData){
                     screen.setRenderData((RenderData) object);
-                } else if (object instanceof MIDIData) {
+                }
+
+                //If server sends MIDIData, change client's music
+                else if (object instanceof MIDIData) {
                     if (((MIDIData) object).midi != null && !((MIDIData) object).midi.equals("") ) {
-                        MIDIFuncs.playMIDI(((MIDIData) object).midi);
+                        SoundFuncs.playMIDI(((MIDIData) object).midi);
                     } else {
-                        MIDIFuncs.stopMIDI();
+                        SoundFuncs.stopMIDI();
                     }
+                }
+
+                //If server sends SoundData, play sound matching the given name
+                else if (object instanceof SoundData) {
+                    SoundFuncs.playSound(((SoundData) object).sound);
                 }
             }
             public void disconnected (Connection connection) {

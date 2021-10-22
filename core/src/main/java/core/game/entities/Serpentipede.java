@@ -14,10 +14,16 @@ public class Serpentipede extends BaseMonster {
     final public static int PAINSTATE = 62;
     final public static int DEATHSTATE = 64;
 
+    final private static String seeSound = "serpentipede/see";
+    final private static String painSound = "serpentipede/pain";
+    final private static String dieSound = "serpentipede/die";
+    final private static String activeSound = "serpentipede/active";
+
     public Serpentipede(){}
 
     public Serpentipede(Position pos, int tag) {
         super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
-                new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag, SOLID);
+                new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag, SOLID,
+                    new String[]{seeSound, painSound, dieSound, activeSound});
     }
 }

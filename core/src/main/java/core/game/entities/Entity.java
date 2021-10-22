@@ -27,6 +27,11 @@ public abstract class Entity {
 
     final public static long SOLID = 1;
 
+    final public static float EAST = 0f;
+    final public static float NORTH = 90f;
+    final public static float WEST = 180f;
+    final public static float SOUTH = 270f;
+
     public static class Position {
         public float x;
         public float y;
@@ -52,6 +57,13 @@ public abstract class Entity {
     private int tag;
     private Rectangle bound;
     public long flags;
+
+
+
+    //Used for collision detection to determine where the monster should go next.
+    //Upon colliding in one way, the monster changes movement and moves the opposite way until there is no obstacle
+    public boolean hitx = false;
+    public boolean hity = false;
 
     public Entity(){}
 
@@ -93,9 +105,9 @@ public abstract class Entity {
         return pos;
     }
 
-    public void setPos(float x, float y, Rectangle bounds) {
-        getPos().x = x;
-        getPos().y = y;
+    public void setPos(Rectangle bounds) {
+        getPos().x = bounds.x;
+        getPos().y = bounds.y;
         getBounds().set(bounds);
     }
 
