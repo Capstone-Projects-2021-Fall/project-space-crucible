@@ -24,8 +24,8 @@ public class SpaceServer extends Listener {
 
     //Server Object
     Server server;
-    HashSet<Connection> connected = new HashSet();
-    private final int maxLobbies = 100;
+    Network.ClientData clientData;
+    public static HashSet<Integer> connected = new HashSet();
 
     //Game loop
     Thread gameLoop = new Thread() {
@@ -48,7 +48,7 @@ public class SpaceServer extends Listener {
                 return new PlayerConnection();
             }
         };
-
+        clientData = new Network.ClientData();
         GameLogic.isSinglePlayer = false;
 
         //Loading the wad files
@@ -82,14 +82,15 @@ public class SpaceServer extends Listener {
             //When the client connects to the server add a player entity to the game
             public void connected(Connection c){
                 System.out.println("Client connected: " + c.getRemoteAddressTCP().getHostString());
-                PlayerConnection connection = (PlayerConnection) c;
-                connected.add(c);
+                connected.add(c.getID());
+                clientData.connected = connected;
+                server.sendToAllTCP(clientData);
+
                 //Wait for everyone to connect
                 if(connected.size() == playerCount && !gameLoop.isAlive()){
                     GameLogic.currentLevel = GameLogic.levels.get(1);
                     gameLoop.start();
                 }
-
             }
             //When the client sends a packet to the server handle it
             public void received(Connection c, Object packetData) {
@@ -105,7 +106,9 @@ public class SpaceServer extends Listener {
             }
             //This method will run when a client disconnects from the server, remove the character from the game
             public void disconnected(Connection c){
-                PlayerConnection connection = (PlayerConnection) c;
+                connected.remove(c.getID());
+                clientData.connected = connected;
+                server.sendToAllTCP(clientData);
                 System.out.println("Client disconnected! " + c.getID());
             }
         });

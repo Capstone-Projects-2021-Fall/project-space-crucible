@@ -5,16 +5,23 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import core.game.entities.Entity;
 import core.game.logic.GameLogic;
 import core.game.entities.PlayerPawn;
+import core.server.Network;
 import core.server.SpaceClient;
 import core.server.Network.RenderData;
 import core.wad.funcs.SoundFuncs;
+import core.wad.funcs.MIDIFuncs;
+import core.server.Network.ClientData;
 
 public class GameScreen implements Screen {
 
@@ -29,7 +36,11 @@ public class GameScreen implements Screen {
     boolean isSinglePlayer;
     SpaceClient client;
     RenderData renderData = new RenderData();
-
+    Stage lobbyStage;
+    Texture background = new Texture("spaceBackground.png");
+    Skin uiSkin = new Skin(Gdx.files.internal("uiSkin.json"));
+    ClientData clientData = new ClientData();
+    int lobbySize = 2;
 
     float angle = 0;
 
@@ -42,8 +53,9 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
         batch = new SpriteBatch();
+        lobbyStage = new Stage();
         this.isSinglePlayer = isSinglePlayer;
-        if(!isSinglePlayer){
+        if(!isSinglePlayer){ //If it is co-op mode create a new client.
             client = new SpaceClient(this);
         }
 
@@ -63,22 +75,26 @@ public class GameScreen implements Screen {
 
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        //This centers the camera to the player
-        //Get the angle where the mouse is pointing to on the screen in relation to where the player is
-        //Referenced code - https://stackoverflow.com/questions/16381031/get-cursor-position-in-libgdx
-        if (isSinglePlayer) {
-            mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(1).getPos().x;
-            mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(1).getPos().y;
-        } else if(renderData.tiles != null && renderData.entityList != null) {
-            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(1).getPos().x;
-            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(1).getPos().y;
+        if(clientData.connected != null) {
+            if (isSinglePlayer == false && clientData.connected.size() <= lobbySize) {
+                lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
+                lobbyStage.getBatch().begin();
+                lobbyStage.getBatch().draw(background, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
+                int x = 100;
+                int y = 400;
+                for (int element : clientData.connected) {
+                    String clientId = "Player " + element;
+                    TextButton player = new TextButton(clientId, uiSkin);
+                    player.setBounds(x, y, 80, 50);
+                    lobbyStage.addActor(player);
+                    y -= 50;
+                }
+                lobbyStage.getBatch().end();
+                lobbyStage.draw(); //Draw the ui
+            }
         }
-        mouseInWorld3D.z = 0;
-        camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
-        mouseInWorld2D.x = mouseInWorld3D.x;
-        mouseInWorld2D.y = mouseInWorld3D.y;
-        angle = mouseInWorld2D.angleDeg();
+
+        getAngle(isSinglePlayer);
         if(isSinglePlayer)
             GameLogic.getPlayer(1).getPos().angle = angle; //Turn the vector2 into a degree angle
 
@@ -128,6 +144,25 @@ public class GameScreen implements Screen {
         sr.end();
     }
 
+    public float getAngle(boolean isSinglePlayer){
+        //This centers the camera to the player
+        //Get the angle where the mouse is pointing to on the screen in relation to where the player is
+        //Referenced code - https://stackoverflow.com/questions/16381031/get-cursor-position-in-libgdx
+        if (isSinglePlayer) {
+            mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(1).getPos().x;
+            mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(1).getPos().y;
+        } else if(renderData.tiles != null && renderData.entityList != null) {
+            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(1).getPos().x;
+            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(1).getPos().y;
+        }
+        mouseInWorld3D.z = 0;
+        camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
+        mouseInWorld2D.x = mouseInWorld3D.x;
+        mouseInWorld2D.y = mouseInWorld3D.y;
+        angle = mouseInWorld2D.angleDeg();
+        return angle;
+    }
+
     @Override
     public void resize(int width, int height) {
         camera.viewportWidth = width;
@@ -161,6 +196,10 @@ public class GameScreen implements Screen {
 
     public void setRenderData(RenderData object) {
         renderData = object;
+    }
+
+    public void setClientData(ClientData object) {
+        clientData = object;
     }
 
     private boolean[] getControls() {

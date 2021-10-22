@@ -3,20 +3,15 @@ package core.gdx.wad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.esotericsoftware.kryonet.Client;
 import core.server.LobbyServer;
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
 
 public class MainMenuScreen implements Screen {
 
@@ -26,6 +21,7 @@ public class MainMenuScreen implements Screen {
     ImageButton exit;
     Texture background;
     LobbyServer lobbyServer = new LobbyServer();
+    Client client;
     final TextField username;
 
     Skin uiSkin = new Skin(Gdx.files.internal("uiSkin.json"));
@@ -51,7 +47,6 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-
     }
 
     @Override
@@ -72,33 +67,29 @@ public class MainMenuScreen implements Screen {
         play.addListener(new ClickListener() {
             @Override
             public void clicked (InputEvent event, float x, float y) {
-                Window lobby = new Window("Lobby", uiSkin);
-                lobby.setMovable(false);
-                TextButton joinLobby = new TextButton("Join Lobby", uiSkin);
-                TextButton createLobby = new TextButton("Create Lobby", uiSkin);
-                TextButton back = new TextButton("Back", uiSkin);
-                lobby.add(createLobby).row();
-                lobby.add(joinLobby).row();
-                lobby.add(back);
-                lobby.setBounds((Gdx.graphics.getWidth() - 400)/ 2, (Gdx.graphics.getHeight() - 200) / 2, 400, 200);
-                stage.addActor(lobby);
-                back.addListener(new ClickListener(){
-                    public void clicked(InputEvent event, float x, float y) {
-                        game.setScreen(new MainMenuScreen(game));
-                    }
-                });
-                createLobby.addListener(new ClickListener(){
-                    public void clicked(InputEvent event, float x, float y) {
-                        if(username.getText() == null){
-                            return;
-                        }
-                    }
-                });
-                joinLobby.addListener(new ClickListener(){
-                    public void clicked(InputEvent event, float x, float y) {
-                    }
-                });
+//                game.setScreen(new LobbyScreen(game.mainMenu));
+//                Window lobby = new Window("Lobby", uiSkin);
+//                lobby.setMovable(false);
+//                TextButton joinLobby = new TextButton("Join Lobby", uiSkin);
+//                TextButton back = new TextButton("Back", uiSkin);
+//                lobby.add(joinLobby).row();
+//                lobby.add(back);
+//                lobby.setBounds((Gdx.graphics.getWidth() - 400)/ 2, (Gdx.graphics.getHeight() - 200) / 2, 400, 200);
+//                stage.addActor(lobby);
+//                back.addListener(new ClickListener(){
+//                    public void clicked(InputEvent event, float x, float y) {
+//                        game.setScreen(new MainMenuScreen(game));
+//                    }
+//                });
+//                joinLobby.addListener(new ClickListener(){
+//                    public void clicked(InputEvent event, float x, float y) {
+//                    }
+//                });
             }
+            //waiting
+            //get list of connections
+            //get packet with connected plauer
+            //
         });
 
         exit.addListener(new InputListener() {

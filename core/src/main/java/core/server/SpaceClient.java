@@ -1,5 +1,6 @@
 package core.server;
 
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -44,12 +45,16 @@ public class SpaceClient extends Listener {
                     } else {
                         SoundFuncs.stopMIDI();
                     }
+                }else if(object instanceof ClientData){
+                    System.out.println("received data");
+                    screen.setClientData((ClientData) object);
                 }
 
                 //If server sends SoundData, play sound matching the given name
                 else if (object instanceof SoundData) {
                     SoundFuncs.playSound(((SoundData) object).sound);
                 }
+
             }
             public void disconnected (Connection connection) {
                 System.exit(0);
@@ -70,6 +75,10 @@ public class SpaceClient extends Listener {
         inputData.controls = controls;
         inputData.angle = screen.getAngle();
         client.sendTCP(inputData);
+    }
+
+    public Client getClient(){
+        return client;
     }
 
 }

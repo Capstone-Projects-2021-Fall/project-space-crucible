@@ -68,11 +68,11 @@ public class MyGDxTest extends Game {
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
 
-//        titleScreen = new TitleScreen(this, gameLoop);
-//        setScreen(titleScreen);
+        titleScreen = new TitleScreen(this, gameLoop);
+        setScreen(titleScreen);
 
-        mainMenu = new MainMenuScreen(this);
-        setScreen(mainMenu);
+//        mainMenu = new MainMenuScreen(this);
+//        setScreen(mainMenu);
 //        gameScreen = new GameScreen(gameLoop);
 //        setScreen(gameScreen);
     }
