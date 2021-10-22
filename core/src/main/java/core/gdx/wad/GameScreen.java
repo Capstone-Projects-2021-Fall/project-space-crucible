@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import core.game.entities.Entity;
 import core.game.logic.GameLogic;
 import core.game.entities.PlayerPawn;
-import core.server.Network;
 import core.server.SpaceClient;
 import core.server.Network.RenderData;
 import core.wad.funcs.SoundFuncs;
@@ -26,6 +25,10 @@ import core.server.Network.ClientData;
 public class GameScreen implements Screen {
 
     Thread gameLoop;
+    SpaceClient client;
+    RenderData renderData = new RenderData();
+    ClientData clientData = new ClientData();
+    int lobbySize = 2;
 
     //screen
     OrthographicCamera camera;
@@ -34,18 +37,13 @@ public class GameScreen implements Screen {
     ShapeRenderer sr = new ShapeRenderer();
     boolean showBoxes = false;
     boolean isSinglePlayer;
-    SpaceClient client;
-    RenderData renderData = new RenderData();
-    Stage lobbyStage;
-    Texture background = new Texture("spaceBackground.png");
-    Skin uiSkin = new Skin(Gdx.files.internal("uiSkin.json"));
-    ClientData clientData = new ClientData();
-    int lobbySize = 2;
-
     float angle = 0;
 
     //graphics
     SpriteBatch batch;
+    Stage lobbyStage;
+    Texture background = new Texture("spaceBackground.png");
+    Skin uiSkin = new Skin(Gdx.files.internal("uiSkin.json"));
 
     public GameScreen(Thread gameLoop, boolean isSinglePlayer) {
         this.gameLoop = gameLoop;
@@ -58,7 +56,6 @@ public class GameScreen implements Screen {
         if(!isSinglePlayer){ //If it is co-op mode create a new client.
             client = new SpaceClient(this);
         }
-
     }
 
     @Override

@@ -41,7 +41,7 @@ public class LobbyServer {
         final Lobby lobby = new Lobby(newLobbyCode, 4);
         lobbies.put(lobby.getLobbyCode(), lobby);
         //add the host player to the lobby
-        lobby.addPlayerToLobby(hostUsername);
+        // lobby.addPlayerToLobby(hostUsername);
         return lobby;
     }
     public void joinLobby(String lobbyCode){
