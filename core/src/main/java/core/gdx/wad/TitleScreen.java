@@ -7,20 +7,17 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import core.game.logic.GameLogic;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
-import javax.swing.text.StyledEditorKit;
 import java.io.IOException;
 
 public class TitleScreen implements Screen {
@@ -54,34 +51,6 @@ public class TitleScreen implements Screen {
         }
     }
 
-    public static class StartMenu extends Window {
-        public StartMenu(String title, Skin skin, TitleScreen titleScreen) {
-            super(title, skin);
-            setModal(false);
-            List<String> startList = new List<>(skin);
-//            startList.setHeight(1000); //not working
-//            startList.setWidth(500); //not working
-//            startList.setPosition(500, 500); //not working (startMenuActor.setPosition below)
-            startList.setItems("Start", "Co-op", "Settings");
-            add(startList);
-            row();
-            pack();
-            startList.addListener(new ClickListener() {
-                public void clicked(InputEvent event, float x, float y) {
-                    String clickedItem = startList.getPressedItem();
-                    if(clickedItem==startList.getItemAt(0)){
-                        System.out.println("Start Selected\n");
-                    }
-                    if(clickedItem==startList.getItemAt(1)){
-                        System.out.println("Co-op Selected\n");
-                    }
-                }
-            });
-        }
-    }
-
-
-
 
 
     @Override
@@ -108,18 +77,12 @@ public class TitleScreen implements Screen {
         batch.draw(texture,25,30);
         Actor startMenuActor = new StartMenu("Main Menu", skin, this);
         stage.addActor(startMenuActor);
-        startMenuActor.setPosition(270,140);
-        //startMenuActor.setPosition(camera.viewportWidth, camera.viewportHeight); //instead of hardcoded position
-        if(Gdx.input.getX() > 260 && Gdx.input.getX() < 350 && Gdx.input.getY() > 180 && Gdx.input.getY() < 250){
-            if(Gdx.input.isTouched()){
-                stage.addActor(new ChooseDifficultyWindow("Choose Difficulty:", skin, this));
-            }
-        }else if(Gdx.input.getX() > 260 && Gdx.input.getX() < 350 && Gdx.input.getY() > 300 && Gdx.input.getY() < 350){
-            if(Gdx.input.isTouched()){
-                isSinglePlayer = false;
-                remove = true;
-            }
+        startMenuActor.setPosition(camera.viewportWidth/7, camera.viewportHeight/7);
+
+        if(Gdx.input.isTouched()){
+            stage.addActor(new ChooseDifficultyWindow("Choose Difficulty:", skin, this));
         }
+
         batch.end();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
