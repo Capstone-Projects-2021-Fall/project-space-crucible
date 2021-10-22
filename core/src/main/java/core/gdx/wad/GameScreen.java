@@ -42,7 +42,7 @@ public class GameScreen implements Screen {
     SpriteBatch batch;
     Stage lobbyStage;
     Texture background = new Texture("spaceBackground.png");
-    Skin uiSkin = new Skin(Gdx.files.internal("uiSkin.json"));
+    Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
 
     public GameScreen(Thread gameLoop, boolean isSinglePlayer) {
         this.gameLoop = gameLoop;
