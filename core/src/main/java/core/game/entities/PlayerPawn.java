@@ -40,7 +40,7 @@ public class PlayerPawn extends Entity {
                 SOLID);
     }
 
-    public void movementUpdate(boolean[] controls) {
+    public void movementUpdate() {
 
         if(controls == null){
             return;

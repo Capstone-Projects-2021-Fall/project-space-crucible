@@ -30,7 +30,6 @@ public class GameLogic {
     final public static Map<Integer, LevelData> levels = new HashMap<>();
     public static LevelData currentLevel = null;
     private static Server server;
-    public static boolean[] controls;
     static boolean goingToNextLevel = false;
     static LevelData nextLevel = null;
     public static boolean switchingLevels = false;
@@ -80,7 +79,7 @@ public class GameLogic {
 
             //Check ticCounter because Concurrency error might occur if player shoots on first tic.
             if (e instanceof PlayerPawn) {
-                ((PlayerPawn) e).movementUpdate(controls);
+                ((PlayerPawn) e).movementUpdate();
             }
         }
 
