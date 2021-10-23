@@ -75,13 +75,9 @@ public class TitleScreen implements Screen {
         //drawing sprite background
         batch.begin();
         batch.draw(texture,25,30);
-        Actor startMenuActor = new StartMenu("Main Menu", skin, this);
+        Actor startMenuActor = new StartMenu("Main Menu", skin, this, stage);
         stage.addActor(startMenuActor);
         startMenuActor.setPosition(camera.viewportWidth/7, camera.viewportHeight/7);
-
-        if(Gdx.input.isTouched()){
-            stage.addActor(new ChooseDifficultyWindow("Choose Difficulty:", skin, this));
-        }
 
         batch.end();
         stage.act(Gdx.graphics.getDeltaTime());
