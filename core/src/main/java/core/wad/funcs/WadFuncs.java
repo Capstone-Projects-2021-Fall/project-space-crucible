@@ -86,6 +86,8 @@ public class WadFuncs {
         GameLogic.entityType.add(Worm.class); // 1
         GameLogic.entityType.add(Serpentipede.class); //2
         GameLogic.entityType.add(Zombieman.class); //3
+        GameLogic.entityType.add(Keys.class); //4
+        GameLogic.entityType.add(Weapons.class);//5
     }
 
     public static void loadStates() {
@@ -178,7 +180,7 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState(86,"POSS", 'J', 5, 87, new A_Fall()));   //86
         GameLogic.stateList.add(new EntityState(87,"POSS", 'K', 5, 88, null));   //87
         GameLogic.stateList.add(new EntityState(88,"POSS", 'L', -1, 88, null));   //88
-
+        GameLogic.stateList.add(new EntityState(89,"YKEY", 'A', -1, 89, null));  //89
     }
 
     public static void loadSprites(Array<WadFile> wads) {
@@ -190,6 +192,9 @@ public class WadFuncs {
         RenderFuncs.spriteMap.put("BLUD", new GameSprite(wads, "BLUD"));
         RenderFuncs.spriteMap.put("TROO", new GameSprite(wads, "TROO"));
         RenderFuncs.spriteMap.put("POSS", new GameSprite(wads, "POSS"));
+        RenderFuncs.spriteMap.put("YKEY", new GameSprite(wads, "YKEY"));
+
+
     }
 
     public static void loadTextures(Array<WadFile> wads) {
