@@ -15,7 +15,7 @@ import java.io.IOException;
 public class SpaceClient extends Listener {
 
     Client client;
-    static String ip = "108.2.202.22";
+    static String ip = "localhost";
     GameScreen screen;
 
     public SpaceClient(GameScreen screen){
@@ -46,6 +46,7 @@ public class SpaceClient extends Listener {
                         SoundFuncs.stopMIDI();
                     }
                 }else if(object instanceof ClientData){
+                    System.out.println("received data");
                     screen.setClientData((ClientData) object);
                 }
 
