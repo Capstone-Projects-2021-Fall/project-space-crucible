@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
-import core.level.info.LevelData;
 import core.wad.funcs.MIDIFuncs;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
@@ -62,7 +61,5 @@ public class MyGDxTest extends Game {
 
         titleScreen = new TitleScreen(this, gameLoop);
         setScreen(titleScreen);
-//        gameScreen = new GameScreen(gameLoop);
-//        setScreen(gameScreen);
     }
 }

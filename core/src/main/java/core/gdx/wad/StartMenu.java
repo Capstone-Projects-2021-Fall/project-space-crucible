@@ -1,6 +1,5 @@
 package core.gdx.wad;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -44,6 +43,7 @@ public class StartMenu extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 System.out.println("Settings\n");
+
             }
         });
 
