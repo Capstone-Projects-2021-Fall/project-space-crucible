@@ -72,7 +72,7 @@ public class TitleScreen implements Screen {
         batch.draw(texture,25,30);
         Actor startMenuActor = new StartMenu("Main Menu", skin, this, stage);
         stage.addActor(startMenuActor);
-        startMenuActor.setPosition(camera.viewportWidth/7, camera.viewportHeight/7);
+        startMenuActor.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 12, Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight()/6);
 
         batch.end();
         stage.act(Gdx.graphics.getDeltaTime());

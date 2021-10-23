@@ -43,6 +43,7 @@ public class StartMenu extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 System.out.println("Settings\n");
+                //TODO launch new settings screen here
 
             }
         });
