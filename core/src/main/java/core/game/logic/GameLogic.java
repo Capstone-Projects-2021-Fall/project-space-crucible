@@ -29,7 +29,7 @@ public class GameLogic {
     final public static ArrayList<Class<? extends Entity>> entityType = new ArrayList<>();
     final public static Map<Integer, LevelData> levels = new HashMap<>();
     public static LevelData currentLevel = null;
-    private static Server server;
+    public static Server server = null;
     static boolean goingToNextLevel = false;
     static LevelData nextLevel = null;
     public static boolean switchingLevels = false;
@@ -48,8 +48,7 @@ public class GameLogic {
     final public static int RIGHT = 3;
     final public static int SHOOT = 4;
 
-    public static void start(Server s) {
-        server = s;
+    public static void start() {
         if (isSinglePlayer) {
             SoundFuncs.playMIDI(currentLevel.getMIDI());
         } else {
@@ -128,9 +127,14 @@ public class GameLogic {
             if (!obj.skill[difficulty] && !editor) {continue;}
 
             if (obj.type == 0) {
-                if (isSinglePlayer && obj.tag > 1) continue;
+                if (isSinglePlayer && obj.tag > 1 && !editor) continue;
 
-                if (server != null && obj.tag > server.getConnections().length) continue;
+                System.out.println("Server IS " + (server == null ? "" : "NOT") +  " null.");
+
+                if (server != null && obj.tag > server.getConnections().length) {
+                    System.out.println("Skipping player " + obj.tag + " because they don't exist.");
+                    continue;
+                }
             }
 
             try {

@@ -28,6 +28,7 @@ public class GameScreen implements Screen {
     RenderData renderData = new RenderData();
     ClientData clientData = new ClientData();
     int lobbySize = 2;
+    int playerNumber = 1;
 
     //screen
     OrthographicCamera camera;
@@ -61,6 +62,8 @@ public class GameScreen implements Screen {
     public void show() {
         if (isSinglePlayer) {
             gameLoop.start();
+        } else {
+            playerNumber = client.getClient().getID();
         }
     }
 
@@ -72,7 +75,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if(clientData.connected != null) {
-            if (isSinglePlayer == false && clientData.connected.size() <= lobbySize) {
+            if (!isSinglePlayer && clientData.connected.size() <= lobbySize) {
                 lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
                 lobbyStage.getBatch().begin();
                 lobbyStage.getBatch().draw(background, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
@@ -98,8 +101,8 @@ public class GameScreen implements Screen {
             camera.position.set(GameLogic.getPlayer(1).getPos().x + GameLogic.getPlayer(1).getWidth() / (float) 2.0,
                     GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight() / (float) 2.0, 0);
         } else if(renderData.tiles != null && renderData.entityList != null){
-            camera.position.set(getPlayer(1).getPos().x + getPlayer(1).getWidth() / (float) 2.0,
-                    getPlayer(1).getPos().y + getPlayer(1).getHeight() / (float) 2.0, 0);
+            camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
+                    getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
         }
         camera.update();
 

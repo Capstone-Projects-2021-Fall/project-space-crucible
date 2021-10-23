@@ -24,7 +24,7 @@ public class SpaceServer extends Listener {
     Thread gameLoop = new Thread() {
         @Override
         public void run() {
-            GameLogic.start(server);
+            GameLogic.start();
         }
 
         @Override
@@ -67,7 +67,6 @@ public class SpaceServer extends Listener {
         //Load prepare all Entity logic, open game screen and initiate game loop.
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
-        GameLogic.loadEntities(GameLogic.currentLevel, false);
         Network.register(server);
 
         server.addListener(new Listener(){
@@ -81,7 +80,9 @@ public class SpaceServer extends Listener {
 
                 //Wait for everyone to connect
                 if(connected.size() == playerCount && !gameLoop.isAlive()){
+                    GameLogic.server = server;
                     GameLogic.currentLevel = GameLogic.levels.get(1);
+                    GameLogic.loadEntities(GameLogic.currentLevel, false);
                     gameLoop.start();
                 }
 
