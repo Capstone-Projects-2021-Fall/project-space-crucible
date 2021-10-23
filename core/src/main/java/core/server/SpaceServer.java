@@ -18,7 +18,6 @@ public class SpaceServer extends Listener {
     Server server;
     Network.ClientData clientData;
     public static HashSet<Integer> connected = new HashSet();
-    private final int maxLobbies = 100;
 
     //Game loop
     Thread gameLoop = new Thread() {
@@ -95,8 +94,10 @@ public class SpaceServer extends Listener {
                 if(packetData instanceof InputData){
                     InputData input = (InputData) packetData;
                     connection.playerInput = input;
-                    GameLogic.getPlayer(c.getID()).controls = input.controls;
-                    GameLogic.getPlayer(c.getID()).getPos().angle = input.angle;
+                    if(GameLogic.getPlayer(c.getID()) != null) {
+                        GameLogic.getPlayer(c.getID()).controls = input.controls;
+                        GameLogic.getPlayer(c.getID()).getPos().angle = input.angle;
+                    }
                 }
             }
             //This method will run when a client disconnects from the server, remove the character from the game

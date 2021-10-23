@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="010ebc25-ee3c-467b-92cd-b9ace4d8787e" name="Changes" comment="bug fixing merge errors">
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/core/server/SpaceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/core/server/SpaceClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/core/server/SpaceServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/core/server/SpaceServer.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1zbH0gUy6TDyQdfBvipC5MvHC5Z" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="core.server" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="core.server" />
+      <recent name="core.gdx.wad.lwjgl3" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Lwjgl3Launcher">
+    <configuration name="EditorLauncher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="core.gdx.wad.lwjgl3.EditorLauncher" />
+      <module name="project-space-crucible.lwjgl3.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="core.gdx.wad.lwjgl3.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LobbyServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="core.server.LobbyServer" />
+      <module name="project-space-crucible.core.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="core.server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Lwjgl3Launcher" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="core.gdx.wad.lwjgl3.Lwjgl3Launcher" />
+      <module name="project-space-crucible.lwjgl3.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="core.gdx.wad.lwjgl3.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerLauncher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="core.gdx.wad.lwjgl3.ServerLauncher" />
+      <module name="project-space-crucible.lwjgl3.main" />
+      <option name="PROGRAM_PARAMETERS" value="2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="core.gdx.wad.lwjgl3.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.ServerLauncher" />
+      <item itemvalue="Application.Lwjgl3Launcher" />
+      <item itemvalue="Application.EditorLauncher" />
+      <item itemvalue="Application.LobbyServer" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.LobbyServer" />
+        <item itemvalue="Application.EditorLauncher" />
+        <item itemvalue="Application.Lwjgl3Launcher" />
+        <item itemvalue="Application.ServerLauncher" />
+        <item itemvalue="Application.LobbyServer" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="010ebc25-ee3c-467b-92cd-b9ace4d8787e" name="Changes" comment="" />
+      <created>1634409653580</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1634409653580</updated>
+    </task>
+    <task id="LOCAL-00001" summary="test">
+      <created>1634422700433</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1634422700433</updated>
+    </task>
+    <task id="LOCAL-00002" summary="implemented server and client packet exchange methods and data structures">
+      <created>1634431530198</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1634431530198</updated>
+    </task>
+    <task id="LOCAL-00003" summary="created working server executable">
+      <created>1634433680996</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1634433680996</updated>
+    </task>
+    <task id="LOCAL-00004" summary="pushing unfixed changes">
+      <created>1634437997610</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1634437997610</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fixed controls array nullpointerexception bug">
+      <created>1634489549196</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1634489549196</updated>
+    </task>
+    <task id="LOCAL-00006" summary="create a skeleton structure for the lobby feature">
+      <created>1634501975427</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1634501975427</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Created a sample main menu screen with imagebuttons">
+      <created>1634694033276</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1634694033276</updated>
+    </task>
+    <task id="LOCAL-00008" summary="mainmenuscreen file">
+      <created>1634694301618</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1634694301618</updated>
+    </task>
+    <task id="LOCAL-00009" summary="adding assets">
+      <created>1634694964550</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1634694964550</updated>
+    </task>
+    <task id="LOCAL-00010" summary="updating lobby methods">
+      <created>1634698967373</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1634698967373</updated>
+    </task>
+    <task id="LOCAL-00011" summary="added a menu for co-op mode lobby">
+      <created>1634739279826</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1634739279826</updated>
+    </task>
+    <task id="LOCAL-00012" summary="added a username textfield">
+      <created>1634758518008</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1634758518008</updated>
+    </task>
+    <task id="LOCAL-00013" summary="created lobby screen">
+      <created>1634870405484</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1634870405484</updated>
+    </task>
+    <task id="LOCAL-00014" summary="removed the new lobby system and implemented a lobby in the current GameScreen.java">
+      <created>1634870446645</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1634870446645</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Minor bug fix">
+      <created>1634924272833</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1634924272833</updated>
+    </task>
+    <task id="LOCAL-00016" summary="bug fixing merge errors">
+      <created>1634938317893</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1634938317893</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="test" />
+    <MESSAGE value="implemented server and client packet exchange methods and data structures" />
+    <MESSAGE value="created working server executable" />
+    <MESSAGE value="pushing unfixed changes" />
+    <MESSAGE value="Fixed controls array nullpointerexception bug" />
+    <MESSAGE value="create a skeleton structure for the lobby feature" />
+    <MESSAGE value="Created a sample main menu screen with imagebuttons" />
+    <MESSAGE value="mainmenuscreen file" />
+    <MESSAGE value="adding assets" />
+    <MESSAGE value="updating lobby methods" />
+    <MESSAGE value="added a menu for co-op mode lobby" />
+    <MESSAGE value="added a username textfield" />
+    <MESSAGE value="created lobby screen" />
+    <MESSAGE value="removed the new lobby system and implemented a lobby in the current GameScreen.java" />
+    <MESSAGE value="Minor bug fix" />
+    <MESSAGE value="bug fixing merge errors" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug fixing merge errors" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NoClassDefFoundError" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
