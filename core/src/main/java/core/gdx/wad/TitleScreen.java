@@ -96,11 +96,11 @@ public class TitleScreen implements Screen {
 
     @Override
     public void hide() {
-        System.out.println("Remove: " + remove);
-        if (!remove) {
-            System.out.println("bye bye");
-            System.exit(0);
-        }
+//        System.out.println("Remove: " + remove);
+//        if (!remove) {
+//            //System.out.println("bye bye");
+//            //System.exit(0);
+//        }
     }
 
     @Override

@@ -23,8 +23,9 @@ public class SettingsScreen implements Screen {
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
     private MyGDxTest testGame;
 
-    public SettingsScreen(MyGDxTest testGame) {
-        this.testGame = testGame;
+    // public SettingsScreen(MyGDxTest myGDxTest) {
+    public SettingsScreen() {
+        //this.testGame = testGame;
         WadFile file;
         try {
             file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
@@ -62,8 +63,6 @@ public class SettingsScreen implements Screen {
         batch.end();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        if(Gdx.input.justTouched())
-            testGame.setScreen(new SettingsScreen(testGame));
     }
 
     @Override
