@@ -10,10 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class SettingsMenu extends Window {
-    MyGDxTest game;
-    Thread gameLoop;
 
-    public SettingsMenu(String title, Skin skin, SettingsScreen settingsScreen, Stage stage) {
+    public SettingsMenu(String title, Skin skin, SettingsScreen settingsScreen, Stage stage, MyGDxTest myGDxTest) {
         super(title, skin);
         setModal(false);
 
@@ -40,8 +38,12 @@ public class SettingsMenu extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 System.out.println("Back Button\n");
-                ((MyGDxTest) Gdx.app.getApplicationListener()).setScreen(new TitleScreen(game,gameLoop));
+                //((MyGDxTest) Gdx.app.getApplicationListener()).setScreen(new TitleScreen(game,gameLoop));
+                myGDxTest.setScreen(myGDxTest.titleScreen);
             }
         });
+//        if(Gdx.input.isTouched()){
+//            ((MyGDxTest) Gdx.app.getApplicationListener()).setScreen(new TitleScreen(game,gameLoop));
+//        }
     }
 }

@@ -14,10 +14,12 @@ import org.lwjgl.system.CallbackI;
 import java.io.IOException;
 
 public class StartMenu extends Window {
-    //MyGDxTest myGDxTest = new MyGDxTest();
-    //SettingsScreen settingsScreen = new SettingsScreen(myGDxTest);
-    public StartMenu(String title, Skin skin, TitleScreen titleScreen, Stage stage) {
+    MyGDxTest myGDxTest;
+    SettingsScreen settingsScreen;
+    public StartMenu(String title, Skin skin, TitleScreen titleScreen, Stage stage, MyGDxTest myGDxTest) {
         super(title, skin);
+        this.myGDxTest=myGDxTest;
+        this.settingsScreen=new SettingsScreen(myGDxTest);
         setModal(false);
         Button startButton = new TextButton("Start", skin);
         add(startButton);
@@ -50,8 +52,8 @@ public class StartMenu extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 System.out.println("Settings\n");
-                //myGDxTest.setScreen(new SettingsScreen(myGDxTest));
-                    ((MyGDxTest) Gdx.app.getApplicationListener()).setScreen(new SettingsScreen());
+                myGDxTest.setScreen(settingsScreen);
+                //((MyGDxTest) Gdx.app.getApplicationListener()).setScreen(new SettingsScreen());
             }
         });
 

@@ -16,16 +16,14 @@ import net.mtrop.doom.WadFile;
 import java.io.IOException;
 
 public class SettingsScreen implements Screen {
+    MyGDxTest myGDxTest;
     OrthographicCamera camera;
     SpriteBatch batch;
     Texture texture;
-    public Stage stage = new Stage(new ScreenViewport());
+    private Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
-    private MyGDxTest testGame;
 
-    // public SettingsScreen(MyGDxTest myGDxTest) {
-    public SettingsScreen() {
-        //this.testGame = testGame;
+     public SettingsScreen(MyGDxTest myGDxTest) {
         WadFile file;
         try {
             file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
@@ -34,6 +32,7 @@ public class SettingsScreen implements Screen {
             batch = new SpriteBatch();
             texture = WadFuncs.getTexture(file, "BLANKSCR");
             texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+            this.myGDxTest=myGDxTest;
 
             file.close();
         } catch (IOException e) {
@@ -44,6 +43,10 @@ public class SettingsScreen implements Screen {
 
     @Override
     public void show() {
+         Gdx.input.setInputProcessor(stage);
+        Actor masterVolumeActor = new SettingsMenu("Master Volume", skin, this, stage, myGDxTest);
+        stage.addActor(masterVolumeActor);
+        masterVolumeActor.setPosition(camera.viewportWidth/7, camera.viewportHeight/4);
     }
 
     @Override
@@ -56,9 +59,6 @@ public class SettingsScreen implements Screen {
         batch.enableBlending();
         batch.begin();
         batch.draw(texture,25,30);
-        Actor masterVolumeActor = new SettingsMenu("Master Volume", skin, this, stage);
-        stage.addActor(masterVolumeActor);
-        masterVolumeActor.setPosition(camera.viewportWidth/7, camera.viewportHeight/7);
 
         batch.end();
         stage.act(Gdx.graphics.getDeltaTime());

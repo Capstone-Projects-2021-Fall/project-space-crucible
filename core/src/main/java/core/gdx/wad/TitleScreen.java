@@ -21,7 +21,7 @@ public class TitleScreen implements Screen {
     SpriteBatch batch;
     Texture texture;
     Thread gameLoop;
-    public Stage stage = new Stage(new ScreenViewport());
+    private Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
     public boolean remove = false;
     public boolean isSinglePlayer = true;
@@ -70,7 +70,7 @@ public class TitleScreen implements Screen {
         //drawing sprite background
         batch.begin();
         batch.draw(texture,25,30);
-        Actor startMenuActor = new StartMenu("Main Menu", skin, this, stage);
+        Actor startMenuActor = new StartMenu("Main Menu", skin, this, stage, game);
         stage.addActor(startMenuActor);
         startMenuActor.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 12, Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight()/6);
 
