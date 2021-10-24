@@ -1,6 +1,7 @@
 package core.gdx.wad;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,23 +15,19 @@ import net.mtrop.doom.WadFile;
 
 import java.io.IOException;
 
-public class SettingsScreen extends TitleScreen {
-    public MyGDxTest game;
+public class SettingsScreen implements Screen {
     OrthographicCamera camera;
     SpriteBatch batch;
     Texture texture;
-    Thread gameLoop;
     public Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
+    private MyGDxTest testGame;
 
-    public SettingsScreen(MyGDxTest game, Thread gameLoop) {
-        super(game, gameLoop);
+    public SettingsScreen(MyGDxTest testGame) {
+        this.testGame = testGame;
         WadFile file;
-
         try {
             file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
-            this.game=game;
-            this.gameLoop=gameLoop;
             camera = new OrthographicCamera();
             camera.setToOrtho(false, 1920, 1080);
             batch = new SpriteBatch();
@@ -46,7 +43,6 @@ public class SettingsScreen extends TitleScreen {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -66,5 +62,32 @@ public class SettingsScreen extends TitleScreen {
         batch.end();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        if(Gdx.input.justTouched())
+            testGame.setScreen(new SettingsScreen(testGame));
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+
     }
 }
