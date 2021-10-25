@@ -6,6 +6,7 @@ import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
+import core.wad.funcs.SoundFuncs;
 
 public class A_Look implements StateAction {
     @Override
@@ -18,8 +19,9 @@ public class A_Look implements StateAction {
 
         Entity seen = CollisionLogic.checkFOVForClass(startPoint.x, startPoint.y, refAngle, caller, PlayerPawn.class);
 
-        if (seen != null) {
+        if (seen != null && GameLogic.ticCounter > 0) {
             ((BaseMonster) caller).setTarget(seen);
+            SoundFuncs.playSound(((BaseMonster) caller).getSound(BaseMonster.SEESOUND));
             caller.setState(caller.getStates()[Entity.WALK]);
         }
     }

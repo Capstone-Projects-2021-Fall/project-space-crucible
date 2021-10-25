@@ -5,10 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Array;
-import core.game.entities.Fireball;
-import core.game.entities.PlayerPawn;
-import core.game.entities.Serpentipede;
-import core.game.entities.Worm;
+import core.game.entities.*;
 import core.game.entities.actions.*;
 import core.game.logic.*;
 import core.gdx.wad.RenderFuncs;
@@ -88,6 +85,7 @@ public class WadFuncs {
         GameLogic.entityType.add(PlayerPawn.class); // 0
         GameLogic.entityType.add(Worm.class); // 1
         GameLogic.entityType.add(Serpentipede.class); //2
+        GameLogic.entityType.add(Zombieman.class); //3
     }
 
     public static void loadStates() {
@@ -99,9 +97,9 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState(5,"PLAY", 'E', 12, 0, null));   //5
         GameLogic.stateList.add(new EntityState(6,"PLAY", 'F', 6, 5, null));    //6
         GameLogic.stateList.add(new EntityState(7,"PLAY", 'G', 4, 8, null));    //7
-        GameLogic.stateList.add(new EntityState(8,"PLAY", 'G', 4, 0, null));    //8
+        GameLogic.stateList.add(new EntityState(8,"PLAY", 'G', 4, 0, new A_Pain()));    //8
         GameLogic.stateList.add(new EntityState(9,"PLAY", 'H', 10, 10, null));  //9
-        GameLogic.stateList.add(new EntityState(10,"PLAY", 'I', 10, 11, null));  //10
+        GameLogic.stateList.add(new EntityState(10,"PLAY", 'I', 10, 11, new A_Scream()));  //10
         GameLogic.stateList.add(new EntityState(11,"PLAY", 'J', 10, 12, null));  //11
         GameLogic.stateList.add(new EntityState(12,"PLAY", 'K', 10, 13, null));  //12
         GameLogic.stateList.add(new EntityState(13,"PLAY", 'L', 10, 14, new A_Fall()));  //13
@@ -121,9 +119,9 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState(27,"SARG", 'F', 8, 28, new A_FaceTarget()));   //27
         GameLogic.stateList.add(new EntityState(28,"SARG", 'G', 8, 18, new A_MeleeAttack(25)));   //28
         GameLogic.stateList.add(new EntityState(29,"SARG", 'H', 2, 30, null));   //29
-        GameLogic.stateList.add(new EntityState(30,"SARG", 'H', 2, 18, null));   //30
+        GameLogic.stateList.add(new EntityState(30,"SARG", 'H', 2, 18, new A_Pain()));   //30
         GameLogic.stateList.add(new EntityState(31,"SARG", 'I', 8, 32, null));   //31
-        GameLogic.stateList.add(new EntityState(32,"SARG", 'J', 8, 33, null));   //32
+        GameLogic.stateList.add(new EntityState(32,"SARG", 'J', 8, 33, new A_Scream()));   //32
         GameLogic.stateList.add(new EntityState(33,"SARG", 'K', 4, 34, null));   //33
         GameLogic.stateList.add(new EntityState(34,"SARG", 'L', 4, 35, new A_Fall()));   //34
         GameLogic.stateList.add(new EntityState(35,"SARG", 'M', 4, 36, null));   //35
@@ -154,12 +152,33 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState(60,"TROO", 'F', 8, 61, new A_FaceTarget()));   //60
         GameLogic.stateList.add(new EntityState(61,"TROO", 'G', 8, 51, new A_Projectile(Fireball.class)));   //61
         GameLogic.stateList.add(new EntityState(62,"TROO", 'H', 2, 63, null));   //62
-        GameLogic.stateList.add(new EntityState(63,"TROO", 'H', 2, 51, null));   //63
+        GameLogic.stateList.add(new EntityState(63,"TROO", 'H', 2, 51, new A_Pain()));   //63
         GameLogic.stateList.add(new EntityState(64,"TROO", 'I', 8, 65, null));   //64
-        GameLogic.stateList.add(new EntityState(65,"TROO", 'J', 8, 66, null));   //65
+        GameLogic.stateList.add(new EntityState(65,"TROO", 'J', 8, 66, new A_Scream()));   //65
         GameLogic.stateList.add(new EntityState(66,"TROO", 'K', 6, 67, null));   //66
         GameLogic.stateList.add(new EntityState(67,"TROO", 'L', 6, 68, new A_Fall()));   //67
         GameLogic.stateList.add(new EntityState(68,"TROO", 'M', -1, 68, null));   //68
+        GameLogic.stateList.add(new EntityState(69,"POSS", 'A', 10, 70, new A_Look()));  //69
+        GameLogic.stateList.add(new EntityState(70,"POSS", 'B', 10, 69, new A_Look()));  //70
+        GameLogic.stateList.add(new EntityState(71,"POSS", 'A', 4, 72, new A_Chase()));   //71
+        GameLogic.stateList.add(new EntityState(72,"POSS", 'A', 4, 73, new A_Chase()));   //72
+        GameLogic.stateList.add(new EntityState(73,"POSS", 'B', 4, 74, new A_Chase()));   //73
+        GameLogic.stateList.add(new EntityState(74,"POSS", 'B', 4, 75, new A_Chase()));   //74
+        GameLogic.stateList.add(new EntityState(75,"POSS", 'C', 4, 76, new A_Chase()));   //75
+        GameLogic.stateList.add(new EntityState(76,"POSS", 'C', 4, 77, new A_Chase()));   //76
+        GameLogic.stateList.add(new EntityState(77,"POSS", 'D', 4, 78, new A_Chase()));   //77
+        GameLogic.stateList.add(new EntityState(78,"POSS", 'D', 4, 71, new A_Chase()));   //78
+        GameLogic.stateList.add(new EntityState(79, "POSS", 'E', 10, 80, new A_FaceTarget())); // 79
+        GameLogic.stateList.add(new EntityState(80, "POSS", 'F', 8, 81, new A_BulletAttack(15, 15f, "pistol/shoot"))); // 80
+        GameLogic.stateList.add(new EntityState(81, "POSS", 'E', 8, 71, new A_FaceTarget())); // 81
+        GameLogic.stateList.add(new EntityState(82,"POSS", 'G', 3, 83, null));   //82
+        GameLogic.stateList.add(new EntityState(83,"POSS", 'G', 3, 71, new A_Pain()));   //83
+        GameLogic.stateList.add(new EntityState(84,"POSS", 'H', 5, 85, null));   //84
+        GameLogic.stateList.add(new EntityState(85,"POSS", 'I', 5, 86, new A_Scream()));   //85
+        GameLogic.stateList.add(new EntityState(86,"POSS", 'J', 5, 87, new A_Fall()));   //86
+        GameLogic.stateList.add(new EntityState(87,"POSS", 'K', 5, 88, null));   //87
+        GameLogic.stateList.add(new EntityState(88,"POSS", 'L', -1, 88, null));   //88
+
     }
 
     public static void loadSprites(Array<WadFile> wads) {
@@ -170,6 +189,7 @@ public class WadFuncs {
         RenderFuncs.spriteMap.put("PUFF", new GameSprite(wads, "PUFF"));
         RenderFuncs.spriteMap.put("BLUD", new GameSprite(wads, "BLUD"));
         RenderFuncs.spriteMap.put("TROO", new GameSprite(wads, "TROO"));
+        RenderFuncs.spriteMap.put("POSS", new GameSprite(wads, "POSS"));
     }
 
     public static void loadTextures(Array<WadFile> wads) {

@@ -63,6 +63,7 @@ public class LevelData {
                 throw new IOException();
             }
         }
+        stringReader.close();
     }
 
     public String getName() {

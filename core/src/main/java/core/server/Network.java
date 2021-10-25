@@ -24,6 +24,7 @@ public class Network {
         kryo.register(RenderData.class);
         kryo.register(InputData.class);
         kryo.register(MIDIData.class);
+        kryo.register(SoundData.class);
 
         //Level classes
         kryo.register(core.level.info.LevelTile.class);
@@ -41,6 +42,8 @@ public class Network {
         kryo.register(A_Fall.class);
         kryo.register(A_FaceTarget.class);
         kryo.register(A_Chase.class);
+        kryo.register(A_Pain.class);
+        kryo.register(A_Scream.class);
         kryo.register(A_PrintMessage.class);
 
         //Entities
@@ -59,6 +62,7 @@ public class Network {
         kryo.register(java.util.ArrayList.class);
         kryo.register(boolean[].class);
         kryo.register(Integer[].class);
+        kryo.register(String[].class);
     }
 
     //Send this to the CLIENT
@@ -76,5 +80,9 @@ public class Network {
     public static class InputData {
         public boolean[] controls;
         public float angle;
+    }
+
+    public static class SoundData {
+        public String sound;
     }
 }

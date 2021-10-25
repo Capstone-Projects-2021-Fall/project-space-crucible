@@ -56,11 +56,16 @@ public class CollisionLogic {
         distance.x = (float) Math.cos(Math.toRadians(angle));
         distance.y = (float) Math.sin(Math.toRadians(angle));
 
+        //Advance line until something is hit.
+        //If this locks the game, something is wrong! The world must be exposed to the void.
         while(true) {
+
+            //Check for Entities
             for(Entity entity2 : GameLogic.entityList){
 
+                //Skip source Entity and non-solid Entities
                 if (entity2 == source
-                        || (!entity2.getFlag(Entity.SOLID) && attack)) {continue;}
+                        || (!entity2.getFlag(Entity.SOLID))) {continue;}
 
                 if(entity2.getBounds().contains(xpos, ypos)){
                     if (attack) {
@@ -71,7 +76,10 @@ public class CollisionLogic {
                 }
             }
 
+            //Check for tiles
             for(LevelTile t :GameLogic.currentLevel.getTiles()) {
+
+                //Don't waste time on non-solid tiles
                 if(t.solid) {
                     Rectangle tileBounds
                             = new Rectangle(t.pos.x * LevelTile.TILE_SIZE,
@@ -95,7 +103,7 @@ public class CollisionLogic {
 
     //Checks FOV for any instance of the given class- make sure they're not dead.
     public static Entity checkFOVForClass(float startx, float starty, float refAngle, Entity caller, Class<? extends Entity> seeking) {
-        for (float angle = refAngle-45; angle != refAngle + 45; angle += 9) {
+        for (float angle = refAngle-90; angle != refAngle + 90; angle += 9) {
             Entity e = CollisionLogic.hitscanLine(startx, starty, angle, caller, false);
             if (e != null) {
 
@@ -109,7 +117,7 @@ public class CollisionLogic {
 
     //Checks FOV for a specific Entity
     public static boolean checkFOVForEntity(float startx, float starty, float refAngle, Entity caller, Entity seeking) {
-        for (float angle = refAngle-45; angle != refAngle + 45; angle += 9) {
+        for (float angle = refAngle-90; angle != refAngle + 90; angle += 9) {
             Entity e = CollisionLogic.hitscanLine(startx, starty, angle, caller, false);
             if (e != null) {
 
@@ -119,5 +127,11 @@ public class CollisionLogic {
             }
         }
         return false;
+    }
+
+    //Plain collision check with no return values needed
+    public static boolean simpleCollisionCheck(Rectangle bounds, Entity caller) {
+        return CollisionLogic.entityCollision(bounds, caller) == null
+                && CollisionLogic.entityTileCollision(bounds, caller) == null;
     }
 }

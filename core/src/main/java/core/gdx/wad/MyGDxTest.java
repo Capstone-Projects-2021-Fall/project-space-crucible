@@ -4,11 +4,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
-import core.wad.funcs.MIDIFuncs;
+import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class MyGDxTest extends Game {
@@ -41,11 +43,17 @@ public class MyGDxTest extends Game {
             wads.add(file);
 
             //Load all of the level data and the graphics before closing the .WAD
-            MIDIFuncs.startSequencer();
-            MIDIFuncs.loadMIDIs(wads);
+            //byte[] rawSound = file.getData("DSPISTOL");
+            //short[] sound = new short[rawSound.length / 2];
+            //ByteBuffer.wrap(rawSound).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(sound);
+
+            SoundFuncs.startSequencer();
+            SoundFuncs.loadMIDIs(wads);
+            SoundFuncs.loadSounds(wads);
             GameLogic.loadLevels(file, wads);
             WadFuncs.loadSprites(wads);
             WadFuncs.loadTextures(wads);
+            SoundFuncs.playSound("pistol/shoot");
 
             //When we add add-on support we will also close other files inside of 'wads"
             file.close();

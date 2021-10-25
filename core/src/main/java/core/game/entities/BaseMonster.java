@@ -9,12 +9,24 @@ import core.game.logic.GameLogic;
 public abstract class BaseMonster extends Entity {
 
     private Entity target = null;
+    final private String[] sounds = new String[4];
+
+    final public static int SEESOUND = 0;
+    final public static int PAINSOUND = 1;
+    final public static int DIESOUND = 2;
+    final public static int ACTIVESOUND = 3;
 
     public BaseMonster(){}
 
-    public BaseMonster(int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags) {
+    public BaseMonster(int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags, String[] sounds) {
         super(health, pos, speed, width, height, states, tag, flags);
+        this.sounds[SEESOUND] = sounds[SEESOUND];
+        this.sounds[PAINSOUND] = sounds[PAINSOUND];
+        this.sounds[DIESOUND] = sounds[DIESOUND];
+        this.sounds[ACTIVESOUND] = sounds[ACTIVESOUND];
     }
+
+    public String getSound(int index) {return sounds[index];}
 
     public void setTarget(Entity target) {
         this.target = target;
@@ -26,5 +38,11 @@ public abstract class BaseMonster extends Entity {
         remainingStateTics = currentState.getDuration();
 
         if (currentState.getAction() != null) {currentState.getAction().run(this, target);}
+    }
+
+    @Override
+    public void takeDamage(Entity cause, int damage) {
+        super.takeDamage(cause, damage);
+        target = cause;
     }
 }

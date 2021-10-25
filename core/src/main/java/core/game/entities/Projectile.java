@@ -43,7 +43,7 @@ public abstract class Projectile extends Entity {
         Entity hit = CollisionLogic.entityCollision(newBounds, this);
 
         if(hit == null){
-            setPos(checkPosX, checkPosY, newBounds);
+            setPos(newBounds);
         } else {
             //Damage the thing you hit
             hit.takeDamage(owner, damage);

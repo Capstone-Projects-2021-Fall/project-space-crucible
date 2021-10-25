@@ -1,6 +1,5 @@
 package core.gdx.wad;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -13,15 +12,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import core.game.entities.Entity;
-import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.game.entities.PlayerPawn;
-import core.level.info.LevelData;
-import core.server.Network;
 import core.server.SpaceClient;
-import core.server.SpaceServer;
 import core.server.Network.RenderData;
-import core.wad.funcs.MIDIFuncs;
+import core.wad.funcs.SoundFuncs;
 
 public class GameScreen implements Screen {
 
@@ -155,10 +150,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-        if(gameLoop != null)
-            gameLoop.interrupt();
-        MIDIFuncs.stopMIDI();
-        MIDIFuncs.closeSequencer();
+        SoundFuncs.stopMIDI();
+        SoundFuncs.closeSequencer();
         System.exit(0);
     }
 
