@@ -52,6 +52,7 @@ public class StartMenu extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 System.out.println("Settings\n");
+                titleScreen.remove=true;
                 myGDxTest.setScreen(settingsScreen);
                 //((MyGDxTest) Gdx.app.getApplicationListener()).setScreen(new SettingsScreen());
             }

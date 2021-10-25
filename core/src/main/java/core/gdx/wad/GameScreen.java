@@ -54,6 +54,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        SoundFuncs.stopMIDI();
         if (isSinglePlayer) {
             gameLoop.start();
         }

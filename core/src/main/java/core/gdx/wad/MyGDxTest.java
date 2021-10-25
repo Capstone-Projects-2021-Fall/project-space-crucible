@@ -66,6 +66,7 @@ public class MyGDxTest extends Game {
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
 
+        SoundFuncs.playMIDI("TITLE");
         titleScreen = new TitleScreen(this, gameLoop);
         setScreen(titleScreen);
     }

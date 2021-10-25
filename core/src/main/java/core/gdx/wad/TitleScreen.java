@@ -52,7 +52,7 @@ public class TitleScreen implements Screen {
 
     @Override
     public void show() {
-        SoundFuncs.playMIDI("TITLE");
+        remove=false;
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -99,7 +99,6 @@ public class TitleScreen implements Screen {
 
     @Override
     public void hide() {
-        SoundFuncs.stopMIDI();
         System.out.println("Remove: " + remove);
         if (!remove) {
             System.out.println("bye bye");
