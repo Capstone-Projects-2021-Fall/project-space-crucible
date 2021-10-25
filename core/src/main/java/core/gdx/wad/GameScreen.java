@@ -6,10 +6,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import core.game.entities.Entity;
 import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
@@ -34,6 +36,7 @@ public class GameScreen implements Screen {
     boolean isSinglePlayer;
     SpaceClient client;
     RenderData renderData = new RenderData();
+    BitmapFont font = new BitmapFont();
 
 
     float angle = 0;
@@ -107,6 +110,7 @@ public class GameScreen implements Screen {
             RenderFuncs.worldDraw(batch, renderData.tiles);
             RenderFuncs.entityDraw(batch, renderData.entityList);
         }
+        font.draw(batch,"HP:" +GameLogic.getPlayer(0).getHealth(), GameLogic.getPlayer(0).getPos().x, GameLogic.getPlayer(0).getPos().y);
         batch.end();
 
         if (showBoxes) {

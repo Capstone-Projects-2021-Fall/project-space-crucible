@@ -8,9 +8,11 @@ import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
 
+import java.awt.*;
+
 public class PlayerPawn extends Entity {
 
-    final private static int HEALTH = 100;
+    final public static int HEALTH = 100;
     final private static int SPEED = 120;
     final private static int WIDTH = 32;
     final private static int HEIGHT = 56;
