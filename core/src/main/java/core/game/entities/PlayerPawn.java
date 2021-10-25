@@ -11,6 +11,8 @@ import core.wad.funcs.SoundFuncs;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import java.awt.*;
+
 public class PlayerPawn extends Entity {
 
     final private static int HEALTH = 100;
