@@ -16,8 +16,6 @@ import java.nio.ByteOrder;
 public class MyGDxTest extends Game {
 
     public TitleScreen titleScreen;
-    public GameScreen gameScreen;
-    public MainMenuScreen mainMenu;
 
     //This is the thread that runs the Game Logic. It is separate from the rendering code.
     Thread gameLoop = new Thread() {
@@ -44,11 +42,6 @@ public class MyGDxTest extends Game {
             Array<WadFile> wads = new Array<>();
             wads.add(file);
 
-            //Load all of the level data and the graphics before closing the .WAD
-            //byte[] rawSound = file.getData("DSPISTOL");
-            //short[] sound = new short[rawSound.length / 2];
-            //ByteBuffer.wrap(rawSound).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(sound);
-
             SoundFuncs.startSequencer();
             SoundFuncs.loadMIDIs(wads);
             SoundFuncs.loadSounds(wads);
@@ -71,9 +64,5 @@ public class MyGDxTest extends Game {
         titleScreen = new TitleScreen(this, gameLoop);
         setScreen(titleScreen);
 
-//        mainMenu = new MainMenuScreen(this);
-//        setScreen(mainMenu);
-//        gameScreen = new GameScreen(gameLoop);
-//        setScreen(gameScreen);
     }
 }
