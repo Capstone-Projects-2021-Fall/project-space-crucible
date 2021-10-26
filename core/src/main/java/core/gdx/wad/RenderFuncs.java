@@ -23,9 +23,21 @@ public class RenderFuncs {
 
     public static void worldDraw(SpriteBatch batch, ArrayList <LevelTile> tiles) {
         for (LevelTile tile : tiles) {
-            batch.draw(textureMap.get(tile.graphicname),
-                    tile.pos.x * LevelTile.TILE_SIZE,
-                    tile.pos.y * LevelTile.TILE_SIZE);
+
+            if (tile.solid) {
+                batch.draw(textureMap.get(tile.graphicname),
+                        tile.pos.x * LevelTile.TILE_SIZE,
+                        tile.pos.y * LevelTile.TILE_SIZE);
+            } else {
+                batch.draw(textureMap.get(tile.graphicname),
+                        tile.pos.x * LevelTile.TILE_SIZE,
+                        tile.pos.y * LevelTile.TILE_SIZE,
+                        LevelTile.TILE_SIZE, LevelTile.TILE_SIZE / 2);
+                batch.draw(textureMap.get(tile.graphicname),
+                        tile.pos.x * LevelTile.TILE_SIZE,
+                        tile.pos.y * LevelTile.TILE_SIZE + (LevelTile.TILE_SIZE / 2),
+                        LevelTile.TILE_SIZE, LevelTile.TILE_SIZE / 2);
+            }
         }
     }
 
