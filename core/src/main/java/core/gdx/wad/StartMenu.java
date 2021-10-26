@@ -1,7 +1,5 @@
 package core.gdx.wad;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -9,9 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import org.lwjgl.system.CallbackI;
-
-import java.io.IOException;
 
 public class StartMenu extends Window {
     MyGDxTest myGDxTest;
@@ -21,6 +16,7 @@ public class StartMenu extends Window {
         this.myGDxTest=myGDxTest;
         this.settingsScreen=new SettingsScreen(myGDxTest);
         setModal(false);
+        setMovable(false);
         Button startButton = new TextButton("Start", skin);
         add(startButton);
         row();

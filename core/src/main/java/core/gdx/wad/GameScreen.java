@@ -10,13 +10,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import core.game.entities.Entity;
-import core.game.logic.GameLogic;
 import core.game.entities.PlayerPawn;
-import core.server.SpaceClient;
+import core.game.logic.GameLogic;
 import core.server.Network.RenderData;
+import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
+
+import java.util.Objects;
 
 public class GameScreen implements Screen {
 
@@ -106,7 +107,10 @@ public class GameScreen implements Screen {
             RenderFuncs.worldDraw(batch, renderData.tiles);
             RenderFuncs.entityDraw(batch, renderData.entityList);
         }
-        font.draw(batch,"HP:" +GameLogic.getPlayer(0).getHealth(), GameLogic.getPlayer(0).getPos().x, GameLogic.getPlayer(0).getPos().y);
+        font.draw(batch,"HP:" + Objects.requireNonNull(GameLogic.getPlayer(0)).getHealth(), Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().x, Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().y);
+        font.draw(batch,"Player " + Objects.requireNonNull(GameLogic.getPlayer(0)).getTag(), Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().x,
+                Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().y + Objects.requireNonNull(GameLogic.getPlayer(0)).getHeight()+ Objects.requireNonNull(GameLogic.getPlayer(0)).getHeight()/3);
+
         batch.end();
 
         if (showBoxes) {
