@@ -15,10 +15,10 @@ public class ServerGame extends Game{
 
     @Override
     public void create() {
-        try {
-            new SpaceServer(playerCount);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+////            new SpaceServer(playerCount);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }

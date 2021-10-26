@@ -1,6 +1,5 @@
 package core.server;
 
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -15,7 +14,7 @@ import java.io.IOException;
 public class SpaceClient extends Listener {
 
     Client client;
-    static String ip = "108.2.202.22";
+    static String ip = "localhost";
     GameScreen screen;
 
     public SpaceClient(GameScreen screen){
@@ -32,6 +31,16 @@ public class SpaceClient extends Listener {
             }
 
             public void received (Connection connection, Object object) {
+
+                if(object instanceof Network.ServerPorts){
+                    client.close();
+                    try {
+                        client.connect(5000, ip, ((ServerPorts) object).tcpPort, ((ServerPorts) object).udpPort);
+                    } catch (
+                            IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
                 //If the server sends RenderData object update the client's gamescreen
                 if(object instanceof RenderData){
@@ -56,7 +65,7 @@ public class SpaceClient extends Listener {
 
             }
             public void disconnected (Connection connection) {
-                System.exit(0);
+//                System.exit(0);
             }
         }));
 

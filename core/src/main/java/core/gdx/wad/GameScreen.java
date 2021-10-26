@@ -39,8 +39,6 @@ public class GameScreen implements Screen {
     ShapeRenderer sr = new ShapeRenderer();
     boolean showBoxes = false;
     boolean isSinglePlayer;
-    SpaceClient client;
-    RenderData renderData = new RenderData();
     BitmapFont font = new BitmapFont();
 
 
@@ -60,9 +58,9 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         lobbyStage = new Stage();
         this.isSinglePlayer = isSinglePlayer;
-        if(!isSinglePlayer){ //If it is co-op mode create a new client.
-            client = new SpaceClient(this);
-        }
+//        if(!isSinglePlayer){ //If it is co-op mode create a new client.
+//            client = new SpaceClient(this);
+//        }
 
     }
 

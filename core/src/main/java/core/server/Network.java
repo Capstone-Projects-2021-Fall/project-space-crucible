@@ -28,6 +28,9 @@ public class Network {
         kryo.register(MIDIData.class);
         kryo.register(ClientData.class);
         kryo.register(SoundData.class);
+        kryo.register(CreateLobby.class);
+        kryo.register(JoinLobby.class);
+
 
         //Level classes
         kryo.register(core.level.info.LevelTile.class);
@@ -95,5 +98,16 @@ public class Network {
 
     public static class SoundData {
         public String sound;
+    }
+
+    public static class CreateLobby{
+        public int playerCount;
+    }
+    public static class JoinLobby{
+        public String lobbyCode;
+    }
+    public static class ServerPorts{
+        public int tcpPort;
+        public int udpPort;
     }
 }

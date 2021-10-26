@@ -5,7 +5,6 @@ import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import core.server.MasterServer;
 import core.server.MasterServerConfig;
-import core.server.ServerGame;
 
 public class MasterServerLauncher {
     /** Launches the headless server application. */

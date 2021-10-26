@@ -32,7 +32,7 @@ public class SpaceServer extends Listener {
         }
     };
 
-    public SpaceServer(int playerCount) throws IOException {
+    public SpaceServer(int playerCount, int tcpPort, int udpPort) throws IOException {
         server = new Server() {
             protected Connection newConnection() {
                 // By providing our own connection implementation, we can store per
@@ -108,7 +108,7 @@ public class SpaceServer extends Listener {
                 System.out.println("Client disconnected! " + c.getID());
             }
         });
-        server.bind(Network.tcpPort, Network.udpPort);
+        server.bind(tcpPort, udpPort);
         server.start();
         System.out.println("Server is running");
     }
