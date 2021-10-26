@@ -99,11 +99,11 @@ public class GameScreen implements Screen {
         batch.enableBlending();
         batch.begin();
         if(isSinglePlayer) {
-            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles());
+            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
 
         }else if(renderData.tiles != null && renderData.entityList != null){
-            RenderFuncs.worldDraw(batch, renderData.tiles);
+            RenderFuncs.worldDraw(batch, renderData.tiles, false);
             RenderFuncs.entityDraw(batch, renderData.entityList);
         }
         font.draw(batch,"HP:" +GameLogic.getPlayer(0).getHealth(), GameLogic.getPlayer(0).getPos().x, GameLogic.getPlayer(0).getPos().y);
