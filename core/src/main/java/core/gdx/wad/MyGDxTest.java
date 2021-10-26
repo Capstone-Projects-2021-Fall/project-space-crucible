@@ -16,6 +16,7 @@ import java.nio.ByteOrder;
 public class MyGDxTest extends Game {
 
     public TitleScreen titleScreen;
+    public GameScreen gameScreen;
 
     //This is the thread that runs the Game Logic. It is separate from the rendering code.
     Thread gameLoop = new Thread() {
@@ -61,6 +62,7 @@ public class MyGDxTest extends Game {
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
 
+        SoundFuncs.playMIDI("TITLE");
         titleScreen = new TitleScreen(this, gameLoop);
         setScreen(titleScreen);
 
