@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import core.game.entities.Entity;
 import core.game.logic.GameLogic;
 import core.game.entities.PlayerPawn;
+import core.server.Network;
 import core.server.SpaceClient;
 import core.server.Network.RenderData;
 import core.wad.funcs.SoundFuncs;
@@ -30,6 +31,7 @@ public class GameScreen implements Screen {
     RenderData renderData = new RenderData();
     ClientData clientData = new ClientData();
     ServerDetails serverDetails = new ServerDetails();
+
     int lobbySize = 2;
     int playerNumber = 1;
 
@@ -81,8 +83,12 @@ public class GameScreen implements Screen {
 
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if(!isSinglePlayer && clientData.connected == null){
+            return;
+        }
         if(clientData.connected != null) {
-            if (!isSinglePlayer && clientData.connected.size() <= lobbySize) {
+            if (!isSinglePlayer && clientData.connected.size() < lobbySize) {
                 lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
                 lobbyStage.getBatch().begin();
                 lobbyStage.getBatch().draw(background, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
@@ -127,8 +133,8 @@ public class GameScreen implements Screen {
             RenderFuncs.worldDraw(batch, renderData.tiles);
             RenderFuncs.entityDraw(batch, renderData.entityList);
         }
-
-        font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
+        if(GameLogic.getPlayer(playerNumber) != null)
+            font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
         batch.end();
 
         if (showBoxes) {
@@ -198,6 +204,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        client.getClient().stop();
     }
 
     public float getAngle() {
@@ -213,6 +220,7 @@ public class GameScreen implements Screen {
     }
 
     public void setServerDetails(ServerDetails object){ serverDetails = object;}
+
 
     private boolean[] getControls() {
         boolean[] controls = new boolean[5];

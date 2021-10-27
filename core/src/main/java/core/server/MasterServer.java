@@ -14,7 +14,7 @@ public class MasterServer extends Listener {
 
     Server server;
     public static HashMap<String, SpaceServer> servers = new HashMap<>();
-    public static HashMap<Server, Integer[]> ports = new HashMap<>();
+    public static HashMap<SpaceServer, Integer[]> ports = new HashMap<>();
     public static HashSet<Connection> playersConnected = new HashSet<>();
 
     public MasterServer(){
@@ -38,8 +38,9 @@ public class MasterServer extends Listener {
                             int tcpPort = getAvailablePort();
                             int udpPort = getAvailablePort();
                             String lobbyCode = createRandomLobbyCode();
-                            servers.put(lobbyCode, new SpaceServer(playerCount, tcpPort, udpPort));
-                            ports.put(server, new Integer[]{tcpPort, udpPort});
+                            SpaceServer spaceServer = new SpaceServer(playerCount, tcpPort, udpPort);
+                            servers.put(lobbyCode, spaceServer);
+                            ports.put(spaceServer, new Integer[]{tcpPort, udpPort});
                             //send port info
                             Network.ServerDetails serverDetails = new Network.ServerDetails();
                             serverDetails.tcpPort = tcpPort;
@@ -57,7 +58,12 @@ public class MasterServer extends Listener {
                     if(servers.containsKey(lobbyCode)){
                         //add the player to the server
                         SpaceServer spaceServer= servers.get(lobbyCode);
-                        Integer [] port = ports.get(spaceServer.server);
+                        Network.ValidLobby validLobby = new Network.ValidLobby();
+                        validLobby.valid = spaceServer != null;
+                        connection.sendTCP(validLobby);
+                        if(!validLobby.valid)
+                            return;
+                        Integer [] port = ports.get(spaceServer);
                         Network.ServerDetails serverDetails = new Network.ServerDetails();
                         serverDetails.tcpPort = port[0];
                         serverDetails.udpPort = port[1];

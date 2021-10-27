@@ -5,13 +5,17 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import core.server.Network;
 import core.server.SpaceClient;
+
+import java.util.Locale;
 
 public class StartMenu extends Window {
 
     MyGDxTest myGDxTest;
     SettingsScreen settingsScreen;
     SpaceClient client;
+    final StartMenu startMenu = this;
 
     public StartMenu(String title, Skin skin, TitleScreen titleScreen, Stage stage, MyGDxTest myGDxTest) {
         super(title, skin);
@@ -42,7 +46,7 @@ public class StartMenu extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 GameScreen gameScreen= new GameScreen(null, false);
-                client = new SpaceClient(gameScreen);
+                client = new SpaceClient(gameScreen, startMenu);
                 gameScreen.client = client;
                 System.out.println("Co-op\n");
 
@@ -65,7 +69,7 @@ public class StartMenu extends Window {
                 createLobby.addListener(new ClickListener(){
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
-                        client.getServer(4);
+                        client.getServer(2);
                         titleScreen.remove = true;
                         myGDxTest.setScreen(gameScreen);
                     }
@@ -82,9 +86,19 @@ public class StartMenu extends Window {
                         submit.addListener(new ClickListener(){
                             public void clicked(InputEvent event, float x, float y) {
                                 String lCode = lobbyCode.getText();
+                                lCode = lCode.toUpperCase();
                                 client.sendLobbyCode(lCode);
-                                titleScreen.remove = true;
-                                myGDxTest.setScreen(gameScreen);
+                                synchronized (startMenu){
+                                    try {
+                                        startMenu.wait();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                if(client.validLobby.valid) {
+                                    titleScreen.remove = true;
+                                    myGDxTest.setScreen(gameScreen);
+                                }
                             }
                         });
                     }

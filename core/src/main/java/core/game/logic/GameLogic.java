@@ -197,7 +197,6 @@ public class GameLogic {
                 return (PlayerPawn) e;
             }
         }
-
         return null;
     }
 

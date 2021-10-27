@@ -31,6 +31,7 @@ public class Network {
         kryo.register(CreateLobby.class);
         kryo.register(JoinLobby.class);
         kryo.register(ServerDetails.class);
+        kryo.register(ValidLobby.class);
 
 
 
@@ -113,4 +114,8 @@ public class Network {
         public int udpPort;
         public String lobbyCode;
     }
+    public static class ValidLobby{
+        public boolean valid;
+    }
+
 }

@@ -3,7 +3,9 @@ package core.server;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import core.game.logic.GameLogic;
 import core.gdx.wad.GameScreen;
+import core.gdx.wad.StartMenu;
 import core.server.Network.*;
 import core.wad.funcs.SoundFuncs;
 
@@ -16,8 +18,9 @@ public class SpaceClient extends Listener {
     Client client;
     static String ip = "localhost";
     GameScreen screen;
+    public ValidLobby validLobby;
 
-    public SpaceClient(GameScreen screen){
+    public SpaceClient(GameScreen screen, StartMenu startMenu){
         System.out.println("Connecting to the server!");
         //Create a client object
         client = new Client(20000, 20000);
@@ -31,18 +34,17 @@ public class SpaceClient extends Listener {
             }
 
             public void received (Connection connection, Object object) {
-                if(object instanceof ServerDetails){
+                if(object instanceof ServerDetails) {
                     screen.setServerDetails((ServerDetails) object);
                     client.close();
                     try {
                         client.connect(5000, ip, ((ServerDetails) object).tcpPort, ((ServerDetails) object).udpPort);
-                    } catch (
-                            IOException e) {
-                        e.printStackTrace();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
                     }
                 }
 
-                //If the server sends RenderData object update the client's gamescreen
+                    //If the server sends RenderData object update the client's gamescreen
                 if(object instanceof RenderData){
                     screen.setRenderData((RenderData) object);
                 }
@@ -61,6 +63,12 @@ public class SpaceClient extends Listener {
                 //If server sends SoundData, play sound matching the given name
                 else if (object instanceof SoundData) {
                     SoundFuncs.playSound(((SoundData) object).sound);
+                }
+                else if( object instanceof ValidLobby){
+                    validLobby = (ValidLobby) object;
+                    synchronized (startMenu){
+                        startMenu.notifyAll();
+                    }
                 }
 
             }
