@@ -4,7 +4,6 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.HashMap;
@@ -15,10 +14,12 @@ public class MasterServer extends Listener {
 
     Server server;
     public static HashMap<String, SpaceServer> servers = new HashMap<>();
-    public static HashSet<Connection> playersConnected = new HashSet();
+    public static HashMap<Server, Integer[]> ports = new HashMap<>();
+    public static HashSet<Connection> playersConnected = new HashSet<>();
 
     public MasterServer(){
         server = new Server();
+        Network.register(server);
 
         server.addListener(new Listener(){
             //When the client connects to the server add a player entity to the game
@@ -31,19 +32,21 @@ public class MasterServer extends Listener {
 
                 //If the server sends RenderData object update the client's gamescreen
                 if(object instanceof Network.CreateLobby){
-                    System.out.println("Received request to create lobby");
                     int playerCount = ((Network.CreateLobby) object).playerCount;
                     if(playerCount >= 1){
                         try {
                             int tcpPort = getAvailablePort();
                             int udpPort = getAvailablePort();
-                            servers.put(createRandomLobbyCode(), new SpaceServer(playerCount, tcpPort, udpPort));
+                            String lobbyCode = createRandomLobbyCode();
+                            servers.put(lobbyCode, new SpaceServer(playerCount, tcpPort, udpPort));
+                            ports.put(server, new Integer[]{tcpPort, udpPort});
                             //send port info
-                            Network.ServerPorts serverPorts = new Network.ServerPorts();
-                            serverPorts.tcpPort = tcpPort;
-                            serverPorts.udpPort = udpPort;
-                            System.out.println("Sending new server ports to client");
-                            connection.sendTCP(serverPorts);
+                            Network.ServerDetails serverDetails = new Network.ServerDetails();
+                            serverDetails.tcpPort = tcpPort;
+                            serverDetails.udpPort = udpPort;
+                            serverDetails.lobbyCode = lobbyCode;
+                            System.out.println("Sending ports");
+                            connection.sendTCP(serverDetails);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -53,8 +56,13 @@ public class MasterServer extends Listener {
                     String lobbyCode = ((Network.JoinLobby) object).lobbyCode;
                     if(servers.containsKey(lobbyCode)){
                         //add the player to the server
-                        servers.get(lobbyCode);
-
+                        SpaceServer spaceServer= servers.get(lobbyCode);
+                        Integer [] port = ports.get(spaceServer.server);
+                        Network.ServerDetails serverDetails = new Network.ServerDetails();
+                        serverDetails.tcpPort = port[0];
+                        serverDetails.udpPort = port[1];
+                        serverDetails.lobbyCode = lobbyCode;
+                        connection.sendTCP(serverDetails);
                     }
                 }
             }

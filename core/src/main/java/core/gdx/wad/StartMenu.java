@@ -3,12 +3,8 @@ package core.gdx.wad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import core.server.Network;
 import core.server.SpaceClient;
 
 public class StartMenu extends Window {
@@ -45,8 +41,9 @@ public class StartMenu extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                GameScreen gameScreen= new GameScreen(titleScreen.gameLoop, titleScreen.isSinglePlayer);
+                GameScreen gameScreen= new GameScreen(null, false);
                 client = new SpaceClient(gameScreen);
+                gameScreen.client = client;
                 System.out.println("Co-op\n");
 
                 Window lobbyMenu = new Window("Lobby", skin);
@@ -58,7 +55,6 @@ public class StartMenu extends Window {
                 lobbyMenu.add(joinLobby).row();
                 lobbyMenu.add(back);
                 lobbyMenu.setBounds((Gdx.graphics.getWidth() - 400)/ 2, (Gdx.graphics.getHeight() - 200) / 2, 200, 100);
-
                 stage.addActor(lobbyMenu);
                 back.addListener(new ClickListener(){
                     public void clicked(InputEvent event, float x, float y) {
@@ -69,15 +65,28 @@ public class StartMenu extends Window {
                 createLobby.addListener(new ClickListener(){
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
-                        Network.CreateLobby create = new Network.CreateLobby();
-                        create.playerCount = 4;
-                        client.getClient().sendTCP(create);
+                        client.getServer(4);
+                        titleScreen.remove = true;
+                        myGDxTest.setScreen(gameScreen);
                     }
                 });
                 joinLobby.addListener(new ClickListener(){
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
-
+                        TextButton submit = new TextButton("submit", skin);
+                        TextField lobbyCode = new TextField("", skin);
+                        lobbyCode.setBounds(300,400, 100, 50);
+                        submit.setBounds(400,400,50,50);
+                        stage.addActor(lobbyCode);
+                        stage.addActor(submit);
+                        submit.addListener(new ClickListener(){
+                            public void clicked(InputEvent event, float x, float y) {
+                                String lCode = lobbyCode.getText();
+                                client.sendLobbyCode(lCode);
+                                titleScreen.remove = true;
+                                myGDxTest.setScreen(gameScreen);
+                            }
+                        });
                     }
                 });
             }

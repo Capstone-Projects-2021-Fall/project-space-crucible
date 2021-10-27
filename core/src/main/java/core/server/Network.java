@@ -30,6 +30,8 @@ public class Network {
         kryo.register(SoundData.class);
         kryo.register(CreateLobby.class);
         kryo.register(JoinLobby.class);
+        kryo.register(ServerDetails.class);
+
 
 
         //Level classes
@@ -106,8 +108,9 @@ public class Network {
     public static class JoinLobby{
         public String lobbyCode;
     }
-    public static class ServerPorts{
+    public static class ServerDetails{
         public int tcpPort;
         public int udpPort;
+        public String lobbyCode;
     }
 }

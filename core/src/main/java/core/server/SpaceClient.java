@@ -31,11 +31,11 @@ public class SpaceClient extends Listener {
             }
 
             public void received (Connection connection, Object object) {
-
-                if(object instanceof Network.ServerPorts){
+                if(object instanceof ServerDetails){
+                    screen.setServerDetails((ServerDetails) object);
                     client.close();
                     try {
-                        client.connect(5000, ip, ((ServerPorts) object).tcpPort, ((ServerPorts) object).udpPort);
+                        client.connect(5000, ip, ((ServerDetails) object).tcpPort, ((ServerDetails) object).udpPort);
                     } catch (
                             IOException e) {
                         e.printStackTrace();
@@ -76,6 +76,17 @@ public class SpaceClient extends Listener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void getServer(int playerCount){
+        CreateLobby createLobby = new CreateLobby();
+        createLobby.playerCount = playerCount;
+        client.sendTCP(createLobby);
+    }
+    public void sendLobbyCode(String lCode){
+        Network.JoinLobby joinLobby = new Network.JoinLobby();
+        joinLobby.lobbyCode = lCode;
+        client.sendTCP(joinLobby);
     }
 
     public void getInput(boolean[] controls){

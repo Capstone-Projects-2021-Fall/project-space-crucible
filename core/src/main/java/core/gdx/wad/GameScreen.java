@@ -14,7 +14,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import core.game.entities.Entity;
 import core.game.logic.GameLogic;
 import core.game.entities.PlayerPawn;
@@ -22,13 +21,15 @@ import core.server.SpaceClient;
 import core.server.Network.RenderData;
 import core.wad.funcs.SoundFuncs;
 import core.server.Network.ClientData;
+import core.server.Network.ServerDetails;
 
 public class GameScreen implements Screen {
 
     Thread gameLoop;
-    SpaceClient client;
+    public SpaceClient client;
     RenderData renderData = new RenderData();
     ClientData clientData = new ClientData();
+    ServerDetails serverDetails = new ServerDetails();
     int lobbySize = 2;
     int playerNumber = 1;
 
@@ -61,7 +62,6 @@ public class GameScreen implements Screen {
 //        if(!isSinglePlayer){ //If it is co-op mode create a new client.
 //            client = new SpaceClient(this);
 //        }
-
     }
 
     @Override
@@ -95,8 +95,11 @@ public class GameScreen implements Screen {
                     lobbyStage.addActor(player);
                     y -= 50;
                 }
+                TextButton lobbyCode = new TextButton(serverDetails.lobbyCode, uiSkin);
+                lobbyStage.addActor(lobbyCode);
                 lobbyStage.getBatch().end();
                 lobbyStage.draw(); //Draw the ui
+                return;
             }
         }
 
@@ -124,7 +127,8 @@ public class GameScreen implements Screen {
             RenderFuncs.worldDraw(batch, renderData.tiles);
             RenderFuncs.entityDraw(batch, renderData.entityList);
         }
-        font.draw(batch,"HP:" +GameLogic.getPlayer(0).getHealth(), GameLogic.getPlayer(0).getPos().x, GameLogic.getPlayer(0).getPos().y);
+
+        font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
         batch.end();
 
         if (showBoxes) {
@@ -151,7 +155,7 @@ public class GameScreen implements Screen {
         sr.end();
     }
 
-    public float getAngle(boolean isSinglePlayer){
+    public void getAngle(boolean isSinglePlayer){
         //This centers the camera to the player
         //Get the angle where the mouse is pointing to on the screen in relation to where the player is
         //Referenced code - https://stackoverflow.com/questions/16381031/get-cursor-position-in-libgdx
@@ -167,7 +171,6 @@ public class GameScreen implements Screen {
         mouseInWorld2D.x = mouseInWorld3D.x;
         mouseInWorld2D.y = mouseInWorld3D.y;
         angle = mouseInWorld2D.angleDeg();
-        return angle;
     }
 
     @Override
@@ -190,7 +193,7 @@ public class GameScreen implements Screen {
     public void hide() {
         SoundFuncs.stopMIDI();
         SoundFuncs.closeSequencer();
-        System.exit(0);
+//        System.exit(0);
     }
 
     @Override
@@ -208,6 +211,8 @@ public class GameScreen implements Screen {
     public void setClientData(ClientData object) {
         clientData = object;
     }
+
+    public void setServerDetails(ServerDetails object){ serverDetails = object;}
 
     private boolean[] getControls() {
         boolean[] controls = new boolean[5];

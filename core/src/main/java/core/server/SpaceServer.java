@@ -17,7 +17,7 @@ public class SpaceServer extends Listener {
     //Server Object
     Server server;
     Network.ClientData clientData;
-    public static HashSet<Integer> connected = new HashSet();
+    public static HashSet<Integer> connected = new HashSet<>();
 
     //Game loop
     Thread gameLoop = new Thread() {
@@ -72,7 +72,7 @@ public class SpaceServer extends Listener {
 
             //When the client connects to the server add a player entity to the game
             public void connected(Connection c){
-                System.out.println("Client connected: " + c.getRemoteAddressTCP().getHostString());
+                System.out.println("Client connected to game server: " + c.getID());
                 connected.add(c.getID());
                 clientData.connected = connected;
                 server.sendToAllTCP(clientData);
