@@ -58,9 +58,10 @@ public class RenderFuncs {
                 int tilex = (int)x/LevelTile.TILE_SIZE, tiley = (int)y/LevelTile.TILE_SIZE;
                 LevelTile tile = GameLogic.currentLevel.getTile(tilex, tiley);
 
-                float light = (float) tile.light / 255;
-                batch.setColor(light, light, light, 255f);
-
+                if (!GameLogic.switchingLevels) {
+                    float light = (float) tile.light / 255;
+                    batch.setColor(light, light, light, 255f);
+                }
                 batch.draw(spriteMap.get(e.getCurrentSprite()).getFrame(e.getCurrentFrame(), e.getPos().angle), e.getPos().x, e.getPos().y);
             }
         } catch (ConcurrentModificationException ignored) {}
