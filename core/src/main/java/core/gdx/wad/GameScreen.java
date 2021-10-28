@@ -67,6 +67,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(lobbyStage);
         SoundFuncs.stopMIDI();
         if (isSinglePlayer) {
             gameLoop.start();
@@ -115,7 +116,7 @@ public class GameScreen implements Screen {
         if(isSinglePlayer) {
             camera.position.set(GameLogic.getPlayer(1).getPos().x + GameLogic.getPlayer(1).getWidth() / (float) 2.0,
                     GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight() / (float) 2.0, 0);
-        } else if(renderData.tiles != null && renderData.entityList != null){
+        } else if(renderData.tiles != null && renderData.entityList != null && getPlayer(playerNumber) != null){
             camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
                     getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
         }
@@ -167,7 +168,7 @@ public class GameScreen implements Screen {
         if (isSinglePlayer) {
             mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(1).getPos().x;
             mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(1).getPos().y;
-        } else if(renderData.tiles != null && renderData.entityList != null) {
+        } else if(renderData.tiles != null && renderData.entityList != null && getPlayer(playerNumber) != null) {
             mouseInWorld3D.x = Gdx.input.getX() - getPlayer(playerNumber).getPos().x;
             mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y;
         }
