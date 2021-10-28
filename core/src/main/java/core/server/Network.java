@@ -31,8 +31,6 @@ public class Network {
         kryo.register(ServerDetails.class);
         kryo.register(ValidLobby.class);
 
-
-
         //Level classes
         kryo.register(core.level.info.LevelTile.class);
         kryo.register(core.level.info.LevelTile.TilePosition.class);

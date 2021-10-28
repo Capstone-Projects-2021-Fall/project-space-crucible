@@ -42,7 +42,7 @@ public class SpaceClient implements Listener {
                     }
                 }
 
-                    //If the server sends RenderData object update the client's gamescreen
+                //If the server sends RenderData object update the client's gamescreen
                 if(object instanceof RenderData){
                     screen.setRenderData((RenderData) object);
                 }

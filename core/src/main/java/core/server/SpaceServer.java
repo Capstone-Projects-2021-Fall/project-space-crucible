@@ -46,20 +46,15 @@ public class SpaceServer implements Listener {
         };
         clientData = new Network.ClientData();
         GameLogic.isSinglePlayer = false;
-
         //Loading the wad files
         try {
-
             //Read the default .WAD. "wads" will eventually be used to store any loaded mods as well as the base .WAD.
             //We only read the .WAD once and take all the information that we need.
-            System.out.println(System.getProperty("user.dir"));
             WadFile file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
             Array<WadFile> wads = new Array<>();
             wads.add(file);
-
             //Load all of the level data and the graphics before closing the .WAD
             GameLogic.loadLevels(file, wads);
-
             //When we add add-on support we will also close other files inside of 'wads"
             file.close();
         } catch (IOException e) {
@@ -80,16 +75,16 @@ public class SpaceServer implements Listener {
                 connected.add(c.getID());
                 clientData.connected = connected;
                 clientData.playerCount = playerCount;
+                System.out.println("Player connected " + connected.size());
                 server.sendToAllTCP(clientData);
-
                 //Wait for everyone to connect
                 if(connected.size() == playerCount && !gameLoop.isAlive()){
+                    System.out.println("Initializing server and starting game loop");
                     GameLogic.server = server;
                     GameLogic.currentLevel = GameLogic.levels.get(1);
                     GameLogic.loadEntities(GameLogic.currentLevel, false);
                     gameLoop.start();
                 }
-
             }
             //When the client sends a packet to the server handle it
             public void received(Connection c, Object packetData) {
@@ -110,7 +105,7 @@ public class SpaceServer implements Listener {
                 connected.remove(c.getID());
                 clientData.connected = connected;
                 server.sendToAllTCP(clientData);
-                System.out.println("Client disconnected! " + c.getID());
+                System.out.println("Client disconnected from game server! " + c.getID());
             }
         });
         server.bind(tcpPort, udpPort);

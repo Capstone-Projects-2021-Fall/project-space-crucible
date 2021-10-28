@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.HashMap;
@@ -13,9 +14,9 @@ import java.util.Random;
 public class MasterServer implements Listener {
 
     Server server;
-    public static HashMap<String, SpaceServer> servers = new HashMap<>();
-    public static HashMap<SpaceServer, Integer[]> ports = new HashMap<>();
-    public static HashSet<Connection> playersConnected = new HashSet<>();
+    public HashMap<String, SpaceServer> servers = new HashMap<>();
+    public HashMap<SpaceServer, Integer[]> ports = new HashMap<>();
+    public HashSet<Connection> playersConnected = new HashSet<>();
 
     public MasterServer(){
         server = new Server();
@@ -24,12 +25,10 @@ public class MasterServer implements Listener {
         server.addListener(new Listener(){
             //When the client connects to the server add a player entity to the game
             public void connected(Connection c){
-                System.out.println("Client connected: " + c.getRemoteAddressTCP().getHostString());
                 playersConnected.add(c);
 
             }
             public void received (Connection connection, Object object) {
-
                 //If the server sends RenderData object update the client's gamescreen
                 if(object instanceof Network.CreateLobby){
                     int playerCount = ((Network.CreateLobby) object).playerCount;
@@ -46,7 +45,6 @@ public class MasterServer implements Listener {
                             serverDetails.tcpPort = tcpPort;
                             serverDetails.udpPort = udpPort;
                             serverDetails.lobbyCode = lobbyCode;
-                            System.out.println("Sending ports");
                             connection.sendTCP(serverDetails);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -61,8 +59,7 @@ public class MasterServer implements Listener {
                         Network.ValidLobby validLobby = new Network.ValidLobby();
                         validLobby.valid = spaceServer != null;
                         connection.sendTCP(validLobby);
-                        if(!validLobby.valid)
-                            return;
+                        if(!validLobby.valid) return;
                         Integer [] port = ports.get(spaceServer);
                         Network.ServerDetails serverDetails = new Network.ServerDetails();
                         serverDetails.tcpPort = port[0];
@@ -75,7 +72,6 @@ public class MasterServer implements Listener {
             //This method will run when a client disconnects from the server, remove the character from the game
             public void disconnected(Connection c){
                 playersConnected.remove(c);
-                System.out.println("Client disconnected! " + c.getID());
             }
         });
         try {
