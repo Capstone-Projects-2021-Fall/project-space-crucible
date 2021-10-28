@@ -44,9 +44,9 @@ public class SettingsScreen implements Screen {
     @Override
     public void show() {
          Gdx.input.setInputProcessor(stage);
-        Actor masterVolumeActor = new SettingsMenu("Master Volume", skin, this, stage, myGDxTest);
-        stage.addActor(masterVolumeActor);
-        masterVolumeActor.setPosition(camera.viewportWidth/7, camera.viewportHeight/4);
+        Actor settingsActor = new SettingsMenu("Settings", skin, this, stage, myGDxTest);
+        stage.addActor(settingsActor);
+        settingsActor.setPosition(camera.viewportWidth/7, camera.viewportHeight/4);
     }
 
     @Override
