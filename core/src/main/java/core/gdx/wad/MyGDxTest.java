@@ -2,6 +2,7 @@ package core.gdx.wad;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
 import core.wad.funcs.SoundFuncs;
@@ -16,18 +17,19 @@ import java.nio.ByteOrder;
 public class MyGDxTest extends Game {
 
     public TitleScreen titleScreen;
+    public SettingsScreen settingsScreen;
 
     //This is the thread that runs the Game Logic. It is separate from the rendering code.
     Thread gameLoop = new Thread() {
-      @Override
-      public void run() {
-          GameLogic.start(null);
-      }
+        @Override
+        public void run() {
+            GameLogic.start(null);
+        }
 
-      @Override
-      public void interrupt() {
-          GameLogic.stop();
-      }
+        @Override
+        public void interrupt() {
+            GameLogic.stop();
+        }
     };
 
     @Override

@@ -1,10 +1,12 @@
 package core.gdx.wad;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class SettingsMenu extends Window {
@@ -16,7 +18,7 @@ public class SettingsMenu extends Window {
         this.myGDxTest=myGDxTest;
         this.settingsScreen=new SettingsScreen(myGDxTest);
 
-        Button masterVolumeButton = new TextButton("Volume", skin);
+        Button masterVolumeButton = new TextButton("Sound", skin);
         add(masterVolumeButton);
         row();
         Button backButton = new TextButton("Back", skin);
@@ -31,7 +33,7 @@ public class SettingsMenu extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 System.out.println("Master Volume\n");
-                Actor volumeActor = new SettingsSlider("Adjust Volume", skin, settingsScreen, stage, myGDxTest);
+                Actor volumeActor = new SoundSettings("Adjust Volume", skin, settingsScreen, stage, myGDxTest);
                 stage.addActor(volumeActor);
             }
         });
@@ -44,8 +46,5 @@ public class SettingsMenu extends Window {
                 myGDxTest.setScreen(myGDxTest.titleScreen);
             }
         });
-//        if(Gdx.input.isTouched()){
-//            ((MyGDxTest) Gdx.app.getApplicationListener()).setScreen(new TitleScreen(game,gameLoop));
-//        }
     }
 }
