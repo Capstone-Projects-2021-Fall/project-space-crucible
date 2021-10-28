@@ -3,11 +3,11 @@ package core.game.entities;
 import com.badlogic.gdx.math.Rectangle;
 import core.game.logic.CollisionLogic;
 
-public class Keys extends Entity{
+public class RedKey extends Entity{
     final private static int WIDTH =13;
     final private static int HEIGHT =25;
 
-    final public static int IDLESTATE = 89;
+    final public static int IDLESTATE = 95;
     final public static int HEALTH = -1;
     final public static int SPEED= 0;
 
@@ -18,9 +18,9 @@ public class Keys extends Entity{
     final public static int PAINSTATE = -1;
     final public static int DEATHSTATE = -1;
 
-    public Keys(){}
+    public RedKey(){}
 
-    public Keys(Position pos, int tag){
+    public RedKey(Position pos, int tag){
         super(HEALTH, pos, WIDTH, SPEED,
                 HEIGHT, new Integer[]{IDLESTATE,WALKSTATE,MELEESTATE,MISSILESTATE, PAINSTATE, DEATHSTATE},tag, 0);
     }

@@ -87,10 +87,13 @@ public class WadFuncs {
         GameLogic.entityType.add(Serpentipede.class); //2
         GameLogic.entityType.add(Zombieman.class); //3
         GameLogic.entityType.add(Keys.class); //4
-        GameLogic.entityType.add(Shotgun.class);//5
-        GameLogic.entityType.add(Chaingun.class);//6
-        GameLogic.entityType.add(RocketLauncher.class);//7
-        GameLogic.entityType.add(PlasmaWeapon.class);//8
+        GameLogic.entityType.add(Shotgun.class);//9
+        GameLogic.entityType.add(Chaingun.class);//5
+        GameLogic.entityType.add(RocketLauncher.class);//8
+        GameLogic.entityType.add(PlasmaWeapon.class);//10
+        GameLogic.entityType.add(RedKey.class);//6
+        GameLogic.entityType.add(BlueKey.class);//7
+
 
     }
 
@@ -185,6 +188,8 @@ public class WadFuncs {
         GameLogic.stateList.add(new EntityState(87,"POSS", 'K', 5, 88, null));   //87
         GameLogic.stateList.add(new EntityState(88,"POSS", 'L', -1, 88, null));   //88
         GameLogic.stateList.add(new EntityState(89,"YKEY", 'A', -1, 89, null));  //89
+        GameLogic.stateList.add(new EntityState(89,"BKEY", 'A', -1, 94, null));  //94
+        GameLogic.stateList.add(new EntityState(89,"RKEY", 'A', -1, 95, null));  //95
         GameLogic.stateList.add(new EntityState(89,"LAUN", 'A', -1, 90, null));  //90
         GameLogic.stateList.add(new EntityState(89,"MGUN", 'A', -1, 91, null));  //91
         GameLogic.stateList.add(new EntityState(89,"PLAS", 'A', -1, 92, null));  //92
@@ -206,6 +211,8 @@ public class WadFuncs {
         RenderFuncs.spriteMap.put("MGUN", new GameSprite(wads, "MGUN"));
         RenderFuncs.spriteMap.put("PLAS", new GameSprite(wads, "PLAS"));
         RenderFuncs.spriteMap.put("SGN2", new GameSprite(wads, "SGN2"));
+        RenderFuncs.spriteMap.put("BKEY", new GameSprite(wads, "BKEY"));
+        RenderFuncs.spriteMap.put("RKEY", new GameSprite(wads, "RKEY"));
 
 
     }
