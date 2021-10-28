@@ -2,17 +2,21 @@ package core.server;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
+
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+
 import core.game.logic.GameLogic;
 import core.server.Network.InputData;
 import core.wad.funcs.WadFuncs;
+
 import net.mtrop.doom.WadFile;
+
 import java.io.IOException;
 import java.util.HashSet;
 
-public class SpaceServer extends Listener {
+public class SpaceServer implements Listener {
 
     //Server Object
     Server server;
@@ -33,7 +37,7 @@ public class SpaceServer extends Listener {
     };
 
     public SpaceServer(int playerCount, int tcpPort, int udpPort) throws IOException {
-        server = new Server() {
+        server = new Server(120000,120000) {
             protected Connection newConnection() {
                 // By providing our own connection implementation, we can store per
                 // connection state without a connection ID to state look up.

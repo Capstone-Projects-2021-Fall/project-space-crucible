@@ -3,17 +3,15 @@ package core.server;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import core.game.logic.GameLogic;
+
 import core.gdx.wad.GameScreen;
 import core.gdx.wad.StartMenu;
 import core.server.Network.*;
 import core.wad.funcs.SoundFuncs;
 
-
 import java.io.IOException;
 
-
-public class SpaceClient extends Listener {
+public class SpaceClient implements Listener {
 
     Client client;
     static String ip = "localhost";
@@ -23,7 +21,7 @@ public class SpaceClient extends Listener {
     public SpaceClient(GameScreen screen, StartMenu startMenu){
         System.out.println("Connecting to the server!");
         //Create a client object
-        client = new Client(20000, 20000);
+        client = new Client(120000, 120000);
         client.start();
         //register the packets
         Network.register(client);

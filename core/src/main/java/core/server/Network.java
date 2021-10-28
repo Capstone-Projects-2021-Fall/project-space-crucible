@@ -1,9 +1,7 @@
 package core.server;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;

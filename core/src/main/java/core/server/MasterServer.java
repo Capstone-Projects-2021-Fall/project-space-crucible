@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 
-public class MasterServer extends Listener {
+public class MasterServer implements Listener {
 
     Server server;
     public static HashMap<String, SpaceServer> servers = new HashMap<>();
@@ -90,7 +90,7 @@ public class MasterServer extends Listener {
     public static String createRandomLobbyCode(){
         String lobbyCode = "";
         Random rand = new Random();
-        for(int i = 7; i > 0; i--){
+        for(int i = 5; i > 0; i--){
             int num = rand.nextInt(36);
             if(num < 26){
                 lobbyCode += (char) (num + 65);

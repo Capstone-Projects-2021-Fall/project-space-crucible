@@ -131,7 +131,7 @@ public class GameLogic {
 
                 System.out.println("Server IS " + (server == null ? "" : "NOT") +  " null.");
 
-                if (server != null && obj.tag > server.getConnections().length) {
+                if (server != null && obj.tag > server.getConnections().size()) {
                     System.out.println("Skipping player " + obj.tag + " because they don't exist.");
                     continue;
                 }
