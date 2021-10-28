@@ -78,6 +78,7 @@ public class CollisionLogic {
                         playerPawn.addKeys(keys);
                         collidedKey = entity;
                         System.out.println("Keys got picked up.");
+                        GameLogic.deleteEntityQueue.addLast(keys);
                     }
                 }
             }
@@ -95,6 +96,7 @@ public class CollisionLogic {
                         playerPawn.addBlueKey(Bkey);
                         collidedBKey = entity;
                         System.out.println("Blue Key got picked up.");
+                        GameLogic.deleteEntityQueue.addLast(Bkey);
                     }
                 }
             }
@@ -111,7 +113,9 @@ public class CollisionLogic {
                         PlayerPawn playerPawn = (PlayerPawn) genericRedEntity;
                         playerPawn.addRedKey(Rkey);
                         collidedRKey = entity;
-                        System.out.println("Keys got picked up.");
+
+                        System.out.println("Key got picked up.");
+                        GameLogic.deleteEntityQueue.addLast(Rkey);
                     }
                 }
             }
@@ -130,6 +134,7 @@ public class CollisionLogic {
                         playerPawn.addShotgun(shot_gun);
                         collidedshotgun = entity;
                         System.out.println("shotgun got picked up.");
+                        GameLogic.deleteEntityQueue.addLast(shot_gun);
                     }
                 }
             }
@@ -149,6 +154,7 @@ public class CollisionLogic {
                         playerPawn.addChaingun(chain_gun);
                         collidedchaingun = entity;
                         System.out.println("chaingun got picked up.");
+                        GameLogic.deleteEntityQueue.addLast(chain_gun);
                     }
                 }
             }
@@ -167,6 +173,7 @@ public class CollisionLogic {
                         playerPawn.addPlasmaWeapon(plasma_weapon);
                         collidedplasma = entity;
                         System.out.println("Plasma weapon got picked up.");
+                        GameLogic.deleteEntityQueue.addLast(plasma_weapon);
                     }
                 }
             }
@@ -185,6 +192,7 @@ public class CollisionLogic {
                         playerPawn.addRocketLauncher(rocket_launcher);
                         collidedrocket = entity;
                         System.out.println("rocket launcher got picked up.");
+                        GameLogic.deleteEntityQueue.addLast(rocket_launcher);
                     }
                 }
             }
