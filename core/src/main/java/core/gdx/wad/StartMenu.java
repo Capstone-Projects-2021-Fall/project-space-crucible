@@ -69,9 +69,27 @@ public class StartMenu extends Window {
                 createLobby.addListener(new ClickListener(){
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
-                        client.getServer(2);
-                        titleScreen.remove = true;
-                        myGDxTest.setScreen(gameScreen);
+                        TextButton submit = new TextButton("submit", skin);
+                        TextField playerCount = new TextField("", skin);
+                        playerCount.setBounds(300,400, 100, 50);
+                        submit.setBounds(400,400,50,50);
+                        stage.addActor(playerCount);
+                        stage.addActor(submit);
+                        submit.addListener(new ClickListener() {
+                            public void clicked(InputEvent event, float x, float y) {
+                                int count;
+                                try {
+                                    count = Integer.parseInt(playerCount.getText());
+                                }catch (NumberFormatException e){
+                                    return;
+                                }
+                                client.getServer(count);
+                                titleScreen.remove = true;
+                                myGDxTest.setScreen(gameScreen);
+                            }
+                        });
+
+
                     }
                 });
                 joinLobby.addListener(new ClickListener(){

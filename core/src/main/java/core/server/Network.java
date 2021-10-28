@@ -90,6 +90,7 @@ public class Network {
 //    Send this to the client
     public static class ClientData{
         public HashSet<Integer> connected;
+        public int playerCount;
     }
 
     //Send this to the SERVER

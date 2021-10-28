@@ -32,7 +32,6 @@ public class GameScreen implements Screen {
     ClientData clientData = new ClientData();
     ServerDetails serverDetails = new ServerDetails();
 
-    int lobbySize = 2;
     int playerNumber = 1;
 
     //screen
@@ -88,7 +87,7 @@ public class GameScreen implements Screen {
             return;
         }
         if(clientData.connected != null) {
-            if (!isSinglePlayer && clientData.connected.size() < lobbySize) {
+            if (!isSinglePlayer && clientData.connected.size() < clientData.playerCount) {
                 lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
                 lobbyStage.getBatch().begin();
                 lobbyStage.getBatch().draw(background, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
@@ -169,8 +168,8 @@ public class GameScreen implements Screen {
             mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(1).getPos().x;
             mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(1).getPos().y;
         } else if(renderData.tiles != null && renderData.entityList != null) {
-            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(1).getPos().x;
-            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(1).getPos().y;
+            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(playerNumber).getPos().x;
+            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y;
         }
         mouseInWorld3D.z = 0;
         camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position

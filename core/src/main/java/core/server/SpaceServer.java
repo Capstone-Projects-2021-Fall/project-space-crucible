@@ -75,6 +75,7 @@ public class SpaceServer extends Listener {
                 System.out.println("Client connected to game server: " + c.getID());
                 connected.add(c.getID());
                 clientData.connected = connected;
+                clientData.playerCount = playerCount;
                 server.sendToAllTCP(clientData);
 
                 //Wait for everyone to connect
