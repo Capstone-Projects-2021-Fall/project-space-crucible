@@ -25,6 +25,20 @@ public class CollisionLogic {
                 collidedEntity = entity2;
                 break;
             }
+
+            else if (entity instanceof Keys) {
+                Keys keys = (Keys) entity;
+                if (bounds.overlaps(keys.getBounds())) {
+                    if (entity instanceof PlayerPawn) {
+                        PlayerPawn playerPawn = (PlayerPawn) entity;
+                        playerPawn.addKeys(keys);
+                        collidedEntity = entity;
+                        System.out.println("Keys got picked up.");
+                    }
+                }
+            }
+
+
         }
         return collidedEntity;
     }
@@ -70,10 +84,10 @@ public class CollisionLogic {
         }
         return collidedKey;
     }
-    public static Entity entityBlueKeyCollision(Rectangle bounds, Entity genericBlueEntity){
+   public static Entity entityBlueKeyCollision(Rectangle bounds, Entity genericBlueEntity){
         Entity collidedBKey = null;
         for(Entity entity : GameLogic.entityList){
-            if (entity instanceof Keys) {
+            if (entity instanceof BlueKey) {
                 BlueKey Bkey = (BlueKey) entity;
                 if (bounds.overlaps(Bkey.getBounds())) {
                     if (genericBlueEntity instanceof PlayerPawn) {
@@ -90,7 +104,7 @@ public class CollisionLogic {
     public static Entity entityRedKeyCollision(Rectangle bounds, Entity genericRedEntity){
         Entity collidedRKey = null;
         for(Entity entity : GameLogic.entityList){
-            if (entity instanceof Keys) {
+            if (entity instanceof RedKey) {
                 RedKey Rkey = (RedKey) entity;
                 if (bounds.overlaps(Rkey.getBounds())) {
                     if (genericRedEntity instanceof PlayerPawn) {
@@ -266,7 +280,7 @@ public class CollisionLogic {
                 && CollisionLogic.entityBlueKeyCollision(bounds, caller) == null
                 && CollisionLogic.entityRedKeyCollision(bounds, caller) == null
                 && CollisionLogic.entityShotgunCollision(bounds, caller) == null
-                && CollisionLogic.entityPlasmaweaponCollision(bounds, caller) == null
+               && CollisionLogic.entityPlasmaweaponCollision(bounds, caller) == null
                 && CollisionLogic.entityChaingunCollision(bounds, caller) == null
                 && CollisionLogic.entityRocketLauncherCollision(bounds, caller) == null;
     }
