@@ -17,6 +17,7 @@ import core.server.Network.RenderData;
 import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
 
+import java.awt.*;
 import java.util.Objects;
 
 public class GameScreen implements Screen {
@@ -111,6 +112,7 @@ public class GameScreen implements Screen {
         font.draw(batch,"Player " + Objects.requireNonNull(GameLogic.getPlayer(0)).getTag(), Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().x,
                 Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().y + Objects.requireNonNull(GameLogic.getPlayer(0)).getHeight()+ Objects.requireNonNull(GameLogic.getPlayer(0)).getHeight()/3);
 
+        TextField chatText = new TextField("");
         batch.end();
 
         if (showBoxes) {

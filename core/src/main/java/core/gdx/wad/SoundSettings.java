@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import core.wad.funcs.SoundFuncs;
 
 public class SoundSettings extends Window {
     MyGDxTest myGDxTest;
@@ -44,6 +45,8 @@ public class SoundSettings extends Window {
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("Volume Changed to " +masterVolumeSlider.getValue() +"\n");
                 volumeValue.setText((int) masterVolumeSlider.getValue());
+                //Sound.setVolume("sound id", masterVolumeSlider.getValue()); TODO reference BGM (midi?)
+                //Midi
             }
         });
     }
