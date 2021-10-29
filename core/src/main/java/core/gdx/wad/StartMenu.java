@@ -1,16 +1,22 @@
 package core.gdx.wad;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import core.server.Network;
+import core.server.SpaceClient;
+
+import java.util.Locale;
 
 public class StartMenu extends Window {
-    MyGDxTest myGDxTest;
+
+    public MyGDxTest myGDxTest;
     SettingsScreen settingsScreen;
+    SpaceClient client;
+    final StartMenu startMenu = this;
+
     public StartMenu(String title, Skin skin, TitleScreen titleScreen, Stage stage, MyGDxTest myGDxTest) {
         super(title, skin);
         this.myGDxTest=myGDxTest;
@@ -40,7 +46,67 @@ public class StartMenu extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                GameScreen gameScreen= new GameScreen(null, false);
+                client = new SpaceClient(gameScreen, startMenu);
+                gameScreen.client = client;
                 System.out.println("Co-op\n");
+
+                Window lobbyMenu = new Window("Lobby", skin);
+                lobbyMenu.setMovable(false);
+                TextButton joinLobby = new TextButton("Join Lobby", skin);
+                TextButton createLobby = new TextButton("Create Lobby", skin);
+                TextButton back = new TextButton("Back", skin);
+                lobbyMenu.add(createLobby).row();
+                lobbyMenu.add(joinLobby).row();
+                lobbyMenu.add(back);
+                lobbyMenu.setBounds((Gdx.graphics.getWidth() - 250)/ 2, (Gdx.graphics.getHeight() - 150) / 2, 250, 150);
+                stage.addActor(lobbyMenu);
+                startMenu.setVisible(false);
+                back.addListener(new ClickListener(){
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
+                        startMenu.setVisible(true);
+                        lobbyMenu.remove();
+                    }
+                });
+                createLobby.addListener(new ClickListener(){
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
+                        client.makeLobby();
+                        titleScreen.remove = true;
+                        myGDxTest.setScreen(gameScreen);
+                    }
+                });
+                joinLobby.addListener(new ClickListener(){
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
+                        TextButton submit = new TextButton("submit", skin);
+                        TextField lobbyCode = new TextField("", skin);
+                        lobbyCode.setBounds((Gdx.graphics.getWidth() - 100)/ 2,(Gdx.graphics.getHeight() - 50)/ 2, 100, 50);
+                        submit.setBounds((Gdx.graphics.getWidth() + 100)/ 2,(Gdx.graphics.getHeight() - 50)/ 2,50,50);
+                        lobbyMenu.setVisible(false);
+                        stage.addActor(lobbyCode);
+                        stage.addActor(submit);
+                        submit.addListener(new ClickListener(){
+                            public void clicked(InputEvent event, float x, float y) {
+                                String lCode = lobbyCode.getText();
+                                lCode = lCode.toUpperCase();
+                                client.sendLobbyCode(lCode);
+                                synchronized (startMenu){
+                                    try {
+                                        startMenu.wait();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                if(client.validLobby.valid) {
+                                    titleScreen.remove = true;
+//                                    myGDxTest.setScreen(gameScreen);
+                                }
+                            }
+                        });
+                    }
+                });
             }
         });
         settingsButton.addListener(new ClickListener() {

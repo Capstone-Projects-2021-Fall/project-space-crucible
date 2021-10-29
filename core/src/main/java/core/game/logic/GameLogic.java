@@ -2,6 +2,7 @@ package core.game.logic;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
@@ -28,8 +29,7 @@ public class GameLogic {
     final public static ArrayList<Class<? extends Entity>> entityType = new ArrayList<>();
     final public static Map<Integer, LevelData> levels = new HashMap<>();
     public static LevelData currentLevel = null;
-    private static Server server;
-    public static boolean[] controls;
+    public static Server server = null;
     static boolean goingToNextLevel = false;
     static LevelData nextLevel = null;
     public static boolean switchingLevels = false;
@@ -48,8 +48,7 @@ public class GameLogic {
     final public static int RIGHT = 3;
     final public static int SHOOT = 4;
 
-    public static void start(Server s) {
-        server = s;
+    public static void start() {
         if (isSinglePlayer) {
             SoundFuncs.playMIDI(currentLevel.getMIDI());
         } else {
@@ -79,7 +78,7 @@ public class GameLogic {
 
             //Check ticCounter because Concurrency error might occur if player shoots on first tic.
             if (e instanceof PlayerPawn) {
-                ((PlayerPawn) e).movementUpdate(controls);
+                ((PlayerPawn) e).movementUpdate();
             }
         }
 
@@ -94,11 +93,13 @@ public class GameLogic {
 
         if(!isSinglePlayer){
             //Send render data packet
-            RenderData renderData = new RenderData();
-            renderData.entityList = GameLogic.entityList;
-            renderData.tiles = GameLogic.currentLevel.getTiles();
-            renderData.playerPawn = getPlayer(0);
-            server.sendToAllTCP(renderData);
+            for (Connection c : server.getConnections()) {
+                RenderData renderData = new RenderData();
+                renderData.entityList = GameLogic.entityList;
+                renderData.tiles = GameLogic.currentLevel.getTiles();
+                renderData.playerPawn = getPlayer(c.getID());
+                server.sendToAllTCP(renderData);
+            }
         }
 
         if (!goingToNextLevel) {
@@ -124,6 +125,17 @@ public class GameLogic {
 
             //Skip object if it is not on this difficulty. Always show everything in the editor
             if (!obj.skill[difficulty] && !editor) {continue;}
+
+            if (obj.type == 0) {
+                if (isSinglePlayer && obj.tag > 1 && !editor) continue;
+
+                System.out.println("Server IS " + (server == null ? "" : "NOT") +  " null.");
+
+                if (server != null && obj.tag > server.getConnections().size()) {
+                    System.out.println("Skipping player " + obj.tag + " because they don't exist.");
+                    continue;
+                }
+            }
 
             try {
                 entityList.add(entityType.get(obj.type)
@@ -185,7 +197,6 @@ public class GameLogic {
                 return (PlayerPawn) e;
             }
         }
-
         return null;
     }
 

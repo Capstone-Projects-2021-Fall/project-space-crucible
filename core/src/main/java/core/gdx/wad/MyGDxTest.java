@@ -17,14 +17,15 @@ import java.nio.ByteOrder;
 public class MyGDxTest extends Game {
 
     public TitleScreen titleScreen;
+    public GameScreen gameScreen;
     public SettingsScreen settingsScreen;
 
     //This is the thread that runs the Game Logic. It is separate from the rendering code.
     Thread gameLoop = new Thread() {
-        @Override
-        public void run() {
-            GameLogic.start(null);
-        }
+      @Override
+      public void run() {
+          GameLogic.start();
+      }
 
         @Override
         public void interrupt() {
@@ -43,11 +44,6 @@ public class MyGDxTest extends Game {
             WadFile file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
             Array<WadFile> wads = new Array<>();
             wads.add(file);
-
-            //Load all of the level data and the graphics before closing the .WAD
-            //byte[] rawSound = file.getData("DSPISTOL");
-            //short[] sound = new short[rawSound.length / 2];
-            //ByteBuffer.wrap(rawSound).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(sound);
 
             SoundFuncs.startSequencer();
             SoundFuncs.loadMIDIs(wads);
@@ -71,5 +67,6 @@ public class MyGDxTest extends Game {
         SoundFuncs.playMIDI("TITLE");
         titleScreen = new TitleScreen(this, gameLoop);
         setScreen(titleScreen);
+
     }
 }

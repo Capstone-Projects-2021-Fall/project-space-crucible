@@ -1,6 +1,5 @@
 package core.server;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
@@ -10,6 +9,7 @@ import core.game.entities.actions.*;
 import core.level.info.LevelTile;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 //This class will store things common to both client and server
 public class Network {
@@ -24,7 +24,13 @@ public class Network {
         kryo.register(RenderData.class);
         kryo.register(InputData.class);
         kryo.register(MIDIData.class);
+        kryo.register(ClientData.class);
         kryo.register(SoundData.class);
+        kryo.register(CreateLobby.class);
+        kryo.register(JoinLobby.class);
+        kryo.register(ServerDetails.class);
+        kryo.register(ValidLobby.class);
+        kryo.register(StartGame.class);
 
         //Level classes
         kryo.register(core.level.info.LevelTile.class);
@@ -63,6 +69,7 @@ public class Network {
         kryo.register(boolean[].class);
         kryo.register(Integer[].class);
         kryo.register(String[].class);
+        kryo.register(java.util.HashSet.class);
     }
 
     //Send this to the CLIENT
@@ -70,19 +77,42 @@ public class Network {
         public ArrayList<Entity> entityList;
         public ArrayList<LevelTile> tiles;
         public PlayerPawn playerPawn;
+        public String username;
     }
 
     public static class MIDIData {
         public String midi;
     }
 
+//    Send this to the client
+    public static class ClientData{
+        public HashSet<Integer> connected;
+    }
+
     //Send this to the SERVER
     public static class InputData {
+        public String username;
         public boolean[] controls;
         public float angle;
     }
 
     public static class SoundData {
         public String sound;
+    }
+
+    public static class CreateLobby{
+    }
+    public static class JoinLobby{
+        public String lobbyCode;
+    }
+    public static class ServerDetails{
+        public int tcpPort;
+        public String lobbyCode;
+    }
+    public static class ValidLobby{
+        public boolean valid;
+    }
+    public static class StartGame{
+        public boolean startGame;
     }
 }
