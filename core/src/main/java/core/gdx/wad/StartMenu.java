@@ -58,11 +58,13 @@ public class StartMenu extends Window {
                 lobbyMenu.add(createLobby).row();
                 lobbyMenu.add(joinLobby).row();
                 lobbyMenu.add(back);
-                lobbyMenu.setBounds((Gdx.graphics.getWidth() - 400)/ 2, (Gdx.graphics.getHeight() - 200) / 2, 200, 100);
+                lobbyMenu.setBounds((Gdx.graphics.getWidth() - 250)/ 2, (Gdx.graphics.getHeight() - 150) / 2, 250, 150);
                 stage.addActor(lobbyMenu);
+                startMenu.setVisible(false);
                 back.addListener(new ClickListener(){
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
+                        startMenu.setVisible(true);
                         lobbyMenu.remove();
                     }
                 });
@@ -79,8 +81,9 @@ public class StartMenu extends Window {
                         super.clicked(event, x, y);
                         TextButton submit = new TextButton("submit", skin);
                         TextField lobbyCode = new TextField("", skin);
-                        lobbyCode.setBounds(300,400, 100, 50);
-                        submit.setBounds(400,400,50,50);
+                        lobbyCode.setBounds((Gdx.graphics.getWidth() - 100)/ 2,(Gdx.graphics.getHeight() - 50)/ 2, 100, 50);
+                        submit.setBounds((Gdx.graphics.getWidth() + 100)/ 2,(Gdx.graphics.getHeight() - 50)/ 2,50,50);
+                        lobbyMenu.setVisible(false);
                         stage.addActor(lobbyCode);
                         stage.addActor(submit);
                         submit.addListener(new ClickListener(){

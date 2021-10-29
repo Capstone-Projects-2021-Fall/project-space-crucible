@@ -54,6 +54,9 @@ public class GameScreen implements Screen {
     Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
     TextButton play = new TextButton("Start Game", uiSkin);
     boolean startGame = false;
+    TextButton lobbyCode;
+    boolean remove = false;
+
 
     public GameScreen(Thread gameLoop, boolean isSinglePlayer) {
         this.gameLoop = gameLoop;
@@ -76,7 +79,7 @@ public class GameScreen implements Screen {
             playerNumber = client.getClient().getID();
         }
         if(playerNumber == 1) {
-            play.setBounds((Gdx.graphics.getWidth() - 200)/ 2, (Gdx.graphics.getHeight() - 100) / 2, 200, 100);
+            play.setBounds((Gdx.graphics.getWidth() - 100)/ 2, 50, 100, 60);
             lobbyStage.addActor(play);
             play.addListener(new ClickListener() {
                 public void clicked(InputEvent event, float x, float y) {
@@ -129,9 +132,12 @@ public class GameScreen implements Screen {
                     lobbyStage.addActor(player);
                     y -= 50;
                 }
-                TextButton lobbyCode = new TextButton(serverDetails.lobbyCode, uiSkin);
-
-                lobbyStage.addActor(lobbyCode);
+                if(serverDetails.lobbyCode != null && !remove) {
+                    lobbyCode = new TextButton("Lobby Code\n" + serverDetails.lobbyCode, uiSkin);
+                    lobbyCode.setSize(100, 60);
+                    lobbyStage.addActor(lobbyCode);
+                    remove = true;
+                }
                 lobbyStage.getBatch().end();
                 lobbyStage.draw(); //Draw the ui
                 return;
@@ -151,78 +157,7 @@ public class GameScreen implements Screen {
             batch.end();
             if (showBoxes) {showBoxes();}
             client.getInput(getControls());
-
         }
-
-//        if(!isSinglePlayer && clientData.connected == null){
-//            return;
-//        }
-//        if(clientData.connected != null) {
-//            if (!isSinglePlayer && clientData.connected.size() < clientData.playerCount) {
-//                lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
-//                lobbyStage.getBatch().begin();
-//                lobbyStage.getBatch().draw(background, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
-//                int x = 100;
-//                int y = 400;
-//                for (int element : clientData.connected) {
-//                    String clientId = "Player " + element;
-//                    TextButton player = new TextButton(clientId, uiSkin);
-//                    player.setBounds(x, y, 80, 50);
-//                    lobbyStage.addActor(player);
-//                    y -= 50;
-//                }
-//                TextButton lobbyCode = new TextButton(serverDetails.lobbyCode, uiSkin);
-//                lobbyStage.addActor(lobbyCode);
-//                lobbyStage.getBatch().end();
-//                lobbyStage.draw(); //Draw the ui
-//                return;
-//            }
-//        }
-//        if(!isSinglePlayer){
-//            if(renderData.tiles == null && renderData.entityList == null) return;
-//            if(getPlayer(playerNumber) == null) return;
-//
-//        }
-
-
-//        getAngle(isSinglePlayer);
-//        if(isSinglePlayer)
-//            GameLogic.getPlayer(1).getPos().angle = angle; //Turn the vector2 into a degree angle
-//
-//        if(isSinglePlayer) {
-//            camera.position.set(GameLogic.getPlayer(1).getPos().x + GameLogic.getPlayer(1).getWidth() / (float) 2.0,
-//                    GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight() / (float) 2.0, 0);
-//        } else if(renderData.tiles != null && renderData.entityList != null && getPlayer(playerNumber) != null){
-//            camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
-//                    getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
-//        }
-//        camera.update();
-//
-//        batch.setProjectionMatrix(camera.combined);
-//        batch.enableBlending();
-//        batch.begin();
-//        if(isSinglePlayer) {
-//            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles());
-//            RenderFuncs.entityDraw(batch, GameLogic.entityList);
-//
-//        }else if(renderData.tiles != null && renderData.entityList != null){
-//            RenderFuncs.worldDraw(batch, renderData.tiles);
-//            RenderFuncs.entityDraw(batch, renderData.entityList);
-//        }
-//        if(GameLogic.getPlayer(playerNumber) != null)
-//            font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
-//        batch.end();
-//
-//        if (showBoxes) {showBoxes();}
-//
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS)) {
-//            showBoxes = !showBoxes;
-//        }
-//        if(!isSinglePlayer) {
-//            client.getInput(getControls());
-//        } else {
-//            GameLogic.getPlayer(1).controls = getControls();
-//        }
     }
     private void showBoxes() {
         sr.setProjectionMatrix(camera.combined);
@@ -259,12 +194,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
