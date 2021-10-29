@@ -10,6 +10,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
@@ -23,6 +27,7 @@ import java.util.Objects;
 public class GameScreen implements Screen {
 
     Thread gameLoop;
+    MyGDxTest myGDxTest;
 
     //screen
     OrthographicCamera camera;
@@ -34,6 +39,8 @@ public class GameScreen implements Screen {
     SpaceClient client;
     RenderData renderData = new RenderData();
     BitmapFont font = new BitmapFont();
+    private Stage stage = new Stage(new ScreenViewport());
+    final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
 
     float angle = 0;
@@ -60,6 +67,12 @@ public class GameScreen implements Screen {
         if (isSinglePlayer) {
             gameLoop.start();
         }
+
+        Gdx.input.setInputProcessor(stage);
+        Actor chatWindow = new ChatWindow("Chat", skin, this, stage, myGDxTest);
+        stage.addActor(chatWindow);
+        chatWindow.setPosition(camera.viewportWidth,0);
+        chatWindow.setSize(chatWindow.getWidth(), chatWindow.getHeight()*3/2);
     }
 
     @Override
@@ -129,6 +142,9 @@ public class GameScreen implements Screen {
         } else {
             GameLogic.controls = getControls();
         }
+
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
     private void showBoxes() {
         sr.setProjectionMatrix(camera.combined);
