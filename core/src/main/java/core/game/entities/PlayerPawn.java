@@ -44,6 +44,7 @@ public class PlayerPawn extends Entity {
 
     public float velx = 0;
     public float vely = 0;
+    public boolean[] controls = new boolean[5];
 
     public PlayerPawn(){}
 
@@ -53,7 +54,7 @@ public class PlayerPawn extends Entity {
                 SOLID);
     }
 
-    public void movementUpdate(boolean[] controls) {
+    public void movementUpdate() {
 
         if(controls == null){
             return;
