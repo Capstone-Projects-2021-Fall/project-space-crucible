@@ -40,8 +40,8 @@ public class SpaceServer implements Listener {
     public SpaceServer(int tcpPort) throws IOException {
         server = new Server(120000,120000) {
             protected Connection newConnection() {
-                // By providing our own connection implementation, we can store per
-                // connection state without a connection ID to state look up.
+                /* By providing our own connection implementation, we can store per
+                // connection state without a connection ID to state look up. */
                 return new PlayerConnection();
             }
         };
@@ -54,9 +54,9 @@ public class SpaceServer implements Listener {
             WadFile file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
             Array<WadFile> wads = new Array<>();
             wads.add(file);
-            //Load all of the level data and the graphics before closing the .WAD
+            //Load all the level data and the graphics before closing the .WAD
             GameLogic.loadLevels(file, wads);
-            //When we add add-on support we will also close other files inside of 'wads"
+            //When we add add-on support we will also close other files inside 'wads"
             file.close();
         } catch (IOException e) {
             e.printStackTrace();

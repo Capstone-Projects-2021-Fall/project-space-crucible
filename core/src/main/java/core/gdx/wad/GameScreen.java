@@ -141,23 +141,22 @@ public class GameScreen implements Screen {
                 lobbyStage.getBatch().end();
                 lobbyStage.draw(); //Draw the ui
                 return;
-            } else {
-                if (renderData.tiles == null && renderData.entityList == null) return;
-                if (getPlayer(playerNumber) == null) return;
-                getAngle(false);
-                camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
-                        getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
-                camera.update();
-                batch.setProjectionMatrix(camera.combined);
-                batch.enableBlending();
-                batch.begin();
-                RenderFuncs.worldDraw(batch, renderData.tiles);
-                RenderFuncs.entityDraw(batch, renderData.entityList);
-                font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y);
-                batch.end();
-                if (showBoxes) showBoxes();
-                client.getInput(getControls());
             }
+            if (renderData.tiles == null && renderData.entityList == null) return;
+            if (getPlayer(playerNumber) == null) return;
+            getAngle(false);
+            camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
+                    getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
+            camera.update();
+            batch.setProjectionMatrix(camera.combined);
+            batch.enableBlending();
+            batch.begin();
+            RenderFuncs.worldDraw(batch, renderData.tiles);
+            RenderFuncs.entityDraw(batch, renderData.entityList);
+            font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y);
+            batch.end();
+            if (showBoxes) showBoxes();
+            client.getInput(getControls());
         }
     }
     private void showBoxes() {

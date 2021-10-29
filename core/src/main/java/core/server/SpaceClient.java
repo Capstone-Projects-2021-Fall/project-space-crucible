@@ -10,6 +10,7 @@ import core.server.Network.*;
 import core.wad.funcs.SoundFuncs;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class SpaceClient implements Listener {
 
@@ -17,15 +18,17 @@ public class SpaceClient implements Listener {
     static String ip = "localhost";
     GameScreen screen;
     public ValidLobby validLobby;
+    StartMenu startMenu;
+
 
     public SpaceClient(GameScreen screen, StartMenu startMenu){
-        System.out.println("Connecting to the server!");
-        //Create a client object
+        this.screen = screen;
+        this.startMenu = startMenu;
+
         client = new Client(120000, 120000);
         client.start();
         //register the packets
         Network.register(client);
-        this.screen = screen;
 
         client.addListener(new ThreadedListener(new Listener() {
             public void connected (Connection connection) {
@@ -34,21 +37,18 @@ public class SpaceClient implements Listener {
             public void received (Connection connection, Object object) {
                 if(object instanceof ServerDetails) {
                     screen.setServerDetails((ServerDetails) object);
-                    client.close();
+                    client.close(); //Close connection to Master Server
                     try {
-                        client.connect(5000, ip, ((ServerDetails) object).tcpPort);
+                        client.connect(5000, ip, ((ServerDetails) object).tcpPort); //Join the server
                         startMenu.myGDxTest.setScreen(screen);
-                        System.out.println(client.getID());
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
                 }
-
                 //If the server sends RenderData object update the client's gamescreen
                 if(object instanceof RenderData){
                     screen.setRenderData((RenderData) object);
                 }
-
                 //If server sends MIDIData, change client's music
                 else if (object instanceof MIDIData) {
                     if (((MIDIData) object).midi != null && !((MIDIData) object).midi.equals("") ) {
@@ -56,26 +56,30 @@ public class SpaceClient implements Listener {
                     } else {
                         SoundFuncs.stopMIDI();
                     }
-                }else if(object instanceof ClientData){
+                }
+                //If server sends ClientData set the client data
+                else if(object instanceof ClientData){
                     screen.setClientData((ClientData) object);
                 }
-
                 //If server sends SoundData, play sound matching the given name
                 else if (object instanceof SoundData) {
                     SoundFuncs.playSound(((SoundData) object).sound);
                 }
+                //If server sends ValidLobby unblock the startMenu
                 else if( object instanceof ValidLobby){
                     validLobby = (ValidLobby) object;
                     synchronized (startMenu){
                         startMenu.notifyAll();
                     }
                 }
+                //If server sends StartGame set the startGame value to it
                 else if(object instanceof StartGame){
                     screen.startGame = ((StartGame) object).startGame;
                 }
             }
             public void disconnected (Connection connection) {
-//                System.exit(0);
+                System.out.println("Client Disconnected: Closing the application!");
+                System.exit(0);
             }
         }));
 
