@@ -130,6 +130,9 @@ public class GameScreen implements Screen {
             RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles());
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
             font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
+            font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
+                    GameLogic.getPlayer(playerNumber).getPos().x,
+                    GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+10);
             batch.end();
             if (showBoxes) {showBoxes();}
             GameLogic.getPlayer(1).controls = getControls();
@@ -170,20 +173,11 @@ public class GameScreen implements Screen {
             batch.begin();
             RenderFuncs.worldDraw(batch, renderData.tiles);
             RenderFuncs.entityDraw(batch, renderData.entityList);
-        }
-        if(Objects.requireNonNull(GameLogic.getPlayer(0)).getHealth()>0){
-            font.draw(batch,"HP:" + Objects.requireNonNull(GameLogic.getPlayer(0)).getHealth(),
-                    Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().x,
-                    Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().y);
-        }else{
-            font.draw(batch,"HP: 0" , Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().x,
-                    Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().y);
-        }
-        font.draw(batch,"Player " + Objects.requireNonNull(GameLogic.getPlayer(0)).getTag(), Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().x,
-                Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().y + Objects.requireNonNull(GameLogic.getPlayer(0)).getHeight()+ Objects.requireNonNull(GameLogic.getPlayer(0)).getHeight()/3);
 
-        TextField chatText = new TextField("");
-        batch.end();
+            TextField chatText = new TextField("");
+            batch.end();
+        }
+
 
         if (showBoxes) {
             showBoxes();
@@ -195,7 +189,11 @@ public class GameScreen implements Screen {
             showBoxes = !showBoxes;
         }
         if(!isSinglePlayer) {
-            font.draw(batch,"HP:" +getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y);
+            font.draw(batch,"HP:" +getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
+                    getPlayer(playerNumber).getPos().y);
+            font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
+                    GameLogic.getPlayer(playerNumber).getPos().x,
+                    GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+10);
             batch.end();
             if (showBoxes) {showBoxes();}
             client.getInput(getControls());
