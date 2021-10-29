@@ -110,7 +110,7 @@ public class GameScreen implements Screen {
             batch.setProjectionMatrix(camera.combined);
             batch.enableBlending();
             batch.begin();
-            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles());
+            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
             font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
             batch.end();
@@ -151,7 +151,7 @@ public class GameScreen implements Screen {
             batch.setProjectionMatrix(camera.combined);
             batch.enableBlending();
             batch.begin();
-            RenderFuncs.worldDraw(batch, renderData.tiles);
+            RenderFuncs.worldDraw(batch, renderData.tiles, false);
             RenderFuncs.entityDraw(batch, renderData.entityList);
             font.draw(batch,"HP:" +getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y);
             batch.end();

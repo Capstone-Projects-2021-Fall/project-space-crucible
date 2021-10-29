@@ -56,11 +56,14 @@ public class RenderFuncs {
                 //Check tile light level at player half-height
                 float x = e.getPos().x, y = (e.getPos().y + (float)(e.getHeight()/2));
                 int tilex = (int)x/LevelTile.TILE_SIZE, tiley = (int)y/LevelTile.TILE_SIZE;
-                LevelTile tile = GameLogic.currentLevel.getTile(tilex, tiley);
 
-                if (!GameLogic.switchingLevels) {
-                    float light = (float) tile.light / 255;
-                    batch.setColor(light, light, light, 255f);
+                if (GameLogic.currentLevel != null) {
+                    LevelTile tile = GameLogic.currentLevel.getTile(tilex, tiley);
+
+                    if (!GameLogic.switchingLevels) {
+                        float light = (float) tile.light / 255;
+                        batch.setColor(light, light, light, 255f);
+                    }
                 }
                 batch.draw(spriteMap.get(e.getCurrentSprite()).getFrame(e.getCurrentFrame(), e.getPos().angle), e.getPos().x, e.getPos().y);
             }
