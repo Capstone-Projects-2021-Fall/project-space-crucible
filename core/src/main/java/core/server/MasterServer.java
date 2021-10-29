@@ -86,21 +86,16 @@ public class MasterServer implements Listener {
     public static String createRandomLobbyCode(){
         String lobbyCode = "";
         Random rand = new Random();
-        for(int i = 5; i > 0; i--){
+        for(int i = 4; i > 0; i--){
             int num = rand.nextInt(36);
             if(num < 26){
                 lobbyCode += (char) (num + 65);
             }else {
-                lobbyCode += num - 25;
+                lobbyCode += num - 26;
             }
         }
         return lobbyCode;
     }
-//    public static int getAvailablePort() throws IOException {
-//        var freePort = new ServerSocket(0);
-//        freePort.close();
-//        return freePort.getLocalPort();
-//    }
 
     public static boolean isPortAvailable(int port) {
         boolean freePort;

@@ -5,10 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import core.server.Network;
 import core.server.SpaceClient;
-
-import java.util.Locale;
 
 public class StartMenu extends Window {
 
@@ -58,7 +55,7 @@ public class StartMenu extends Window {
                 lobbyMenu.add(createLobby).row();
                 lobbyMenu.add(joinLobby).row();
                 lobbyMenu.add(back);
-                lobbyMenu.setBounds((Gdx.graphics.getWidth() - 250)/ 2, (Gdx.graphics.getHeight() - 150) / 2, 250, 150);
+                lobbyMenu.setBounds((int)((Gdx.graphics.getWidth() - 250)/ 2), (int)((Gdx.graphics.getHeight() - 150) / 2), 250, 150);
                 stage.addActor(lobbyMenu);
                 startMenu.setVisible(false);
                 back.addListener(new ClickListener(){
@@ -81,8 +78,8 @@ public class StartMenu extends Window {
                         super.clicked(event, x, y);
                         TextButton submit = new TextButton("submit", skin);
                         TextField lobbyCode = new TextField("", skin);
-                        lobbyCode.setBounds((Gdx.graphics.getWidth() - 100)/ 2,(Gdx.graphics.getHeight() - 50)/ 2, 100, 50);
-                        submit.setBounds((Gdx.graphics.getWidth() + 100)/ 2,(Gdx.graphics.getHeight() - 50)/ 2,50,50);
+                        lobbyCode.setBounds((int)((Gdx.graphics.getWidth() - 100)/ 2),(int)((Gdx.graphics.getHeight() - 50)/ 2), 100, 50);
+                        submit.setBounds((int)((Gdx.graphics.getWidth() + 100)/ 2),(int)((Gdx.graphics.getHeight() - 50)/ 2),50,50);
                         lobbyMenu.setVisible(false);
                         stage.addActor(lobbyCode);
                         stage.addActor(submit);
@@ -100,7 +97,6 @@ public class StartMenu extends Window {
                                 }
                                 if(client.validLobby.valid) {
                                     titleScreen.remove = true;
-//                                    myGDxTest.setScreen(gameScreen);
                                 }
                             }
                         });
