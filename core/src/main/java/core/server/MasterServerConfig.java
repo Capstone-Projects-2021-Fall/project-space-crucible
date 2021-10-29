@@ -5,13 +5,16 @@ import com.badlogic.gdx.Game;
 import java.io.IOException;
 
 public class MasterServerConfig extends Game{
-
-    public MasterServerConfig() {
+    int minPort;
+    int maxPort;
+    public MasterServerConfig(int minPort, int maxPort) {
         super();
+        this.minPort = minPort;
+        this.maxPort = maxPort;
     }
 
     @Override
     public void create() {
-        new MasterServer();
+        new MasterServer(minPort, maxPort);
     }
 }

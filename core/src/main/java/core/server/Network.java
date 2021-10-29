@@ -30,6 +30,7 @@ public class Network {
         kryo.register(JoinLobby.class);
         kryo.register(ServerDetails.class);
         kryo.register(ValidLobby.class);
+        kryo.register(StartGame.class);
 
         //Level classes
         kryo.register(core.level.info.LevelTile.class);
@@ -86,7 +87,6 @@ public class Network {
 //    Send this to the client
     public static class ClientData{
         public HashSet<Integer> connected;
-        public int playerCount;
     }
 
     //Send this to the SERVER
@@ -101,18 +101,18 @@ public class Network {
     }
 
     public static class CreateLobby{
-        public int playerCount;
     }
     public static class JoinLobby{
         public String lobbyCode;
     }
     public static class ServerDetails{
         public int tcpPort;
-        public int udpPort;
         public String lobbyCode;
     }
     public static class ValidLobby{
         public boolean valid;
     }
-
+    public static class StartGame{
+        public boolean startGame;
+    }
 }

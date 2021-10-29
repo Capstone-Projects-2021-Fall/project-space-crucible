@@ -7,6 +7,7 @@ import com.esotericsoftware.kryonet.Server;
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
@@ -14,14 +15,16 @@ import java.util.Random;
 public class MasterServer implements Listener {
 
     Server server;
-    public HashMap<String, SpaceServer> servers = new HashMap<>();
-    public HashMap<SpaceServer, Integer[]> ports = new HashMap<>();
+    public HashMap<String, Integer> servers = new HashMap<>();
     public HashSet<Connection> playersConnected = new HashSet<>();
+    public ArrayList<Integer> availablePorts = new ArrayList<>();
 
-    public MasterServer(){
+    public MasterServer(int minPort, int maxPort){
         server = new Server();
         Network.register(server);
-
+        for(int i = minPort; i <= maxPort; i++){
+            availablePorts.add(i);
+        }
         server.addListener(new Listener(){
             //When the client connects to the server add a player entity to the game
             public void connected(Connection c){
@@ -31,39 +34,36 @@ public class MasterServer implements Listener {
             public void received (Connection connection, Object object) {
                 //If the server sends RenderData object update the client's gamescreen
                 if(object instanceof Network.CreateLobby){
-                    int playerCount = ((Network.CreateLobby) object).playerCount;
-                    if(playerCount >= 1){
-                        try {
-                            int tcpPort = getAvailablePort();
-                            int udpPort = getAvailablePort();
-                            String lobbyCode = createRandomLobbyCode();
-                            SpaceServer spaceServer = new SpaceServer(playerCount, tcpPort, udpPort);
-                            servers.put(lobbyCode, spaceServer);
-                            ports.put(spaceServer, new Integer[]{tcpPort, udpPort});
-                            //send port info
-                            Network.ServerDetails serverDetails = new Network.ServerDetails();
-                            serverDetails.tcpPort = tcpPort;
-                            serverDetails.udpPort = udpPort;
-                            serverDetails.lobbyCode = lobbyCode;
-                            connection.sendTCP(serverDetails);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    int tcpPort = 0;
+                    for(int port : availablePorts ){
+                        if(!servers.containsValue(port) && !isPortAvailable(port)) {
+                            tcpPort = port;
+                            break;
                         }
                     }
+                    if(tcpPort == 0) {
+                        System.out.println("All the lobbies are taken");
+                        System.exit(0);
+                    }
+                    String lobbyCode = createRandomLobbyCode();
+                    servers.put(lobbyCode, tcpPort);
+                    //send port info
+                    Network.ServerDetails serverDetails = new Network.ServerDetails();
+                    serverDetails.tcpPort = tcpPort;
+                    serverDetails.lobbyCode = lobbyCode;
+                    connection.sendTCP(serverDetails);
                 }
                 if(object instanceof Network.JoinLobby){
                     String lobbyCode = ((Network.JoinLobby) object).lobbyCode;
+                    //If user lobby code was correct find the tcpPort and send it to the user
                     if(servers.containsKey(lobbyCode)){
-                        //add the player to the server
-                        SpaceServer spaceServer= servers.get(lobbyCode);
+                        int tcpPort = servers.get(lobbyCode);
                         Network.ValidLobby validLobby = new Network.ValidLobby();
-                        validLobby.valid = spaceServer != null;
+                        validLobby.valid = tcpPort != 0;
                         connection.sendTCP(validLobby);
                         if(!validLobby.valid) return;
-                        Integer [] port = ports.get(spaceServer);
                         Network.ServerDetails serverDetails = new Network.ServerDetails();
-                        serverDetails.tcpPort = port[0];
-                        serverDetails.udpPort = port[1];
+                        serverDetails.tcpPort = tcpPort;
                         serverDetails.lobbyCode = lobbyCode;
                         connection.sendTCP(serverDetails);
                     }
@@ -75,7 +75,7 @@ public class MasterServer implements Listener {
             }
         });
         try {
-            server.bind(Network.tcpPort, Network.udpPort);
+            server.bind(Network.tcpPort);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,10 +96,20 @@ public class MasterServer implements Listener {
         }
         return lobbyCode;
     }
-    public static int getAvailablePort() throws IOException {
-        var freePort = new ServerSocket(0);
-        freePort.close();
-        return freePort.getLocalPort();
+//    public static int getAvailablePort() throws IOException {
+//        var freePort = new ServerSocket(0);
+//        freePort.close();
+//        return freePort.getLocalPort();
+//    }
+
+    public static boolean isPortAvailable(int port) {
+        boolean freePort;
+        try (var ignored = new ServerSocket(port)) {
+            freePort = true;
+        } catch (IOException e) {
+            freePort = false;
+        }
+        return freePort;
     }
 }
 

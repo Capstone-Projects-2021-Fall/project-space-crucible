@@ -36,7 +36,9 @@ public class SpaceClient implements Listener {
                     screen.setServerDetails((ServerDetails) object);
                     client.close();
                     try {
-                        client.connect(5000, ip, ((ServerDetails) object).tcpPort, ((ServerDetails) object).udpPort);
+                        client.connect(5000, ip, ((ServerDetails) object).tcpPort);
+                        startMenu.myGDxTest.setScreen(screen);
+                        System.out.println(client.getID());
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -68,7 +70,6 @@ public class SpaceClient implements Listener {
                         startMenu.notifyAll();
                     }
                 }
-
             }
             public void disconnected (Connection connection) {
 //                System.exit(0);
@@ -78,15 +79,14 @@ public class SpaceClient implements Listener {
 
         //Connect the client to the server
         try {
-            client.connect(5000, ip, Network.tcpPort, Network.udpPort);
+            client.connect(5000, ip, Network.tcpPort);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void getServer(int playerCount){
+    public void makeLobby(){
         CreateLobby createLobby = new CreateLobby();
-        createLobby.playerCount = playerCount;
         client.sendTCP(createLobby);
     }
     public void sendLobbyCode(String lCode){

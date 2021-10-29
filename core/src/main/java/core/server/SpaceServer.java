@@ -9,6 +9,7 @@ import com.esotericsoftware.kryonet.Server;
 
 import core.game.logic.GameLogic;
 import core.server.Network.InputData;
+import core.server.Network.StartGame;
 import core.wad.funcs.WadFuncs;
 
 import net.mtrop.doom.WadFile;
@@ -36,7 +37,7 @@ public class SpaceServer implements Listener {
         }
     };
 
-    public SpaceServer(int playerCount, int tcpPort, int udpPort) throws IOException {
+    public SpaceServer(int tcpPort) throws IOException {
         server = new Server(120000,120000) {
             protected Connection newConnection() {
                 // By providing our own connection implementation, we can store per
@@ -74,17 +75,10 @@ public class SpaceServer implements Listener {
                 System.out.println("Client connected to game server: " + c.getID());
                 connected.add(c.getID());
                 clientData.connected = connected;
-                clientData.playerCount = playerCount;
+//                clientData.playerCount = playerCount;
                 System.out.println("Player connected " + connected.size());
                 server.sendToAllTCP(clientData);
-                //Wait for everyone to connect
-                if(connected.size() == playerCount && !gameLoop.isAlive()){
-                    System.out.println("Initializing server and starting game loop");
-                    GameLogic.server = server;
-                    GameLogic.currentLevel = GameLogic.levels.get(1);
-                    GameLogic.loadEntities(GameLogic.currentLevel, false);
-                    gameLoop.start();
-                }
+
             }
             //When the client sends a packet to the server handle it
             public void received(Connection c, Object packetData) {
@@ -99,6 +93,15 @@ public class SpaceServer implements Listener {
                         GameLogic.getPlayer(c.getID()).getPos().angle = input.angle;
                     }
                 }
+                if(packetData instanceof StartGame){
+                    if(((StartGame) packetData).startGame && !gameLoop.isAlive()){
+                        System.out.println("Initializing server and starting game loop");
+                        GameLogic.server = server;
+                        GameLogic.currentLevel = GameLogic.levels.get(1);
+                        GameLogic.loadEntities(GameLogic.currentLevel, false);
+                        gameLoop.start();
+                    }
+                }
             }
             //This method will run when a client disconnects from the server, remove the character from the game
             public void disconnected(Connection c){
@@ -108,7 +111,7 @@ public class SpaceServer implements Listener {
                 System.out.println("Client disconnected from game server! " + c.getID());
             }
         });
-        server.bind(tcpPort, udpPort);
+        server.bind(tcpPort);
         server.start();
         System.out.println("Server is running");
     }

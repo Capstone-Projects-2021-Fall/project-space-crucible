@@ -11,9 +11,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.game.entities.Entity;
 import core.game.logic.GameLogic;
 import core.game.entities.PlayerPawn;
@@ -43,7 +45,6 @@ public class GameScreen implements Screen {
     boolean isSinglePlayer;
     BitmapFont font = new BitmapFont();
 
-
     float angle = 0;
 
     //graphics
@@ -51,6 +52,8 @@ public class GameScreen implements Screen {
     Stage lobbyStage;
     Texture background = new Texture("spaceBackground.png");
     Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
+    TextButton play = new TextButton("Start Game", uiSkin);
+    boolean startGame = false;
 
     public GameScreen(Thread gameLoop, boolean isSinglePlayer) {
         this.gameLoop = gameLoop;
@@ -60,6 +63,7 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         lobbyStage = new Stage();
         this.isSinglePlayer = isSinglePlayer;
+
     }
 
     @Override
@@ -70,6 +74,19 @@ public class GameScreen implements Screen {
             gameLoop.start();
         } else {
             playerNumber = client.getClient().getID();
+        }
+        if(playerNumber == 1) {
+            play.setBounds((Gdx.graphics.getWidth() - 200)/ 2, (Gdx.graphics.getHeight() - 100) / 2, 200, 100);
+            lobbyStage.addActor(play);
+            play.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    startGame = true;
+                    Network.StartGame startGame = new Network.StartGame();
+                    startGame.startGame = true;
+                    client.getClient().sendTCP(startGame);
+                    play.removeListener(this);
+                }
+            });
         }
     }
 
@@ -99,7 +116,7 @@ public class GameScreen implements Screen {
 
         }else{ //If co-op mode
             if(clientData.connected == null) return;
-            if (clientData.connected.size() < clientData.playerCount) {
+            if (!startGame) {
                 lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
                 lobbyStage.getBatch().begin();
                 lobbyStage.getBatch().draw(background, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
@@ -113,6 +130,7 @@ public class GameScreen implements Screen {
                     y -= 50;
                 }
                 TextButton lobbyCode = new TextButton(serverDetails.lobbyCode, uiSkin);
+
                 lobbyStage.addActor(lobbyCode);
                 lobbyStage.getBatch().end();
                 lobbyStage.draw(); //Draw the ui
