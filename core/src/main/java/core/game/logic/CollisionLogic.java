@@ -77,7 +77,7 @@ public class CollisionLogic {
                         PlayerPawn playerPawn = (PlayerPawn) genericEntity;
                         playerPawn.addKeys(keys);
                         collidedKey = entity;
-                        System.out.println("Keys got picked up.");
+                        System.out.println("Key got picked up.");
                         GameLogic.deleteEntityQueue.addLast(keys);
                     }
                 }
