@@ -1,5 +1,6 @@
 package core.gdx.wad;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -7,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.wad.funcs.SoundFuncs;
+
+import static com.badlogic.gdx.audio.Sound.*;
 
 public class SoundSettings extends Window {
     MyGDxTest myGDxTest;
@@ -19,9 +22,9 @@ public class SoundSettings extends Window {
         this.myGDxTest=myGDxTest;
         this.settingsScreen=new SettingsScreen(myGDxTest);
 
-        Slider masterVolumeSlider = new Slider(0, 100, 1, false, skin);
-        masterVolumeSlider.setValue(50);
-        add(masterVolumeSlider);
+        Slider soundEffectSlider = new Slider(0, 100, 1, false, skin);
+        soundEffectSlider.setValue(50);
+        add(soundEffectSlider);
         Label volumeValue = new Label("50", skin);
         add(volumeValue);
         Button confirmButton = new TextButton("Confirm", skin);
@@ -40,13 +43,12 @@ public class SoundSettings extends Window {
 
             }
         });
-        masterVolumeSlider.addListener(new ChangeListener() {
+        soundEffectSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("Volume Changed to " +masterVolumeSlider.getValue() +"\n");
-                volumeValue.setText((int) masterVolumeSlider.getValue());
-                //Sound.setVolume("sound id", masterVolumeSlider.getValue()); TODO reference BGM (midi?)
-                //Midi
+                System.out.println("Volume Changed to " +soundEffectSlider.getValue() +"\n");
+                volumeValue.setText((int) soundEffectSlider.getValue());
+                SoundFuncs.volume=soundEffectSlider.getValue()/100f;
             }
         });
     }

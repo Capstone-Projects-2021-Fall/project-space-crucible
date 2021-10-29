@@ -18,8 +18,8 @@ public class SettingsMenu extends Window {
         this.myGDxTest=myGDxTest;
         this.settingsScreen=new SettingsScreen(myGDxTest);
 
-        Button masterVolumeButton = new TextButton("Sound", skin);
-        add(masterVolumeButton);
+        Button sfxButton = new TextButton("SFX", skin);
+        add(sfxButton);
         row();
         Button backButton = new TextButton("Back", skin);
         add(backButton);
@@ -28,12 +28,12 @@ public class SettingsMenu extends Window {
 
 
 
-        masterVolumeButton.addListener(new ClickListener() {
+        sfxButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 System.out.println("Master Volume\n");
-                Actor volumeActor = new SoundSettings("Adjust Volume", skin, settingsScreen, stage, myGDxTest);
+                Actor volumeActor = new SoundSettings("Adjust SFX", skin, settingsScreen, stage, myGDxTest);
                 stage.addActor(volumeActor);
             }
         });

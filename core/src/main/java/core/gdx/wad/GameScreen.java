@@ -72,7 +72,7 @@ public class GameScreen implements Screen {
         Actor chatWindow = new ChatWindow("Chat", skin, this, stage, myGDxTest);
         stage.addActor(chatWindow);
         chatWindow.setPosition(camera.viewportWidth,0);
-        chatWindow.setSize(chatWindow.getWidth(), chatWindow.getHeight()*3/2);
+        chatWindow.setSize(chatWindow.getWidth(), chatWindow.getHeight());
     }
 
     @Override
