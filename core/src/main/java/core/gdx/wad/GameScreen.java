@@ -53,7 +53,7 @@ public class GameScreen implements Screen {
     Texture background = new Texture("spaceBackground.png");
     Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
     TextButton play = new TextButton("Start Game", uiSkin);
-    boolean startGame = false;
+    public boolean startGame = false;
     TextButton lobbyCode;
     boolean remove = false;
 
@@ -117,8 +117,8 @@ public class GameScreen implements Screen {
             if (showBoxes) {showBoxes();}
             GameLogic.getPlayer(1).controls = getControls();
 
-        }else{ //If co-op mode
-            if(clientData.connected == null) return;
+        }else { //If co-op mode
+            if (clientData.connected == null) return;
             if (!startGame) {
                 lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
                 lobbyStage.getBatch().begin();
@@ -132,7 +132,7 @@ public class GameScreen implements Screen {
                     lobbyStage.addActor(player);
                     y -= 50;
                 }
-                if(serverDetails.lobbyCode != null && !remove) {
+                if (serverDetails.lobbyCode != null && !remove) {
                     lobbyCode = new TextButton("Lobby Code\n" + serverDetails.lobbyCode, uiSkin);
                     lobbyCode.setSize(100, 60);
                     lobbyStage.addActor(lobbyCode);
@@ -141,22 +141,23 @@ public class GameScreen implements Screen {
                 lobbyStage.getBatch().end();
                 lobbyStage.draw(); //Draw the ui
                 return;
+            } else {
+                if (renderData.tiles == null && renderData.entityList == null) return;
+                if (getPlayer(playerNumber) == null) return;
+                getAngle(false);
+                camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
+                        getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
+                camera.update();
+                batch.setProjectionMatrix(camera.combined);
+                batch.enableBlending();
+                batch.begin();
+                RenderFuncs.worldDraw(batch, renderData.tiles);
+                RenderFuncs.entityDraw(batch, renderData.entityList);
+                font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y);
+                batch.end();
+                if (showBoxes) showBoxes();
+                client.getInput(getControls());
             }
-            if(renderData.tiles == null && renderData.entityList == null) return;
-            if(getPlayer(playerNumber) == null) return;
-            getAngle(false);
-            camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
-                    getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
-            camera.update();
-            batch.setProjectionMatrix(camera.combined);
-            batch.enableBlending();
-            batch.begin();
-            RenderFuncs.worldDraw(batch, renderData.tiles);
-            RenderFuncs.entityDraw(batch, renderData.entityList);
-            font.draw(batch,"HP:" +getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y);
-            batch.end();
-            if (showBoxes) {showBoxes();}
-            client.getInput(getControls());
         }
     }
     private void showBoxes() {

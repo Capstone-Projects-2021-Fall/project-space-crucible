@@ -75,7 +75,6 @@ public class SpaceServer implements Listener {
                 System.out.println("Client connected to game server: " + c.getID());
                 connected.add(c.getID());
                 clientData.connected = connected;
-//                clientData.playerCount = playerCount;
                 System.out.println("Player connected " + connected.size());
                 server.sendToAllTCP(clientData);
 
@@ -96,6 +95,9 @@ public class SpaceServer implements Listener {
                 if(packetData instanceof StartGame){
                     if(((StartGame) packetData).startGame && !gameLoop.isAlive()){
                         System.out.println("Initializing server and starting game loop");
+                        StartGame start = new StartGame();
+                        start.startGame = true;
+                        server.sendToAllExceptTCP(c.getID(), start);
                         GameLogic.server = server;
                         GameLogic.currentLevel = GameLogic.levels.get(1);
                         GameLogic.loadEntities(GameLogic.currentLevel, false);

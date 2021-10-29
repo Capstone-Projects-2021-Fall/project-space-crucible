@@ -70,6 +70,9 @@ public class SpaceClient implements Listener {
                         startMenu.notifyAll();
                     }
                 }
+                else if(object instanceof StartGame){
+                    screen.startGame = ((StartGame) object).startGame;
+                }
             }
             public void disconnected (Connection connection) {
 //                System.exit(0);

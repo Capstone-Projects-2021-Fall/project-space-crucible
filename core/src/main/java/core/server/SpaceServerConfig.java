@@ -4,11 +4,11 @@ import com.badlogic.gdx.Game;
 
 import java.io.IOException;
 
-public class ServerGame extends Game{
+public class SpaceServerConfig extends Game{
 
     int tcpPort;
 
-    public ServerGame(int tcpPort) {
+    public SpaceServerConfig(int tcpPort) {
         super();
         this.tcpPort = tcpPort;
     }
