@@ -6,17 +6,18 @@ import java.io.IOException;
 
 public class ServerGame extends Game{
 
-    int playerCount;
+    int tcpPort;
 
-    public ServerGame(int playerCount) {
+    public ServerGame(int tcpPort) {
         super();
-        this.playerCount = playerCount;
+        this.tcpPort = tcpPort;
     }
 
     @Override
     public void create() {
+
         try {
-            new SpaceServer(playerCount);
+            new SpaceServer(tcpPort);
         } catch (IOException e) {
             e.printStackTrace();
         }

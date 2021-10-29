@@ -41,8 +41,10 @@ public class TitleScreen implements Screen {
             batch = new SpriteBatch();
             texture = WadFuncs.getTexture(file, "TITLESCR"); //title screen
             texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
             file.close();
+            Actor startMenuActor = new StartMenu("Main Menu", skin, this, stage, game);
+            stage.addActor(startMenuActor);
+            startMenuActor.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 12, Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight()/6);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,10 +75,6 @@ public class TitleScreen implements Screen {
         //drawing sprite background
         batch.begin();
         batch.draw(texture,25,30);
-        Actor startMenuActor = new StartMenu("Main Menu", skin, this, stage, game);
-        stage.addActor(startMenuActor);
-        startMenuActor.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 12, Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight()/6);
-
         batch.end();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();

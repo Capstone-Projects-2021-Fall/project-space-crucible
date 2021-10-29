@@ -8,7 +8,7 @@ import core.game.logic.GameLogic;
 //If target is null, the monster goes idle.
 public abstract class BaseMonster extends Entity {
 
-    private Entity target = null;
+    private int target = -1;
     final private String[] sounds = new String[4];
 
     final public static int SEESOUND = 0;
@@ -28,7 +28,7 @@ public abstract class BaseMonster extends Entity {
 
     public String getSound(int index) {return sounds[index];}
 
-    public void setTarget(Entity target) {
+    public void setTarget(int target) {
         this.target = target;
     }
 
@@ -37,12 +37,13 @@ public abstract class BaseMonster extends Entity {
         currentState = GameLogic.stateList.get(state);
         remainingStateTics = currentState.getDuration();
 
-        if (currentState.getAction() != null) {currentState.getAction().run(this, target);}
+        if (currentState.getAction() != null) {currentState.getAction().run(this,
+                target > -1 ? GameLogic.entityList.get(target) : null);}
     }
 
     @Override
     public void takeDamage(Entity cause, int damage) {
         super.takeDamage(cause, damage);
-        target = cause;
+        target = GameLogic.entityList.indexOf(cause);
     }
 }
