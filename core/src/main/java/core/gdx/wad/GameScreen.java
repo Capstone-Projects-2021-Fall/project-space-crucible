@@ -121,7 +121,14 @@ public class GameScreen implements Screen {
             RenderFuncs.worldDraw(batch, renderData.tiles);
             RenderFuncs.entityDraw(batch, renderData.entityList);
         }
-        font.draw(batch,"HP:" + Objects.requireNonNull(GameLogic.getPlayer(0)).getHealth(), Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().x, Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().y);
+        if(Objects.requireNonNull(GameLogic.getPlayer(0)).getHealth()>0){
+            font.draw(batch,"HP:" + Objects.requireNonNull(GameLogic.getPlayer(0)).getHealth(),
+                    Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().x,
+                    Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().y);
+        }else{
+            font.draw(batch,"HP: 0" , Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().x,
+                    Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().y);
+        }
         font.draw(batch,"Player " + Objects.requireNonNull(GameLogic.getPlayer(0)).getTag(), Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().x,
                 Objects.requireNonNull(GameLogic.getPlayer(0)).getPos().y + Objects.requireNonNull(GameLogic.getPlayer(0)).getHeight()+ Objects.requireNonNull(GameLogic.getPlayer(0)).getHeight()/3);
 
