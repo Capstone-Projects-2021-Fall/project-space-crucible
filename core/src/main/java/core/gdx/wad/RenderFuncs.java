@@ -61,6 +61,7 @@ public class RenderFuncs {
                     LevelTile tile = GameLogic.currentLevel.getTile(tilex, tiley);
 
                     if (!GameLogic.switchingLevels) {
+
                         float light = (float) tile.light / 255;
                         batch.setColor(light, light, light, 255f);
                     }

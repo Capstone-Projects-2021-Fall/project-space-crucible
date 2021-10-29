@@ -36,14 +36,15 @@ public class CollisionLogic {
                                             LevelTile.TILE_SIZE, LevelTile.TILE_SIZE);
 
                 if(bounds.overlaps(tileBounds)) {
-
-                    if (levelTile.solid) {
+                    if(levelTile.effect > 0) {
+                        GameLogic.effectList.get(levelTile.effect - 1)
+                                .run(entity, levelTile.arg1, levelTile.arg2);
+                        break;
+                    }
+                    else if (levelTile.solid) {
                         collidedTile = levelTile;
                         break;
-                    } else if(levelTile.effect > 0) {
-                        collidedTile = levelTile;
-                        GameLogic.effectList.get(levelTile.effect - 1)
-                                .run(levelTile.arg1, levelTile.arg2);                     }
+                    }
                 }
             }
         }
