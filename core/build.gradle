@@ -6,5 +6,6 @@ dependencies {
 	api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
 	api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
 	api files('../libs/doomstruct-2.14.0.jar')
-	api files('../libs/kryonet-2.21-all.jar')
+//	api files('../libs/kryonet-2.21-all.jar')
+	implementation 'com.github.crykn:kryonet:2.22.7'
 }
