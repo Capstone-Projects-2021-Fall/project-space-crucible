@@ -77,12 +77,22 @@ public class StartMenu extends Window {
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
                         TextButton submit = new TextButton("submit", skin);
-                        TextField lobbyCode = new TextField("", skin);
-                        lobbyCode.setBounds((int)((Gdx.graphics.getWidth() - 100)/ 2),(int)((Gdx.graphics.getHeight() - 50)/ 2), 100, 50);
-                        submit.setBounds((int)((Gdx.graphics.getWidth() + 100)/ 2),(int)((Gdx.graphics.getHeight() - 50)/ 2),50,50);
+                        TextButton back = new TextButton("back", skin);
+                        TextField lobbyCode = new TextField("Lobby Code", skin);
+                        lobbyCode.setBounds((int)((Gdx.graphics.getWidth() - 100)/ 2),(int)((Gdx.graphics.getHeight() - 25)/ 2), 100, 35);
+                        submit.setBounds((int)((Gdx.graphics.getWidth() + 105)/ 2),(int)((Gdx.graphics.getHeight() - 25)/ 2),60,35);
+                        back.setBounds((int)((Gdx.graphics.getWidth() - 50)/ 2),(int)((Gdx.graphics.getHeight() - 100)/ 2),50,35);
                         lobbyMenu.setVisible(false);
                         stage.addActor(lobbyCode);
                         stage.addActor(submit);
+                        stage.addActor(back);
+                        lobbyCode.addListener(new ClickListener() {
+                            @Override
+                            public void clicked(InputEvent event, float x, float y) {
+                                super.clicked(event, x, y);
+                                lobbyCode.setText("");
+                            }
+                        });
                         submit.addListener(new ClickListener(){
                             public void clicked(InputEvent event, float x, float y) {
                                 String lCode = lobbyCode.getText();
@@ -98,6 +108,15 @@ public class StartMenu extends Window {
                                 if(client.validLobby.valid) {
                                     titleScreen.remove = true;
                                 }
+                            }
+                        });
+                        back.addListener(new ClickListener(){
+                            public void clicked(InputEvent event, float x, float y) {
+                                submit.remove();
+                                back.remove();
+                                lobbyCode.remove();
+                                lobbyMenu.setVisible(true);
+
                             }
                         });
                     }

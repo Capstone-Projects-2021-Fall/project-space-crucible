@@ -78,8 +78,8 @@ public class SpaceClient implements Listener {
                 }
             }
             public void disconnected (Connection connection) {
-                System.out.println("Client Disconnected: Closing the application!");
-                System.exit(0);
+//                System.out.println("Client Disconnected: Closing the application!");
+//                System.exit(0);
             }
         }));
 
