@@ -260,8 +260,6 @@ public class GameScreen implements Screen {
     @Override
     public void hide() {
         SoundFuncs.stopMIDI();
-        SoundFuncs.closeSequencer();
-
         try {GameLogic.stop();} catch (NullPointerException ignored){}
 //        System.exit(0);
     }

@@ -3,6 +3,7 @@ package core.gdx.wad.lwjgl3;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import core.gdx.wad.MyGDxTest;
+import core.wad.funcs.SoundFuncs;
 
 import static com.badlogic.gdx.Gdx.audio;
 
@@ -10,6 +11,7 @@ import static com.badlogic.gdx.Gdx.audio;
 public class Lwjgl3Launcher {
 	public static void main(String[] args) {
 		createApplication();
+		SoundFuncs.closeSequencer();
 		System.exit(0);
 	}
 
