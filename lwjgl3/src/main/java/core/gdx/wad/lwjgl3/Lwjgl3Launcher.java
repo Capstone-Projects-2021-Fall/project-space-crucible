@@ -10,6 +10,7 @@ import static com.badlogic.gdx.Gdx.audio;
 public class Lwjgl3Launcher {
 	public static void main(String[] args) {
 		createApplication();
+		System.exit(0);
 	}
 
 	private static Lwjgl3Application createApplication() {

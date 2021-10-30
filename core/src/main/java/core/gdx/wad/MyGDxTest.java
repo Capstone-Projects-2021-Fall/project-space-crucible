@@ -2,6 +2,7 @@ package core.gdx.wad;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
 import core.wad.funcs.SoundFuncs;
@@ -17,6 +18,7 @@ public class MyGDxTest extends Game {
 
     public TitleScreen titleScreen;
     public GameScreen gameScreen;
+    public SettingsScreen settingsScreen;
 
     //This is the thread that runs the Game Logic. It is separate from the rendering code.
     Thread gameLoop = new Thread() {
@@ -25,10 +27,10 @@ public class MyGDxTest extends Game {
           GameLogic.start();
       }
 
-      @Override
-      public void interrupt() {
-          GameLogic.stop();
-      }
+        @Override
+        public void interrupt() {
+            GameLogic.stop();
+        }
     };
 
     @Override
@@ -58,7 +60,8 @@ public class MyGDxTest extends Game {
             System.exit(1);
         }
 
-        //Load prepare all Entity logic, open game screen and initiate game loop.
+        //Load prepare all Entity and level logic, open game screen and initiate game loop.
+        WadFuncs.loadLevelEffects();
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
 
