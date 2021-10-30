@@ -1,5 +1,6 @@
 package core.game.logic;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import com.esotericsoftware.kryonet.Connection;
@@ -10,6 +11,7 @@ import core.game.logic.tileactions.TileAction;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.server.Network;
+import core.server.SpaceServer;
 import core.wad.funcs.SoundFuncs;
 import net.mtrop.doom.WadEntry;
 import net.mtrop.doom.WadFile;
@@ -97,7 +99,7 @@ public class GameLogic {
             //Send render data packet
             for (Connection c : server.getConnections()) {
                 RenderData renderData = new RenderData();
-                renderData.entityList = GameLogic.entityList;
+                renderData.entityList = entitiesInsideView(c);
                 renderData.tiles = GameLogic.currentLevel.getTiles();
                 renderData.playerPawn = getPlayer(c.getID());
                 server.sendToAllTCP(renderData);
@@ -205,6 +207,19 @@ public class GameLogic {
     public static void readyChangeLevel(LevelData newLevelData) {
         goingToNextLevel = true;
         nextLevel = newLevelData;
+    }
+
+    //check if the entity is inside the player's camera view
+    public static ArrayList<Entity> entitiesInsideView(Connection c) {
+        ArrayList<Entity> inside = new ArrayList<>();
+        Network.CameraData player = ((SpaceServer.PlayerConnection)c).cameraData;
+        Rectangle playerview = new Rectangle(player.camerapositon.x, player.camerapositon.y, player.width, player.hight);
+        for (Entity e : entityList) {
+            if(playerview.overlaps(e.getBounds())) {
+                inside.add(e);
+            }
+        }
+        return inside;
     }
 
     public static void playServerSound(String name) {

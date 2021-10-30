@@ -1,6 +1,7 @@
 package core.server;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import core.game.entities.Entity;
@@ -31,6 +32,7 @@ public class Network {
         kryo.register(ServerDetails.class);
         kryo.register(ValidLobby.class);
         kryo.register(StartGame.class);
+        kryo.register(CameraData.class);
 
         //Level classes
         kryo.register(core.level.info.LevelTile.class);
@@ -62,6 +64,7 @@ public class Network {
 
         //LibGDX classes
         kryo.register(Rectangle.class);
+        kryo.register(Vector3.class);
 
         //Stock Java classes
         kryo.register(java.lang.Class.class);
@@ -94,6 +97,12 @@ public class Network {
         public String username;
         public boolean[] controls;
         public float angle;
+    }
+
+    public static class CameraData {
+        public Vector3 camerapositon;
+        public float width;
+        public float hight;
     }
 
     public static class SoundData {

@@ -195,6 +195,7 @@ public class GameScreen implements Screen {
                 }
 
                 client.getInput(getControls());
+                client.getCameraData(getCameraData());
             }
             catch (NullPointerException n) {
                 camera.position.set(getPlayer(1).getPos().x + getPlayer(1).getWidth() / (float) 2.0,
@@ -303,6 +304,18 @@ public class GameScreen implements Screen {
         controls[GameLogic.SHOOT] = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
 
         return controls;
+    }
+
+    private Network.CameraData getCameraData() {
+        Network.CameraData newCameraData = new Network.CameraData();
+        newCameraData.width = camera.viewportWidth;
+        newCameraData.hight = camera.viewportHeight;
+        Vector3 bottomleft = new Vector3();
+        bottomleft.x = camera.position.x - camera.viewportWidth/2;
+        bottomleft.y = camera.position.y - camera.viewportHeight/2;
+        bottomleft.z = 0;
+        newCameraData.camerapositon = bottomleft;
+        return newCameraData;
     }
 
     private PlayerPawn getPlayer(int tag) {

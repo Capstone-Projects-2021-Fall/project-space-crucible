@@ -110,6 +110,10 @@ public class SpaceClient implements Listener {
         client.sendTCP(inputData);
     }
 
+    public void getCameraData(CameraData cameradata) {
+        client.sendTCP(cameradata);
+    }
+
     public Client getClient(){
         return client;
     }

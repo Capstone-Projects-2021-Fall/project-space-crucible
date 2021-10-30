@@ -105,6 +105,11 @@ public class SpaceServer implements Listener {
                         gameLoop.start();
                     }
                 }
+
+                if(packetData instanceof Network.CameraData) {
+                    Network.CameraData camera = (Network.CameraData) packetData;
+                    connection.cameraData = camera;
+                }
             }
             //This method will run when a client disconnects from the server, remove the character from the game
             public void disconnected(Connection c){
@@ -119,7 +124,8 @@ public class SpaceServer implements Listener {
         System.out.println("Server is running");
     }
 
-    static class PlayerConnection extends Connection{
+    public static class PlayerConnection extends Connection{
         public InputData playerInput;
+        public Network.CameraData cameraData;
     }
 }
