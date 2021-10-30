@@ -3,6 +3,7 @@ package core.gdx.wad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -127,7 +128,7 @@ public class GameScreen implements Screen {
             batch.setProjectionMatrix(camera.combined);
             batch.enableBlending();
             batch.begin();
-            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles());
+            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
             font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
             font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
@@ -171,7 +172,7 @@ public class GameScreen implements Screen {
             batch.setProjectionMatrix(camera.combined);
             batch.enableBlending();
             batch.begin();
-            RenderFuncs.worldDraw(batch, renderData.tiles);
+            RenderFuncs.worldDraw(batch, renderData.tiles, false);
             RenderFuncs.entityDraw(batch, renderData.entityList);
 
             TextField chatText = new TextField("");
@@ -247,6 +248,7 @@ public class GameScreen implements Screen {
     public void hide() {
         SoundFuncs.stopMIDI();
         SoundFuncs.closeSequencer();
+        GameLogic.stop();
 //        System.exit(0);
     }
 

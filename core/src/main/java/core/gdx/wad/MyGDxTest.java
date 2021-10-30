@@ -60,7 +60,8 @@ public class MyGDxTest extends Game {
             System.exit(1);
         }
 
-        //Load prepare all Entity logic, open game screen and initiate game loop.
+        //Load prepare all Entity and level logic, open game screen and initiate game loop.
+        WadFuncs.loadLevelEffects();
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
 

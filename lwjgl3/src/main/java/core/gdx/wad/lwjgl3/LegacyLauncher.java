@@ -8,6 +8,7 @@ import core.gdx.wad.MyGDxTest;
 public class LegacyLauncher {
 	public static void main(String[] args) {
 		createApplication();
+		System.exit(0);
 	}
 
 	private static LwjglApplication createApplication() {
