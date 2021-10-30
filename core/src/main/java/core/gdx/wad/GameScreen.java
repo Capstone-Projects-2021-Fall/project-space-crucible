@@ -11,24 +11,33 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.game.entities.Entity;
+import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
 import core.game.entities.PlayerPawn;
 import core.server.Network;
-import core.server.SpaceClient;
 import core.server.Network.RenderData;
+import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
 import core.server.Network.ClientData;
 import core.server.Network.ServerDetails;
 
+import java.awt.*;
+import java.util.Objects;
+
 public class GameScreen implements Screen {
 
     Thread gameLoop;
+    MyGDxTest myGDxTest;
     public SpaceClient client;
     RenderData renderData = new RenderData();
     ClientData clientData = new ClientData();
@@ -44,6 +53,8 @@ public class GameScreen implements Screen {
     boolean showBoxes = false;
     boolean isSinglePlayer;
     BitmapFont font = new BitmapFont();
+    private Stage stage = new Stage(new ScreenViewport());
+    final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
     float angle = 0;
 
@@ -91,6 +102,12 @@ public class GameScreen implements Screen {
                 }
             });
         }
+
+        Gdx.input.setInputProcessor(stage);
+        Actor chatWindow = new ChatWindow("Chat", skin, this, stage, myGDxTest);
+        stage.addActor(chatWindow);
+        chatWindow.setPosition(camera.viewportWidth,0);
+        chatWindow.setSize(chatWindow.getWidth(), chatWindow.getHeight());
     }
 
     @Override
@@ -113,6 +130,9 @@ public class GameScreen implements Screen {
             RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles());
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
             font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
+            font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
+                    GameLogic.getPlayer(playerNumber).getPos().x,
+                    GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+10);
             batch.end();
             if (showBoxes) {showBoxes();}
             GameLogic.getPlayer(1).controls = getControls();
@@ -153,11 +173,34 @@ public class GameScreen implements Screen {
             batch.begin();
             RenderFuncs.worldDraw(batch, renderData.tiles);
             RenderFuncs.entityDraw(batch, renderData.entityList);
-            font.draw(batch,"HP:" +getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y);
+
+            TextField chatText = new TextField("");
+            batch.end();
+        }
+
+
+        if (showBoxes) {
+            showBoxes();
+        }
+
+        if (showBoxes) {showBoxes();}
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS)) {
+            showBoxes = !showBoxes;
+        }
+        if(!isSinglePlayer) {
+            font.draw(batch,"HP:" +getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
+                    getPlayer(playerNumber).getPos().y);
+            font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
+                    GameLogic.getPlayer(playerNumber).getPos().x,
+                    GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+10);
             batch.end();
             if (showBoxes) {showBoxes();}
             client.getInput(getControls());
         }
+
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
     private void showBoxes() {
         sr.setProjectionMatrix(camera.combined);
