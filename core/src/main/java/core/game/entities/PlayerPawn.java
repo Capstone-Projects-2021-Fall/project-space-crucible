@@ -27,7 +27,7 @@ public class PlayerPawn extends Entity {
 
     final public static String PAINSOUND = "player/pain";
     final public static String DIESOUND = "player/die";
-    private ArrayList<Keys> keys = new ArrayList<>();
+    private ArrayList<YellowKey> ykey = new ArrayList<>();
     private ArrayList<BlueKey> bkey = new ArrayList<>();
     private ArrayList<RedKey> rkey= new ArrayList<>();
     private ArrayList<Chaingun> chaingun = new ArrayList<>();
@@ -130,8 +130,8 @@ public class PlayerPawn extends Entity {
         return GameLogic.levels.get(newLevel);
     }
 
-    public void addKeys(Keys key){
-        this.keys.add(key);
+    public void addYellowKey(YellowKey Ykey){
+        this.ykey.add(Ykey);
     }
 
     public void addBlueKey(BlueKey Bkey){

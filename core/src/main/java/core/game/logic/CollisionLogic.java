@@ -73,14 +73,14 @@ public class CollisionLogic {
         Entity collidedKey = null;
         for(Entity entity : GameLogic.entityList){
             if (entity instanceof Keys) {
-                Keys keys = (Keys) entity;
-                if (bounds.overlaps(keys.getBounds())) {
+                YellowKey Ykey = (YellowKey) entity;
+                if (bounds.overlaps(Ykey.getBounds())) {
                     if (genericEntity instanceof PlayerPawn) {
                         PlayerPawn playerPawn = (PlayerPawn) genericEntity;
-                        playerPawn.addKeys(keys);
+                        playerPawn.addYellowKey(Ykey);
                         collidedKey = entity;
                         System.out.println("Key got picked up.");
-                        GameLogic.deleteEntityQueue.addLast(keys);
+                        GameLogic.deleteEntityQueue.addLast(Ykey);
                     }
                 }
             }

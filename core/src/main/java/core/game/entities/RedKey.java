@@ -3,7 +3,7 @@ package core.game.entities;
 import com.badlogic.gdx.math.Rectangle;
 import core.game.logic.CollisionLogic;
 
-public class RedKey extends Entity{
+public class RedKey extends Keys{
     final private static int WIDTH =13;
     final private static int HEIGHT =25;
 
