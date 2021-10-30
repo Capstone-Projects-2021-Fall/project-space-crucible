@@ -158,5 +158,15 @@ public class StartMenu extends Actor{
             }
         });
 
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                System.out.println("Exit\n");
+                System.exit(0);
+            }
+        });
+
+
     }
 }
