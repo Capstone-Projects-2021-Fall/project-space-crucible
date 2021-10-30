@@ -33,10 +33,7 @@ public class Network {
         kryo.register(ValidLobby.class);
         kryo.register(StartGame.class);
         kryo.register(CameraData.class);
-
-        //Level classes
-        kryo.register(core.level.info.LevelTile.class);
-        kryo.register(core.level.info.LevelTile.TilePosition.class);
+        kryo.register(LevelChange.class);
 
         //Entity classes
         kryo.register(core.game.entities.Entity.class);
@@ -78,7 +75,6 @@ public class Network {
     //Send this to the CLIENT
     public static class RenderData {
         public ArrayList<Entity> entityList;
-        public ArrayList<LevelTile> tiles;
         public PlayerPawn playerPawn;
         public String username;
     }
@@ -108,7 +104,9 @@ public class Network {
     public static class SoundData {
         public String sound;
     }
-
+    public static class LevelChange{
+        public int number;
+    }
     public static class CreateLobby{
     }
     public static class JoinLobby{

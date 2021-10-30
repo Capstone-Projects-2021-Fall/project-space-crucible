@@ -100,9 +100,8 @@ public class GameLogic {
             for (Connection c : server.getConnections()) {
                 RenderData renderData = new RenderData();
                 renderData.entityList = entitiesInsideView(c);
-                renderData.tiles = GameLogic.currentLevel.getTiles();
                 renderData.playerPawn = getPlayer(c.getID());
-                server.sendToAllTCP(renderData);
+                server.sendToTCP(c.getID(), renderData);
             }
         }
 
@@ -115,6 +114,9 @@ public class GameLogic {
             }, Entity.TIC);
         } else {
             switchingLevels = true;
+            Network.LevelChange lc = new Network.LevelChange();
+            lc.number = nextLevel.getLevelnumber();
+            server.sendToAllTCP(lc);
             changeLevel(nextLevel);
         }
 
@@ -186,7 +188,8 @@ public class GameLogic {
         nextLevel = null;
         ticCounter = 0;
         loadEntities(currentLevel, false);
-        gameTimer.schedule( new TimerTask() {
+
+        gameTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 gameTick();
@@ -220,7 +223,11 @@ public class GameLogic {
                     inside.add(e);
                 }
             }
-        } catch(NullPointerException ignored) {
+
+            if (!inside.contains(getPlayer(c.getID()))) {
+                inside.add(getPlayer(c.getID()));
+            }
+        } catch(NullPointerException n) {
             inside.add(getPlayer(c.getID()));
         }
         return inside;

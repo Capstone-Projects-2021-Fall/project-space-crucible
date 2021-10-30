@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
+import core.game.logic.GameLogic;
 import core.gdx.wad.GameScreen;
 import core.gdx.wad.StartMenu;
 import core.server.Network.*;
@@ -25,7 +26,7 @@ public class SpaceClient implements Listener {
         this.screen = screen;
         this.startMenu = startMenu;
 
-        client = new Client(120000, 120000);
+        client = new Client(8192, 8192);
         client.start();
         //register the packets
         Network.register(client);
@@ -75,6 +76,8 @@ public class SpaceClient implements Listener {
                 //If server sends StartGame set the startGame value to it
                 else if(object instanceof StartGame){
                     screen.startGame = ((StartGame) object).startGame;
+                } else if (object instanceof LevelChange) {
+                    GameLogic.currentLevel = GameLogic.levels.get(((LevelChange) object).number);
                 }
             }
             public void disconnected (Connection connection) {

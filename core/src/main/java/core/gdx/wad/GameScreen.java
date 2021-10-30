@@ -168,7 +168,7 @@ public class GameScreen implements Screen {
                 batch.end();
                 return;
             }
-            if (renderData.tiles == null && renderData.entityList == null)  {
+            if (renderData.entityList == null)  {
                 batch.end();
                 return;
             }
@@ -182,7 +182,7 @@ public class GameScreen implements Screen {
                 camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
                 camera.update();
-                RenderFuncs.worldDraw(batch, renderData.tiles, false);
+                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
                 RenderFuncs.entityDraw(batch, renderData.entityList);
 
                 font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
@@ -201,7 +201,7 @@ public class GameScreen implements Screen {
                 camera.position.set(getPlayer(1).getPos().x + getPlayer(1).getWidth() / (float) 2.0,
                         getPlayer(1).getPos().y + getPlayer(1).getHeight() / (float) 2.0, 0);
                 camera.update();
-                RenderFuncs.worldDraw(batch, renderData.tiles, false);
+                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
                 RenderFuncs.entityDraw(batch, renderData.entityList);
 
             }
@@ -239,7 +239,7 @@ public class GameScreen implements Screen {
         if (isSinglePlayer) {
             mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(1).getPos().x;
             mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(1).getPos().y;
-        } else if(renderData.tiles != null && renderData.entityList != null && getPlayer(playerNumber) != null) {
+        } else if(renderData.entityList != null && getPlayer(playerNumber) != null) {
             mouseInWorld3D.x = Gdx.input.getX() - getPlayer(playerNumber).getPos().x;
             mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y;
         }
