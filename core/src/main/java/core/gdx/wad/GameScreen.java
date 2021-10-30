@@ -91,7 +91,7 @@ public class GameScreen implements Screen {
         } else {
             playerNumber = client.getClient().getID();
         }
-        if(playerNumber == 1) {
+        if(playerNumber == 1 && !isSinglePlayer) {
             play.setBounds((Gdx.graphics.getWidth() - 100)/ 2, 50, 100, 60);
             lobbyStage.addActor(play);
             play.addListener(new ClickListener() {
