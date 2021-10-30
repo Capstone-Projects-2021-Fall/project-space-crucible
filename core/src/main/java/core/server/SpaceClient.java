@@ -96,7 +96,7 @@ public class SpaceClient extends Listener {
         joinLobby.lobbyCode = lCode;
         client.sendTCP(joinLobby);
     }
-    
+
     public void getInput(boolean[] controls){
         InputData inputData = new InputData();
         inputData.controls = controls;

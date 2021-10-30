@@ -36,6 +36,7 @@ public class Network {
         kryo.register(CameraData.class);
 
 
+
         //Level classes
         kryo.register(core.level.info.LevelTile.class);
         kryo.register(core.level.info.LevelTile.TilePosition.class);

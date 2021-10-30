@@ -119,7 +119,7 @@ public class SpaceServer extends Listener {
         System.out.println("Server is running");
     }
 
-    static class PlayerConnection extends Connection{
+    public static class PlayerConnection extends Connection{
         public InputData playerInput;
         public Network.CameraData cameraData;
     }
