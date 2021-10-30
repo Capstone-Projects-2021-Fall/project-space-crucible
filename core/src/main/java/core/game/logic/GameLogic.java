@@ -1,5 +1,6 @@
 package core.game.logic;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
@@ -76,6 +77,9 @@ public class GameLogic {
     }
 
     private static void gameTick() {
+
+        long startTime = new Date().getTime();
+
         //Update all existing entities first
         for (Entity e : GameLogic.entityList) {
             e.decrementTics();
@@ -106,12 +110,16 @@ public class GameLogic {
         }
 
         if (!goingToNextLevel) {
+
+            long endTime = new Date().getTime();
+            long subtract = MathUtils.clamp(endTime - startTime, 0, Entity.TIC);
+
             gameTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     gameTick();
                 }
-            }, Entity.TIC);
+            }, Entity.TIC - subtract);
         } else {
             switchingLevels = true;
             if (!isSinglePlayer) {
