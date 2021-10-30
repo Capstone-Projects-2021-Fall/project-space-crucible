@@ -177,22 +177,33 @@ public class GameScreen implements Screen {
                 return;
             }
             getAngle(false);
-            camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
-                    getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
-            camera.update();
-            RenderFuncs.worldDraw(batch, renderData.tiles, false);
-            RenderFuncs.entityDraw(batch, renderData.entityList);
 
-            font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
-                    getPlayer(playerNumber).getPos().y);
-            font.draw(batch, "Player: " + getPlayer(playerNumber).getTag(),
-                    getPlayer(playerNumber).getPos().x,
-                    getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() + 10);
-            if (showBoxes) {
-                showBoxes();
+            try {
+                camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
+                        getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
+                camera.update();
+                RenderFuncs.worldDraw(batch, renderData.tiles, false);
+                RenderFuncs.entityDraw(batch, renderData.entityList);
+
+                font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
+                        getPlayer(playerNumber).getPos().y);
+                font.draw(batch, "Player: " + getPlayer(playerNumber).getTag(),
+                        getPlayer(playerNumber).getPos().x,
+                        getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() + 10);
+                if (showBoxes) {
+                    showBoxes();
+                }
+
+                client.getInput(getControls());
             }
+            catch (NullPointerException n) {
+                camera.position.set(getPlayer(1).getPos().x + getPlayer(1).getWidth() / (float) 2.0,
+                        getPlayer(1).getPos().y + getPlayer(1).getHeight() / (float) 2.0, 0);
+                camera.update();
+                RenderFuncs.worldDraw(batch, renderData.tiles, false);
+                RenderFuncs.entityDraw(batch, renderData.entityList);
 
-            client.getInput(getControls());
+            }
         }
 
 
