@@ -5,6 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 import core.game.entities.*;
 import core.game.logic.tileactions.T_ChangeLevel;
 import core.level.info.LevelTile;
+import org.lwjgl.system.CallbackI;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CollisionLogic {
 
@@ -22,6 +26,20 @@ public class CollisionLogic {
                 collidedEntity = entity2;
                 break;
             }
+
+            /*else if (entity instanceof Keys) {
+                Keys keys = (Keys) entity;
+                if (bounds.overlaps(keys.getBounds())) {
+                    if (entity instanceof PlayerPawn) {
+                        PlayerPawn playerPawn = (PlayerPawn) entity;
+                        playerPawn.addKeys(keys);
+                        collidedEntity = entity;
+                        System.out.println("Keys got picked up.");
+                    }
+                }
+            }*/
+
+
         }
         return collidedEntity;
     }
@@ -49,6 +67,152 @@ public class CollisionLogic {
             }
         }
         return collidedTile;
+    }
+
+    public static Entity entityKeyCollision(Rectangle bounds, Entity genericEntity){
+        Entity collidedKey = null;
+        for(Entity entity : GameLogic.entityList){
+            if (entity instanceof Keys) {
+                YellowKey Ykey = (YellowKey) entity;
+                if (bounds.overlaps(Ykey.getBounds())) {
+                    if (genericEntity instanceof PlayerPawn) {
+                        PlayerPawn playerPawn = (PlayerPawn) genericEntity;
+                        playerPawn.addYellowKey(Ykey);
+                        collidedKey = entity;
+                        int n=0;
+                        n++;
+                        System.out.println("Yellow keys: "+ n);
+                        GameLogic.deleteEntityQueue.addLast(Ykey);
+                    }
+                }
+            }
+        }
+        return collidedKey;
+    }
+   public static Entity entityBlueKeyCollision(Rectangle bounds, Entity genericBlueEntity){
+        Entity collidedBKey = null;
+        for(Entity entity : GameLogic.entityList){
+            if (entity instanceof BlueKey) {
+                BlueKey Bkey = (BlueKey) entity;
+                if (bounds.overlaps(Bkey.getBounds())) {
+                    if (genericBlueEntity instanceof PlayerPawn) {
+                        PlayerPawn playerPawn = (PlayerPawn) genericBlueEntity;
+                        playerPawn.addBlueKey(Bkey);
+                        collidedBKey = entity;
+                        int n=0;
+                        n++;
+                        System.out.println("Blue keys: "+ n);
+                        GameLogic.deleteEntityQueue.addLast(Bkey);
+                    }
+                }
+            }
+        }
+        return collidedBKey;
+    }
+    public static Entity entityRedKeyCollision(Rectangle bounds, Entity genericRedEntity){
+        Entity collidedRKey = null;
+        for(Entity entity : GameLogic.entityList){
+            if (entity instanceof RedKey) {
+                RedKey Rkey = (RedKey) entity;
+                if (bounds.overlaps(Rkey.getBounds())) {
+                    if (genericRedEntity instanceof PlayerPawn) {
+                        PlayerPawn playerPawn = (PlayerPawn) genericRedEntity;
+                        playerPawn.addRedKey(Rkey);
+                        collidedRKey = entity;
+                        int n=0;
+                        n++;
+                        System.out.println("Red Keys: "+ n );
+                        GameLogic.deleteEntityQueue.addLast(Rkey);
+                    }
+                }
+            }
+        }
+        return collidedRKey;
+    }
+
+    public static Entity entityShotgunCollision(Rectangle bounds, Entity genericShotgunEntity){
+        Entity collidedshotgun = null;
+        for(Entity entity : GameLogic.entityList){
+            if (entity instanceof Shotgun) {
+                Shotgun shot_gun = (Shotgun) entity;
+                if (bounds.overlaps(shot_gun.getBounds())) {
+                    if (genericShotgunEntity instanceof PlayerPawn) {
+                        PlayerPawn playerPawn = (PlayerPawn) genericShotgunEntity;
+                        playerPawn.addShotgun(shot_gun);
+                        collidedshotgun = entity;
+                        int n=0;
+                        n++;
+                        System.out.println("shotgun picked: "+ n);
+                        GameLogic.deleteEntityQueue.addLast(shot_gun);
+                    }
+                }
+            }
+        }
+        return collidedshotgun;
+    }
+
+
+    public static Entity entityChaingunCollision(Rectangle bounds, Entity genericChainEntity){
+        Entity collidedchaingun = null;
+        for(Entity entity : GameLogic.entityList){
+            if (entity instanceof Chaingun) {
+                Chaingun chain_gun = (Chaingun) entity;
+                if (bounds.overlaps(chain_gun.getBounds())) {
+                    if (genericChainEntity instanceof PlayerPawn) {
+                        PlayerPawn playerPawn = (PlayerPawn) genericChainEntity;
+                        playerPawn.addChaingun(chain_gun);
+                        collidedchaingun = entity;
+                        int n=0;
+                        n++;
+                        System.out.println("chainguns picked: " + n);
+                        GameLogic.deleteEntityQueue.addLast(chain_gun);
+                    }
+                }
+            }
+        }
+        return collidedchaingun;
+    }
+
+    public static Entity entityPlasmaweaponCollision(Rectangle bounds, Entity genericPlasmaEntity){
+        Entity collidedplasma = null;
+        for(Entity entity : GameLogic.entityList){
+            if (entity instanceof PlasmaWeapon) {
+                PlasmaWeapon plasma_weapon = (PlasmaWeapon) entity;
+                if (bounds.overlaps(plasma_weapon.getBounds())) {
+                    if (genericPlasmaEntity instanceof PlayerPawn) {
+                        PlayerPawn playerPawn = (PlayerPawn) genericPlasmaEntity;
+                        playerPawn.addPlasmaWeapon(plasma_weapon);
+                        collidedplasma = entity;
+                        int n=0;
+                        n++;
+                        System.out.println("Plasma weapons picked up: " + n);
+                        GameLogic.deleteEntityQueue.addLast(plasma_weapon);
+                    }
+                }
+            }
+        }
+        return collidedplasma;
+    }
+
+    public static Entity entityRocketLauncherCollision(Rectangle bounds, Entity genericRocketEntity){
+        Entity collidedrocket = null;
+        for(Entity entity : GameLogic.entityList){
+            if (entity instanceof RocketLauncher) {
+                RocketLauncher rocket_launcher = (RocketLauncher) entity;
+                if (bounds.overlaps(rocket_launcher.getBounds())) {
+                    if (genericRocketEntity instanceof PlayerPawn) {
+                        PlayerPawn playerPawn = (PlayerPawn) genericRocketEntity;
+                        playerPawn.addRocketLauncher(rocket_launcher);
+                        collidedrocket = entity;
+                        int n=0;
+                        n++;
+                        System.out.println("rocket launcher picked: " + n);
+                        GameLogic.deleteEntityQueue.addLast(rocket_launcher);
+                    }
+                }
+            }
+        }
+        return collidedrocket;
     }
 
     public static Entity hitscanLine(float startx, float starty, float angle, Entity source, boolean attack) {
@@ -134,6 +298,15 @@ public class CollisionLogic {
     //Plain collision check with no return values needed
     public static boolean simpleCollisionCheck(Rectangle bounds, Entity caller) {
         return CollisionLogic.entityCollision(bounds, caller) == null
-                && CollisionLogic.entityTileCollision(bounds, caller) == null;
+                && CollisionLogic.entityTileCollision(bounds, caller) == null
+                && CollisionLogic.entityKeyCollision(bounds, caller) == null
+                && CollisionLogic.entityBlueKeyCollision(bounds, caller) == null
+                && CollisionLogic.entityRedKeyCollision(bounds, caller) == null
+                && CollisionLogic.entityShotgunCollision(bounds, caller) == null
+                && CollisionLogic.entityPlasmaweaponCollision(bounds, caller) == null
+                && CollisionLogic.entityChaingunCollision(bounds, caller) == null
+                && CollisionLogic.entityRocketLauncherCollision(bounds, caller) == null;
     }
+
+
 }
