@@ -98,7 +98,7 @@ public class SpaceServer implements Listener {
                         System.out.println("Initializing server and starting game loop");
                         StartGame start = new StartGame();
                         start.startGame = true;
-                        server.sendToAllExceptTCP(c.getID(), start);
+                        server.sendToAllTCP(start);
                         GameLogic.server = server;
                         GameLogic.currentLevel = GameLogic.levels.get(1);
                         GameLogic.loadEntities(GameLogic.currentLevel, false);
