@@ -42,15 +42,13 @@ public class TitleScreen implements Screen {
             texture = WadFuncs.getTexture(file, "TITLESCR"); //title screen
             texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             file.close();
-            Actor startMenuActor = new StartMenu("Main Menu", skin, this, stage, game);
+            Actor startMenuActor = new StartMenu("", skin, this, stage, game);
             stage.addActor(startMenuActor);
-            startMenuActor.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 12, Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight()/6);
+            startMenuActor.setPosition(Gdx.graphics.getWidth() / 2 - startMenuActor.getWidth()/2 , Gdx.graphics.getHeight() / 2 - startMenuActor.getWidth()/2);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
 
     @Override
     public void show() {
