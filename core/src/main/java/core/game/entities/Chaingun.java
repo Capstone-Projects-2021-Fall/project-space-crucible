@@ -1,6 +1,6 @@
 package core.game.entities;
 
-public class Chaingun extends Entity {
+public class Chaingun extends Weapons {
     final private static int WIDTH = 13;
     final private static int HEIGHT = 25;
 

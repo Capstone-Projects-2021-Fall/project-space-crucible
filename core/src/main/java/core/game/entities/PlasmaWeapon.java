@@ -1,6 +1,6 @@
 package core.game.entities;
 
-public class PlasmaWeapon extends Entity {
+public class PlasmaWeapon extends Weapons {
     final private static int WIDTH = 13;
     final private static int HEIGHT = 25;
 

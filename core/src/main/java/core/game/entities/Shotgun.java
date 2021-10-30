@@ -1,6 +1,6 @@
 package core.game.entities;
 
-public class Shotgun extends Entity {
+public class Shotgun extends Weapons {
     final private static int WIDTH = 13;
     final private static int HEIGHT = 25;
 

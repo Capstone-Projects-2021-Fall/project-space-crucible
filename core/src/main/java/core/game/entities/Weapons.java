@@ -3,7 +3,7 @@ package core.game.entities;
 import com.badlogic.gdx.math.Rectangle;
 import core.game.logic.CollisionLogic;
 
-public abstract class Keys extends Entity{
+public abstract class Weapons extends Entity{
     /*final private static int WIDTH =13;
     final private static int HEIGHT =25;
 
@@ -18,10 +18,10 @@ public abstract class Keys extends Entity{
     final public static int PAINSTATE = -1;
     final public static int DEATHSTATE = -1;*/
 
-    public Keys() {
+    public Weapons() {
     }
 
-    public Keys(int health, Position pos, int width, int speed, int height, Integer[] states, int flags, int tag){
+    public Weapons(int health, Position pos, int width, int speed, int height, Integer[] states, int flags, int tag){
         super(health, pos, speed, width, height, states, tag, flags);
     }
 
