@@ -46,7 +46,7 @@ public class SpaceClient implements Listener {
                     }
                 }
                 //If the server sends RenderData object update the client's gamescreen
-                if(object instanceof RenderData){
+                else if(object instanceof RenderData){
                     screen.setRenderData((RenderData) object);
                 }
                 //If server sends MIDIData, change client's music

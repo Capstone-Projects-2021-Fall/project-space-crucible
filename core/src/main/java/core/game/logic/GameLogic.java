@@ -213,11 +213,15 @@ public class GameLogic {
     public static ArrayList<Entity> entitiesInsideView(Connection c) {
         ArrayList<Entity> inside = new ArrayList<>();
         Network.CameraData player = ((SpaceServer.PlayerConnection)c).cameraData;
-        Rectangle playerview = new Rectangle(player.camerapositon.x, player.camerapositon.y, player.width, player.hight);
-        for (Entity e : entityList) {
-            if(playerview.overlaps(e.getBounds())) {
-                inside.add(e);
+        try {
+            Rectangle playerview = new Rectangle(player.camerapositon.x, player.camerapositon.y, player.width, player.hight);
+            for (Entity e : entityList) {
+                if (playerview.overlaps(e.getBounds())) {
+                    inside.add(e);
+                }
             }
+        } catch(NullPointerException ignored) {
+            inside.add(getPlayer(c.getID()));
         }
         return inside;
     }
