@@ -2,7 +2,6 @@ package core.gdx.wad;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
 import core.wad.funcs.SoundFuncs;
@@ -17,20 +16,18 @@ import java.nio.ByteOrder;
 public class MyGDxTest extends Game {
 
     public TitleScreen titleScreen;
-    public GameScreen gameScreen;
-    public SettingsScreen settingsScreen;
 
     //This is the thread that runs the Game Logic. It is separate from the rendering code.
     Thread gameLoop = new Thread() {
       @Override
       public void run() {
-          GameLogic.start();
+          GameLogic.start(null);
       }
 
-        @Override
-        public void interrupt() {
-            GameLogic.stop();
-        }
+      @Override
+      public void interrupt() {
+          GameLogic.stop();
+      }
     };
 
     @Override
@@ -44,6 +41,11 @@ public class MyGDxTest extends Game {
             WadFile file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
             Array<WadFile> wads = new Array<>();
             wads.add(file);
+
+            //Load all of the level data and the graphics before closing the .WAD
+            //byte[] rawSound = file.getData("DSPISTOL");
+            //short[] sound = new short[rawSound.length / 2];
+            //ByteBuffer.wrap(rawSound).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(sound);
 
             SoundFuncs.startSequencer();
             SoundFuncs.loadMIDIs(wads);
@@ -60,14 +62,12 @@ public class MyGDxTest extends Game {
             System.exit(1);
         }
 
-        //Load prepare all Entity and level logic, open game screen and initiate game loop.
-        WadFuncs.loadLevelEffects();
+        //Load prepare all Entity logic, open game screen and initiate game loop.
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
 
         SoundFuncs.playMIDI("TITLE");
         titleScreen = new TitleScreen(this, gameLoop);
         setScreen(titleScreen);
-
     }
 }

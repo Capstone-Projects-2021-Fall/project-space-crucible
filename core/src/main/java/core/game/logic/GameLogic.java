@@ -1,15 +1,17 @@
 package core.game.logic;
 
+import com.badlogic.gdx.Net;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
-import core.game.logic.tileactions.TileAction;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.server.Network;
+import core.server.SpaceServer;
 import core.wad.funcs.SoundFuncs;
 import net.mtrop.doom.WadEntry;
 import net.mtrop.doom.WadFile;
@@ -29,7 +31,6 @@ public class GameLogic {
     final public static ArrayList<EntityState> stateList = new ArrayList<>();
     final public static ArrayList<Class<? extends Entity>> entityType = new ArrayList<>();
     final public static Map<Integer, LevelData> levels = new HashMap<>();
-    final public static ArrayList<TileAction> effectList = new ArrayList<>();
     public static LevelData currentLevel = null;
     public static Server server = null;
     static boolean goingToNextLevel = false;
@@ -97,7 +98,7 @@ public class GameLogic {
             //Send render data packet
             for (Connection c : server.getConnections()) {
                 RenderData renderData = new RenderData();
-                renderData.entityList = GameLogic.entityList;
+                renderData.entityList = entitiesInsideView(c);
                 renderData.tiles = GameLogic.currentLevel.getTiles();
                 renderData.playerPawn = getPlayer(c.getID());
                 server.sendToAllTCP(renderData);
@@ -133,7 +134,7 @@ public class GameLogic {
 
                 System.out.println("Server IS " + (server == null ? "" : "NOT") +  " null.");
 
-                if (server != null && obj.tag > server.getConnections().size()) {
+                if (server != null && obj.tag > server.getConnections().length) {
                     System.out.println("Skipping player " + obj.tag + " because they don't exist.");
                     continue;
                 }
@@ -206,6 +207,20 @@ public class GameLogic {
         goingToNextLevel = true;
         nextLevel = newLevelData;
     }
+
+    //check if the entity is inside the player's camera view
+    public static ArrayList<Entity> entitiesInsideView(Connection c) {
+        ArrayList<Entity> inside = new ArrayList<>();
+        Network.CameraData player = ((SpaceServer.PlayerConnection)c).cameraData;
+        Rectangle playerview = new Rectangle(player.camerapositon.x, player.camerapositon.y, player.width, player.hight);
+        for (Entity e : entityList) {
+            if(playerview.overlaps(e.getBounds())) {
+                inside.add(e);
+            }
+        }
+        return inside;
+    }
+
 
     public static void playServerSound(String name) {
         Network.SoundData soundData = new Network.SoundData();

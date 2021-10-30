@@ -3,7 +3,6 @@ package core.game.logic;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import core.game.entities.*;
-import core.game.logic.tileactions.T_ChangeLevel;
 import core.level.info.LevelTile;
 
 public class CollisionLogic {
@@ -36,14 +35,13 @@ public class CollisionLogic {
                                             LevelTile.TILE_SIZE, LevelTile.TILE_SIZE);
 
                 if(bounds.overlaps(tileBounds)) {
-                    if(levelTile.effect > 0) {
-                        GameLogic.effectList.get(levelTile.effect - 1)
-                                .run(entity, levelTile.arg1, levelTile.arg2);
-                        break;
-                    }
-                    else if (levelTile.solid) {
+
+                    if (levelTile.solid) {
                         collidedTile = levelTile;
                         break;
+                    } else if(levelTile.effect == 1) {
+                        collidedTile = levelTile;
+                        GameLogic.readyChangeLevel(GameLogic.levels.get(GameLogic.currentLevel.getLevelnumber()+1));
                     }
                 }
             }

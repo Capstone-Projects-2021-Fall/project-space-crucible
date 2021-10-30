@@ -2,22 +2,17 @@ package core.server;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
-
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-
 import core.game.logic.GameLogic;
 import core.server.Network.InputData;
-import core.server.Network.StartGame;
 import core.wad.funcs.WadFuncs;
-
 import net.mtrop.doom.WadFile;
-
 import java.io.IOException;
 import java.util.HashSet;
 
-public class SpaceServer implements Listener {
+public class SpaceServer extends Listener {
 
     //Server Object
     Server server;
@@ -37,26 +32,31 @@ public class SpaceServer implements Listener {
         }
     };
 
-    public SpaceServer(int tcpPort) throws IOException {
-        server = new Server(120000,120000) {
+    public SpaceServer(int playerCount, int tcpPort, int udpPort) throws IOException {
+        server = new Server() {
             protected Connection newConnection() {
-                /* By providing our own connection implementation, we can store per
-                // connection state without a connection ID to state look up. */
+                // By providing our own connection implementation, we can store per
+                // connection state without a connection ID to state look up.
                 return new PlayerConnection();
             }
         };
         clientData = new Network.ClientData();
         GameLogic.isSinglePlayer = false;
+
         //Loading the wad files
         try {
+
             //Read the default .WAD. "wads" will eventually be used to store any loaded mods as well as the base .WAD.
             //We only read the .WAD once and take all the information that we need.
+            System.out.println(System.getProperty("user.dir"));
             WadFile file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
             Array<WadFile> wads = new Array<>();
             wads.add(file);
-            //Load all the level data and the graphics before closing the .WAD
+
+            //Load all of the level data and the graphics before closing the .WAD
             GameLogic.loadLevels(file, wads);
-            //When we add add-on support we will also close other files inside 'wads"
+
+            //When we add add-on support we will also close other files inside of 'wads"
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,7 +66,6 @@ public class SpaceServer implements Listener {
         //Load prepare all Entity logic, open game screen and initiate game loop.
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
-        WadFuncs.loadLevelEffects();
         Network.register(server);
 
         server.addListener(new Listener(){
@@ -76,8 +75,16 @@ public class SpaceServer implements Listener {
                 System.out.println("Client connected to game server: " + c.getID());
                 connected.add(c.getID());
                 clientData.connected = connected;
-                System.out.println("Player connected " + connected.size());
+                clientData.playerCount = playerCount;
                 server.sendToAllTCP(clientData);
+
+                //Wait for everyone to connect
+                if(connected.size() == playerCount && !gameLoop.isAlive()){
+                    GameLogic.server = server;
+                    GameLogic.currentLevel = GameLogic.levels.get(1);
+                    GameLogic.loadEntities(GameLogic.currentLevel, false);
+                    gameLoop.start();
+                }
 
             }
             //When the client sends a packet to the server handle it
@@ -93,17 +100,10 @@ public class SpaceServer implements Listener {
                         GameLogic.getPlayer(c.getID()).getPos().angle = input.angle;
                     }
                 }
-                if(packetData instanceof StartGame){
-                    if(((StartGame) packetData).startGame && !gameLoop.isAlive()){
-                        System.out.println("Initializing server and starting game loop");
-                        StartGame start = new StartGame();
-                        start.startGame = true;
-                        server.sendToAllExceptTCP(c.getID(), start);
-                        GameLogic.server = server;
-                        GameLogic.currentLevel = GameLogic.levels.get(1);
-                        GameLogic.loadEntities(GameLogic.currentLevel, false);
-                        gameLoop.start();
-                    }
+
+                if(packetData instanceof Network.CameraData) {
+                    Network.CameraData camera = (Network.CameraData) packetData;
+                    connection.cameraData = camera;
                 }
             }
             //This method will run when a client disconnects from the server, remove the character from the game
@@ -111,15 +111,16 @@ public class SpaceServer implements Listener {
                 connected.remove(c.getID());
                 clientData.connected = connected;
                 server.sendToAllTCP(clientData);
-                System.out.println("Client disconnected from game server! " + c.getID());
+                System.out.println("Client disconnected! " + c.getID());
             }
         });
-        server.bind(tcpPort);
+        server.bind(tcpPort, udpPort);
         server.start();
         System.out.println("Server is running");
     }
 
     static class PlayerConnection extends Connection{
         public InputData playerInput;
+        public Network.CameraData cameraData;
     }
 }

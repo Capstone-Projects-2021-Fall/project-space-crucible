@@ -1,7 +1,10 @@
 package core.server;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
@@ -30,7 +33,8 @@ public class Network {
         kryo.register(JoinLobby.class);
         kryo.register(ServerDetails.class);
         kryo.register(ValidLobby.class);
-        kryo.register(StartGame.class);
+        kryo.register(CameraData.class);
+
 
         //Level classes
         kryo.register(core.level.info.LevelTile.class);
@@ -62,6 +66,7 @@ public class Network {
 
         //LibGDX classes
         kryo.register(Rectangle.class);
+        kryo.register(Vector3.class);
 
         //Stock Java classes
         kryo.register(java.lang.Class.class);
@@ -87,6 +92,7 @@ public class Network {
 //    Send this to the client
     public static class ClientData{
         public HashSet<Integer> connected;
+        public int playerCount;
     }
 
     //Send this to the SERVER
@@ -96,23 +102,29 @@ public class Network {
         public float angle;
     }
 
+    public static class CameraData {
+        public Vector3 camerapositon;
+        public float width;
+        public float hight;
+    }
+
     public static class SoundData {
         public String sound;
     }
 
     public static class CreateLobby{
+        public int playerCount;
     }
     public static class JoinLobby{
         public String lobbyCode;
     }
     public static class ServerDetails{
         public int tcpPort;
+        public int udpPort;
         public String lobbyCode;
     }
     public static class ValidLobby{
         public boolean valid;
     }
-    public static class StartGame{
-        public boolean startGame;
-    }
+
 }

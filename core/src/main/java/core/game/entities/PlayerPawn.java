@@ -3,10 +3,15 @@ package core.game.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
+import core.game.entities.actions.A_Chase;
 import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
 import core.wad.funcs.SoundFuncs;
+
+import java.util.concurrent.ThreadLocalRandom;
+
+import java.awt.*;
 
 public class PlayerPawn extends Entity {
 
@@ -14,7 +19,6 @@ public class PlayerPawn extends Entity {
     final private static int SPEED = 160;
     final private static int WIDTH = 32;
     final private static int HEIGHT = 56;
-    final private static String NAME = "Doom Guy";
 
     final public static int IDLESTATE = 0;
     final public static int WALKSTATE = 1;
@@ -28,7 +32,6 @@ public class PlayerPawn extends Entity {
 
     public float velx = 0;
     public float vely = 0;
-    public boolean[] controls = new boolean[5];
 
     public PlayerPawn(){}
 
@@ -38,7 +41,7 @@ public class PlayerPawn extends Entity {
                 SOLID);
     }
 
-    public void movementUpdate() {
+    public void movementUpdate(boolean[] controls) {
 
         if(controls == null){
             return;

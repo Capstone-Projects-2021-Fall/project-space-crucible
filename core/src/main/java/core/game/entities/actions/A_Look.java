@@ -20,7 +20,7 @@ public class A_Look implements StateAction {
         Entity seen = CollisionLogic.checkFOVForClass(startPoint.x, startPoint.y, refAngle, caller, PlayerPawn.class);
 
         if (seen != null && GameLogic.ticCounter > 0) {
-            ((BaseMonster) caller).setTarget(GameLogic.entityList.indexOf(seen));
+            ((BaseMonster) caller).setTarget(seen);
             SoundFuncs.playSound(((BaseMonster) caller).getSound(BaseMonster.SEESOUND));
             caller.setState(caller.getStates()[Entity.WALK]);
         }

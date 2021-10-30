@@ -3,7 +3,6 @@ package core.gdx.wad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,34 +11,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Null;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.game.entities.Entity;
-import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
 import core.game.entities.PlayerPawn;
 import core.server.Network;
-import core.server.Network.RenderData;
 import core.server.SpaceClient;
+import core.server.Network.RenderData;
 import core.wad.funcs.SoundFuncs;
 import core.server.Network.ClientData;
 import core.server.Network.ServerDetails;
 
-import java.awt.*;
-import java.util.Objects;
-
 public class GameScreen implements Screen {
 
     Thread gameLoop;
-    MyGDxTest myGDxTest;
     public SpaceClient client;
     RenderData renderData = new RenderData();
     ClientData clientData = new ClientData();
@@ -55,8 +42,7 @@ public class GameScreen implements Screen {
     boolean showBoxes = false;
     boolean isSinglePlayer;
     BitmapFont font = new BitmapFont();
-    private Stage stage = new Stage(new ScreenViewport());
-    final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
+
 
     float angle = 0;
 
@@ -65,11 +51,6 @@ public class GameScreen implements Screen {
     Stage lobbyStage;
     Texture background = new Texture("spaceBackground.png");
     Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
-    TextButton play = new TextButton("Start Game", uiSkin);
-    public boolean startGame = false;
-    TextButton lobbyCode;
-    boolean remove = false;
-
 
     public GameScreen(Thread gameLoop, boolean isSinglePlayer) {
         this.gameLoop = gameLoop;
@@ -79,7 +60,9 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         lobbyStage = new Stage();
         this.isSinglePlayer = isSinglePlayer;
-
+//        if(!isSinglePlayer){ //If it is co-op mode create a new client.
+//            client = new SpaceClient(this);
+//        }
     }
 
     @Override
@@ -91,25 +74,6 @@ public class GameScreen implements Screen {
         } else {
             playerNumber = client.getClient().getID();
         }
-        if(playerNumber == 1) {
-            play.setBounds((Gdx.graphics.getWidth() - 100)/ 2, 50, 100, 60);
-            lobbyStage.addActor(play);
-            play.addListener(new ClickListener() {
-                public void clicked(InputEvent event, float x, float y) {
-                    startGame = true;
-                    Network.StartGame startGame = new Network.StartGame();
-                    startGame.startGame = true;
-                    client.getClient().sendTCP(startGame);
-                    Gdx.input.setInputProcessor(stage);
-                    play.removeListener(this);
-                }
-            });
-        }
-
-        Actor chatWindow = new ChatWindow("Chat", skin, this, stage, myGDxTest);
-        stage.addActor(chatWindow);
-        chatWindow.setPosition(camera.viewportWidth,0);
-        chatWindow.setSize(chatWindow.getWidth(), chatWindow.getHeight());
     }
 
     @Override
@@ -120,31 +84,11 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.begin();
-        batch.setProjectionMatrix(camera.combined);
-        batch.enableBlending();
-
-        if(isSinglePlayer){
-            getAngle(true);
-            GameLogic.getPlayer(1).getPos().angle = angle; //Turn the vector2 into a degree angle
-            camera.position.set(GameLogic.getPlayer(1).getPos().x + GameLogic.getPlayer(1).getWidth() / (float) 2.0,
-                    GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight() / (float) 2.0, 0);
-            camera.update();
-            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
-            RenderFuncs.entityDraw(batch, GameLogic.entityList);
-            font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
-            font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
-                    GameLogic.getPlayer(playerNumber).getPos().x,
-                    GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+10);
-            if (showBoxes) {showBoxes();}
-            GameLogic.getPlayer(1).controls = getControls();
-
-        }else { //If co-op mode
-            if (clientData.connected == null)  {
-                batch.end();
-                return;
-            }
-            if (!startGame) {
+        if(!isSinglePlayer && clientData.connected == null){
+            return;
+        }
+        if(clientData.connected != null) {
+            if (!isSinglePlayer && clientData.connected.size() < clientData.playerCount) {
                 lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
                 lobbyStage.getBatch().begin();
                 lobbyStage.getBatch().draw(background, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
@@ -157,44 +101,41 @@ public class GameScreen implements Screen {
                     lobbyStage.addActor(player);
                     y -= 50;
                 }
-                if (serverDetails.lobbyCode != null && !remove) {
-                    lobbyCode = new TextButton("Lobby Code\n" + serverDetails.lobbyCode, uiSkin);
-                    lobbyCode.setSize(100, 60);
-                    lobbyStage.addActor(lobbyCode);
-                    remove = true;
-                }
+                TextButton lobbyCode = new TextButton(serverDetails.lobbyCode, uiSkin);
+                lobbyStage.addActor(lobbyCode);
                 lobbyStage.getBatch().end();
                 lobbyStage.draw(); //Draw the ui
-                batch.end();
                 return;
             }
-            if (renderData.tiles == null && renderData.entityList == null)  {
-                batch.end();
-                return;
-            }
-            if (getPlayer(playerNumber) == null) {
-                batch.end();
-                return;
-            }
-            getAngle(false);
-            camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
-                    getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
-            camera.update();
-            RenderFuncs.worldDraw(batch, renderData.tiles, false);
-            RenderFuncs.entityDraw(batch, renderData.entityList);
-
-            font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
-                    getPlayer(playerNumber).getPos().y);
-            font.draw(batch, "Player: " + getPlayer(playerNumber).getTag(),
-                    getPlayer(playerNumber).getPos().x,
-                    getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() + 10);
-            if (showBoxes) {
-                showBoxes();
-            }
-
-            client.getInput(getControls());
         }
 
+        getAngle(isSinglePlayer);
+        if(isSinglePlayer)
+            GameLogic.getPlayer(1).getPos().angle = angle; //Turn the vector2 into a degree angle
+
+        if(isSinglePlayer) {
+            camera.position.set(GameLogic.getPlayer(1).getPos().x + GameLogic.getPlayer(1).getWidth() / (float) 2.0,
+                    GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight() / (float) 2.0, 0);
+        } else if(renderData.tiles != null && renderData.entityList != null && getPlayer(playerNumber) != null){
+            camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
+                    getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
+        }
+        camera.update();
+
+        batch.setProjectionMatrix(camera.combined);
+        batch.enableBlending();
+        batch.begin();
+        if(isSinglePlayer) {
+            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles());
+            RenderFuncs.entityDraw(batch, GameLogic.entityList);
+
+        }else if(renderData.tiles != null && renderData.entityList != null){
+            RenderFuncs.worldDraw(batch, renderData.tiles);
+            RenderFuncs.entityDraw(batch, renderData.entityList);
+        }
+        if(GameLogic.getPlayer(playerNumber) != null)
+            font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
+        batch.end();
 
         if (showBoxes) {
             showBoxes();
@@ -205,12 +146,13 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS)) {
             showBoxes = !showBoxes;
         }
-        batch.end();
+        if(!isSinglePlayer) {
+            client.getInput(getControls());
 
-        stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
+        } else {
+            GameLogic.getPlayer(1).controls = getControls();
+        }
     }
-
     private void showBoxes() {
         sr.setProjectionMatrix(camera.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
@@ -242,30 +184,28 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
-        if (startGame) {
-            stage.getViewport().update(width, height);
-        }
     }
 
     @Override
     public void pause() {
+
     }
 
     @Override
     public void resume() {
+
     }
 
     @Override
     public void hide() {
         SoundFuncs.stopMIDI();
-        try {GameLogic.stop();} catch (NullPointerException ignored){}
+        SoundFuncs.closeSequencer();
 //        System.exit(0);
     }
 
     @Override
     public void dispose() {
         client.getClient().stop();
-        System.exit(0);
     }
 
     public float getAngle() {
@@ -292,6 +232,18 @@ public class GameScreen implements Screen {
         controls[GameLogic.SHOOT] = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
 
         return controls;
+    }
+
+    private Network.CameraData getCameraData() {
+        Network.CameraData newCameraData = new Network.CameraData();
+        newCameraData.width = camera.viewportWidth;
+        newCameraData.hight = camera.viewportHeight;
+        Vector3 bottomleft = new Vector3();
+        bottomleft.x = camera.position.x - camera.viewportWidth/2;
+        bottomleft.y = camera.position.y - camera.viewportHeight/2;
+        bottomleft.z = 0;
+        newCameraData.camerapositon = bottomleft;
+        return newCameraData;
     }
 
     private PlayerPawn getPlayer(int tag) {
