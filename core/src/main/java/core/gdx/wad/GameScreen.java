@@ -183,6 +183,17 @@ public class GameScreen implements Screen {
             RenderFuncs.worldDraw(batch, renderData.tiles, false);
             RenderFuncs.entityDraw(batch, renderData.entityList);
 
+            font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
+                    getPlayer(playerNumber).getPos().y);
+            font.draw(batch, "Player: " + getPlayer(playerNumber).getTag(),
+                    getPlayer(playerNumber).getPos().x,
+                    getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() + 10);
+            if (showBoxes) {
+                showBoxes();
+            }
+
+            client.getInput(getControls());
+
             TextField chatText = new TextField("");
         }
 
@@ -195,15 +206,6 @@ public class GameScreen implements Screen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS)) {
             showBoxes = !showBoxes;
-        }
-        if(!isSinglePlayer) {
-            font.draw(batch,"HP:" +getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
-                    getPlayer(playerNumber).getPos().y);
-            font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
-                    GameLogic.getPlayer(playerNumber).getPos().x,
-                    GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+10);
-            if (showBoxes) {showBoxes();}
-            client.getInput(getControls());
         }
         batch.end();
 
@@ -300,6 +302,7 @@ public class GameScreen implements Screen {
 
         for (Entity e : renderData.entityList) {
             if (e instanceof PlayerPawn && e.getTag() == tag) {
+                System.out.println("Player " + e.getTag() + " found.");
                 return (PlayerPawn) e;
             }
         }
