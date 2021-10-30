@@ -38,7 +38,7 @@ public class SpaceServer implements Listener {
     };
 
     public SpaceServer(int tcpPort) throws IOException {
-        server = new Server(120000,120000) {
+        server = new Server(8192,8192) {
             protected Connection newConnection() {
                 /* By providing our own connection implementation, we can store per
                 // connection state without a connection ID to state look up. */
