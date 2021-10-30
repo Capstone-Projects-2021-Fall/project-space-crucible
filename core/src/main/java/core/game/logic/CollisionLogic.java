@@ -79,7 +79,9 @@ public class CollisionLogic {
                         PlayerPawn playerPawn = (PlayerPawn) genericEntity;
                         playerPawn.addYellowKey(Ykey);
                         collidedKey = entity;
-                        System.out.println("Key got picked up.");
+                        int n=0;
+                        n++;
+                        System.out.println("Yellow keys: "+ n);
                         GameLogic.deleteEntityQueue.addLast(Ykey);
                     }
                 }
@@ -97,7 +99,9 @@ public class CollisionLogic {
                         PlayerPawn playerPawn = (PlayerPawn) genericBlueEntity;
                         playerPawn.addBlueKey(Bkey);
                         collidedBKey = entity;
-                        System.out.println("Blue Key got picked up.");
+                        int n=0;
+                        n++;
+                        System.out.println("Blue keys: "+ n);
                         GameLogic.deleteEntityQueue.addLast(Bkey);
                     }
                 }
@@ -115,8 +119,9 @@ public class CollisionLogic {
                         PlayerPawn playerPawn = (PlayerPawn) genericRedEntity;
                         playerPawn.addRedKey(Rkey);
                         collidedRKey = entity;
-
-                        System.out.println("Key got picked up.");
+                        int n=0;
+                        n++;
+                        System.out.println("Red Keys: "+ n );
                         GameLogic.deleteEntityQueue.addLast(Rkey);
                     }
                 }
@@ -135,7 +140,9 @@ public class CollisionLogic {
                         PlayerPawn playerPawn = (PlayerPawn) genericShotgunEntity;
                         playerPawn.addShotgun(shot_gun);
                         collidedshotgun = entity;
-                        System.out.println("shotgun got picked up.");
+                        int n=0;
+                        n++;
+                        System.out.println("shotgun picked: "+ n);
                         GameLogic.deleteEntityQueue.addLast(shot_gun);
                     }
                 }
@@ -155,7 +162,9 @@ public class CollisionLogic {
                         PlayerPawn playerPawn = (PlayerPawn) genericChainEntity;
                         playerPawn.addChaingun(chain_gun);
                         collidedchaingun = entity;
-                        System.out.println("chaingun got picked up.");
+                        int n=0;
+                        n++;
+                        System.out.println("chainguns picked: " + n);
                         GameLogic.deleteEntityQueue.addLast(chain_gun);
                     }
                 }
@@ -174,7 +183,9 @@ public class CollisionLogic {
                         PlayerPawn playerPawn = (PlayerPawn) genericPlasmaEntity;
                         playerPawn.addPlasmaWeapon(plasma_weapon);
                         collidedplasma = entity;
-                        System.out.println("Plasma weapon got picked up.");
+                        int n=0;
+                        n++;
+                        System.out.println("Plasma weapons picked up: " + n);
                         GameLogic.deleteEntityQueue.addLast(plasma_weapon);
                     }
                 }
@@ -193,7 +204,9 @@ public class CollisionLogic {
                         PlayerPawn playerPawn = (PlayerPawn) genericRocketEntity;
                         playerPawn.addRocketLauncher(rocket_launcher);
                         collidedrocket = entity;
-                        System.out.println("rocket launcher got picked up.");
+                        int n=0;
+                        n++;
+                        System.out.println("rocket launcher picked: " + n);
                         GameLogic.deleteEntityQueue.addLast(rocket_launcher);
                     }
                 }
