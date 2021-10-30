@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
+import core.game.logic.tileactions.TileAction;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.server.Network;
@@ -28,6 +29,7 @@ public class GameLogic {
     final public static ArrayList<EntityState> stateList = new ArrayList<>();
     final public static ArrayList<Class<? extends Entity>> entityType = new ArrayList<>();
     final public static Map<Integer, LevelData> levels = new HashMap<>();
+    final public static ArrayList<TileAction> effectList = new ArrayList<>();
     public static LevelData currentLevel = null;
     public static Server server = null;
     static boolean goingToNextLevel = false;

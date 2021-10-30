@@ -22,6 +22,7 @@ public class StartMenu extends Window {
         this.myGDxTest=myGDxTest;
         this.settingsScreen=new SettingsScreen(myGDxTest);
         setModal(false);
+        setMovable(false);
         Button startButton = new TextButton("Start", skin);
         add(startButton);
         row();

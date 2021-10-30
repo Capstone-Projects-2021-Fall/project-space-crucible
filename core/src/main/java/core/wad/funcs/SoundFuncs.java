@@ -26,6 +26,7 @@ public class SoundFuncs {
     final public static Map<String, byte[]> gameMIDIs = new HashMap<>();
     final public static Map<String, short[]> soundLumps = new HashMap<>();  //Map lump name to data
     final public static Map<String, String> gameSounds = new HashMap<>();   //Map nice name to lump name
+    public static float volume = 0.5f;
     public static Sequencer sequencer = null;
 
     public static void startSequencer() {
@@ -64,6 +65,7 @@ public class SoundFuncs {
                     super.run();
                     short[] sound = soundLumps.get(gameSounds.get(name));
                     AudioDevice soundPlayer = Gdx.audio.newAudioDevice(SAMPLERATE, true);
+                    soundPlayer.setVolume(volume);
                     soundPlayer.writeSamples(sound, 0, sound.length);
                     soundPlayer.dispose();
                     try {

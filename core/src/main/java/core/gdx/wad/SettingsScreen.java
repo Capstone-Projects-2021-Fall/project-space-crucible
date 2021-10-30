@@ -20,6 +20,7 @@ public class SettingsScreen implements Screen {
     OrthographicCamera camera;
     SpriteBatch batch;
     Texture texture;
+    public boolean remove = false;
     private Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
@@ -44,13 +45,18 @@ public class SettingsScreen implements Screen {
     @Override
     public void show() {
          Gdx.input.setInputProcessor(stage);
-        Actor masterVolumeActor = new SettingsMenu("Master Volume", skin, this, stage, myGDxTest);
-        stage.addActor(masterVolumeActor);
-        masterVolumeActor.setPosition(camera.viewportWidth/7, camera.viewportHeight/4);
+        Actor settingsActor = new SettingsMenu("Settings", skin, this, stage, myGDxTest);
+        stage.addActor(settingsActor);
+        settingsActor.setPosition(camera.viewportWidth/7, camera.viewportHeight/4);
     }
 
     @Override
     public void render(float delta) {
+
+        if (remove) {
+            myGDxTest.setScreen(myGDxTest.settingsScreen);
+            dispose();
+        }
 
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -59,7 +65,6 @@ public class SettingsScreen implements Screen {
         batch.enableBlending();
         batch.begin();
         batch.draw(texture,25,30);
-
         batch.end();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
@@ -82,7 +87,10 @@ public class SettingsScreen implements Screen {
 
     @Override
     public void hide() {
-
+        System.out.println("Remove: " + remove);
+        if (!remove) {
+            System.out.println("bye bye");
+        }
     }
 
     @Override

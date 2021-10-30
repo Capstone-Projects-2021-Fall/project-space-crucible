@@ -3,18 +3,10 @@ package core.game.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
-import core.game.entities.actions.A_Chase;
 import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
-import core.level.info.LevelTile;
 import core.wad.funcs.SoundFuncs;
-
-import java.security.Key;
-import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
-
-import java.awt.*;
 
 public class PlayerPawn extends Entity {
 
@@ -22,6 +14,7 @@ public class PlayerPawn extends Entity {
     final private static int SPEED = 160;
     final private static int WIDTH = 32;
     final private static int HEIGHT = 56;
+    final private static String NAME = "Doom Guy";
 
     final public static int IDLESTATE = 0;
     final public static int WALKSTATE = 1;
@@ -32,15 +25,6 @@ public class PlayerPawn extends Entity {
 
     final public static String PAINSOUND = "player/pain";
     final public static String DIESOUND = "player/die";
-    private ArrayList<Keys> keys = new ArrayList<>();
-    private ArrayList<BlueKey> bkey = new ArrayList<>();
-    private ArrayList<RedKey> rkey= new ArrayList<>();
-    private ArrayList<Chaingun> chaingun = new ArrayList<>();
-    private ArrayList<PlasmaWeapon> plasmaWeapon = new ArrayList<>();
-    private ArrayList<RocketLauncher> rocketLauncher = new ArrayList<>();
-    private ArrayList<Shotgun> shotgun = new ArrayList<>();
-
-
 
     public float velx = 0;
     public float vely = 0;
@@ -135,34 +119,4 @@ public class PlayerPawn extends Entity {
         int newLevel = GameLogic.currentLevel.getLevelnumber() + 1;
         return GameLogic.levels.get(newLevel);
     }
-
-    public void addKeys(Keys key){
-        this.keys.add(key);
-    }
-
-    public void addBlueKey(BlueKey Bkey){
-
-        this.bkey.add(Bkey);
-    }
-    public void addRedKey(RedKey Rkey){
-        this.rkey.add(Rkey);
-    }
-
-    public void addPlasmaWeapon(PlasmaWeapon plasma_weapon){
-        this.plasmaWeapon.add(plasma_weapon);
-    }
-
-    public void addRocketLauncher(RocketLauncher rocket_launcher){
-        this.rocketLauncher.add(rocket_launcher);
-    }
-
-    public void addShotgun(Shotgun shot_gun){
-        this.shotgun.add(shot_gun);
-    }
-    public void addChaingun(Chaingun chain_gun){
-        this.chaingun.add(chain_gun);
-    }
-
-
-
 }
