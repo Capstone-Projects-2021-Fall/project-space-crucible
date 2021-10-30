@@ -88,7 +88,8 @@ public class SpaceClient implements Listener {
         try {
             client.connect(5000, ip, Network.tcpPort);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Master Server is not running!");
+            client = null;
         }
     }
 

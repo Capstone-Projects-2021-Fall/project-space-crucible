@@ -1,7 +1,9 @@
 package core.gdx.wad;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import core.server.SpaceClient;
 
 public class StartMenu extends Actor{
@@ -44,7 +47,6 @@ public class StartMenu extends Actor{
         stage.addActor(settingsButton);
 
         ImageButton.ImageButtonStyle exitStyle = new ImageButton.ImageButtonStyle();
-//        exitStyle.down = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/exit.png")));
         exitStyle.up = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/exitnobg.png")));
         exitStyle.over = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/exit.png")));
         Button exitButton = new ImageButton(exitStyle);
@@ -68,6 +70,19 @@ public class StartMenu extends Actor{
                 super.clicked(event, x, y);
                 GameScreen gameScreen= new GameScreen(null, false);
                 client = new SpaceClient(gameScreen, startMenu);
+                if(client.getClient() == null) {
+                    Dialog error = new Dialog("Error", skin);
+                    error.text("Error connecting to the server!\nTry Again Later.");
+                    error.setBounds((int)((Gdx.graphics.getWidth() - 250)/ 2), (int)((Gdx.graphics.getHeight() - 70) / 2), 250, 100);
+                    error.button("Ok").addListener(new ClickListener(){
+                        public void clicked(InputEvent event, float x, float y) {
+                            super.clicked(event, x, y);
+                            error.remove();
+                        }
+                    });
+                    stage.addActor(error);
+                    return;
+                }
                 gameScreen.client = client;
                 System.out.println("Co-op\n");
 
