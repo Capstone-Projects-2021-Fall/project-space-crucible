@@ -114,9 +114,11 @@ public class GameLogic {
             }, Entity.TIC);
         } else {
             switchingLevels = true;
-            Network.LevelChange lc = new Network.LevelChange();
-            lc.number = nextLevel.getLevelnumber();
-            server.sendToAllTCP(lc);
+            if (!isSinglePlayer) {
+                Network.LevelChange lc = new Network.LevelChange();
+                lc.number = nextLevel.getLevelnumber();
+                server.sendToAllTCP(lc);
+            }
             changeLevel(nextLevel);
         }
 
