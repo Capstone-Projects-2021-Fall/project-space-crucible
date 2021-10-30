@@ -27,7 +27,7 @@ public class CollisionLogic {
                 break;
             }
 
-            else if (entity instanceof Keys) {
+            /*else if (entity instanceof Keys) {
                 Keys keys = (Keys) entity;
                 if (bounds.overlaps(keys.getBounds())) {
                     if (entity instanceof PlayerPawn) {
@@ -37,7 +37,7 @@ public class CollisionLogic {
                         System.out.println("Keys got picked up.");
                     }
                 }
-            }
+            }*/
 
 
         }
@@ -290,7 +290,7 @@ public class CollisionLogic {
                 && CollisionLogic.entityBlueKeyCollision(bounds, caller) == null
                 && CollisionLogic.entityRedKeyCollision(bounds, caller) == null
                 && CollisionLogic.entityShotgunCollision(bounds, caller) == null
-               && CollisionLogic.entityPlasmaweaponCollision(bounds, caller) == null
+                && CollisionLogic.entityPlasmaweaponCollision(bounds, caller) == null
                 && CollisionLogic.entityChaingunCollision(bounds, caller) == null
                 && CollisionLogic.entityRocketLauncherCollision(bounds, caller) == null;
     }
