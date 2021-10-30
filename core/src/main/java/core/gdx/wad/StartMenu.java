@@ -93,8 +93,8 @@ public class StartMenu extends Actor{
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
                         client.makeLobby();
-                        titleScreen.remove = true;
                         myGDxTest.setScreen(gameScreen);
+                        titleScreen.dispose();
                     }
                 });
                 joinLobby.addListener(new ClickListener(){
@@ -130,7 +130,8 @@ public class StartMenu extends Actor{
                                     }
                                 }
                                 if(client.validLobby.valid) {
-                                    titleScreen.remove = true;
+                                    myGDxTest.setScreen(gameScreen);
+                                    titleScreen.dispose();
                                 }
                             }
                         });
@@ -152,7 +153,6 @@ public class StartMenu extends Actor{
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 System.out.println("Settings\n");
-                titleScreen.remove=true;
                 myGDxTest.setScreen(settingsScreen);
                 //((MyGDxTest) Gdx.app.getApplicationListener()).setScreen(new SettingsScreen());
             }

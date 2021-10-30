@@ -193,8 +193,6 @@ public class GameScreen implements Screen {
             }
 
             client.getInput(getControls());
-
-            TextField chatText = new TextField("");
         }
 
 
@@ -300,7 +298,6 @@ public class GameScreen implements Screen {
 
         for (Entity e : renderData.entityList) {
             if (e instanceof PlayerPawn && e.getTag() == tag) {
-                System.out.println("Player " + e.getTag() + " found.");
                 return (PlayerPawn) e;
             }
         }
