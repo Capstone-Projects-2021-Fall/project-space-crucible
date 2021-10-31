@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import core.game.entities.Entity;
@@ -163,15 +164,17 @@ public class GameLogic {
         }
     }
 
-    public static void loadLevels(WadFile file, Array<WadFile> wads) {
+    public static void loadLevels(Array<WadFile> wads) {
 
-        for (WadEntry we : file) {
-            if (we.getName().startsWith("LEVEL")) {
-                int levelnum = Integer.parseInt(we.getName().substring(5));
-                try {
-                    levels.put(levelnum, new LevelData(file, levelnum, wads));
-                } catch (IOException e) {
-                    e.printStackTrace();
+        for (WadFile file : wads) {
+            for (WadEntry we : file) {
+                if (we.getName().startsWith("LEVEL")) {
+                    int levelnum = Integer.parseInt(we.getName().substring(5));
+                    try {
+                        levels.put(levelnum, new LevelData(file, levelnum, wads));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

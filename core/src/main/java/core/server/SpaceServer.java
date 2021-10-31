@@ -55,7 +55,7 @@ public class SpaceServer implements Listener {
             Array<WadFile> wads = new Array<>();
             wads.add(file);
             //Load all the level data and the graphics before closing the .WAD
-            GameLogic.loadLevels(file, wads);
+            GameLogic.loadLevels(wads);
             //When we add add-on support we will also close other files inside 'wads"
             file.close();
         } catch (IOException e) {

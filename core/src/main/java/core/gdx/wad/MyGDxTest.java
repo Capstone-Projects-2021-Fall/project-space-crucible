@@ -19,6 +19,7 @@ public class MyGDxTest extends Game {
     public TitleScreen titleScreen;
     public GameScreen gameScreen;
     public SettingsScreen settingsScreen;
+    public static Array<String> addonList = new Array<>();
 
     //This is the thread that runs the Game Logic. It is separate from the rendering code.
     Thread gameLoop = new Thread() {
@@ -36,6 +37,16 @@ public class MyGDxTest extends Game {
     @Override
     public void create() {
 
+        loadWADS();
+
+        SoundFuncs.startSequencer();
+        SoundFuncs.playMIDI("TITLE");
+        titleScreen = new TitleScreen(this, gameLoop);
+        setScreen(titleScreen);
+
+    }
+
+    public static void loadWADS() {
         //Throw an exception if you cannot read the .WAD file
         try {
 
@@ -45,10 +56,15 @@ public class MyGDxTest extends Game {
             Array<WadFile> wads = new Array<>();
             wads.add(file);
 
-            SoundFuncs.startSequencer();
+            for (String s : addonList) {
+                try {
+                    wads.add(new WadFile(s));
+                } catch (IOException e) {System.out.println("Wad" + s + " not found.");}
+            }
+
             SoundFuncs.loadMIDIs(wads);
             SoundFuncs.loadSounds(wads);
-            GameLogic.loadLevels(file, wads);
+            GameLogic.loadLevels(wads);
             WadFuncs.loadSprites(wads);
             WadFuncs.loadTextures(wads);
             SoundFuncs.playSound("pistol/shoot");
@@ -64,10 +80,5 @@ public class MyGDxTest extends Game {
         WadFuncs.loadLevelEffects();
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
-
-        SoundFuncs.playMIDI("TITLE");
-        titleScreen = new TitleScreen(this, gameLoop);
-        setScreen(titleScreen);
-
     }
 }
