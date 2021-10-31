@@ -41,6 +41,7 @@ public class Network {
         kryo.register(AddTile.class);
         kryo.register(AddObject.class);
         kryo.register(LevelInfo.class);
+        kryo.register(RCONLogin.class);
 
         //Level Classes
         kryo.register(LevelData.class);
@@ -156,5 +157,9 @@ public class Network {
     public static class AddObject {
         public Integer levelNumber;
         public LevelObject levelObject;
+    }
+    public static class RCONLogin {
+        public String code;
+        public String pass;
     }
 }
