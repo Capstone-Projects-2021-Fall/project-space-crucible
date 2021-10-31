@@ -8,13 +8,16 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
 import core.game.logic.GameLogic;
+import core.level.info.LevelData;
 import core.server.Network.InputData;
 import core.server.Network.StartGame;
 import core.wad.funcs.WadFuncs;
 
 import net.mtrop.doom.WadFile;
+import org.checkerframework.checker.units.qual.A;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class SpaceServer implements Listener {
@@ -23,6 +26,8 @@ public class SpaceServer implements Listener {
     Server server;
     Network.ClientData clientData;
     public static HashSet<Integer> connected = new HashSet<>();
+    public ArrayList<String> files = new ArrayList<>();
+    public ArrayList<String> hashes = new ArrayList<>();
 
     //Game loop
     Thread gameLoop = new Thread() {
@@ -47,21 +52,6 @@ public class SpaceServer implements Listener {
         };
         clientData = new Network.ClientData();
         GameLogic.isSinglePlayer = false;
-        //Loading the wad files
-        try {
-            //Read the default .WAD. "wads" will eventually be used to store any loaded mods as well as the base .WAD.
-            //We only read the .WAD once and take all the information that we need.
-            WadFile file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
-            Array<WadFile> wads = new Array<>();
-            wads.add(file);
-            //Load all the level data and the graphics before closing the .WAD
-            GameLogic.loadLevels(wads);
-            //When we add add-on support we will also close other files inside 'wads"
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
 
         //Load prepare all Entity logic, open game screen and initiate game loop.
         WadFuncs.loadStates();
@@ -107,12 +97,48 @@ public class SpaceServer implements Listener {
                 }
 
                 else if(packetData instanceof Network.CameraData) {
-                    Network.CameraData camera = (Network.CameraData) packetData;
-                    connection.cameraData = camera;
+                    connection.cameraData = (Network.CameraData) packetData;
                 }
 
                 else if(packetData instanceof Network.ChatMessage) {
                     server.sendToAllTCP(packetData);
+                }
+
+
+                //Send level data upon creation
+                else if (packetData instanceof Network.LevelInfo) {
+                    if (!GameLogic.levels.containsKey(((Network.LevelInfo) packetData).levelNumber)) {
+                        GameLogic.levels.put(((Network.LevelInfo) packetData).levelNumber, new LevelData());
+                    }
+
+                    GameLogic.levels.get(((Network.LevelInfo) packetData).levelNumber)
+                            .name = (((Network.LevelInfo) packetData).levelName);
+
+                    GameLogic.levels.get(((Network.LevelInfo) packetData).levelNumber)
+                            .midi = (((Network.LevelInfo) packetData).levelMIDI);
+                }
+
+                else if (packetData instanceof Network.AddTile) {
+                    if (!GameLogic.levels.containsKey(((Network.AddTile) packetData).levelNumber)) {
+                        GameLogic.levels.put(((Network.AddTile) packetData).levelNumber, new LevelData());
+                    }
+
+                    GameLogic.levels.get(((Network.AddTile) packetData).levelNumber).getTiles()
+                            .add(((Network.AddTile) packetData).levelTile);
+                }
+
+                else if (packetData instanceof Network.AddObject) {
+                    if (!GameLogic.levels.containsKey(((Network.AddObject) packetData).levelNumber)) {
+                        GameLogic.levels.put(((Network.AddObject) packetData).levelNumber, new LevelData());
+                    }
+
+                    GameLogic.levels.get(((Network.AddObject) packetData).levelNumber).getObjects()
+                            .add(((Network.AddObject) packetData).levelObject);
+                }
+
+                else if (packetData instanceof Network.FileList) {
+                    files = ((Network.FileList) packetData).names;
+                    hashes = ((Network.FileList) packetData).hashes;
                 }
             }
             //This method will run when a client disconnects from the server, remove the character from the game

@@ -14,6 +14,8 @@ public class LevelObject {
     public boolean ambush;
     public int tag;
 
+    public LevelObject(){}
+
     public LevelObject(int type, float xpos, float ypos, float angle, boolean singleplayer, boolean cooperative, boolean[] skill,
                        boolean ambush, int tag) {
         this.type = type;

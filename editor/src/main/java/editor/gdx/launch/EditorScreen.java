@@ -270,7 +270,7 @@ public class EditorScreen implements Screen {
         if (tile == null) {
             tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley),
                     false, "TAN1", 0, 0,
-                    0, 0, false, 0 , resources);
+                    0, 0, false, 0);
             level.getTiles().add(tile);
         }
 
@@ -338,7 +338,7 @@ public class EditorScreen implements Screen {
     }
 
     public void loadLevel() {
-        level = WadFuncs.loadLevel(file, levelnum, resources);
+        level = WadFuncs.loadLevel(file, levelnum);
 
         WadFuncs.loadSprites(resources);
         WadFuncs.loadStates();
@@ -380,7 +380,7 @@ public class EditorScreen implements Screen {
         } else {
             tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley), copiedTileData.solid,
                     copiedTileData.graphicname, copiedTileData.light, copiedTileData.effect, copiedTileData.arg1,
-                    copiedTileData.arg2, copiedTileData.repeat, copiedTileData.tag, resources);
+                    copiedTileData.arg2, copiedTileData.repeat, copiedTileData.tag);
             level.getTiles().add(tile);
         }
     }

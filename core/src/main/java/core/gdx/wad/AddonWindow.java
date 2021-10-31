@@ -4,8 +4,12 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.google.common.hash.Hashing;
+import com.google.common.io.Files;
+import org.checkerframework.checker.units.qual.A;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 public class AddonWindow extends Window {
@@ -23,13 +27,16 @@ public class AddonWindow extends Window {
     private TextButton addResourceButton;
     private TextButton removeResourceButton;
     private TextButton okButton;
-    private Array<String> resources;
+    private Array<String> files;
+    private Array<String> hashes;
 
     public AddonWindow(String title, Skin skin) {
         super(title, skin);
         currentPath = System.getProperty("user.home");
         currentDir = new File(currentPath);
-        resources = new Array<>();
+
+        files = new Array<>();
+        hashes = new Array<>();
 
         setModal(true);
         setResizable(true);
@@ -121,20 +128,35 @@ public class AddonWindow extends Window {
     }
 
     private void updateResources() {
-        resourceList.setItems(resources);
-        MyGDxTest.addonList = resources;
+        resourceList.setItems(files);
         MyGDxTest.loadWADS();
     }
 
     private void addResource() {
-        if (!resources.contains(chosenFile.getAbsolutePath(), true)) {
-            resources.add(chosenFile.getAbsolutePath());
+        if (!files.contains(chosenFile.getAbsolutePath(), true)) {
+            try {
+                MyGDxTest.addonList.add(chosenFile.getAbsolutePath());
+                String hash = Files.asByteSource(chosenFile).hash(Hashing.sha256()).toString();
+                MyGDxTest.addonHashes.add(hash);
+
+                files.add(chosenFile.getAbsolutePath());
+                hashes.add(hash);
+
+                System.out.println("Hash:\t" + hash);
+            } catch (IOException e) {
+                System.out.println("Couldn't add resource.");
+            }
         }
         updateResources();
     }
 
     private void removeResource() {
-        resources.removeIndex(resourceList.getSelectedIndex());
+        int index = resourceList.getSelectedIndex();
+        files.removeIndex(index);
+        hashes.removeIndex(index);
+
+        MyGDxTest.addonList.remove(index);
+        MyGDxTest.addonHashes.remove(index);
         updateResources();
     }
 

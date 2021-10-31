@@ -38,7 +38,7 @@ public class LevelTile {
     }
 
     public LevelTile(TilePosition pos, boolean solid, String tex, int light, int effect, int arg1, int arg2,
-                     boolean repeat, int tag, Array<WadFile> wads) {
+                     boolean repeat, int tag) {
         this.pos = pos;
         this.solid = solid;
         this.light = light;

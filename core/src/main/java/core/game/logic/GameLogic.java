@@ -171,7 +171,7 @@ public class GameLogic {
                 if (we.getName().startsWith("LEVEL")) {
                     int levelnum = Integer.parseInt(we.getName().substring(5));
                     try {
-                        levels.put(levelnum, new LevelData(file, levelnum, wads));
+                        levels.put(levelnum, new LevelData(file, levelnum));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

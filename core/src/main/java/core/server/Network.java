@@ -2,11 +2,14 @@ package core.server;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.game.entities.actions.*;
+import core.level.info.LevelData;
+import core.level.info.LevelObject;
 import core.level.info.LevelTile;
 
 import java.util.ArrayList;
@@ -35,6 +38,16 @@ public class Network {
         kryo.register(CameraData.class);
         kryo.register(LevelChange.class);
         kryo.register(ChatMessage.class);
+        kryo.register(AddTile.class);
+        kryo.register(AddObject.class);
+        kryo.register(LevelInfo.class);
+        kryo.register(FileList.class);
+
+        //Level Classes
+        kryo.register(LevelData.class);
+        kryo.register(LevelTile.class);
+        kryo.register(LevelTile.TilePosition.class);
+        kryo.register(LevelObject.class);
 
         //Entity classes
         kryo.register(core.game.entities.Entity.class);
@@ -126,5 +139,22 @@ public class Network {
     public static class ChatMessage {
         public String sender;
         public String message;
+    }
+    public static class LevelInfo {
+        public Integer levelNumber;
+        public String levelName;
+        public String levelMIDI;
+    }
+    public static class AddTile {
+        public Integer levelNumber;
+        public LevelTile levelTile;
+    }
+    public static class AddObject {
+        public Integer levelNumber;
+        public LevelObject levelObject;
+    }
+    public static class FileList {
+        public ArrayList<String> names;
+        public ArrayList<String> hashes;
     }
 }

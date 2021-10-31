@@ -12,6 +12,7 @@ import net.mtrop.doom.WadFile;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class MyGDxTest extends Game {
@@ -19,7 +20,8 @@ public class MyGDxTest extends Game {
     public TitleScreen titleScreen;
     public GameScreen gameScreen;
     public SettingsScreen settingsScreen;
-    public static Array<String> addonList = new Array<>();
+    public static ArrayList<String> addonList = new ArrayList<>();
+    public static ArrayList<String> addonHashes = new ArrayList<>();
 
     //This is the thread that runs the Game Logic. It is separate from the rendering code.
     Thread gameLoop = new Thread() {
@@ -57,6 +59,9 @@ public class MyGDxTest extends Game {
             wads.add(file);
 
             for (String s : addonList) {
+
+                System.out.println(s.substring(s.lastIndexOf("/")+1));
+
                 try {
                     wads.add(new WadFile(s));
                 } catch (IOException e) {System.out.println("Wad" + s + " not found.");}

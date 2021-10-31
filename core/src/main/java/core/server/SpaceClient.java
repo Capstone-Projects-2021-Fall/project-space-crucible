@@ -6,12 +6,19 @@ import com.esotericsoftware.kryonet.Listener;
 
 import core.game.logic.GameLogic;
 import core.gdx.wad.GameScreen;
+import core.gdx.wad.MyGDxTest;
 import core.gdx.wad.StartMenu;
+import core.level.info.LevelData;
+import core.level.info.LevelObject;
+import core.level.info.LevelTile;
 import core.server.Network.*;
 import core.wad.funcs.SoundFuncs;
+import org.checkerframework.checker.units.qual.A;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class SpaceClient implements Listener {
 
@@ -41,6 +48,14 @@ public class SpaceClient implements Listener {
                     client.close(); //Close connection to Master Server
                     try {
                         client.connect(5000, ip, ((ServerDetails) object).tcpPort); //Join the server
+
+                        //If host
+                        if (getClient().getID() == 1) {
+                            System.out.println("Sending .WAD data...");
+                            sendLevels();
+                            sendFileData();
+                            System.out.println("Done!");
+                        }
                         startMenu.myGDxTest.setScreen(screen);
                     } catch (IOException ex) {
                         ex.printStackTrace();
@@ -125,4 +140,38 @@ public class SpaceClient implements Listener {
         return client;
     }
 
+    private void sendFileData() {
+        Network.FileList fl = new Network.FileList();
+        fl.names = MyGDxTest.addonList;
+        fl.hashes = MyGDxTest.addonHashes;
+        client.sendTCP(fl);
+    }
+
+    private void sendLevels() {
+
+        GameLogic.levels.forEach((integer, levelData) -> {
+
+            LevelInfo li = new LevelInfo();
+            li.levelNumber = integer;
+            li.levelName = levelData.name;
+            li.levelMIDI = levelData.midi;
+            client.sendTCP(li);
+
+
+            levelData.getTiles().forEach(levelTile -> {
+                AddTile at = new AddTile();
+                at.levelNumber = integer;
+                at.levelTile = levelTile;
+                client.sendTCP(at);
+            });
+
+            levelData.getObjects().forEach(levelObject -> {
+                AddObject ao = new AddObject();
+                ao.levelNumber = integer;
+                ao.levelObject = levelObject;
+                client.sendTCP(ao);
+            });
+
+        });
+    }
 }

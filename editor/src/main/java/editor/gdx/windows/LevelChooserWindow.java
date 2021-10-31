@@ -122,7 +122,7 @@ public class LevelChooserWindow extends Window {
             if (we.getName().startsWith("LEVEL")) {
                 int level = Integer.parseInt(we.getName().substring(5));
 
-                LevelData data = WadFuncs.loadLevel(file, level, editor.resources);
+                LevelData data = WadFuncs.loadLevel(file, level);
                 if (data != null) {
                     if (data.getName() != null) {
                         levelNames.add(data.getName());
