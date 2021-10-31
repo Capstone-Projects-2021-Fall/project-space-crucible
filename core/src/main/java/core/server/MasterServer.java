@@ -240,7 +240,9 @@ public class MasterServer implements Listener {
 
                     case "freeports":
                         for (Integer port : availablePorts) {
-                            sendToRCON(String.valueOf(port));
+                            if (!ports.containsValue(port)) {
+                                sendToRCON(String.valueOf(port));
+                            }
                         }
                         break;
                 }
