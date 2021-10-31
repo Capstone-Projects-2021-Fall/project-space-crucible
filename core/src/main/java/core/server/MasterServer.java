@@ -131,13 +131,18 @@ public class MasterServer implements Listener {
                 //RCON Login
                 else if (object instanceof Network.RCONLogin) {
 
+                    String code = ((Network.RCONLogin) object).code;
+                    String pass = ((Network.RCONLogin) object).pass;
+
                     Network.RCONMessage m = new Network.RCONMessage();
 
-                    if (((Network.RCONLogin) object).code.equals(CODE)
-                        && ((Network.RCONLogin) object).pass.equals(password)) {
+                    if (code.equals(CODE) && pass.equals(password)) {
                         rconConnections.add(connection.getID());
                         m.message = "OK";
                     } else {
+
+
+
                         m.message = "Bad login";
                     }
 
@@ -213,19 +218,40 @@ public class MasterServer implements Listener {
     //Handle RCON commands
     private void handleRCON(String message) {
 
-        Network.RCONMessage m = new Network.RCONMessage();
+        String command = message.contains(" ") ? message.substring(0, message.indexOf(' ')) : message;
 
-        switch(message) {
+        switch(command) {
 
             case "ping":
-                for (Integer i : rconConnections) {
-                    m.message = "ping";
-                    server.sendToTCP(i, m);
-                }
+                sendToRCON("ping");
                 break;
 
-        }
+            case "list":
+                switch(message.substring(message.indexOf(' ') + 1)) {
 
+                    case "codes":
+                        for (String code : servers.keySet()) {
+                            sendToRCON(code);
+                        }
+                        break;
+
+                    case "freeports":
+                        for (Integer port : availablePorts) {
+                            sendToRCON(String.valueOf(port));
+                        }
+                        break;
+                }
+        }
+    }
+
+    private void sendToRCON(String send) {
+
+        Network.RCONMessage m = new Network.RCONMessage();
+
+        for (Integer i : rconConnections) {
+            m.message = send;
+            server.sendToTCP(i, m);
+        }
     }
 
 }
