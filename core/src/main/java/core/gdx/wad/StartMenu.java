@@ -143,16 +143,21 @@ public class StartMenu extends Actor{
                                 String lCode = lobbyCode.getText();
                                 lCode = lCode.toUpperCase();
                                 client.sendLobbyCode(lCode);
+                                System.out.println("Waiting...");
                                 synchronized (startMenu){
                                     try {
-                                        startMenu.wait();
+                                        startMenu.wait(1000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
                                 }
+                                System.out.println("Done waiting.");
                                 if(client.validLobby.valid) {
                                     myGDxTest.setScreen(gameScreen);
-                                    titleScreen.dispose();
+                                } else {
+                                    System.out.println("Invalid.");
+                                    titleScreen.showPopup(new PopupWindow("Invalid Lobby", skin,
+                                            "That Lobby Code does not exist!"));
                                 }
                             }
                         });

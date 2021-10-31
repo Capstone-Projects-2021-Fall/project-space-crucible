@@ -54,6 +54,7 @@ public class MasterServer implements Listener {
                 }
                 if(object instanceof Network.JoinLobby){
                     String lobbyCode = ((Network.JoinLobby) object).lobbyCode;
+                    System.out.println(lobbyCode);
                     //If user lobby code was correct find the tcpPort and send it to the user
                     if(servers.containsKey(lobbyCode)){
                         int tcpPort = servers.get(lobbyCode);
@@ -65,6 +66,10 @@ public class MasterServer implements Listener {
                         serverDetails.tcpPort = tcpPort;
                         serverDetails.lobbyCode = lobbyCode;
                         connection.sendTCP(serverDetails);
+                    } else {
+                        Network.ValidLobby validLobby = new Network.ValidLobby();
+                        validLobby.valid = false;
+                        connection.sendTCP(validLobby);
                     }
                 }
             }

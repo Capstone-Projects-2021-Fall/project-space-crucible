@@ -89,4 +89,11 @@ public class TitleScreen implements Screen {
     @Override
     public void dispose() {
     }
+
+    public void showPopup(PopupWindow invalid_lobby) {
+        stage.addActor(invalid_lobby);
+        invalid_lobby.setPosition(
+                (stage.getWidth()/2f) - invalid_lobby.getWidth(),
+                (stage.getHeight()/2f) - invalid_lobby.getHeight());
+    }
 }
