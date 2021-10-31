@@ -93,7 +93,7 @@ public class SpaceServer implements Listener {
                         GameLogic.getPlayer(c.getID()).getPos().angle = input.angle;
                     }
                 }
-                if(packetData instanceof StartGame){
+                else if(packetData instanceof StartGame){
                     if(((StartGame) packetData).startGame && !gameLoop.isAlive()){
                         System.out.println("Initializing server and starting game loop");
                         StartGame start = new StartGame();
@@ -106,9 +106,13 @@ public class SpaceServer implements Listener {
                     }
                 }
 
-                if(packetData instanceof Network.CameraData) {
+                else if(packetData instanceof Network.CameraData) {
                     Network.CameraData camera = (Network.CameraData) packetData;
                     connection.cameraData = camera;
+                }
+
+                else if(packetData instanceof Network.ChatMessage) {
+                    server.sendToAllTCP(packetData);
                 }
             }
             //This method will run when a client disconnects from the server, remove the character from the game

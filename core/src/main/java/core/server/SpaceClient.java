@@ -79,6 +79,10 @@ public class SpaceClient implements Listener {
                 } else if (object instanceof LevelChange) {
                     GameLogic.currentLevel = GameLogic.levels.get(((LevelChange) object).number);
                 }
+
+                else if (object instanceof ChatMessage) {
+                    screen.addChatToWindow((ChatMessage) object);
+                }
             }
             public void disconnected (Connection connection) {
 //                System.out.println("Client Disconnected: Closing the application!");

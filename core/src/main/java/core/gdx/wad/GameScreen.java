@@ -44,6 +44,7 @@ public class GameScreen implements Screen {
     RenderData renderData = new RenderData();
     ClientData clientData = new ClientData();
     ServerDetails serverDetails = new ServerDetails();
+    ChatWindow chatWindow;
 
     int playerNumber = 1;
 
@@ -84,32 +85,31 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(lobbyStage);
         SoundFuncs.stopMIDI();
         if (isSinglePlayer) {
             gameLoop.start();
         } else {
             playerNumber = client.getClient().getID();
         }
-        if(playerNumber == 1 && !isSinglePlayer) {
-            play.setBounds((Gdx.graphics.getWidth() - 100)/ 2, 50, 100, 60);
-            lobbyStage.addActor(play);
-            play.addListener(new ClickListener() {
-                public void clicked(InputEvent event, float x, float y) {
-                    startGame = true;
-                    Network.StartGame startGame = new Network.StartGame();
-                    startGame.startGame = true;
-                    client.getClient().sendTCP(startGame);
-                    Gdx.input.setInputProcessor(stage);
-                    play.removeListener(this);
-                }
-            });
+        if(!isSinglePlayer) {
+            if (playerNumber == 1) {
+                Gdx.input.setInputProcessor(lobbyStage);
+                play.setBounds((Gdx.graphics.getWidth() - 100) / 2, 50, 100, 60);
+                lobbyStage.addActor(play);
+                play.addListener(new ClickListener() {
+                    public void clicked(InputEvent event, float x, float y) {
+                        startGame = true;
+                        Network.StartGame startGame = new Network.StartGame();
+                        startGame.startGame = true;
+                        client.getClient().sendTCP(startGame);
+                        addChatWindow();
+                        play.removeListener(this);
+                    }
+                });
+            } else {
+                addChatWindow();
+            }
         }
-
-        Actor chatWindow = new ChatWindow("Chat", skin, this, stage, myGDxTest);
-        stage.addActor(chatWindow);
-        chatWindow.setPosition(camera.viewportWidth,0);
-        chatWindow.setSize(chatWindow.getWidth(), chatWindow.getHeight());
     }
 
     @Override
@@ -326,5 +326,17 @@ public class GameScreen implements Screen {
             }
         }
         return null;
+    }
+
+    private void addChatWindow() {
+        Gdx.input.setInputProcessor(stage);
+        chatWindow = new ChatWindow("Chat", skin, this, stage, myGDxTest);
+        stage.addActor(chatWindow);
+        chatWindow.setPosition(camera.viewportWidth,0);
+        chatWindow.setSize(chatWindow.getWidth(), chatWindow.getHeight());
+    }
+
+    public void addChatToWindow(Network.ChatMessage chat) {
+        chatWindow.addToChatLog(chat.sender + ": " + chat.message);
     }
 }

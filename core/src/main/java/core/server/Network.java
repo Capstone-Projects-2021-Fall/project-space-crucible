@@ -34,6 +34,7 @@ public class Network {
         kryo.register(StartGame.class);
         kryo.register(CameraData.class);
         kryo.register(LevelChange.class);
+        kryo.register(ChatMessage.class);
 
         //Entity classes
         kryo.register(core.game.entities.Entity.class);
@@ -121,5 +122,9 @@ public class Network {
     }
     public static class StartGame{
         public boolean startGame;
+    }
+    public static class ChatMessage {
+        public String sender;
+        public String message;
     }
 }
