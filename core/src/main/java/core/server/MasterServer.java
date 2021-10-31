@@ -246,6 +246,17 @@ public class MasterServer implements Listener {
                         }
                         break;
                 }
+                break;
+
+            case "info":
+                String code = message.substring(message.indexOf(' ') + 1);
+
+                if (servers.containsKey(code)) {
+                    sendToRCON("Port: " + servers.get(code).port);
+                    sendToRCON("Files: " + servers.get(code).files.toString());
+                    sendToRCON("Hashes: " + servers.get(code).hashes.toString());
+                }
+                break;
         }
     }
 
