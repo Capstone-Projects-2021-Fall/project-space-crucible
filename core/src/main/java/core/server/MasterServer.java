@@ -15,6 +15,8 @@ public class MasterServer implements Listener {
 
     Server server;
     public HashMap<String, ServerEntry> servers = new HashMap<>();
+    public HashMap<String, Integer> ports = new HashMap<>();
+    public HashSet<Connection> playersConnected = new HashSet<>();
     public ArrayList<Integer> availablePorts = new ArrayList<>();
     public HashSet<Integer> rconConnections = new HashSet<>();
     final private String CODE = "MASTER";
@@ -36,7 +38,7 @@ public class MasterServer implements Listener {
                 if(object instanceof Network.CreateLobby){
                     int tcpPort = 0;
                     for(int port : availablePorts ){
-                        if(!servers.containsValue(port) && !isPortAvailable(port)) {
+                        if(!ports.containsValue(port) && !isPortAvailable(port)) {
                             tcpPort = port;
                             break;
                         }
@@ -51,6 +53,7 @@ public class MasterServer implements Listener {
                             ((Network.CreateLobby) object).names, ((Network.CreateLobby) object).hashes);
 
                     servers.put(lobbyCode, entry);
+                    ports.put(lobbyCode, tcpPort);
                     //send port info
                     Network.ServerDetails serverDetails = new Network.ServerDetails();
                     serverDetails.tcpPort = tcpPort;
@@ -156,7 +159,7 @@ public class MasterServer implements Listener {
             }
             //This method will run when a client disconnects from the server, remove the character from the game
             public void disconnected(Connection c){
-
+                playersConnected.remove(c);
             }
         });
         try {
