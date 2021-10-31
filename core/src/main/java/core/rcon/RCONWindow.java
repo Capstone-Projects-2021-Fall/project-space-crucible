@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import core.gdx.wad.PopupWindow;
 import core.server.Network;
 import core.server.SpaceClient;
 import org.lwjgl.system.CallbackI;
@@ -24,6 +25,7 @@ public class RCONWindow extends Window {
     final private TextField commandField;
     final private TextButton sendButton;
     final private Table commandTable;
+    private boolean loggedIn = false;
 
     final private Client client = new Client(8192, 8192);
 
@@ -82,7 +84,11 @@ public class RCONWindow extends Window {
     }
 
     private void sendCommand() {
-        updateLog(commandField.getText());
+        updateLog("Sent: " + commandField.getText());
+
+        Network.RCONMessage command = new Network.RCONMessage();
+        command.message = commandField.getText();
+        client.sendTCP(command);
         commandField.setText("");
     }
 
@@ -103,6 +109,22 @@ public class RCONWindow extends Window {
             @Override
             public void received(Connection connection, Object object) {
                 Listener.super.received(connection, object);
+
+                    if (object instanceof Network.RCONMessage) {
+
+                        if (!loggedIn) {
+                            if (((Network.RCONMessage) object).message.equals("Bad login")) {
+                                stage.addActor(new LoginWindow("Login", getSkin(), client));
+                                stage.addActor(new PopupWindow("Error", getSkin(), ((Network.RCONMessage) object).message));
+                            } else if (((Network.RCONMessage) object).message.equals("OK")) {
+                                loggedIn = true;
+                                commandField.setDisabled(false);
+                                sendButton.setDisabled(false);
+                            }
+                        } else {
+                            updateLog(((Network.RCONMessage) object).message);
+                        }
+                    }
             }
         }));
 

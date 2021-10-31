@@ -15,10 +15,12 @@ public class MasterServer implements Listener {
 
     Server server;
     public HashMap<String, ServerEntry> servers = new HashMap<>();
-    public HashSet<Connection> playersConnected = new HashSet<>();
     public ArrayList<Integer> availablePorts = new ArrayList<>();
+    public HashSet<Integer> rconConnections = new HashSet<>();
+    final private String CODE = "MASTER";
+    private String password;
 
-    public MasterServer(int minPort, int maxPort){
+    public MasterServer(int minPort, int maxPort, String password){
         server = new Server();
         Network.register(server);
         for(int i = minPort; i <= maxPort; i++){
@@ -27,7 +29,6 @@ public class MasterServer implements Listener {
         server.addListener(new Listener(){
             //When the client connects to the server add a player entity to the game
             public void connected(Connection c){
-                playersConnected.add(c);
 
             }
             public void received (Connection connection, Object object) {
@@ -126,10 +127,31 @@ public class MasterServer implements Listener {
                         System.out.println("No bueno. 5");
                     }
                 }
+
+                //RCON Login
+                else if (object instanceof Network.RCONLogin) {
+
+                    Network.RCONMessage m = new Network.RCONMessage();
+
+                    if (((Network.RCONLogin) object).code.equals(CODE)
+                        && ((Network.RCONLogin) object).pass.equals(password)) {
+                        rconConnections.add(connection.getID());
+                        m.message = "OK";
+                    } else {
+                        m.message = "Bad login";
+                    }
+
+                    connection.sendTCP(m);
+                }
+
+                //RCON Command
+                else if (object instanceof Network.RCONMessage) {
+                   handleRCON(((Network.RCONMessage) object).message);
+                }
             }
             //This method will run when a client disconnects from the server, remove the character from the game
             public void disconnected(Connection c){
-                playersConnected.remove(c);
+
             }
         });
         try {
@@ -140,7 +162,6 @@ public class MasterServer implements Listener {
         server.start();
         System.out.println("Master Server is running");
     }
-
     public static String createRandomLobbyCode(){
         String lobbyCode = "";
         Random rand = new Random();
@@ -188,5 +209,24 @@ public class MasterServer implements Listener {
             return hashes;
         }
     }
+
+    //Handle RCON commands
+    private void handleRCON(String message) {
+
+        Network.RCONMessage m = new Network.RCONMessage();
+
+        switch(message) {
+
+            case "ping":
+                for (Integer i : rconConnections) {
+                    m.message = "ping";
+                    server.sendToTCP(i, m);
+                }
+                break;
+
+        }
+
+    }
+
 }
 
