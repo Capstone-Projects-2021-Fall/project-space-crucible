@@ -50,6 +50,8 @@ public class EditTileWindow extends Window {
         setModal(true);
 
         //Set the image preview to the tile's texture
+        System.out.println(RenderFuncs.textureMap);
+
         tileTexture = new Image(RenderFuncs.textureMap.get(tile.graphicname));
         add(tileTexture);
         textureList = new SelectBox<>(skin);

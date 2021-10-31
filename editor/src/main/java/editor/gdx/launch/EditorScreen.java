@@ -338,6 +338,7 @@ public class EditorScreen implements Screen {
     }
 
     public void loadLevel() {
+        GameLogic.entityList.clear();
         level = WadFuncs.loadLevel(file, levelnum);
 
         WadFuncs.loadSprites(resources);

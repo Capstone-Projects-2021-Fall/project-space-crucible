@@ -4,6 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import core.game.logic.GameLogic;
+import core.wad.funcs.WadFuncs;
 import editor.gdx.launch.EditorScreen;
 import net.mtrop.doom.WadFile;
 
@@ -307,6 +309,8 @@ public class FileChooserWindow extends Window {
             }
 
             editor.resources.add(editor.file);
+            GameLogic.entityList.clear();
+            WadFuncs.loadTextures(editor.resources);
             close();
         } catch (IOException e) {
             System.out.println("Invalid file...");
