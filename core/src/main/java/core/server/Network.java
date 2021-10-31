@@ -41,7 +41,6 @@ public class Network {
         kryo.register(AddTile.class);
         kryo.register(AddObject.class);
         kryo.register(LevelInfo.class);
-        kryo.register(FileList.class);
 
         //Level Classes
         kryo.register(LevelData.class);
@@ -122,9 +121,13 @@ public class Network {
         public int number;
     }
     public static class CreateLobby{
+        public ArrayList<String> names;
+        public ArrayList<String> hashes;
     }
     public static class JoinLobby{
         public String lobbyCode;
+        public ArrayList<String> names;
+        public ArrayList<String> hashes;
     }
     public static class ServerDetails{
         public int tcpPort;
@@ -132,6 +135,7 @@ public class Network {
     }
     public static class ValidLobby{
         public boolean valid;
+        public String reason;
     }
     public static class StartGame{
         public boolean startGame;
@@ -152,9 +156,5 @@ public class Network {
     public static class AddObject {
         public Integer levelNumber;
         public LevelObject levelObject;
-    }
-    public static class FileList {
-        public ArrayList<String> names;
-        public ArrayList<String> hashes;
     }
 }

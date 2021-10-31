@@ -157,7 +157,7 @@ public class StartMenu extends Actor{
                                 } else {
                                     System.out.println("Invalid.");
                                     titleScreen.showPopup(new PopupWindow("Invalid Lobby", skin,
-                                            "That Lobby Code does not exist!"));
+                                            client.validLobby.reason));
                                 }
                             }
                         });

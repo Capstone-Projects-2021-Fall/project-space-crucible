@@ -13,12 +13,7 @@ import core.level.info.LevelObject;
 import core.level.info.LevelTile;
 import core.server.Network.*;
 import core.wad.funcs.SoundFuncs;
-import org.checkerframework.checker.units.qual.A;
-
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class SpaceClient implements Listener {
 
@@ -53,7 +48,6 @@ public class SpaceClient implements Listener {
                         if (getClient().getID() == 1) {
                             System.out.println("Sending .WAD data...");
                             sendLevels();
-                            sendFileData();
                             System.out.println("Done!");
                         }
                         startMenu.myGDxTest.setScreen(screen);
@@ -117,11 +111,15 @@ public class SpaceClient implements Listener {
 
     public void makeLobby(){
         CreateLobby createLobby = new CreateLobby();
+        createLobby.names = MyGDxTest.addonList;
+        createLobby.hashes = MyGDxTest.addonHashes;
         client.sendTCP(createLobby);
     }
     public void sendLobbyCode(String lCode){
         Network.JoinLobby joinLobby = new Network.JoinLobby();
         joinLobby.lobbyCode = lCode;
+        joinLobby.names = MyGDxTest.addonList;
+        joinLobby.hashes = MyGDxTest.addonHashes;
         client.sendTCP(joinLobby);
     }
 
@@ -138,13 +136,6 @@ public class SpaceClient implements Listener {
 
     public Client getClient(){
         return client;
-    }
-
-    private void sendFileData() {
-        Network.FileList fl = new Network.FileList();
-        fl.names = MyGDxTest.addonList;
-        fl.hashes = MyGDxTest.addonHashes;
-        client.sendTCP(fl);
     }
 
     private void sendLevels() {

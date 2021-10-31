@@ -17,7 +17,6 @@ import net.mtrop.doom.WadFile;
 import org.checkerframework.checker.units.qual.A;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class SpaceServer implements Listener {
@@ -26,8 +25,6 @@ public class SpaceServer implements Listener {
     Server server;
     Network.ClientData clientData;
     public static HashSet<Integer> connected = new HashSet<>();
-    public ArrayList<String> files = new ArrayList<>();
-    public ArrayList<String> hashes = new ArrayList<>();
 
     //Game loop
     Thread gameLoop = new Thread() {
@@ -134,11 +131,6 @@ public class SpaceServer implements Listener {
 
                     GameLogic.levels.get(((Network.AddObject) packetData).levelNumber).getObjects()
                             .add(((Network.AddObject) packetData).levelObject);
-                }
-
-                else if (packetData instanceof Network.FileList) {
-                    files = ((Network.FileList) packetData).names;
-                    hashes = ((Network.FileList) packetData).hashes;
                 }
             }
             //This method will run when a client disconnects from the server, remove the character from the game

@@ -135,7 +135,8 @@ public class AddonWindow extends Window {
     private void addResource() {
         if (!files.contains(chosenFile.getAbsolutePath(), true)) {
             try {
-                MyGDxTest.addonList.add(chosenFile.getAbsolutePath());
+                MyGDxTest.addonPaths.add(chosenFile.getAbsolutePath());
+                MyGDxTest.addonList.add(chosenFile.getName());
                 String hash = Files.asByteSource(chosenFile).hash(Hashing.sha256()).toString();
                 MyGDxTest.addonHashes.add(hash);
 
@@ -155,6 +156,7 @@ public class AddonWindow extends Window {
         files.removeIndex(index);
         hashes.removeIndex(index);
 
+        MyGDxTest.addonPaths.remove(index);
         MyGDxTest.addonList.remove(index);
         MyGDxTest.addonHashes.remove(index);
         updateResources();
