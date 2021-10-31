@@ -106,6 +106,7 @@ public class SpaceServer implements Listener {
                 else if (packetData instanceof Network.LevelInfo) {
                     if (!GameLogic.levels.containsKey(((Network.LevelInfo) packetData).levelNumber)) {
                         GameLogic.levels.put(((Network.LevelInfo) packetData).levelNumber, new LevelData());
+                        GameLogic.levels.get(((Network.LevelInfo) packetData).levelNumber).levelnumber = ((Network.LevelInfo) packetData).levelNumber;
                     }
 
                     GameLogic.levels.get(((Network.LevelInfo) packetData).levelNumber)
@@ -118,6 +119,7 @@ public class SpaceServer implements Listener {
                 else if (packetData instanceof Network.AddTile) {
                     if (!GameLogic.levels.containsKey(((Network.AddTile) packetData).levelNumber)) {
                         GameLogic.levels.put(((Network.AddTile) packetData).levelNumber, new LevelData());
+                        GameLogic.levels.get(((Network.AddTile) packetData).levelNumber).levelnumber = ((Network.LevelInfo) packetData).levelNumber;
                     }
 
                     GameLogic.levels.get(((Network.AddTile) packetData).levelNumber).getTiles()
@@ -127,6 +129,7 @@ public class SpaceServer implements Listener {
                 else if (packetData instanceof Network.AddObject) {
                     if (!GameLogic.levels.containsKey(((Network.AddObject) packetData).levelNumber)) {
                         GameLogic.levels.put(((Network.AddObject) packetData).levelNumber, new LevelData());
+                        GameLogic.levels.get(((Network.AddObject) packetData).levelNumber).levelnumber = ((Network.LevelInfo) packetData).levelNumber;
                     }
 
                     GameLogic.levels.get(((Network.AddObject) packetData).levelNumber).getObjects()

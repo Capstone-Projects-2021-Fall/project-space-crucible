@@ -178,6 +178,12 @@ public class GameScreen implements Screen {
             }
             getAngle(false);
 
+            System.out.println(GameLogic.currentLevel.name);
+
+            if (GameLogic.currentLevel == null) {
+                batch.end();
+                return;
+            }
             try {
                 camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);

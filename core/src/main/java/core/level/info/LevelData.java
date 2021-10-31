@@ -12,7 +12,7 @@ import java.util.logging.Level;
 public class LevelData {
     public String name = "";
     public String midi = "";
-    int levelnumber;
+    public int levelnumber;
     private ArrayList<LevelTile> tiles = new ArrayList<>();
     private ArrayList<LevelObject> objects = new ArrayList<>();
 

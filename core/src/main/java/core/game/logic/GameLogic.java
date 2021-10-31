@@ -125,6 +125,7 @@ public class GameLogic {
             switchingLevels = true;
             if (!isSinglePlayer) {
                 Network.LevelChange lc = new Network.LevelChange();
+                System.out.println("Going to level " + nextLevel.getLevelnumber());
                 lc.number = nextLevel.getLevelnumber();
                 server.sendToAllTCP(lc);
             }
