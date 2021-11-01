@@ -331,14 +331,11 @@ public class GameScreen implements Screen {
 
         for (Entity e : renderData.entityList) {
             if (e instanceof PlayerPawn) {
-                System.out.println("Found player " + e.getTag());
                 if (e.getTag() == tag) {
                     return (PlayerPawn) e;
                 }
             }
         }
-
-        System.out.println("Null player");
         return null;
     }
 

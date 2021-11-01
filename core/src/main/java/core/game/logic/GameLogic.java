@@ -87,7 +87,6 @@ public class GameLogic {
 
             //Check ticCounter because Concurrency error might occur if player shoots on first tic.
             if (e instanceof PlayerPawn) {
-                System.out.println("Moving player " + e.getTag());
                 ((PlayerPawn) e).movementUpdate();
             }
         }
