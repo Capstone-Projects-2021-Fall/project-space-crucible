@@ -10,8 +10,6 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import core.gdx.wad.PopupWindow;
 import core.server.Network;
-import core.server.SpaceClient;
-import org.lwjgl.system.CallbackI;
 
 import java.io.IOException;
 
