@@ -1,5 +1,6 @@
 package core.server;
 
+import com.badlogic.gdx.Game;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -14,11 +15,7 @@ import core.server.Network.StartGame;
 import core.wad.funcs.WadFuncs;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class SpaceServer implements Listener {
 
@@ -31,6 +28,10 @@ public class SpaceServer implements Listener {
     public static List<Integer> idToPlayerNum = new LinkedList<>();
     public static HashMap<Integer, String> ips = new HashMap<>();
     boolean gameStartedByHost = false;
+    final public Date startTime;
+    final private SpaceServer spaceServer = this;
+    public long packetsReceived = 0;
+    public long packetsSent = 0;
 
     //Game loop
     Thread gameLoop = new Thread() {
@@ -46,6 +47,7 @@ public class SpaceServer implements Listener {
     };
 
     public SpaceServer(int tcpPort) throws IOException {
+        startTime = new Date();
         idToPlayerNum.add(-1);
         server = new Server(8192,8192) {
             protected Connection newConnection() {
@@ -69,16 +71,19 @@ public class SpaceServer implements Listener {
             public void connected(Connection c){
                 ips.put(c.getID(), c.getRemoteAddressTCP().getAddress().toString());
                 server.sendToTCP(c.getID(), new Network.PromptConnectionType());
+                packetsSent++;
                 if(gameStartedByHost){
                     System.out.println("Game started by host is true sending tcp");
                     StartGame start = new StartGame();
                     start.startGame = true;
                     server.sendToAllTCP(start);
+                    packetsSent += server.getConnections().size();
                 }
 
             }
             //When the client sends a packet to the server handle it
             public void received(Connection c, Object packetData) {
+                packetsReceived++;
                 PlayerConnection connection = (PlayerConnection) c;
 
                 //update player movement based on the input
@@ -98,6 +103,8 @@ public class SpaceServer implements Listener {
                         start.startGame = true;
                         gameStartedByHost = true;
                         server.sendToAllTCP(start);
+                        packetsSent += server.getConnections().size();
+                        GameLogic.spaceServer = spaceServer;
                         GameLogic.server = server;
                         GameLogic.currentLevel = GameLogic.levels.get(1);
                         GameLogic.loadEntities(GameLogic.currentLevel, false);
@@ -111,6 +118,7 @@ public class SpaceServer implements Listener {
 
                 else if(packetData instanceof Network.ChatMessage) {
                     server.sendToAllTCP(packetData);
+                    packetsSent += server.getConnections().size();
                     sendToRCON(
                             ((Network.ChatMessage) packetData).sender + ": "
                             + ((Network.ChatMessage) packetData).message
@@ -176,6 +184,7 @@ public class SpaceServer implements Listener {
                         }
 
                         server.sendToAllTCP(clientData);
+                        packetsSent += server.getConnections().size();
                     } else if (((Network.CheckConnection) packetData).type == Network.ConnectionType.RCON) {
                         rconConnected.add(c.getID());
                     }
@@ -195,6 +204,7 @@ public class SpaceServer implements Listener {
                     clientData.connected = connected;
                     //clientData.idToPlayerNum = idToPlayerNum;
                     server.sendToAllTCP(clientData);
+                    packetsSent += server.getConnections().size();
                     System.out.println("Client disconnected from game server! " + c.getID());
                 } else if (rconConnected.contains(c.getID())) {
                     rconConnected.remove(c.getID());
@@ -229,6 +239,7 @@ public class SpaceServer implements Listener {
                 cm.sender = "Server";
                 cm.message = chat;
                 server.sendToAllTCP(cm);
+                packetsSent += server.getConnections().size();
                 break;
 
             case "level":
@@ -259,6 +270,7 @@ public class SpaceServer implements Listener {
                 } catch(NumberFormatException n) {
                     sendToRCON("Unknown skill number, please try again.");
                 }
+                break;
 
             case "statuses":
                 sendToRCON("Connected Players:");
@@ -275,6 +287,17 @@ public class SpaceServer implements Listener {
                 for (Integer i : disconnected) {
                     sendToRCON("Connection " + i + ": " + ips.get(i));
                 }
+                break;
+
+            case "packetinfo":
+                Date now = new Date();
+                long elapsedTime = now.getTime() - startTime.getTime();
+                double elapsedSeconds = elapsedTime / 1000f;
+                sendToRCON("Packets sent: " + packetsSent);
+                sendToRCON("Packets received: " + packetsReceived);
+                sendToRCON("Sent per second (avg): " + (packetsSent / elapsedSeconds));
+                sendToRCON("Received per second (avg): " + (packetsReceived / elapsedSeconds));
+                break;
         }
     }
 
@@ -285,6 +308,7 @@ public class SpaceServer implements Listener {
 
         for (Integer i : rconConnected) {
             server.sendToTCP(i, m);
+            packetsSent++;
         }
     }
 }
