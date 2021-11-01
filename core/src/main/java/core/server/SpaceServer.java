@@ -21,7 +21,7 @@ public class SpaceServer implements Listener {
 
     //Server Object
     Server server;
-    Network.ClientData clientData;
+    public static Network.ClientData clientData;
     public static HashSet<Integer> connected = new HashSet<>();
     public static HashSet<Integer> rconConnected = new HashSet<>();
     public static HashSet<Integer> disconnected = new HashSet<>();
@@ -167,7 +167,7 @@ public class SpaceServer implements Listener {
                     disconnected.add(c.getID());
                     connected.remove(c.getID());
                     clientData.connected = connected;
-                    clientData.idToPlayerNum = idToPlayerNum;
+                    //clientData.idToPlayerNum = idToPlayerNum;
                     server.sendToAllTCP(clientData);
                     System.out.println("Client disconnected from game server! " + c.getID());
                 } else if (rconConnected.contains(c.getID())) {
