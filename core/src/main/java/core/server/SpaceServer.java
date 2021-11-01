@@ -4,8 +4,11 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
+import core.game.entities.Entity;
+import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
+import core.level.info.LevelObject;
 import core.server.Network.InputData;
 import core.server.Network.StartGame;
 import core.wad.funcs.WadFuncs;
@@ -157,6 +160,21 @@ public class SpaceServer implements Listener {
                         clientData.connected = connected;
                         clientData.idToPlayerNum = idToPlayerNum;
                         System.out.println("Player connected " + idToPlayerNum.indexOf(c.getID()));
+
+                        if (gameStartedByHost) {
+
+                            for (LevelObject lo : GameLogic.currentLevel.getObjects()) {
+
+                                if (lo.type == 0 && lo.tag == idToPlayerNum.indexOf(c.getID())) {
+                                    GameLogic.newEntityQueue.addLast(new PlayerPawn(
+                                            new Entity.Position(lo.xpos, lo.ypos, lo.angle),
+                                            idToPlayerNum.indexOf(c.getID())
+                                    ));
+                                    break;
+                                }
+                            }
+                        }
+
                         server.sendToAllTCP(clientData);
                     } else if (((Network.CheckConnection) packetData).type == Network.ConnectionType.RCON) {
                         rconConnected.add(c.getID());
