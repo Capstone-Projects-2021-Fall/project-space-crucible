@@ -47,6 +47,7 @@ public class EditorScreen implements Screen {
     public LevelData level;
     public Integer levelnum;
     public boolean windowOpen;
+    public boolean fullbright = false;
 
     //Copy-paste
     private CopiedTileData copiedTileData = null;
@@ -98,7 +99,7 @@ public class EditorScreen implements Screen {
         if (level != null) {
             batch.setProjectionMatrix(camera.combined);
             batch.begin();
-            RenderFuncs.worldDraw(batch, level.getTiles(), true);
+            RenderFuncs.worldDraw(batch, level.getTiles(), true, fullbright);
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
             batch.end();
 
@@ -147,6 +148,10 @@ public class EditorScreen implements Screen {
         //Check for left clip
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             leftClick(x, y, tilex, tiley);
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
+            fullbright = !fullbright;
         }
 
         //If not holding left click, stop dragging or selecting
