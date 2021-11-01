@@ -1,4 +1,4 @@
-package editor.gdx.copy;
+package editor.copy;
 
 
 import com.badlogic.gdx.graphics.Texture;

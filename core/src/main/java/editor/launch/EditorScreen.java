@@ -1,4 +1,4 @@
-package editor.gdx.launch;
+package editor.launch;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -6,43 +6,36 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
-import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.level.info.LevelTile;
+import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
-import editor.gdx.copy.CopiedThingData;
-import editor.gdx.copy.CopiedTileData;
-import editor.gdx.windows.EditThingWindow;
-import editor.gdx.windows.EditTileWindow;
-import editor.gdx.windows.FileChooserWindow;
-import editor.gdx.windows.LevelChooserWindow;
-import editor.gdx.write.LevelWriter;
+import editor.copy.CopiedThingData;
+import editor.copy.CopiedTileData;
+import editor.windows.EditThingWindow;
+import editor.windows.EditTileWindow;
+import editor.windows.FileChooserWindow;
+import editor.windows.LevelChooserWindow;
+import editor.write.LevelWriter;
 import net.mtrop.doom.WadFile;
-import org.lwjgl.system.CallbackI;
 
-import javax.swing.*;
 import java.io.IOException;
 
 public class EditorScreen implements Screen {
 
-    private LevelEditor editor;
     private OrthographicCamera camera;
     private ShapeRenderer sr;
     private SpriteBatch batch;
@@ -77,8 +70,7 @@ public class EditorScreen implements Screen {
     public Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
-    public EditorScreen(LevelEditor editor) {
-        this.editor = editor;
+    public EditorScreen() {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
@@ -89,6 +81,7 @@ public class EditorScreen implements Screen {
 
     @Override
     public void show() {
+        SoundFuncs.stopMIDI();
         Gdx.input.setInputProcessor(stage);
         openFilePrompt();
     }
