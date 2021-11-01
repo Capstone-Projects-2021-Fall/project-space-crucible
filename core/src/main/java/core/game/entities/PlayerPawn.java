@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Rectangle;
 import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
+import core.level.info.LevelObject;
+import core.server.SpaceServer;
 import core.wad.funcs.SoundFuncs;
 
 public class PlayerPawn extends Entity {
@@ -98,7 +100,23 @@ public class PlayerPawn extends Entity {
                 hitScanAttack(getPos().angle, 15);
                 SoundFuncs.playSound("pistol/shoot");
             } else if (getRemainingStateTics() == -1) {
-                GameLogic.readyChangeLevel(GameLogic.currentLevel);
+
+                if (GameLogic.isSinglePlayer) {
+                    GameLogic.readyChangeLevel(GameLogic.currentLevel);
+                } else {
+                    int tag = this.tag;
+                    this.tag = 0; //Stop controlling the corpse
+
+                    //Find map start and respawn
+                    for (LevelObject lo : GameLogic.currentLevel.getObjects()) {
+
+                        if (lo.type == 0 && lo.tag == tag) {
+                            GameLogic.newEntityQueue.addLast(new PlayerPawn(
+                                    new Entity.Position(lo.xpos, lo.ypos, lo.angle), tag));
+                            break;
+                        }
+                    }
+                }
             }
         }
 

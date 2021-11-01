@@ -8,10 +8,12 @@ import core.game.logic.GameLogic;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
+import org.checkerframework.checker.units.qual.A;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class MyGDxTest extends Game {
@@ -19,6 +21,9 @@ public class MyGDxTest extends Game {
     public TitleScreen titleScreen;
     public GameScreen gameScreen;
     public SettingsScreen settingsScreen;
+    public static ArrayList<String> addonPaths = new ArrayList<>();
+    public static ArrayList<String> addonList = new ArrayList<>();
+    public static ArrayList<String> addonHashes = new ArrayList<>();
 
     //This is the thread that runs the Game Logic. It is separate from the rendering code.
     Thread gameLoop = new Thread() {
@@ -36,6 +41,16 @@ public class MyGDxTest extends Game {
     @Override
     public void create() {
 
+        loadWADS();
+
+        SoundFuncs.startSequencer();
+        SoundFuncs.playMIDI("TITLE");
+        titleScreen = new TitleScreen(this, gameLoop);
+        setScreen(titleScreen);
+
+    }
+
+    public static void loadWADS() {
         //Throw an exception if you cannot read the .WAD file
         try {
 
@@ -45,10 +60,18 @@ public class MyGDxTest extends Game {
             Array<WadFile> wads = new Array<>();
             wads.add(file);
 
-            SoundFuncs.startSequencer();
+            for (String s : addonPaths) {
+
+                System.out.println(s.substring(s.lastIndexOf("/")+1));
+
+                try {
+                    wads.add(new WadFile(s));
+                } catch (IOException e) {System.out.println("Wad " + s + " not found.");}
+            }
+
             SoundFuncs.loadMIDIs(wads);
             SoundFuncs.loadSounds(wads);
-            GameLogic.loadLevels(file, wads);
+            GameLogic.loadLevels(wads);
             WadFuncs.loadSprites(wads);
             WadFuncs.loadTextures(wads);
             SoundFuncs.playSound("pistol/shoot");
@@ -64,10 +87,5 @@ public class MyGDxTest extends Game {
         WadFuncs.loadLevelEffects();
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
-
-        SoundFuncs.playMIDI("TITLE");
-        titleScreen = new TitleScreen(this, gameLoop);
-        setScreen(titleScreen);
-
     }
 }

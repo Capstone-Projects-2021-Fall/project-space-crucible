@@ -4,28 +4,31 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
+import core.game.logic.GameLogic;
 import core.gdx.wad.GameScreen;
+import core.gdx.wad.MyGDxTest;
 import core.gdx.wad.StartMenu;
 import core.server.Network.*;
 import core.wad.funcs.SoundFuncs;
-
 import java.io.IOException;
 
 public class SpaceClient implements Listener {
 
     Client client;
-    static String ip = "localhost";
+    static String ip = "100.19.127.86";
     GameScreen screen;
     public ValidLobby validLobby;
+    StartMenu startMenu;
+
 
     public SpaceClient(GameScreen screen, StartMenu startMenu){
-        System.out.println("Connecting to the server!");
-        //Create a client object
-        client = new Client(120000, 120000);
+        this.screen = screen;
+        this.startMenu = startMenu;
+
+        client = new Client(8192, 8192);
         client.start();
         //register the packets
         Network.register(client);
-        this.screen = screen;
 
         client.addListener(new ThreadedListener(new Listener() {
             public void connected (Connection connection) {
@@ -34,21 +37,24 @@ public class SpaceClient implements Listener {
             public void received (Connection connection, Object object) {
                 if(object instanceof ServerDetails) {
                     screen.setServerDetails((ServerDetails) object);
-                    client.close();
+                    client.close(); //Close connection to Master Server
                     try {
-                        client.connect(5000, ip, ((ServerDetails) object).tcpPort);
-                        startMenu.myGDxTest.setScreen(screen);
-                        System.out.println(client.getID());
+                        client.connect(5000, ip, ((ServerDetails) object).tcpPort); //Join the server
+
+                        //If host
+                        if (getClient().getID() == 1) {
+                            System.out.println("Sending .WAD data...");
+                            sendLevels();
+                            System.out.println("Done!");
+                        }
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
                 }
-
                 //If the server sends RenderData object update the client's gamescreen
-                if(object instanceof RenderData){
+                else if(object instanceof RenderData){
                     screen.setRenderData((RenderData) object);
                 }
-
                 //If server sends MIDIData, change client's music
                 else if (object instanceof MIDIData) {
                     if (((MIDIData) object).midi != null && !((MIDIData) object).midi.equals("") ) {
@@ -56,23 +62,50 @@ public class SpaceClient implements Listener {
                     } else {
                         SoundFuncs.stopMIDI();
                     }
-                }else if(object instanceof ClientData){
-                    screen.setClientData((ClientData) object);
                 }
+                //If server sends ClientData set the client data
+                else if(object instanceof ClientData){
+                    screen.setClientData((ClientData) object);
 
+                    //If playernumber is changed and data is not null
+                    if (screen.playerNumber == 0
+                            && ((ClientData) object).connected != null && ((ClientData) object).idToPlayerNum != null) {
+                        startMenu.myGDxTest.setScreen(screen);
+                    }
+                }
                 //If server sends SoundData, play sound matching the given name
                 else if (object instanceof SoundData) {
                     SoundFuncs.playSound(((SoundData) object).sound);
                 }
+                //If server sends ValidLobby unblock the startMenu
                 else if( object instanceof ValidLobby){
                     validLobby = (ValidLobby) object;
                     synchronized (startMenu){
                         startMenu.notifyAll();
                     }
                 }
+                //If server sends StartGame set the startGame value to it
+                else if(object instanceof StartGame){
+                    GameLogic.currentLevel = GameLogic.levels.get(((StartGame) object).levelnum);
+                    screen.startGame = ((StartGame) object).startGame;
+                }
+
+                else if (object instanceof LevelChange) {
+                    screen.updatePlayerNumber();
+                    GameLogic.currentLevel = GameLogic.levels.get(((LevelChange) object).number);
+                }
+
+                else if (object instanceof ChatMessage) {
+                    screen.addChatToWindow((ChatMessage) object);
+                }
+
+                else if (object instanceof PromptConnectionType) {
+                    CheckConnection cc = new CheckConnection();
+                    cc.type = ConnectionType.PLAYER;
+                    client.sendTCP(cc);
+                }
             }
             public void disconnected (Connection connection) {
-//                System.exit(0);
             }
         }));
 
@@ -81,17 +114,22 @@ public class SpaceClient implements Listener {
         try {
             client.connect(5000, ip, Network.tcpPort);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Master Server is not running!");
+            client = null;
         }
     }
 
     public void makeLobby(){
         CreateLobby createLobby = new CreateLobby();
+        createLobby.names = MyGDxTest.addonList;
+        createLobby.hashes = MyGDxTest.addonHashes;
         client.sendTCP(createLobby);
     }
     public void sendLobbyCode(String lCode){
         Network.JoinLobby joinLobby = new Network.JoinLobby();
         joinLobby.lobbyCode = lCode;
+        joinLobby.names = MyGDxTest.addonList;
+        joinLobby.hashes = MyGDxTest.addonHashes;
         client.sendTCP(joinLobby);
     }
 
@@ -102,8 +140,39 @@ public class SpaceClient implements Listener {
         client.sendTCP(inputData);
     }
 
+    public void getCameraData(CameraData cameradata) {
+        client.sendTCP(cameradata);
+    }
+
     public Client getClient(){
         return client;
     }
 
+    private void sendLevels() {
+
+        GameLogic.levels.forEach((integer, levelData) -> {
+
+            LevelInfo li = new LevelInfo();
+            li.levelNumber = integer;
+            li.levelName = levelData.name;
+            li.levelMIDI = levelData.midi;
+            client.sendTCP(li);
+
+
+            levelData.getTiles().forEach(levelTile -> {
+                AddTile at = new AddTile();
+                at.levelNumber = integer;
+                at.levelTile = levelTile;
+                client.sendTCP(at);
+            });
+
+            levelData.getObjects().forEach(levelObject -> {
+                AddObject ao = new AddObject();
+                ao.levelNumber = integer;
+                ao.levelObject = levelObject;
+                client.sendTCP(ao);
+            });
+
+        });
+    }
 }

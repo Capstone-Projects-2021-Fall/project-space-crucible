@@ -3,6 +3,7 @@ package core.wad.funcs;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.AudioDevice;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import core.game.logic.GameLogic;
 import net.mtrop.doom.WadFile;
 
@@ -26,6 +27,7 @@ public class SoundFuncs {
     final public static Map<String, byte[]> gameMIDIs = new HashMap<>();
     final public static Map<String, short[]> soundLumps = new HashMap<>();  //Map lump name to data
     final public static Map<String, String> gameSounds = new HashMap<>();   //Map nice name to lump name
+
     public static float volume = 0.5f;
     public static Sequencer sequencer = null;
 
@@ -64,15 +66,17 @@ public class SoundFuncs {
                 public void run() {
                     super.run();
                     short[] sound = soundLumps.get(gameSounds.get(name));
-                    AudioDevice soundPlayer = Gdx.audio.newAudioDevice(SAMPLERATE, true);
-                    soundPlayer.setVolume(volume);
-                    soundPlayer.writeSamples(sound, 0, sound.length);
-                    soundPlayer.dispose();
+                    try {
+                        AudioDevice soundPlayer = Gdx.audio.newAudioDevice(SAMPLERATE, true);
+                        soundPlayer.setVolume(volume);
+                        soundPlayer.writeSamples(sound, 0, sound.length);
+                        soundPlayer.dispose();
+
+                    } catch (GdxRuntimeException ignored) {}
+
                     try {
                         join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    } catch (InterruptedException | IndexOutOfBoundsException ignored) {}
                 }
             }.start();
         } else {

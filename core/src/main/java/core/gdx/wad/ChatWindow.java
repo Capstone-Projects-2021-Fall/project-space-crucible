@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
+import core.server.Network;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -20,7 +21,7 @@ public class ChatWindow extends com.badlogic.gdx.scenes.scene2d.ui.Window {
     public ChatWindow(String title, Skin skin, GameScreen gameScreen, Stage stage, MyGDxTest myGDxTest) {
         super(title, skin);
         setModal(true);
-        setMovable(false);
+        setMovable(true);
         setResizable(false);
         this.myGDxTest = myGDxTest;
         this.gameScreen = gameScreen;
@@ -47,15 +48,28 @@ public class ChatWindow extends com.badlogic.gdx.scenes.scene2d.ui.Window {
 
         chatField.setTextFieldListener((textField, key) -> {
             if (key == '\n' || key == '\r') {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(chatField.getText());
-                    qA.add(sb.toString());
-                    chatLog.setItems(qA);
+
+                Network.ChatMessage chat = new Network.ChatMessage();
+                chat.sender = "Player " + gameScreen.playerNumber;
+                chat.message = chatField.getText();
+                gameScreen.client.getClient().sendTCP(chat);
+                chatField.setText("");
+                chatField.setDisabled(true);
+                scrollPane.setScrollPercentY(100f);
+
+                /*
+                StringBuilder sb = new StringBuilder();
+                sb.append("Player ")
+                        .append(gameScreen.playerNumber)
+                        .append(": ").append(chatField.getText());
+                qA.add(sb.toString());
+                chatLog.setItems(qA);
 //                    chatLog.appendText("Player " +(Objects.requireNonNull(GameLogic.getPlayer(0)).getTag())
 //                            + ": "+ sb + "\n");
-                    chatField.setText("");
-                    chatField.setDisabled(true);
-                    scrollPane.setScrollPercentY(100f);
+                chatField.setText("");
+                chatField.setDisabled(true);
+                scrollPane.setScrollPercentY(100f);
+                */
             }
         });
 
@@ -65,5 +79,10 @@ public class ChatWindow extends com.badlogic.gdx.scenes.scene2d.ui.Window {
                 chatField.setDisabled(false);
             }
         });
+    }
+
+    public void addToChatLog(String log) {
+        qA.add(log);
+        chatLog.setItems(qA);
     }
 }

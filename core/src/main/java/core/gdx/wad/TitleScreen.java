@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
@@ -24,9 +23,6 @@ public class TitleScreen implements Screen {
     Thread gameLoop;
     private Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
-    public boolean remove = false;
-    public boolean isSinglePlayer = true;
-    private boolean windowOpen = false;
 
     public TitleScreen(MyGDxTest game, Thread gameLoop) {
         WadFile file;
@@ -42,29 +38,21 @@ public class TitleScreen implements Screen {
             texture = WadFuncs.getTexture(file, "TITLESCR"); //title screen
             texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             file.close();
-            Actor startMenuActor = new StartMenu("Main Menu", skin, this, stage, game);
+            Actor startMenuActor = new StartMenu("", skin, this, stage, game);
             stage.addActor(startMenuActor);
-            startMenuActor.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 12, Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight()/6);
+            startMenuActor.setPosition(Gdx.graphics.getWidth() / 2 - startMenuActor.getWidth()/2 , Gdx.graphics.getHeight() / 2 - startMenuActor.getWidth()/2);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-
     @Override
     public void show() {
-        remove=false;
         Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta) {
-
-        if (remove) {
-            game.setScreen(new GameScreen(gameLoop, isSinglePlayer));
-            dispose();
-        }
 
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -72,6 +60,7 @@ public class TitleScreen implements Screen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
+
         //drawing sprite background
         batch.begin();
         batch.draw(texture,25,30);
@@ -87,25 +76,24 @@ public class TitleScreen implements Screen {
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-        System.out.println("Remove: " + remove);
-        if (!remove) {
-            System.out.println("bye bye");
-            System.exit(0);
-        }
     }
 
     @Override
     public void dispose() {
+    }
 
+    public void showPopup(PopupWindow invalid_lobby) {
+        stage.addActor(invalid_lobby);
+        invalid_lobby.setPosition(
+                (stage.getWidth()/2f) - invalid_lobby.getWidth(),
+                (stage.getHeight()/2f) - invalid_lobby.getHeight());
     }
 }

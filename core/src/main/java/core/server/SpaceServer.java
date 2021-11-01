@@ -1,28 +1,37 @@
 package core.server;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.Array;
-
+import com.badlogic.gdx.Game;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
+import core.game.entities.Entity;
+import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
+import core.level.info.LevelData;
+import core.level.info.LevelObject;
 import core.server.Network.InputData;
 import core.server.Network.StartGame;
 import core.wad.funcs.WadFuncs;
 
-import net.mtrop.doom.WadFile;
-
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.*;
 
 public class SpaceServer implements Listener {
 
     //Server Object
     Server server;
-    Network.ClientData clientData;
+    public static Network.ClientData clientData;
     public static HashSet<Integer> connected = new HashSet<>();
+    public static HashSet<Integer> rconConnected = new HashSet<>();
+    public static HashSet<Integer> disconnected = new HashSet<>();
+    public static List<Integer> idToPlayerNum = new LinkedList<>();
+    public static HashMap<Integer, String> ips = new HashMap<>();
+    boolean gameStartedByHost = false;
+    final public Date startTime;
+    final private SpaceServer spaceServer = this;
+    public long packetsReceived = 0;
+    public long packetsSent = 0;
 
     //Game loop
     Thread gameLoop = new Thread() {
@@ -38,77 +47,170 @@ public class SpaceServer implements Listener {
     };
 
     public SpaceServer(int tcpPort) throws IOException {
-        server = new Server(120000,120000) {
+        startTime = new Date();
+        idToPlayerNum.add(-1);
+        server = new Server(8192,8192) {
             protected Connection newConnection() {
-                // By providing our own connection implementation, we can store per
-                // connection state without a connection ID to state look up.
+                /* By providing our own connection implementation, we can store per
+                // connection state without a connection ID to state look up. */
                 return new PlayerConnection();
             }
         };
         clientData = new Network.ClientData();
         GameLogic.isSinglePlayer = false;
-        //Loading the wad files
-        try {
-            //Read the default .WAD. "wads" will eventually be used to store any loaded mods as well as the base .WAD.
-            //We only read the .WAD once and take all the information that we need.
-            WadFile file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
-            Array<WadFile> wads = new Array<>();
-            wads.add(file);
-            //Load all of the level data and the graphics before closing the .WAD
-            GameLogic.loadLevels(file, wads);
-            //When we add add-on support we will also close other files inside of 'wads"
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
 
         //Load prepare all Entity logic, open game screen and initiate game loop.
         WadFuncs.loadStates();
         WadFuncs.setEntityTypes();
+        WadFuncs.loadLevelEffects();
         Network.register(server);
 
         server.addListener(new Listener(){
 
             //When the client connects to the server add a player entity to the game
             public void connected(Connection c){
-                System.out.println("Client connected to game server: " + c.getID());
-                connected.add(c.getID());
-                clientData.connected = connected;
-//                clientData.playerCount = playerCount;
-                System.out.println("Player connected " + connected.size());
-                server.sendToAllTCP(clientData);
+                ips.put(c.getID(), c.getRemoteAddressTCP().getAddress().toString());
+                server.sendToTCP(c.getID(), new Network.PromptConnectionType());
+                packetsSent++;
+                if(gameStartedByHost){
+                    System.out.println("Game started by host is true sending tcp");
+                    StartGame start = new StartGame();
+                    start.startGame = true;
+                    start.levelnum = GameLogic.currentLevel.levelnumber;
+                    server.sendToTCP(c.getID(), start);
+                    packetsSent += server.getConnections().size();
+                }
 
             }
             //When the client sends a packet to the server handle it
             public void received(Connection c, Object packetData) {
+                packetsReceived++;
                 PlayerConnection connection = (PlayerConnection) c;
 
                 //update player movement based on the input
                 if(packetData instanceof InputData){
                     InputData input = (InputData) packetData;
                     connection.playerInput = input;
-                    if(GameLogic.getPlayer(c.getID()) != null) {
-                        GameLogic.getPlayer(c.getID()).controls = input.controls;
-                        GameLogic.getPlayer(c.getID()).getPos().angle = input.angle;
+
+                    if(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())) != null) {
+                        Objects.requireNonNull(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()))).controls = input.controls;
+                        Objects.requireNonNull(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()))).getPos().angle = input.angle;
                     }
                 }
-                if(packetData instanceof StartGame){
+                else if(packetData instanceof StartGame){
                     if(((StartGame) packetData).startGame && !gameLoop.isAlive()){
                         System.out.println("Initializing server and starting game loop");
+                        StartGame start = new StartGame();
+                        start.startGame = true;
+                        start.levelnum = 1;
+                        gameStartedByHost = true;
+                        server.sendToAllTCP(start);
+                        packetsSent += server.getConnections().size();
+                        GameLogic.spaceServer = spaceServer;
                         GameLogic.server = server;
                         GameLogic.currentLevel = GameLogic.levels.get(1);
                         GameLogic.loadEntities(GameLogic.currentLevel, false);
                         gameLoop.start();
                     }
                 }
+
+                else if(packetData instanceof Network.CameraData) {
+                    connection.cameraData = (Network.CameraData) packetData;
+                }
+
+                else if(packetData instanceof Network.ChatMessage) {
+                    server.sendToAllTCP(packetData);
+                    packetsSent += server.getConnections().size();
+                    sendToRCON(
+                            ((Network.ChatMessage) packetData).sender + ": "
+                            + ((Network.ChatMessage) packetData).message
+                    );
+                }
+
+
+                //Send level data upon creation
+                else if (packetData instanceof Network.LevelInfo) {
+                    if (!GameLogic.levels.containsKey(((Network.LevelInfo) packetData).levelNumber)) {
+                        GameLogic.levels.put(((Network.LevelInfo) packetData).levelNumber, new LevelData());
+                        GameLogic.levels.get(((Network.LevelInfo) packetData).levelNumber).levelnumber = ((Network.LevelInfo) packetData).levelNumber;
+                    }
+
+                    GameLogic.levels.get(((Network.LevelInfo) packetData).levelNumber)
+                            .name = (((Network.LevelInfo) packetData).levelName);
+
+                    GameLogic.levels.get(((Network.LevelInfo) packetData).levelNumber)
+                            .midi = (((Network.LevelInfo) packetData).levelMIDI);
+                }
+
+                else if (packetData instanceof Network.AddTile) {
+                    if (!GameLogic.levels.containsKey(((Network.AddTile) packetData).levelNumber)) {
+                        GameLogic.levels.put(((Network.AddTile) packetData).levelNumber, new LevelData());
+                        GameLogic.levels.get(((Network.AddTile) packetData).levelNumber).levelnumber = ((Network.LevelInfo) packetData).levelNumber;
+                    }
+
+                    GameLogic.levels.get(((Network.AddTile) packetData).levelNumber).getTiles()
+                            .add(((Network.AddTile) packetData).levelTile);
+                }
+
+                else if (packetData instanceof Network.AddObject) {
+                    if (!GameLogic.levels.containsKey(((Network.AddObject) packetData).levelNumber)) {
+                        GameLogic.levels.put(((Network.AddObject) packetData).levelNumber, new LevelData());
+                        GameLogic.levels.get(((Network.AddObject) packetData).levelNumber).levelnumber = ((Network.LevelInfo) packetData).levelNumber;
+                    }
+
+                    GameLogic.levels.get(((Network.AddObject) packetData).levelNumber).getObjects()
+                            .add(((Network.AddObject) packetData).levelObject);
+                }
+
+                else if (packetData instanceof Network.CheckConnection) {
+                    if (((Network.CheckConnection) packetData).type == Network.ConnectionType.PLAYER) {
+                        System.out.println("Client connected to game server: " + c.getID());
+                        connected.add(c.getID());
+                        idToPlayerNum.add(c.getID());
+                        clientData.connected = connected;
+                        clientData.idToPlayerNum = idToPlayerNum;
+                        System.out.println("Player connected " + idToPlayerNum.indexOf(c.getID()));
+
+                        if (gameStartedByHost) {
+
+                            for (LevelObject lo : GameLogic.currentLevel.getObjects()) {
+
+                                if (lo.type == 0 && lo.tag == idToPlayerNum.indexOf(c.getID())) {
+                                    GameLogic.newEntityQueue.addLast(new PlayerPawn(
+                                            new Entity.Position(lo.xpos, lo.ypos, lo.angle),
+                                            idToPlayerNum.indexOf(c.getID())
+                                    ));
+                                    break;
+                                }
+                            }
+                        }
+
+                        server.sendToAllTCP(clientData);
+                        packetsSent += server.getConnections().size();
+                    } else if (((Network.CheckConnection) packetData).type == Network.ConnectionType.RCON) {
+                        rconConnected.add(c.getID());
+                    }
+                }
+
+                //RCON Command
+                else if (packetData instanceof Network.RCONMessage) {
+                    handleRCON(((Network.RCONMessage) packetData).message);
+                }
             }
             //This method will run when a client disconnects from the server, remove the character from the game
             public void disconnected(Connection c){
-                connected.remove(c.getID());
-                clientData.connected = connected;
-                server.sendToAllTCP(clientData);
-                System.out.println("Client disconnected from game server! " + c.getID());
+
+                if (connected.contains(c.getID())) {
+                    disconnected.add(c.getID());
+                    connected.remove(c.getID());
+                    clientData.connected = connected;
+                    //clientData.idToPlayerNum = idToPlayerNum;
+                    server.sendToAllTCP(clientData);
+                    packetsSent += server.getConnections().size();
+                    System.out.println("Client disconnected from game server! " + c.getID());
+                } else if (rconConnected.contains(c.getID())) {
+                    rconConnected.remove(c.getID());
+                }
             }
         });
         server.bind(tcpPort);
@@ -116,7 +218,99 @@ public class SpaceServer implements Listener {
         System.out.println("Server is running");
     }
 
-    static class PlayerConnection extends Connection{
+    public static class PlayerConnection extends Connection{
         public InputData playerInput;
+        public Network.CameraData cameraData;
+    }
+
+    private void handleRCON(String message) {
+
+        String command = message.contains(" ") ? message.substring(0, message.indexOf(' ')) : message;
+
+        switch(command) {
+
+            case "ping":
+                sendToRCON("ping");
+                break;
+
+            case "say":
+                if (!message.contains(" ")) {return;}
+                String chat = message.substring(message.indexOf("say ") + 4);
+                sendToRCON("Server: " + chat);
+                Network.ChatMessage cm = new Network.ChatMessage();
+                cm.sender = "Server";
+                cm.message = chat;
+                server.sendToAllTCP(cm);
+                packetsSent += server.getConnections().size();
+                break;
+
+            case "level":
+                try {
+                    int level  = Integer.parseInt(message.substring(message.indexOf(' ')+1));
+
+                    if (!GameLogic.levels.containsKey(level)) {
+                        sendToRCON("Server has no level " + level);
+                        return;
+                    }
+                    GameLogic.readyChangeLevel(GameLogic.levels.get(level));
+                    sendToRCON("Switching to level " + level);
+
+                } catch(NumberFormatException n) {
+                    sendToRCON("Invalid level number, try again.");
+                }
+                break;
+
+            case "skill":
+                try {
+                    int skill = Integer.parseInt(message.substring(message.indexOf(' ')+1));
+                    if (skill > GameLogic.NIGHTMARE || skill < GameLogic.BABY) {throw new NumberFormatException();}
+                    else {
+                        sendToRCON("Changing skill to skill " + skill);
+                        GameLogic.difficulty = skill;
+                    }
+
+                } catch(NumberFormatException n) {
+                    sendToRCON("Unknown skill number, please try again.");
+                }
+                break;
+
+            case "statuses":
+                sendToRCON("Connected Players:");
+                for (Integer i : connected) {
+                    sendToRCON("Connection " + i + ": " + ips.get(i));
+                }
+
+                sendToRCON("Connected RCON:");
+                for (Integer i : rconConnected) {
+                    sendToRCON("Connection " + i + ": " + ips.get(i));
+                }
+
+                sendToRCON("Disconnected:");
+                for (Integer i : disconnected) {
+                    sendToRCON("Connection " + i + ": " + ips.get(i));
+                }
+                break;
+
+            case "packetinfo":
+                Date now = new Date();
+                long elapsedTime = now.getTime() - startTime.getTime();
+                double elapsedSeconds = elapsedTime / 1000f;
+                sendToRCON("Packets sent: " + packetsSent);
+                sendToRCON("Packets received: " + packetsReceived);
+                sendToRCON("Sent per second (avg): " + (packetsSent / elapsedSeconds));
+                sendToRCON("Received per second (avg): " + (packetsReceived / elapsedSeconds));
+                break;
+        }
+    }
+
+    private void sendToRCON(String send) {
+
+        Network.RCONMessage m = new Network.RCONMessage();
+        m.message = send;
+
+        for (Integer i : rconConnected) {
+            server.sendToTCP(i, m);
+            packetsSent++;
+        }
     }
 }

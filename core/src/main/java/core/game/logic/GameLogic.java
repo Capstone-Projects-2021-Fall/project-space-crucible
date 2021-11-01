@@ -1,7 +1,10 @@
 package core.game.logic;
 
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import core.game.entities.Entity;
@@ -10,6 +13,7 @@ import core.game.logic.tileactions.TileAction;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.server.Network;
+import core.server.SpaceServer;
 import core.wad.funcs.SoundFuncs;
 import net.mtrop.doom.WadEntry;
 import net.mtrop.doom.WadFile;
@@ -32,6 +36,7 @@ public class GameLogic {
     final public static ArrayList<TileAction> effectList = new ArrayList<>();
     public static LevelData currentLevel = null;
     public static Server server = null;
+    public static SpaceServer spaceServer = null;
     static boolean goingToNextLevel = false;
     static LevelData nextLevel = null;
     public static boolean switchingLevels = false;
@@ -57,6 +62,7 @@ public class GameLogic {
             Network.MIDIData midi = new Network.MIDIData();
             midi.midi = currentLevel.getMIDI();
             server.sendToAllTCP(midi);
+            spaceServer.packetsSent += server.getConnections().size();
         }
         gameTimer = new Timer();
         gameTimer.schedule( new TimerTask() {
@@ -74,6 +80,9 @@ public class GameLogic {
     }
 
     private static void gameTick() {
+
+        long startTime = new Date().getTime();
+
         //Update all existing entities first
         for (Entity e : GameLogic.entityList) {
             e.decrementTics();
@@ -97,22 +106,39 @@ public class GameLogic {
             //Send render data packet
             for (Connection c : server.getConnections()) {
                 RenderData renderData = new RenderData();
-                renderData.entityList = GameLogic.entityList;
-                renderData.tiles = GameLogic.currentLevel.getTiles();
-                renderData.playerPawn = getPlayer(c.getID());
-                server.sendToAllTCP(renderData);
+                renderData.entityList = entitiesInsideView(c);
+                renderData.playerPawn = getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()));
+                server.sendToTCP(c.getID(), renderData);
+                spaceServer.packetsSent++;
             }
         }
 
         if (!goingToNextLevel) {
+
+            long endTime = new Date().getTime();
+            long subtract = MathUtils.clamp(endTime - startTime, 0, Entity.TIC);
+
             gameTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     gameTick();
                 }
-            }, Entity.TIC);
+            }, Entity.TIC - subtract);
         } else {
             switchingLevels = true;
+            if (!isSinglePlayer) {
+                System.out.println("Size before: " + SpaceServer.idToPlayerNum.size());
+                SpaceServer.idToPlayerNum.removeIf(integer -> (!SpaceServer.connected.contains(integer) && integer != -1));
+                SpaceServer.clientData.idToPlayerNum = SpaceServer.idToPlayerNum;
+                server.sendToAllTCP(SpaceServer.clientData);
+                spaceServer.packetsSent += server.getConnections().size();
+                System.out.println("Size after: " + SpaceServer.idToPlayerNum.size());
+                Network.LevelChange lc = new Network.LevelChange();
+                System.out.println("Going to level " + nextLevel.getLevelnumber());
+                lc.number = nextLevel.getLevelnumber();
+                server.sendToAllTCP(lc);
+                spaceServer.packetsSent += server.getConnections().size();
+            }
             changeLevel(nextLevel);
         }
 
@@ -133,7 +159,7 @@ public class GameLogic {
 
                 System.out.println("Server IS " + (server == null ? "" : "NOT") +  " null.");
 
-                if (server != null && obj.tag > server.getConnections().size()) {
+                if (server != null && obj.tag > SpaceServer.connected.size()) {
                     System.out.println("Skipping player " + obj.tag + " because they don't exist.");
                     continue;
                 }
@@ -149,15 +175,17 @@ public class GameLogic {
         }
     }
 
-    public static void loadLevels(WadFile file, Array<WadFile> wads) {
+    public static void loadLevels(Array<WadFile> wads) {
 
-        for (WadEntry we : file) {
-            if (we.getName().startsWith("LEVEL")) {
-                int levelnum = Integer.parseInt(we.getName().substring(5));
-                try {
-                    levels.put(levelnum, new LevelData(file, levelnum, wads));
-                } catch (IOException e) {
-                    e.printStackTrace();
+        for (WadFile file : wads) {
+            for (WadEntry we : file) {
+                if (we.getName().startsWith("LEVEL")) {
+                    int levelnum = Integer.parseInt(we.getName().substring(5));
+                    try {
+                        levels.put(levelnum, new LevelData(file, levelnum));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -178,13 +206,15 @@ public class GameLogic {
             Network.MIDIData midi = new Network.MIDIData();
             midi.midi = level.getMIDI();
             server.sendToAllTCP(midi);
+            spaceServer.packetsSent += server.getConnections().size();
         }
         goingToNextLevel = false;
         switchingLevels = false;
         nextLevel = null;
         ticCounter = 0;
         loadEntities(currentLevel, false);
-        gameTimer.schedule( new TimerTask() {
+
+        gameTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 gameTick();
@@ -207,10 +237,33 @@ public class GameLogic {
         nextLevel = newLevelData;
     }
 
+    //check if the entity is inside the player's camera view
+    public static ArrayList<Entity> entitiesInsideView(Connection c) {
+        ArrayList<Entity> inside = new ArrayList<>();
+        Network.CameraData player = ((SpaceServer.PlayerConnection)c).cameraData;
+        int playerNum = SpaceServer.idToPlayerNum.indexOf(c.getID());
+        try {
+            Rectangle playerview = new Rectangle(player.camerapositon.x, player.camerapositon.y, player.width, player.hight);
+            for (Entity e : entityList) {
+                if (playerview.overlaps(e.getBounds())) {
+                    inside.add(e);
+                }
+            }
+
+            if (!inside.contains(getPlayer(playerNum))) {
+                inside.add(getPlayer(playerNum));
+            }
+        } catch(NullPointerException n) {
+            inside.add(getPlayer(playerNum));
+        }
+        return inside;
+    }
+
     public static void playServerSound(String name) {
         Network.SoundData soundData = new Network.SoundData();
         soundData.sound = name;
         server.sendToAllTCP(soundData);
+        spaceServer.packetsSent += server.getConnections().size();
     }
 }
 

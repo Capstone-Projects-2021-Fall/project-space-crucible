@@ -3,11 +3,13 @@ package core.gdx.wad.lwjgl3;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import core.gdx.wad.MyGDxTest;
+import core.wad.funcs.SoundFuncs;
 
 /** Launches the desktop (LWJGL) application. */
 public class LegacyLauncher {
 	public static void main(String[] args) {
 		createApplication();
+		SoundFuncs.closeSequencer();
 		System.exit(0);
 	}
 

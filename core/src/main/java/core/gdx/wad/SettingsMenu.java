@@ -18,6 +18,9 @@ public class SettingsMenu extends Window {
         this.myGDxTest=myGDxTest;
         this.settingsScreen=new SettingsScreen(myGDxTest);
 
+        Button addonsButton = new TextButton("Add-ons", skin);
+        add(addonsButton);
+        row();
         Button sfxButton = new TextButton("SFX", skin);
         add(sfxButton);
         row();
@@ -26,7 +29,15 @@ public class SettingsMenu extends Window {
         row();
         pack();
 
+        addonsButton.addListener(new ClickListener() {
 
+                 @Override
+                 public void clicked(InputEvent event, float x, float y) {
+                     super.clicked(event, x, y);
+                     stage.addActor(new AddonWindow("Add .WADs", skin));
+                 }
+             }
+        );
 
         sfxButton.addListener(new ClickListener() {
             @Override

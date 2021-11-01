@@ -79,23 +79,31 @@ public class CollisionLogic {
             }
 
             //Check for tiles
+            boolean foundTile = false;
             for(LevelTile t :GameLogic.currentLevel.getTiles()) {
 
-                //Don't waste time on non-solid tiles
-                if(t.solid) {
-                    Rectangle tileBounds
-                            = new Rectangle(t.pos.x * LevelTile.TILE_SIZE,
-                            t.pos.y * LevelTile.TILE_SIZE,
-                            LevelTile.TILE_SIZE, LevelTile.TILE_SIZE);
+                Rectangle tileBounds
+                        = new Rectangle(t.pos.x * LevelTile.TILE_SIZE,
+                        t.pos.y * LevelTile.TILE_SIZE,
+                        LevelTile.TILE_SIZE, LevelTile.TILE_SIZE);
 
-                    if(tileBounds.contains(xpos, ypos)) {
+                if(tileBounds.contains(xpos, ypos)) {
+                    foundTile = true;
+
+                    if (t.solid) {
                         if (attack) {
-                        GameLogic.newEntityQueue.addLast(
-                                new BulletPuff(new Entity.Position(xpos, ypos, 0)));
-                    }
+                            GameLogic.newEntityQueue.addLast(
+                                    new BulletPuff(new Entity.Position(xpos, ypos, 0)));
+                        }
                         return null;
                     }
+                    break;
                 }
+            }
+
+            if (!foundTile) {
+                System.out.println("Caught a would-be runaway hitscan. ;)");
+                return null;
             }
 
             xpos += distance.x;

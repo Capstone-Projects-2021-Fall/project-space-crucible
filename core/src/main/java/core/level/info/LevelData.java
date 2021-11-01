@@ -10,17 +10,13 @@ import java.util.Scanner;
 import java.util.logging.Level;
 
 public class LevelData {
-    private String name = "";
-    private String midi = "";
-    int levelnumber;
+    public String name = "";
+    public String midi = "";
+    public int levelnumber;
     private ArrayList<LevelTile> tiles = new ArrayList<>();
     private ArrayList<LevelObject> objects = new ArrayList<>();
-    private Array<WadFile> wads;
 
-    //New level from scratch
-    public LevelData(int levelnumber) {
-        name = "Level " + levelnumber;
-    }
+    public LevelData() {}
 
     //New level from scratch, with a name
     public LevelData(String name, int levelnumber) {
@@ -32,9 +28,8 @@ public class LevelData {
         return this.levelnumber;
     }
 
-    public LevelData(WadFile file, int levelnumber, Array<WadFile> wads) throws IOException {
+    public LevelData(WadFile file, int levelnumber) throws IOException {
         this.levelnumber = levelnumber;
-        this.wads = wads;
         String entry = "LEVEL" + levelnumber;
         String leveldata = "";
 
@@ -234,7 +229,7 @@ public class LevelData {
         }
 
         LevelTile.TilePosition pos = new LevelTile.TilePosition(xpos, ypos);
-        LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag, wads);
+        LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag);
         tiles.add(tile);
     }
 
