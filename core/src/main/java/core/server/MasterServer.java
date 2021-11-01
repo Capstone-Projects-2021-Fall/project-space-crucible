@@ -49,8 +49,10 @@ public class MasterServer implements Listener {
                     }
                     String lobbyCode = createRandomLobbyCode();
 
+                    String rconPass = createRandomLobbyCode();
+
                     ServerEntry entry = new ServerEntry(tcpPort,
-                            ((Network.CreateLobby) object).names, ((Network.CreateLobby) object).hashes);
+                            ((Network.CreateLobby) object).names, ((Network.CreateLobby) object).hashes, rconPass);
 
                     servers.put(lobbyCode, entry);
                     ports.put(lobbyCode, tcpPort);
@@ -58,6 +60,7 @@ public class MasterServer implements Listener {
                     Network.ServerDetails serverDetails = new Network.ServerDetails();
                     serverDetails.tcpPort = tcpPort;
                     serverDetails.lobbyCode = lobbyCode;
+                    serverDetails.rconPass = rconPass;
                     connection.sendTCP(serverDetails);
                 }
                 if(object instanceof Network.JoinLobby){
@@ -144,7 +147,13 @@ public class MasterServer implements Listener {
                         m.message = "OK";
                     } else {
 
-
+                        for (String s : servers.keySet()) {
+                            if (s.equals(code) && servers.get(s).rconPass.equals(pass)) {
+                                m.message = String.valueOf(servers.get(s).port);
+                                connection.sendTCP(m);
+                                return;
+                            }
+                        }
 
                         m.message = "Bad login";
                     }
@@ -198,11 +207,13 @@ public class MasterServer implements Listener {
         private int port;
         private ArrayList<String> files;
         private ArrayList<String> hashes;
+        private String rconPass;
 
-        public ServerEntry(int port, ArrayList<String> files, ArrayList<String> hashes) {
+        public ServerEntry(int port, ArrayList<String> files, ArrayList<String> hashes, String rconPass) {
             this.port = port;
             this.files = files;
             this.hashes = hashes;
+            this.rconPass = rconPass;
         }
 
         public int getPort() {
@@ -255,6 +266,7 @@ public class MasterServer implements Listener {
                     sendToRCON("Port: " + servers.get(code).port);
                     sendToRCON("Files: " + servers.get(code).files.toString());
                     sendToRCON("Hashes: " + servers.get(code).hashes.toString());
+                    sendToRCON("RCON Pass: " + servers.get(code).rconPass);
                 }
                 break;
         }

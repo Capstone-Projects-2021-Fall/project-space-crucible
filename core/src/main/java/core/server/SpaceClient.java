@@ -92,6 +92,12 @@ public class SpaceClient implements Listener {
                 else if (object instanceof ChatMessage) {
                     screen.addChatToWindow((ChatMessage) object);
                 }
+
+                else if (object instanceof PromptConnectionType) {
+                    CheckConnection cc = new CheckConnection();
+                    cc.type = ConnectionType.PLAYER;
+                    client.sendTCP(cc);
+                }
             }
             public void disconnected (Connection connection) {
 //                System.out.println("Client Disconnected: Closing the application!");

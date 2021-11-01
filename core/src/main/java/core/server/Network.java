@@ -18,6 +18,11 @@ import java.util.HashSet;
 //This class will store things common to both client and server
 public class Network {
 
+    public static enum ConnectionType {
+        PLAYER,
+        RCON
+    }
+
     //Ports for clients to listen on
     public static int udpPort = 27960, tcpPort = 27970;
 
@@ -43,6 +48,9 @@ public class Network {
         kryo.register(LevelInfo.class);
         kryo.register(RCONLogin.class);
         kryo.register(RCONMessage.class);
+        kryo.register(CheckConnection.class);
+        kryo.register(ConnectionType.class);
+        kryo.register(PromptConnectionType.class);
 
         //Level Classes
         kryo.register(LevelData.class);
@@ -134,6 +142,7 @@ public class Network {
     public static class ServerDetails{
         public int tcpPort;
         public String lobbyCode;
+        public String rconPass;
     }
     public static class ValidLobby{
         public boolean valid;
@@ -166,4 +175,8 @@ public class Network {
     public static class RCONMessage {
         public String message;
     }
+    public static class CheckConnection {
+        public ConnectionType type;
+    }
+    public static class PromptConnectionType{}
 }

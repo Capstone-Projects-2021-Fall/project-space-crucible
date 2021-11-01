@@ -18,6 +18,8 @@ import org.checkerframework.checker.units.qual.A;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SpaceServer implements Listener {
 
@@ -25,6 +27,8 @@ public class SpaceServer implements Listener {
     Server server;
     Network.ClientData clientData;
     public static HashSet<Integer> connected = new HashSet<>();
+    public static HashSet<Integer> rconConnected = new HashSet<>();
+    public static List<Integer> idToPlayerNum = new LinkedList<>();
 
     //Game loop
     Thread gameLoop = new Thread() {
@@ -60,11 +64,7 @@ public class SpaceServer implements Listener {
 
             //When the client connects to the server add a player entity to the game
             public void connected(Connection c){
-                System.out.println("Client connected to game server: " + c.getID());
-                connected.add(c.getID());
-                clientData.connected = connected;
-                System.out.println("Player connected " + connected.size());
-                server.sendToAllTCP(clientData);
+                server.sendToTCP(c.getID(), new Network.PromptConnectionType());
 
             }
             //When the client sends a packet to the server handle it
@@ -135,13 +135,31 @@ public class SpaceServer implements Listener {
                     GameLogic.levels.get(((Network.AddObject) packetData).levelNumber).getObjects()
                             .add(((Network.AddObject) packetData).levelObject);
                 }
+
+                else if (packetData instanceof Network.CheckConnection) {
+                    if (((Network.CheckConnection) packetData).type == Network.ConnectionType.PLAYER) {
+                        System.out.println("Client connected to game server: " + c.getID());
+                        connected.add(c.getID());
+                        idToPlayerNum.add(c.getID());
+                        clientData.connected = connected;
+                        System.out.println("Player connected " + connected.size());
+                        server.sendToAllTCP(clientData);
+                    } else if (((Network.CheckConnection) packetData).type == Network.ConnectionType.RCON) {
+                        rconConnected.add(c.getID());
+                    }
+                }
             }
             //This method will run when a client disconnects from the server, remove the character from the game
             public void disconnected(Connection c){
-                connected.remove(c.getID());
-                clientData.connected = connected;
-                server.sendToAllTCP(clientData);
-                System.out.println("Client disconnected from game server! " + c.getID());
+
+                if (connected.contains(c.getID())) {
+                    connected.remove(c.getID());
+                    clientData.connected = connected;
+                    server.sendToAllTCP(clientData);
+                    System.out.println("Client disconnected from game server! " + c.getID());
+                } else if (rconConnected.contains(c.getID())) {
+                    rconConnected.remove(c.getID());
+                }
             }
         });
         server.bind(tcpPort);

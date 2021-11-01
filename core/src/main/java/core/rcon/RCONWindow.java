@@ -120,10 +120,28 @@ public class RCONWindow extends Window {
                                 loggedIn = true;
                                 commandField.setDisabled(false);
                                 sendButton.setDisabled(false);
+                            } else {
+                                try {
+                                    int port = Integer.parseInt(((Network.RCONMessage) object).message);
+                                    client.close();
+                                    client.connect("localhost", port);
+
+                                    loggedIn = true;
+                                    commandField.setDisabled(false);
+                                    sendButton.setDisabled(false);
+
+
+                                } catch (NumberFormatException | IOException ignored){}
                             }
                         } else {
                             updateLog(((Network.RCONMessage) object).message);
                         }
+                    }
+
+                    else if (object instanceof Network.PromptConnectionType) {
+                        Network.CheckConnection cc = new Network.CheckConnection();
+                        cc.type = Network.ConnectionType.RCON;
+                        client.sendTCP(cc);
                     }
             }
         }));

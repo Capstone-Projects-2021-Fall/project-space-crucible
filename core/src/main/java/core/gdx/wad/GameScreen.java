@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -33,8 +34,6 @@ import core.wad.funcs.SoundFuncs;
 import core.server.Network.ClientData;
 import core.server.Network.ServerDetails;
 
-import java.awt.*;
-import java.util.Objects;
 
 public class GameScreen implements Screen {
 
@@ -68,7 +67,7 @@ public class GameScreen implements Screen {
     Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
     TextButton play = new TextButton("Start Game", uiSkin);
     public boolean startGame = false;
-    TextButton lobbyCode;
+    Label lobbyCode;
     boolean remove = false;
 
 
@@ -158,8 +157,11 @@ public class GameScreen implements Screen {
                     y -= 50;
                 }
                 if (serverDetails.lobbyCode != null && !remove) {
-                    lobbyCode = new TextButton("Lobby Code\n" + serverDetails.lobbyCode, uiSkin);
-                    lobbyCode.setSize(100, 60);
+                    if (playerNumber == 1) {
+                        lobbyCode = new Label("Lobby Code\n" + serverDetails.lobbyCode + "\nRCON Pass:\n" + serverDetails.rconPass, uiSkin);
+                    } else {
+                        lobbyCode = new Label("Lobby Code\n" + serverDetails.lobbyCode, uiSkin);
+                    }
                     lobbyStage.addActor(lobbyCode);
                     remove = true;
                 }
