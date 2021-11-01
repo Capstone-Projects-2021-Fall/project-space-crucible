@@ -45,7 +45,7 @@ public class GameScreen implements Screen {
     ServerDetails serverDetails = new ServerDetails();
     ChatWindow chatWindow;
 
-    int playerNumber = 1;
+    public int playerNumber = 0;
 
     //screen
     OrthographicCamera camera;
@@ -86,9 +86,11 @@ public class GameScreen implements Screen {
     public void show() {
         SoundFuncs.stopMIDI();
         if (isSinglePlayer) {
+            playerNumber = 1;
             gameLoop.start();
         } else {
-            playerNumber = client.getClient().getID();
+            playerNumber = clientData.idToPlayerNum.indexOf(client.getClient().getID());
+            System.out.println("I am player " + playerNumber);
         }
         if(!isSinglePlayer) {
             if (playerNumber == 1) {
@@ -149,8 +151,9 @@ public class GameScreen implements Screen {
                 lobbyStage.getBatch().draw(background, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
                 int x = 100;
                 int y = 400;
-                for (int element : clientData.connected) {
-                    String clientId = "Player " + element;
+                for (int element : clientData.idToPlayerNum) {
+                    if (element == -1) {continue;} //Skip dummy
+                    String clientId = "Player " + clientData.idToPlayerNum.indexOf(element);
                     TextButton player = new TextButton(clientId, uiSkin);
                     player.setBounds(x, y, 80, 50);
                     lobbyStage.addActor(player);
@@ -179,8 +182,6 @@ public class GameScreen implements Screen {
                 return;
             }
             getAngle(false);
-
-            System.out.println(GameLogic.currentLevel.name);
 
             if (GameLogic.currentLevel == null) {
                 batch.end();
@@ -329,10 +330,15 @@ public class GameScreen implements Screen {
     private PlayerPawn getPlayer(int tag) {
 
         for (Entity e : renderData.entityList) {
-            if (e instanceof PlayerPawn && e.getTag() == tag) {
-                return (PlayerPawn) e;
+            if (e instanceof PlayerPawn) {
+                System.out.println("Found player " + e.getTag());
+                if (e.getTag() == tag) {
+                    return (PlayerPawn) e;
+                }
             }
         }
+
+        System.out.println("Null player");
         return null;
     }
 

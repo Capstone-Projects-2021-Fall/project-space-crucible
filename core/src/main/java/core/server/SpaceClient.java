@@ -50,7 +50,6 @@ public class SpaceClient implements Listener {
                             sendLevels();
                             System.out.println("Done!");
                         }
-                        startMenu.myGDxTest.setScreen(screen);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -70,6 +69,10 @@ public class SpaceClient implements Listener {
                 //If server sends ClientData set the client data
                 else if(object instanceof ClientData){
                     screen.setClientData((ClientData) object);
+
+                    if (screen.playerNumber == 0 && ((ClientData) object).connected != null && ((ClientData) object).idToPlayerNum != null) {
+                        startMenu.myGDxTest.setScreen(screen);
+                    }
                 }
                 //If server sends SoundData, play sound matching the given name
                 else if (object instanceof SoundData) {

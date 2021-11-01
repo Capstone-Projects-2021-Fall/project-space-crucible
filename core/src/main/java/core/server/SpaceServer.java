@@ -44,6 +44,7 @@ public class SpaceServer implements Listener {
     };
 
     public SpaceServer(int tcpPort) throws IOException {
+        idToPlayerNum.add(-1);
         server = new Server(8192,8192) {
             protected Connection newConnection() {
                 /* By providing our own connection implementation, we can store per
@@ -75,9 +76,9 @@ public class SpaceServer implements Listener {
                 if(packetData instanceof InputData){
                     InputData input = (InputData) packetData;
                     connection.playerInput = input;
-                    if(GameLogic.getPlayer(c.getID()) != null) {
-                        GameLogic.getPlayer(c.getID()).controls = input.controls;
-                        GameLogic.getPlayer(c.getID()).getPos().angle = input.angle;
+                    if(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())) != null) {
+                        GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())).controls = input.controls;
+                        GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())).getPos().angle = input.angle;
                     }
                 }
                 else if(packetData instanceof StartGame){
@@ -142,7 +143,8 @@ public class SpaceServer implements Listener {
                         connected.add(c.getID());
                         idToPlayerNum.add(c.getID());
                         clientData.connected = connected;
-                        System.out.println("Player connected " + connected.size());
+                        clientData.idToPlayerNum = idToPlayerNum;
+                        System.out.println("Player connected " + idToPlayerNum.indexOf(c.getID()));
                         server.sendToAllTCP(clientData);
                     } else if (((Network.CheckConnection) packetData).type == Network.ConnectionType.RCON) {
                         rconConnected.add(c.getID());
@@ -155,6 +157,7 @@ public class SpaceServer implements Listener {
                 if (connected.contains(c.getID())) {
                     connected.remove(c.getID());
                     clientData.connected = connected;
+                    clientData.idToPlayerNum = idToPlayerNum;
                     server.sendToAllTCP(clientData);
                     System.out.println("Client disconnected from game server! " + c.getID());
                 } else if (rconConnected.contains(c.getID())) {

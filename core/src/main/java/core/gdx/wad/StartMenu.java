@@ -114,8 +114,8 @@ public class StartMenu extends Actor{
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
                         client.makeLobby();
-                        myGDxTest.setScreen(gameScreen);
-                        titleScreen.dispose();
+                        //myGDxTest.setScreen(gameScreen);
+                        //titleScreen.dispose();
                     }
                 });
                 joinLobby.addListener(new ClickListener(){
@@ -152,9 +152,8 @@ public class StartMenu extends Actor{
                                     }
                                 }
                                 System.out.println("Done waiting.");
-                                if(client.validLobby.valid) {
-                                    myGDxTest.setScreen(gameScreen);
-                                } else {
+                                if(!client.validLobby.valid) {
+                                    //myGDxTest.setScreen(gameScreen);
                                     System.out.println("Invalid.");
                                     titleScreen.showPopup(new PopupWindow("Invalid Lobby", skin,
                                             client.validLobby.reason));

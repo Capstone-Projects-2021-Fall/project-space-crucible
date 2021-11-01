@@ -14,6 +14,8 @@ import core.level.info.LevelTile;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 //This class will store things common to both client and server
 public class Network {
@@ -93,6 +95,7 @@ public class Network {
         kryo.register(Integer[].class);
         kryo.register(String[].class);
         kryo.register(java.util.HashSet.class);
+        kryo.register(java.util.LinkedList.class);
     }
 
     //Send this to the CLIENT
@@ -109,6 +112,7 @@ public class Network {
 //    Send this to the client
     public static class ClientData{
         public HashSet<Integer> connected;
+        public List<Integer> idToPlayerNum;
     }
 
     //Send this to the SERVER

@@ -87,6 +87,7 @@ public class GameLogic {
 
             //Check ticCounter because Concurrency error might occur if player shoots on first tic.
             if (e instanceof PlayerPawn) {
+                System.out.println("Moving player " + e.getTag());
                 ((PlayerPawn) e).movementUpdate();
             }
         }
@@ -105,7 +106,7 @@ public class GameLogic {
             for (Connection c : server.getConnections()) {
                 RenderData renderData = new RenderData();
                 renderData.entityList = entitiesInsideView(c);
-                renderData.playerPawn = getPlayer(c.getID());
+                renderData.playerPawn = getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()));
                 server.sendToTCP(c.getID(), renderData);
             }
         }
@@ -230,6 +231,7 @@ public class GameLogic {
     public static ArrayList<Entity> entitiesInsideView(Connection c) {
         ArrayList<Entity> inside = new ArrayList<>();
         Network.CameraData player = ((SpaceServer.PlayerConnection)c).cameraData;
+        int playerNum = SpaceServer.idToPlayerNum.indexOf(c.getID());
         try {
             Rectangle playerview = new Rectangle(player.camerapositon.x, player.camerapositon.y, player.width, player.hight);
             for (Entity e : entityList) {
@@ -238,11 +240,11 @@ public class GameLogic {
                 }
             }
 
-            if (!inside.contains(getPlayer(c.getID()))) {
-                inside.add(getPlayer(c.getID()));
+            if (!inside.contains(getPlayer(playerNum))) {
+                inside.add(getPlayer(playerNum));
             }
         } catch(NullPointerException n) {
-            inside.add(getPlayer(c.getID()));
+            inside.add(getPlayer(playerNum));
         }
         return inside;
     }
