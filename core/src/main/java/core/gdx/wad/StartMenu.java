@@ -35,30 +35,39 @@ public class StartMenu extends Actor{
         startStyle.over = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/start.png")));
         startStyle.up = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/startnobg.png")));
         Button startButton = new ImageButton(startStyle);
-        startButton.setBounds((int)((Gdx.graphics.getWidth()-200)/ 2),(int)((Gdx.graphics.getWidth() - 200)/ 2), 200, 60);
+        startButton.setBounds((int)((Gdx.graphics.getWidth()-200)/ 2),(int)((Gdx.graphics.getHeight())/ 2), 200, 50);
         stage.addActor(startButton);
 
         ImageButton.ImageButtonStyle coopStyle = new ImageButton.ImageButtonStyle();
         coopStyle.over = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/coop.png")));
         coopStyle.up = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/coopnobg.png")));
         Button coopButton = new ImageButton(coopStyle);
-        coopButton.setBounds((int)((Gdx.graphics.getWidth() - 150)/ 2), (int)((Gdx.graphics.getWidth() - 310)/ 2), 150, 60);
+        coopButton.setBounds((int)((Gdx.graphics.getWidth() - 150)/ 2), (int)((Gdx.graphics.getHeight() - 100)/ 2), 150, 50);
         stage.addActor(coopButton);
 
         ImageButton.ImageButtonStyle settingsStyle = new ImageButton.ImageButtonStyle();
         settingsStyle.over = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/settings.png")));
         settingsStyle.up = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/settingsnobg.png")));
         Button settingsButton = new ImageButton(settingsStyle);
-        settingsButton.setBounds((int)((Gdx.graphics.getWidth() - 200)/ 2), (int)((Gdx.graphics.getWidth() - 420)/ 2), 200, 60);
+        settingsButton.setBounds((int)((Gdx.graphics.getWidth() - 200)/ 2), (int)((Gdx.graphics.getHeight() - 200)/ 2), 200, 50);
         stage.addActor(settingsButton);
+
+        ImageButton.ImageButtonStyle levelEditorStyle = new ImageButton.ImageButtonStyle();
+        levelEditorStyle.up = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/leveleditornobg.png")));
+        levelEditorStyle.over = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/leveleditor.png")));
+        Button levelEditorButton = new ImageButton(levelEditorStyle);
+        levelEditorButton.setBounds((int)((Gdx.graphics.getWidth() - 250)/ 2), (int)((Gdx.graphics.getHeight() - 320)/ 2), 250, 60);
+        stage.addActor(levelEditorButton);
 
         ImageButton.ImageButtonStyle exitStyle = new ImageButton.ImageButtonStyle();
         exitStyle.up = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/exitnobg.png")));
         exitStyle.over = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/exit.png")));
         Button exitButton = new ImageButton(exitStyle);
-        exitButton.setBounds((int)((Gdx.graphics.getWidth() - 150)/ 2), (int)((Gdx.graphics.getWidth() - 530)/ 2), 150, 60);
+        exitButton.setBounds((int)((Gdx.graphics.getWidth() - 150)/ 2), (int)((Gdx.graphics.getHeight() - 420)/ 2), 150, 50);
         stage.addActor(exitButton);
-        Button buttons[] = {startButton, coopButton, settingsButton, exitButton};
+
+
+        Button buttons[] = {startButton, coopButton, settingsButton, exitButton, levelEditorButton};
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
