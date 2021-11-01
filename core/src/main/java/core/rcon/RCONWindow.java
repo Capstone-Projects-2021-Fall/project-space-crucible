@@ -25,6 +25,7 @@ public class RCONWindow extends Window {
     final private TextField commandField;
     final private TextButton sendButton;
     final private Table commandTable;
+    final public static String ip = "100.19.127.86";
     private boolean loggedIn = false;
 
     final private Client client = new Client(8192, 8192);
@@ -73,7 +74,7 @@ public class RCONWindow extends Window {
         client.start();
 
         try {
-            client.connect(5000, "localhost", Network.tcpPort);
+            client.connect(5000, ip, Network.tcpPort);
         } catch(IOException io) {System.exit(1);}
     }
 
@@ -98,7 +99,9 @@ public class RCONWindow extends Window {
             @Override
             public void connected(Connection connection) {
                 Listener.super.connected(connection);
-                stage.addActor(new LoginWindow("Login", getSkin(), client));
+                if (!loggedIn) {
+                    stage.addActor(new LoginWindow("Login", getSkin(), client));
+                }
             }
 
             @Override
@@ -124,7 +127,7 @@ public class RCONWindow extends Window {
                                 try {
                                     int port = Integer.parseInt(((Network.RCONMessage) object).message);
                                     client.close();
-                                    client.connect("localhost", port);
+                                    client.connect(ip, port);
 
                                     loggedIn = true;
                                     commandField.setDisabled(false);
