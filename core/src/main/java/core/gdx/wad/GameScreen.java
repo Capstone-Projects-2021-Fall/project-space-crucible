@@ -85,6 +85,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        addMiniMap();
         SoundFuncs.stopMIDI();
         if (isSinglePlayer) {
             gameLoop.start();
@@ -338,5 +339,15 @@ public class GameScreen implements Screen {
 
     public void addChatToWindow(Network.ChatMessage chat) {
         chatWindow.addToChatLog(chat.sender + ": " + chat.message);
+    }
+
+    public void addMiniMap(){
+        Rectangle mapTiles = new Rectangle(100,100);
+        mapTiles.setLocation(0, (int) camera.viewportHeight);
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(150/255f, 150/255f, 150/255f, 1);
+        shapeRenderer.rect(mapTiles.x, mapTiles.y, mapTiles.width, mapTiles.height);
+        shapeRenderer.end();
     }
 }
