@@ -83,6 +83,7 @@ public class Network {
         kryo.register(core.game.entities.Serpentipede.class);
         kryo.register(core.game.entities.BulletPuff.class);
         kryo.register(core.game.entities.Blood.class);
+        kryo.register(core.game.entities.Zombieman.class);
 
         //LibGDX classes
         kryo.register(Rectangle.class);
