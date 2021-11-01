@@ -66,6 +66,7 @@ public class Network {
         kryo.register(core.game.logic.EntityState.class);
 
         //State Actions
+        kryo.register(A_BulletAttack.class);
         kryo.register(A_Look.class);
         kryo.register(A_Projectile.class);
         kryo.register(A_MeleeAttack.class);
