@@ -45,7 +45,7 @@ public class MasterServer implements Listener {
                     }
                     if(tcpPort == 0) {
                         System.out.println("All the lobbies are taken");
-                        System.exit(0);
+                        return;
                     }
                     String lobbyCode = createRandomLobbyCode();
 
