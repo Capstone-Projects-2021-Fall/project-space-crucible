@@ -86,6 +86,7 @@ public class SpaceClient implements Listener {
                 }
                 //If server sends StartGame set the startGame value to it
                 else if(object instanceof StartGame){
+                    GameLogic.currentLevel = GameLogic.levels.get(((StartGame) object).levelnum);
                     screen.startGame = ((StartGame) object).startGame;
                 }
 

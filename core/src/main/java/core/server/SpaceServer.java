@@ -76,7 +76,8 @@ public class SpaceServer implements Listener {
                     System.out.println("Game started by host is true sending tcp");
                     StartGame start = new StartGame();
                     start.startGame = true;
-                    server.sendToAllTCP(start);
+                    start.levelnum = GameLogic.currentLevel.levelnumber;
+                    server.sendToTCP(c.getID(), start);
                     packetsSent += server.getConnections().size();
                 }
 
@@ -101,6 +102,7 @@ public class SpaceServer implements Listener {
                         System.out.println("Initializing server and starting game loop");
                         StartGame start = new StartGame();
                         start.startGame = true;
+                        start.levelnum = 1;
                         gameStartedByHost = true;
                         server.sendToAllTCP(start);
                         packetsSent += server.getConnections().size();
