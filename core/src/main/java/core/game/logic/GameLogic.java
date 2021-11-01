@@ -125,7 +125,9 @@ public class GameLogic {
         } else {
             switchingLevels = true;
             if (!isSinglePlayer) {
-                SpaceServer.idToPlayerNum.removeIf(integer -> !SpaceServer.connected.contains(integer));
+                System.out.println("Size before: " + SpaceServer.idToPlayerNum.size());
+                SpaceServer.idToPlayerNum.removeIf(integer -> (!SpaceServer.connected.contains(integer) && integer != -1));
+                System.out.println("Size after: " + SpaceServer.idToPlayerNum.size());
                 Network.LevelChange lc = new Network.LevelChange();
                 System.out.println("Going to level " + nextLevel.getLevelnumber());
                 lc.number = nextLevel.getLevelnumber();

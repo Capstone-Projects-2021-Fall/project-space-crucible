@@ -76,6 +76,7 @@ public class SpaceServer implements Listener {
                 if(packetData instanceof InputData){
                     InputData input = (InputData) packetData;
                     connection.playerInput = input;
+
                     if(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())) != null) {
                         GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())).controls = input.controls;
                         GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())).getPos().angle = input.angle;
