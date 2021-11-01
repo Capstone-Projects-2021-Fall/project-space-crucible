@@ -15,7 +15,7 @@ import java.io.IOException;
 public class SpaceClient implements Listener {
 
     Client client;
-    static String ip = "100.19.127.86";
+    static String ip = "localhost";//100.19.127.86
     GameScreen screen;
     public ValidLobby validLobby;
     StartMenu startMenu;

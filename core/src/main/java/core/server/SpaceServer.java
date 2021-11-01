@@ -27,6 +27,7 @@ public class SpaceServer implements Listener {
     public static HashSet<Integer> disconnected = new HashSet<>();
     public static List<Integer> idToPlayerNum = new LinkedList<>();
     public static HashMap<Integer, String> ips = new HashMap<>();
+    boolean gameStartedByHost = false;
 
     //Game loop
     Thread gameLoop = new Thread() {
@@ -65,6 +66,12 @@ public class SpaceServer implements Listener {
             public void connected(Connection c){
                 ips.put(c.getID(), c.getRemoteAddressTCP().getAddress().toString());
                 server.sendToTCP(c.getID(), new Network.PromptConnectionType());
+                if(gameStartedByHost){
+                    System.out.println("Game started by host is true sending tcp");
+                    StartGame start = new StartGame();
+                    start.startGame = true;
+                    server.sendToAllTCP(start);
+                }
 
             }
             //When the client sends a packet to the server handle it
@@ -86,6 +93,7 @@ public class SpaceServer implements Listener {
                         System.out.println("Initializing server and starting game loop");
                         StartGame start = new StartGame();
                         start.startGame = true;
+                        gameStartedByHost = true;
                         server.sendToAllTCP(start);
                         GameLogic.server = server;
                         GameLogic.currentLevel = GameLogic.levels.get(1);
