@@ -8,9 +8,6 @@ import core.game.logic.GameLogic;
 import core.gdx.wad.GameScreen;
 import core.gdx.wad.MyGDxTest;
 import core.gdx.wad.StartMenu;
-import core.level.info.LevelData;
-import core.level.info.LevelObject;
-import core.level.info.LevelTile;
 import core.server.Network.*;
 import core.wad.funcs.SoundFuncs;
 import java.io.IOException;
@@ -108,8 +105,6 @@ public class SpaceClient implements Listener {
                 }
             }
             public void disconnected (Connection connection) {
-//                System.out.println("Client Disconnected: Closing the application!");
-//                System.exit(0);
             }
         }));
 

@@ -1,8 +1,5 @@
 package core.server;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.Array;
-
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -13,14 +10,12 @@ import core.server.Network.InputData;
 import core.server.Network.StartGame;
 import core.wad.funcs.WadFuncs;
 
-import net.mtrop.doom.WadFile;
-import org.checkerframework.checker.units.qual.A;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class SpaceServer implements Listener {
 
@@ -82,8 +77,8 @@ public class SpaceServer implements Listener {
                     connection.playerInput = input;
 
                     if(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())) != null) {
-                        GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())).controls = input.controls;
-                        GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())).getPos().angle = input.angle;
+                        Objects.requireNonNull(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()))).controls = input.controls;
+                        Objects.requireNonNull(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()))).getPos().angle = input.angle;
                     }
                 }
                 else if(packetData instanceof StartGame){
@@ -222,7 +217,7 @@ public class SpaceServer implements Listener {
                     sendToRCON("Switching to level " + level);
 
                 } catch(NumberFormatException n) {
-                    sendToRCON("Invalid level number, try aain.");
+                    sendToRCON("Invalid level number, try again.");
                 }
                 break;
 

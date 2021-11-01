@@ -2,7 +2,6 @@ package core.server;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import core.game.entities.Entity;
@@ -14,7 +13,6 @@ import core.level.info.LevelTile;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 
 //This class will store things common to both client and server
@@ -26,7 +24,7 @@ public class Network {
     }
 
     //Ports for clients to listen on
-    public static int udpPort = 27960, tcpPort = 27970;
+    public static int tcpPort = 27970;
 
     public static void register(EndPoint endPoint){
         Kryo kryo = endPoint.getKryo();

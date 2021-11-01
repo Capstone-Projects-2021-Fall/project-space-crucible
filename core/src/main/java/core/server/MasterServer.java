@@ -20,7 +20,6 @@ public class MasterServer implements Listener {
     public ArrayList<Integer> availablePorts = new ArrayList<>();
     public HashSet<Integer> rconConnections = new HashSet<>();
     final private String CODE = "MASTER";
-    private String password;
 
     public MasterServer(int minPort, int maxPort, String password){
         server = new Server();
