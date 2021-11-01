@@ -76,9 +76,7 @@ public class SoundFuncs {
 
                     try {
                         join();
-                    } catch (InterruptedException | IndexOutOfBoundsException e) {
-                        e.printStackTrace();
-                    }
+                    } catch (InterruptedException | IndexOutOfBoundsException ignored) {}
                 }
             }.start();
         } else {

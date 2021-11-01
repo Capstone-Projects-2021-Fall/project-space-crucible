@@ -85,6 +85,20 @@ public class RCONWindow extends Window {
     }
 
     private void sendCommand() {
+
+        if (commandField.getText().equals("exit")) {
+            if (!loggedIn) {
+                System.exit(0);
+            } else {
+                client.close();
+                loggedIn = false;
+
+                try {
+                    client.connect(5000, ip, Network.tcpPort);
+                } catch(IOException io) {System.exit(1);}
+            }
+        }
+
         updateLog("Sent: " + commandField.getText());
 
         Network.RCONMessage command = new Network.RCONMessage();

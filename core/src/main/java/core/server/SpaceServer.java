@@ -17,6 +17,7 @@ import net.mtrop.doom.WadFile;
 import org.checkerframework.checker.units.qual.A;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +29,9 @@ public class SpaceServer implements Listener {
     Network.ClientData clientData;
     public static HashSet<Integer> connected = new HashSet<>();
     public static HashSet<Integer> rconConnected = new HashSet<>();
+    public static HashSet<Integer> disconnected = new HashSet<>();
     public static List<Integer> idToPlayerNum = new LinkedList<>();
+    public static HashMap<Integer, String> ips = new HashMap<>();
 
     //Game loop
     Thread gameLoop = new Thread() {
@@ -65,6 +68,7 @@ public class SpaceServer implements Listener {
 
             //When the client connects to the server add a player entity to the game
             public void connected(Connection c){
+                ips.put(c.getID(), c.getRemoteAddressTCP().getAddress().toString());
                 server.sendToTCP(c.getID(), new Network.PromptConnectionType());
 
             }
@@ -165,6 +169,7 @@ public class SpaceServer implements Listener {
             public void disconnected(Connection c){
 
                 if (connected.contains(c.getID())) {
+                    disconnected.add(c.getID());
                     connected.remove(c.getID());
                     clientData.connected = connected;
                     clientData.idToPlayerNum = idToPlayerNum;
@@ -233,15 +238,31 @@ public class SpaceServer implements Listener {
                 } catch(NumberFormatException n) {
                     sendToRCON("Unknown skill number, please try again.");
                 }
+
+            case "statuses":
+                sendToRCON("Connected Players:");
+                for (Integer i : connected) {
+                    sendToRCON("Connection " + i + ": " + ips.get(i));
+                }
+
+                sendToRCON("Connected RCON:");
+                for (Integer i : rconConnected) {
+                    sendToRCON("Connection " + i + ": " + ips.get(i));
+                }
+
+                sendToRCON("Disconnected:");
+                for (Integer i : disconnected) {
+                    sendToRCON("Connection " + i + ": " + ips.get(i));
+                }
         }
     }
 
     private void sendToRCON(String send) {
 
         Network.RCONMessage m = new Network.RCONMessage();
+        m.message = send;
 
         for (Integer i : rconConnected) {
-            m.message = send;
             server.sendToTCP(i, m);
         }
     }
