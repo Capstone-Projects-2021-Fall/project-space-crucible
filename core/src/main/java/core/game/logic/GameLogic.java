@@ -126,6 +126,8 @@ public class GameLogic {
             if (!isSinglePlayer) {
                 System.out.println("Size before: " + SpaceServer.idToPlayerNum.size());
                 SpaceServer.idToPlayerNum.removeIf(integer -> (!SpaceServer.connected.contains(integer) && integer != -1));
+                SpaceServer.clientData.idToPlayerNum = SpaceServer.idToPlayerNum;
+                server.sendToAllTCP(SpaceServer.clientData);
                 System.out.println("Size after: " + SpaceServer.idToPlayerNum.size());
                 Network.LevelChange lc = new Network.LevelChange();
                 System.out.println("Going to level " + nextLevel.getLevelnumber());
