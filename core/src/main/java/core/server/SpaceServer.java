@@ -100,6 +100,10 @@ public class SpaceServer implements Listener {
 
                 else if(packetData instanceof Network.ChatMessage) {
                     server.sendToAllTCP(packetData);
+                    sendToRCON(
+                            ((Network.ChatMessage) packetData).sender + ": "
+                            + ((Network.ChatMessage) packetData).message
+                    );
                 }
 
 
@@ -150,6 +154,11 @@ public class SpaceServer implements Listener {
                         rconConnected.add(c.getID());
                     }
                 }
+
+                //RCON Command
+                else if (packetData instanceof Network.RCONMessage) {
+                    handleRCON(((Network.RCONMessage) packetData).message);
+                }
             }
             //This method will run when a client disconnects from the server, remove the character from the game
             public void disconnected(Connection c){
@@ -173,5 +182,66 @@ public class SpaceServer implements Listener {
     public static class PlayerConnection extends Connection{
         public InputData playerInput;
         public Network.CameraData cameraData;
+    }
+
+    private void handleRCON(String message) {
+
+        String command = message.contains(" ") ? message.substring(0, message.indexOf(' ')) : message;
+
+        switch(command) {
+
+            case "ping":
+                sendToRCON("ping");
+                break;
+
+            case "say":
+                if (!message.contains(" ")) {return;}
+                String chat = message.substring(message.indexOf("say ") + 4);
+                sendToRCON("Server: " + chat);
+                Network.ChatMessage cm = new Network.ChatMessage();
+                cm.sender = "Server";
+                cm.message = chat;
+                server.sendToAllTCP(cm);
+                break;
+
+            case "level":
+                try {
+                    int level  = Integer.parseInt(message.substring(message.indexOf(' ')+1));
+
+                    if (!GameLogic.levels.containsKey(level)) {
+                        sendToRCON("Server has no level " + level);
+                        return;
+                    }
+                    GameLogic.readyChangeLevel(GameLogic.levels.get(level));
+                    sendToRCON("Switching to level " + level);
+
+                } catch(NumberFormatException n) {
+                    sendToRCON("Invalid level number, try aain.");
+                }
+                break;
+
+            case "skill":
+                try {
+                    int skill = Integer.parseInt(message.substring(message.indexOf(' ')+1));
+                    if (skill > GameLogic.NIGHTMARE || skill < GameLogic.BABY) {throw new NumberFormatException();}
+                    else {
+                        sendToRCON("Changing skill to skill " + skill);
+                        GameLogic.difficulty = skill;
+                    }
+
+                } catch(NumberFormatException n) {
+                    sendToRCON("Unknown skill number, please try again.");
+                }
+        }
+    }
+
+    private void sendToRCON(String send) {
+
+        Network.RCONMessage m = new Network.RCONMessage();
+
+        for (Integer i : rconConnected) {
+            m.message = send;
+            server.sendToTCP(i, m);
+        }
     }
 }

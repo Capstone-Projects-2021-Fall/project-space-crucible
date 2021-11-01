@@ -68,7 +68,7 @@ public class RenderFuncs {
                 }
                 batch.draw(spriteMap.get(e.getCurrentSprite()).getFrame(e.getCurrentFrame(), e.getPos().angle), e.getPos().x, e.getPos().y);
             }
-        } catch (ConcurrentModificationException ignored) {}
+        } catch (ConcurrentModificationException | NullPointerException ignored) {}
     }
 
     public static void gridDraw(OrthographicCamera camera, ShapeRenderer sr) {

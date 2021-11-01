@@ -160,7 +160,7 @@ public class GameScreen implements Screen {
                     y -= 50;
                 }
                 if (serverDetails.lobbyCode != null && !remove) {
-                    if (playerNumber == 1) {
+                    if (client.getClient().getID() == 1) {
                         lobbyCode = new Label("Lobby Code\n" + serverDetails.lobbyCode + "\nRCON Pass:\n" + serverDetails.rconPass, uiSkin);
                     } else {
                         lobbyCode = new Label("Lobby Code\n" + serverDetails.lobbyCode, uiSkin);
@@ -352,5 +352,9 @@ public class GameScreen implements Screen {
 
     public void addChatToWindow(Network.ChatMessage chat) {
         chatWindow.addToChatLog(chat.sender + ": " + chat.message);
+    }
+
+    public void updatePlayerNumber() {
+        playerNumber = clientData.idToPlayerNum.indexOf(client.getClient().getID());
     }
 }

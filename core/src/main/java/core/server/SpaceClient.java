@@ -70,7 +70,9 @@ public class SpaceClient implements Listener {
                 else if(object instanceof ClientData){
                     screen.setClientData((ClientData) object);
 
-                    if (screen.playerNumber == 0 && ((ClientData) object).connected != null && ((ClientData) object).idToPlayerNum != null) {
+                    //If playernumber is changed and data is not null
+                    if (screen.playerNumber == 0
+                            && ((ClientData) object).connected != null && ((ClientData) object).idToPlayerNum != null) {
                         startMenu.myGDxTest.setScreen(screen);
                     }
                 }
@@ -88,7 +90,10 @@ public class SpaceClient implements Listener {
                 //If server sends StartGame set the startGame value to it
                 else if(object instanceof StartGame){
                     screen.startGame = ((StartGame) object).startGame;
-                } else if (object instanceof LevelChange) {
+                }
+
+                else if (object instanceof LevelChange) {
+                    screen.updatePlayerNumber();
                     GameLogic.currentLevel = GameLogic.levels.get(((LevelChange) object).number);
                 }
 
