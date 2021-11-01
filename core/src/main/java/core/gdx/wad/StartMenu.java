@@ -58,16 +58,17 @@ public class StartMenu extends Actor{
         Button exitButton = new ImageButton(exitStyle);
         exitButton.setBounds((int)((Gdx.graphics.getWidth() - 150)/ 2), (int)((Gdx.graphics.getWidth() - 530)/ 2), 150, 60);
         stage.addActor(exitButton);
-
+        Button buttons[] = {startButton, coopButton, settingsButton, exitButton};
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 System.out.println("Start\n");
-                ChooseDifficultyWindow window = new ChooseDifficultyWindow("Choose Difficulty:", skin, titleScreen, startMenu);
+                ChooseDifficultyWindow window = new ChooseDifficultyWindow("Choose Difficulty:", skin, titleScreen, startMenu, buttons);
                 window.setBounds((int)((Gdx.graphics.getWidth() - 150)/ 2), (int)((Gdx.graphics.getHeight() - 110) / 2), 150, 110);
+                for(Button button : buttons)
+                    button.setVisible(false);
                 stage.addActor(window);
-                startMenu.setVisible(false);
             }
         });
         coopButton.addListener(new ClickListener() {
@@ -102,11 +103,13 @@ public class StartMenu extends Actor{
                 lobbyMenu.add(back);
                 lobbyMenu.setBounds((int)((Gdx.graphics.getWidth() - 250)/ 2), (int)((Gdx.graphics.getHeight() - 150) / 2), 250, 150);
                 stage.addActor(lobbyMenu);
-                startMenu.setVisible(false);
+                for(Button button : buttons)
+                    button.setVisible(false);
                 back.addListener(new ClickListener(){
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
-                        startMenu.setVisible(true);
+                        for(Button button : buttons)
+                            button.setVisible(true);
                         lobbyMenu.remove();
                     }
                 });
