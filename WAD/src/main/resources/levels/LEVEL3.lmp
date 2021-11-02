@@ -1,0 +1,1142 @@
+name = THE THIRD IMPACT
+midi = D_DOOM2
+floortile {
+xpos = -1
+ypos = 1
+solid = true
+graphic = GREEN1
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = 1
+solid = true
+graphic = GREEN1
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = 1
+solid = true
+graphic = GREEN1
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = 1
+solid = true
+graphic = GREEN1
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = 1
+solid = true
+graphic = GREEN1
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = 1
+solid = true
+graphic = GREEN1
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = 0
+solid = true
+graphic = GREEN2
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = 0
+solid = true
+graphic = GREEN2
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = 0
+solid = true
+graphic = GREEN2
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = 0
+solid = true
+graphic = GREEN2
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = 0
+solid = true
+graphic = GREEN2
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = 0
+solid = true
+graphic = GREEN2
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -1
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -1
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -1
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -1
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -1
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -1
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -2
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -2
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -2
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -2
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -2
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -2
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -3
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -3
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -3
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -3
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -3
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -3
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -4
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -4
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -4
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -4
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -4
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -4
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -5
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -5
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -5
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -5
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -5
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -5
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -6
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -6
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -6
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -6
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -6
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -6
+solid = false
+graphic = FLAT5
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -1
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -3
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -4
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -5
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -6
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -6
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -5
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -4
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -3
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -1
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -7
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -7
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -7
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -7
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -7
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -7
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -7
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -7
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+object {
+type = 0
+xpos = -165.0
+ypos = -81.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 1
+}
+
+object {
+type = 0
+xpos = -82.0
+ypos = -68.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 2
+}
+
+object {
+type = 0
+xpos = 24.0
+ypos = -81.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 3
+}
+
+object {
+type = 0
+xpos = -152.0
+ypos = -175.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 5
+}
+
+object {
+type = 0
+xpos = -69.0
+ypos = -175.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 6
+}
+
+object {
+type = 0
+xpos = 9.0
+ypos = -175.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 7
+}
+
+object {
+type = 0
+xpos = -162.0
+ypos = -268.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 9
+}
+
+object {
+type = 0
+xpos = -77.0
+ypos = -266.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 10
+}
+
+object {
+type = 0
+xpos = 2.0
+ypos = -265.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 11
+}
+
+object {
+type = 0
+xpos = -164.0
+ypos = -355.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 13
+}
+
+object {
+type = 0
+xpos = -74.0
+ypos = -357.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 14
+}
+
+object {
+type = 0
+xpos = 32.0
+ypos = -364.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 15
+}
+
+object {
+type = 0
+xpos = 117.0
+ypos = -78.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 4
+}
+
+object {
+type = 0
+xpos = 121.0
+ypos = -192.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 8
+}
+
+object {
+type = 0
+xpos = 114.0
+ypos = -362.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 16
+}
+
+object {
+type = 0
+xpos = 92.0
+ypos = -264.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 12
+}
+
