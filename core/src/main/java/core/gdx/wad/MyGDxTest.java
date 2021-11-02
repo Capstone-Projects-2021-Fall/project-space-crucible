@@ -74,6 +74,9 @@ public class MyGDxTest extends Game {
             GameLogic.loadLevels(wads);
             WadFuncs.loadSprites(wads);
             WadFuncs.loadTextures(wads);
+            WadFuncs.TITLESCREEN = WadFuncs.getTexture(wads, "TITLESCR");
+            WadFuncs.SETTINGSSCREEN = WadFuncs.getTexture(wads, "BLANKSCR");
+            WadFuncs.LOBBYSCREEN = WadFuncs.getTexture(wads, "LOBBYSCR");
             SoundFuncs.playSound("pistol/shoot");
 
             //When we add add-on support we will also close other files inside of 'wads"
