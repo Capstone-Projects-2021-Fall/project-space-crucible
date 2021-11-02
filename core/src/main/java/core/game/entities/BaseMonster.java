@@ -37,8 +37,17 @@ public abstract class BaseMonster extends Entity {
         currentState = GameLogic.stateList.get(state);
         remainingStateTics = currentState.getDuration();
 
-        if (currentState.getAction() != null) {currentState.getAction().run(this,
-                target > -1 ? GameLogic.entityList.get(target) : null);}
+        try {
+            if (currentState.getAction() != null) {
+                currentState.getAction().run(this,
+                        target > -1 ? GameLogic.entityList.get(target) : null);
+            }
+        } catch (IndexOutOfBoundsException ignored){
+
+            if (currentState.getAction() != null) {
+                currentState.getAction().run(this, null);
+            }
+        }
     }
 
     @Override

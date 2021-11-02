@@ -131,7 +131,7 @@ public class GameScreen implements Screen {
             camera.position.set(GameLogic.getPlayer(1).getPos().x + GameLogic.getPlayer(1).getWidth() / (float) 2.0,
                     GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight() / (float) 2.0, 0);
             camera.update();
-            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
+            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
             font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
             font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
@@ -191,7 +191,7 @@ public class GameScreen implements Screen {
                 camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
                 camera.update();
-                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
+                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
                 RenderFuncs.entityDraw(batch, renderData.entityList);
 
                 font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
@@ -210,7 +210,7 @@ public class GameScreen implements Screen {
                 camera.position.set(getPlayer(1).getPos().x + getPlayer(1).getWidth() / (float) 2.0,
                         getPlayer(1).getPos().y + getPlayer(1).getHeight() / (float) 2.0, 0);
                 camera.update();
-                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
+                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
                 RenderFuncs.entityDraw(batch, renderData.entityList);
 
             }

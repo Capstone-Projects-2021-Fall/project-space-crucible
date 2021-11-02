@@ -54,7 +54,7 @@ public abstract class Entity {
     protected EntityState currentState;
     protected int remainingStateTics;
     private Integer[] states;
-    private int tag;
+    protected int tag;
     private Rectangle bound;
     public long flags;
 

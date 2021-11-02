@@ -1,4 +1,4 @@
-package editor.gdx.windows;
+package editor.windows;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
 import core.wad.funcs.WadFuncs;
-import editor.gdx.launch.EditorScreen;
+import editor.launch.EditorScreen;
 import net.mtrop.doom.WadFile;
 
 import java.io.File;

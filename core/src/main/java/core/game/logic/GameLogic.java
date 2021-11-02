@@ -36,6 +36,7 @@ public class GameLogic {
     final public static ArrayList<TileAction> effectList = new ArrayList<>();
     public static LevelData currentLevel = null;
     public static Server server = null;
+    public static SpaceServer spaceServer = null;
     static boolean goingToNextLevel = false;
     static LevelData nextLevel = null;
     public static boolean switchingLevels = false;
@@ -61,6 +62,7 @@ public class GameLogic {
             Network.MIDIData midi = new Network.MIDIData();
             midi.midi = currentLevel.getMIDI();
             server.sendToAllTCP(midi);
+            spaceServer.packetsSent += server.getConnections().size();
         }
         gameTimer = new Timer();
         gameTimer.schedule( new TimerTask() {
@@ -107,6 +109,7 @@ public class GameLogic {
                 renderData.entityList = entitiesInsideView(c);
                 renderData.playerPawn = getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()));
                 server.sendToTCP(c.getID(), renderData);
+                spaceServer.packetsSent++;
             }
         }
 
@@ -128,11 +131,13 @@ public class GameLogic {
                 SpaceServer.idToPlayerNum.removeIf(integer -> (!SpaceServer.connected.contains(integer) && integer != -1));
                 SpaceServer.clientData.idToPlayerNum = SpaceServer.idToPlayerNum;
                 server.sendToAllTCP(SpaceServer.clientData);
+                spaceServer.packetsSent += server.getConnections().size();
                 System.out.println("Size after: " + SpaceServer.idToPlayerNum.size());
                 Network.LevelChange lc = new Network.LevelChange();
                 System.out.println("Going to level " + nextLevel.getLevelnumber());
                 lc.number = nextLevel.getLevelnumber();
                 server.sendToAllTCP(lc);
+                spaceServer.packetsSent += server.getConnections().size();
             }
             changeLevel(nextLevel);
         }
@@ -201,6 +206,7 @@ public class GameLogic {
             Network.MIDIData midi = new Network.MIDIData();
             midi.midi = level.getMIDI();
             server.sendToAllTCP(midi);
+            spaceServer.packetsSent += server.getConnections().size();
         }
         goingToNextLevel = false;
         switchingLevels = false;
@@ -257,6 +263,7 @@ public class GameLogic {
         Network.SoundData soundData = new Network.SoundData();
         soundData.sound = name;
         server.sendToAllTCP(soundData);
+        spaceServer.packetsSent += server.getConnections().size();
     }
 }
 

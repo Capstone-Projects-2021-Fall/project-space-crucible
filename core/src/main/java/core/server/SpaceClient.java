@@ -15,7 +15,7 @@ import java.io.IOException;
 public class SpaceClient implements Listener {
 
     Client client;
-    static String ip = "localhost";//100.19.127.86
+    static String ip = "100.19.127.86";
     GameScreen screen;
     public ValidLobby validLobby;
     StartMenu startMenu;
@@ -86,6 +86,7 @@ public class SpaceClient implements Listener {
                 }
                 //If server sends StartGame set the startGame value to it
                 else if(object instanceof StartGame){
+                    GameLogic.currentLevel = GameLogic.levels.get(((StartGame) object).levelnum);
                     screen.startGame = ((StartGame) object).startGame;
                 }
 

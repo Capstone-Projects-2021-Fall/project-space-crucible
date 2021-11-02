@@ -154,6 +154,7 @@ public class Network {
     }
     public static class StartGame{
         public boolean startGame;
+        public int levelnum;
     }
     public static class ChatMessage {
         public String sender;

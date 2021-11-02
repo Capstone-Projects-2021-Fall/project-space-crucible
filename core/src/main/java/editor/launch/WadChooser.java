@@ -1,7 +1,6 @@
-package editor.gdx.launch;
+package editor.launch;
 
 import javax.swing.*;
-
 import java.io.File;
 import java.io.IOException;
 
