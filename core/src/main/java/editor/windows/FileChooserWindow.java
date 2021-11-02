@@ -11,6 +11,7 @@ import net.mtrop.doom.WadFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Objects;
 
 public class FileChooserWindow extends Window {
@@ -252,7 +253,7 @@ public class FileChooserWindow extends Window {
         listMembers.addAll(directoryNames);
 
         for (File f : Objects.requireNonNull(currentDir.listFiles())) {
-            if (f.getName().toLowerCase().endsWith(".wad")
+            if (f.getName().toLowerCase().endsWith(".wad") || f.getName().toLowerCase().endsWith(".lmp")
                     && !(f.getName().charAt(0) == '.' && hideFiles.isChecked())) {
                 fileNames.add(f.getName());
             }
@@ -300,20 +301,42 @@ public class FileChooserWindow extends Window {
 
     private void chooseFile() {
 
-        try {
-            editor.file = new WadFile(chosenFile);
-            editor.resources.clear();
+        if (chosenFile.getName().toLowerCase().endsWith(".wad")) {
+            try {
+                editor.file = new WadFile(chosenFile);
+                editor.resources.clear();
 
-            for(String s : resources) {
-                editor.resources.add(new WadFile(s));
+                for (String s : resources) {
+                    editor.resources.add(new WadFile(s));
+                }
+
+                editor.resources.add(editor.file);
+                GameLogic.entityList.clear();
+                WadFuncs.loadTextures(editor.resources);
+                close();
+            } catch (IOException e) {
+                System.out.println("Invalid file...");
+            }
+        } else {
+
+            if (resources.isEmpty()) {
+                System.out.println("Must have at least once resource to load a standalone level.");
+                return;
             }
 
-            editor.resources.add(editor.file);
+            editor.soloFile = chosenFile;
+
+            for (String s : resources) {
+                try {
+                    editor.resources.add(new WadFile(s));
+                } catch (IOException e) {
+                    System.out.println("Invalid file...");
+                }
+            }
+
             GameLogic.entityList.clear();
             WadFuncs.loadTextures(editor.resources);
             close();
-        } catch (IOException e) {
-            System.out.println("Invalid file...");
         }
     }
 
@@ -328,6 +351,10 @@ public class FileChooserWindow extends Window {
     private void close() {
         remove();
         editor.windowOpen = false;
-        editor.openLevelPrompt();
+        if (editor.file != null && editor.soloFile == null) {
+            editor.openLevelPrompt();
+        } else {
+            editor.loadLevel();
+        }
     }
 }

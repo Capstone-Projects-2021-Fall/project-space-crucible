@@ -32,7 +32,9 @@ import editor.windows.LevelChooserWindow;
 import editor.write.LevelWriter;
 import net.mtrop.doom.WadFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class EditorScreen implements Screen {
 
@@ -43,6 +45,7 @@ public class EditorScreen implements Screen {
     private Vector3 mouseInWorld = new Vector3();
 
     public WadFile file = null;
+    public File soloFile = null;
     public Array<WadFile> resources = new Array<>();
     public LevelData level;
     public Integer levelnum;
@@ -135,6 +138,11 @@ public class EditorScreen implements Screen {
             selecting = false;
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
+            fullbright = !fullbright;
+        }
+
+
         //Check for right click
         if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
             rightClick(x, y, tilex, tiley);
@@ -148,10 +156,6 @@ public class EditorScreen implements Screen {
         //Check for left clip
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             leftClick(x, y, tilex, tiley);
-        }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
-            fullbright = !fullbright;
         }
 
         //If not holding left click, stop dragging or selecting
@@ -189,14 +193,18 @@ public class EditorScreen implements Screen {
             if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
 
                 try {
-                    LevelWriter.write(file, level, levelnum);
+                    if (file == null && soloFile != null) {
+                        LevelWriter.write(soloFile, level);
+                    } else {
+                        LevelWriter.write(file, level, levelnum);
+                    }
                 } catch (IOException e) {
                     System.out.println("Could not save!");
                     e.printStackTrace();
                 }
 
             } else if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-                if (isShiftPressed()) {
+                if (isShiftPressed() && file != null) {
                     level = null;
                     openLevelPrompt();
                     windowOpen = true;
@@ -299,7 +307,7 @@ public class EditorScreen implements Screen {
 
     public void openLevelPrompt() {
 
-        if (checkForNoTextures()) {
+        if (resources.isEmpty() || checkForNoTextures()) {
             System.out.println("No textures found. Try loading a resource file.");
             openFilePrompt();
             return;
@@ -337,7 +345,14 @@ public class EditorScreen implements Screen {
 
     public void loadLevel() {
         GameLogic.entityList.clear();
-        level = WadFuncs.loadLevel(file, levelnum);
+
+        if (file == null && soloFile != null) {
+            try {
+                level = new LevelData(Files.readString(soloFile.toPath()));
+            } catch(IOException io) {System.out.println("Can't read that.");}
+        } else {
+            level = WadFuncs.loadLevel(file, levelnum);
+        }
 
         WadFuncs.loadSprites(resources);
         WadFuncs.loadStates();

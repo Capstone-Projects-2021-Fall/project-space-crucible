@@ -160,7 +160,7 @@ floortile {
 xpos = -3
 ypos = -1
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -173,7 +173,7 @@ floortile {
 xpos = -2
 ypos = -1
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -186,7 +186,7 @@ floortile {
 xpos = -1
 ypos = -1
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -199,7 +199,7 @@ floortile {
 xpos = 0
 ypos = -1
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -212,7 +212,7 @@ floortile {
 xpos = 1
 ypos = -1
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -225,7 +225,7 @@ floortile {
 xpos = 2
 ypos = -1
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -238,7 +238,7 @@ floortile {
 xpos = 2
 ypos = -2
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -251,7 +251,7 @@ floortile {
 xpos = 1
 ypos = -2
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -264,7 +264,7 @@ floortile {
 xpos = 0
 ypos = -2
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -277,7 +277,7 @@ floortile {
 xpos = -2
 ypos = -2
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -290,7 +290,7 @@ floortile {
 xpos = -3
 ypos = -2
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -303,7 +303,7 @@ floortile {
 xpos = -1
 ypos = -2
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -316,7 +316,7 @@ floortile {
 xpos = -3
 ypos = -3
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -329,7 +329,7 @@ floortile {
 xpos = -2
 ypos = -3
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -342,7 +342,7 @@ floortile {
 xpos = -1
 ypos = -3
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -355,7 +355,7 @@ floortile {
 xpos = 1
 ypos = -3
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -368,7 +368,7 @@ floortile {
 xpos = 2
 ypos = -3
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -381,7 +381,7 @@ floortile {
 xpos = 0
 ypos = -3
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -394,7 +394,7 @@ floortile {
 xpos = 0
 ypos = -4
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -407,7 +407,7 @@ floortile {
 xpos = -3
 ypos = -4
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -420,7 +420,7 @@ floortile {
 xpos = -2
 ypos = -4
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -433,7 +433,7 @@ floortile {
 xpos = -1
 ypos = -4
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -446,7 +446,7 @@ floortile {
 xpos = 1
 ypos = -4
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -459,7 +459,7 @@ floortile {
 xpos = 2
 ypos = -4
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -472,7 +472,7 @@ floortile {
 xpos = 2
 ypos = -5
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -485,7 +485,7 @@ floortile {
 xpos = 1
 ypos = -5
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -498,7 +498,7 @@ floortile {
 xpos = 0
 ypos = -5
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -511,7 +511,7 @@ floortile {
 xpos = -1
 ypos = -5
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -524,7 +524,7 @@ floortile {
 xpos = -2
 ypos = -5
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -537,7 +537,7 @@ floortile {
 xpos = -3
 ypos = -5
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -550,7 +550,7 @@ floortile {
 xpos = -3
 ypos = -6
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -563,7 +563,7 @@ floortile {
 xpos = -2
 ypos = -6
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -576,7 +576,7 @@ floortile {
 xpos = -1
 ypos = -6
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -589,7 +589,7 @@ floortile {
 xpos = 1
 ypos = -6
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -602,7 +602,7 @@ floortile {
 xpos = 2
 ypos = -6
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
@@ -615,7 +615,7 @@ floortile {
 xpos = 0
 ypos = -6
 solid = false
-graphic = FLAT5
+graphic = FLAT14
 light = 255
 effect = 0
 arg1 = 0
