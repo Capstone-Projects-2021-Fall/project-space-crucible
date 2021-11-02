@@ -10,12 +10,15 @@ import core.gdx.wad.MyGDxTest;
 import core.gdx.wad.StartMenu;
 import core.server.Network.*;
 import core.wad.funcs.SoundFuncs;
+
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class SpaceClient implements Listener {
 
     Client client;
-    static String ip = "localhost";//100.19.127.86
+    static String ip = "100.19.127.86";//100.19.127.86
     GameScreen screen;
     public ValidLobby validLobby;
     StartMenu startMenu;
@@ -103,6 +106,19 @@ public class SpaceClient implements Listener {
                     cc.type = ConnectionType.PLAYER;
                     client.sendTCP(cc);
                 }
+                else if(object instanceof WadFile){
+                    int length = ((byte[])object).length;
+                    try {
+                        File file = new File("../../../../../assets/" + ((WadFile) object).levelFileName);
+                        file.createNewFile();
+                        Files.write(file.toPath(), ((WadFile) object).levelFile);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("received " + length);
+
+                }
             }
             public void disconnected (Connection connection) {
             }
@@ -122,6 +138,7 @@ public class SpaceClient implements Listener {
         CreateLobby createLobby = new CreateLobby();
         createLobby.names = MyGDxTest.addonList;
         createLobby.hashes = MyGDxTest.addonHashes;
+        createLobby.levelFile = MyGDxTest.addonFiles;
         client.sendTCP(createLobby);
     }
     public void sendLobbyCode(String lCode){

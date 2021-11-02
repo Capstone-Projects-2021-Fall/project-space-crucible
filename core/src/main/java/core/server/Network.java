@@ -51,6 +51,7 @@ public class Network {
         kryo.register(CheckConnection.class);
         kryo.register(ConnectionType.class);
         kryo.register(PromptConnectionType.class);
+        kryo.register(WadFile.class);
 
         //Level Classes
         kryo.register(LevelData.class);
@@ -96,6 +97,8 @@ public class Network {
         kryo.register(String[].class);
         kryo.register(java.util.HashSet.class);
         kryo.register(java.util.LinkedList.class);
+        kryo.register(byte[].class);
+
     }
 
     //Send this to the CLIENT
@@ -137,6 +140,7 @@ public class Network {
     public static class CreateLobby{
         public ArrayList<String> names;
         public ArrayList<String> hashes;
+        public ArrayList<byte[]> levelFile;
     }
     public static class JoinLobby{
         public String lobbyCode;
@@ -183,4 +187,9 @@ public class Network {
         public ConnectionType type;
     }
     public static class PromptConnectionType{}
+
+    public static class WadFile{
+        public byte[] levelFile;
+        public String levelFileName;
+    }
 }

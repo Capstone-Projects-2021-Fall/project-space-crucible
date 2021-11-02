@@ -2,27 +2,23 @@ package core.gdx.wad;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
-import org.checkerframework.checker.units.qual.A;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.ArrayList;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class MyGDxTest extends Game {
 
     public TitleScreen titleScreen;
-    public GameScreen gameScreen;
     public SettingsScreen settingsScreen;
     public static ArrayList<String> addonPaths = new ArrayList<>();
     public static ArrayList<String> addonList = new ArrayList<>();
+    public static ArrayList<byte[]> addonFiles;
     public static ArrayList<String> addonHashes = new ArrayList<>();
 
     //This is the thread that runs the Game Logic. It is separate from the rendering code.
