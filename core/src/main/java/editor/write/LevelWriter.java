@@ -1,10 +1,9 @@
-package editor.gdx.write;
+package editor.write;
 
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.level.info.LevelTile;
 import net.mtrop.doom.WadFile;
-import net.mtrop.doom.object.TextObject;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

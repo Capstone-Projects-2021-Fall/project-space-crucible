@@ -1,17 +1,17 @@
-package editor.gdx.windows;
+package editor.windows;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import core.game.logic.GameLogic;
 import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
-import editor.gdx.launch.EditorScreen;
-import editor.gdx.windows.actors.NumberField;
+import editor.launch.EditorScreen;
+import editor.windows.actors.NumberField;
 import net.mtrop.doom.WadFile;
 
 public class EditTileWindow extends Window {

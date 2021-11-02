@@ -3,7 +3,6 @@ package core.gdx.wad.lwjgl3;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import core.rcon.RCON;
-import editor.gdx.launch.LevelEditor;
 
 public class RCONLauncher {
 
