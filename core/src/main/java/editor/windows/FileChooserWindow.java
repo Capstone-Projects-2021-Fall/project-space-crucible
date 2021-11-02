@@ -42,15 +42,20 @@ public class FileChooserWindow extends Window {
         private TextField name;
         private TextButton okButton;
         private TextButton cancelButton;
+        private SelectBox<String> type;
 
         public FileNamerWindow(Skin skin, File currentDir, FileChooserWindow parent) {
             super("Name new file:", skin);
             this.currentDir = currentDir;
             this.parent = parent;
             setModal(true);
+
+            type = new SelectBox<>(skin);
+            type.setItems(".wad", ".lmp");
+
             name = new TextField("newwad", skin);
             add(name);
-            add(new Label(".wad", skin));
+            add(type);
             row();
             okButton = new TextButton("OK", skin);
 
@@ -60,7 +65,7 @@ public class FileChooserWindow extends Window {
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
 
-                    File newFile = new File(currentDir.getAbsolutePath() + "/" + name.getText() + ".wad");
+                    File newFile = new File(currentDir.getAbsolutePath() + "/" + name.getText() + type.getSelected());
 
                     if (newFile.exists()) {
                         System.out.println("That file already exists.");
@@ -69,7 +74,10 @@ public class FileChooserWindow extends Window {
 
                     try {
                         newFile.createNewFile();
-                        WadFile.createWadFile(newFile);
+
+                        if (type.getSelected().equals(".wad")) {
+                            WadFile.createWadFile(newFile);
+                        }
                     } catch (IOException e) {
                         System.out.println("Could not create file " + newFile.getAbsolutePath());
                     }
