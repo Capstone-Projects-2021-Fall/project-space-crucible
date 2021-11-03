@@ -35,7 +35,7 @@ public class TitleScreen implements Screen {
             camera = new OrthographicCamera();
             camera.setToOrtho(false, 1920, 1080);
             batch = new SpriteBatch();
-            texture = WadFuncs.getTexture(file, "TITLESCR"); //title screen
+            texture = WadFuncs.TITLESCREEN; //title screen
             texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             file.close();
             Actor startMenuActor = new StartMenu("", skin, this, stage, game);

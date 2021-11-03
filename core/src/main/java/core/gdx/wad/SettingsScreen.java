@@ -31,7 +31,7 @@ public class SettingsScreen implements Screen {
             camera = new OrthographicCamera();
             camera.setToOrtho(false, 1920, 1080);
             batch = new SpriteBatch();
-            texture = WadFuncs.getTexture(file, "BLANKSCR");
+            texture = WadFuncs.SETTINGSSCREEN;
             texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             this.myGDxTest=myGDxTest;
 
