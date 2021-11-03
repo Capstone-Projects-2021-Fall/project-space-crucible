@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
+import core.wad.funcs.EntityFuncs;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
@@ -77,6 +78,12 @@ public class MyGDxTest extends Game {
             WadFuncs.TITLESCREEN = WadFuncs.getTexture(wads, "TITLESCR");
             WadFuncs.SETTINGSSCREEN = WadFuncs.getTexture(wads, "BLANKSCR");
             WadFuncs.LOBBYSCREEN = WadFuncs.getTexture(wads, "LOBBYSCR");
+
+            //Load prepare all Entity and level logic, open game screen and initiate game loop.
+            WadFuncs.loadLevelEffects();
+            WadFuncs.loadStates();
+            WadFuncs.setEntityTypes();
+
             SoundFuncs.playSound("pistol/shoot");
 
             //When we add add-on support we will also close other files inside of 'wads"
@@ -84,11 +91,9 @@ public class MyGDxTest extends Game {
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
+        } catch (EntityFuncs.ParseException ex) {
+            System.out.println("Error parsing ENTITIES on Line " + EntityFuncs.getLine());
+            System.exit(1);
         }
-
-        //Load prepare all Entity and level logic, open game screen and initiate game loop.
-        WadFuncs.loadLevelEffects();
-        WadFuncs.loadStates();
-        WadFuncs.setEntityTypes();
     }
 }
