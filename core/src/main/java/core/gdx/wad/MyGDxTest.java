@@ -14,6 +14,7 @@ import org.checkerframework.checker.units.qual.A;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -84,15 +85,22 @@ public class MyGDxTest extends Game {
             WadFuncs.loadStates();
             WadFuncs.setEntityTypes();
 
+            wads.forEach(w -> {
+                if (w.contains("ENTITIES")) {
+                    try {
+                        EntityFuncs.loadEntityClasses(w.getTextData("ENTITIES", Charset.defaultCharset()));
+                    } catch (IOException | EntityFuncs.ParseException e) {
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
+                }});
+
             SoundFuncs.playSound("pistol/shoot");
 
             //When we add add-on support we will also close other files inside of 'wads"
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(1);
-        } catch (EntityFuncs.ParseException ex) {
-            System.out.println("Error parsing ENTITIES on Line " + EntityFuncs.getLine());
             System.exit(1);
         }
     }

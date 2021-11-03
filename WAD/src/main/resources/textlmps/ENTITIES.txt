@@ -140,10 +140,10 @@ Entity Zombieman : BaseMonster 3 {
         Width 32
         Height 56
         +SOLID
-        SeeSound "worm/see"
-        PainSound "worm/pain"
-        DieSound "worm/die"
-        ActiveSound "worm/active"
+        SeeSound "zombieman/see"
+        PainSound "zombieman/pain"
+        DieSound "zombieman/die"
+        ActiveSound "zombieman/active"
     }
     States {
         Spawn:
