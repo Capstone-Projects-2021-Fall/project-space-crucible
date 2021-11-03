@@ -29,7 +29,7 @@ public abstract class Projectile extends Entity {
     public void decrementTics() {
         super.decrementTics();
 
-        if (currentState.getIndex() >= getStates()[DIE]) {return;}
+        if (currentStateIndex >= getStates()[DIE]) {return;}
 
         float checkPosX = (float) (getPos().x + getSpeed() * Math.cos(Math.toRadians(getPos().angle)));
         float checkPosY = (float) (getPos().y + getSpeed() * Math.sin(Math.toRadians(getPos().angle)));

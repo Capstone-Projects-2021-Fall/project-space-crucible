@@ -52,18 +52,12 @@ public abstract class Entity {
     private int width;
     private int height;
     protected EntityState currentState;
+    protected int currentStateIndex;
     protected int remainingStateTics;
     private Integer[] states;
     protected int tag;
     private Rectangle bound;
     public long flags;
-
-
-
-    //Used for collision detection to determine where the monster should go next.
-    //Upon colliding in one way, the monster changes movement and moves the opposite way until there is no obstacle
-    public boolean hitx = false;
-    public boolean hity = false;
 
     public Entity(){}
 
@@ -130,6 +124,7 @@ public abstract class Entity {
         }
 
         currentState = GameLogic.stateList.get(state);
+        currentStateIndex = state;
         remainingStateTics = currentState.getDuration();
 
         if (currentState.getAction() != null) {currentState.getAction().run(this, null);}
@@ -138,7 +133,7 @@ public abstract class Entity {
     //Damage this Entity. Set painstate if non-lethal, deathstate if lethal.
     public void takeDamage(Entity cause, int damage) {
 
-        if (currentState.getIndex() > getStates()[DIE]) {return;}
+        if (currentStateIndex >= getStates()[DIE]) {return;}
 
         health -= damage;
 

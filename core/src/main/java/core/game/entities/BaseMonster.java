@@ -35,6 +35,7 @@ public abstract class BaseMonster extends Entity {
     @Override
     public void setState(Integer state) {
         currentState = GameLogic.stateList.get(state);
+        currentStateIndex = state;
         remainingStateTics = currentState.getDuration();
 
         try {
