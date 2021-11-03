@@ -51,7 +51,7 @@ public class MasterServer implements Listener {
                     String rconPass = createRandomLobbyCode();
 
                     ServerEntry entry = new ServerEntry(tcpPort,
-                            ((Network.CreateLobby) object).names, ((Network.CreateLobby) object).hashes, rconPass, ((Network.CreateLobby) object).levelFile);
+                            ((Network.CreateLobby) object).names, ((Network.CreateLobby) object).hashes, rconPass);
 
                     servers.put(lobbyCode, entry);
                     ports.put(lobbyCode, tcpPort);
@@ -87,6 +87,7 @@ public class MasterServer implements Listener {
                         }
 
                         if (serverEntry.getFiles().size() != ((Network.JoinLobby) object).names.size()) {
+                            /*
                             for (int i = 0; i < serverEntry.getFiles().size(); i++) {
                                 Network.WadFile wadFile = new Network.WadFile();
                                 wadFile.levelFile = serverEntry.getLevelFile().get(i);
@@ -94,11 +95,12 @@ public class MasterServer implements Listener {
                                 connection.sendTCP(wadFile);
                                 System.out.println("Sending the level wad file");
                             }
-//                            validLobby.valid = false;
-//                            validLobby.reason = "Lobby requires these WADS:\n" + serverEntry.getFiles().toString();
-//                            connection.sendTCP(validLobby);
-//                            System.out.println("No bueno. 2");
-//                            return;
+                            */
+                            validLobby.valid = false;
+                            validLobby.reason = "Lobby requires these WADS:\n" + serverEntry.getFiles().toString();
+                            connection.sendTCP(validLobby);
+                            System.out.println("No bueno. 2");
+                            return;
                         }
 
                         for (int i = 0; i < serverEntry.getFiles().size(); i++) {
@@ -214,14 +216,12 @@ public class MasterServer implements Listener {
         private ArrayList<String> files;
         private ArrayList<String> hashes;
         private String rconPass;
-        private ArrayList<byte[]> levelFile;
 
-        public ServerEntry(int port, ArrayList<String> files, ArrayList<String> hashes, String rconPass, ArrayList<byte[]> levelFile) {
+        public ServerEntry(int port, ArrayList<String> files, ArrayList<String> hashes, String rconPass) {
             this.port = port;
             this.files = files;
             this.hashes = hashes;
             this.rconPass = rconPass;
-            this.levelFile = levelFile;
         }
 
         public int getPort() {
@@ -235,8 +235,6 @@ public class MasterServer implements Listener {
         public ArrayList<String> getHashes() {
             return hashes;
         }
-
-        public ArrayList<byte[]> getLevelFile() { return levelFile; }
     }
 
     //Handle RCON commands

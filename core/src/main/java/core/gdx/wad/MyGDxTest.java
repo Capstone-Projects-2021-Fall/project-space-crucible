@@ -8,6 +8,7 @@ import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -16,9 +17,7 @@ public class MyGDxTest extends Game {
 
     public TitleScreen titleScreen;
     public SettingsScreen settingsScreen;
-    public static ArrayList<String> addonPaths = new ArrayList<>();
-    public static ArrayList<String> addonList = new ArrayList<>();
-    public static ArrayList<byte[]> addonFiles;
+    public static ArrayList<File> addons = new ArrayList<>();
     public static ArrayList<String> addonHashes = new ArrayList<>();
 
     //This is the thread that runs the Game Logic. It is separate from the rendering code.
@@ -56,13 +55,13 @@ public class MyGDxTest extends Game {
             Array<WadFile> wads = new Array<>();
             wads.add(file);
 
-            for (String s : addonPaths) {
+            for (File f : addons) {
 
-                System.out.println(s.substring(s.lastIndexOf("/")+1));
+                System.out.println(f.getName());
 
                 try {
-                    wads.add(new WadFile(s));
-                } catch (IOException e) {System.out.println("Wad " + s + " not found.");}
+                    wads.add(new WadFile(f));
+                } catch (IOException e) {System.out.println("Wad " + f.getAbsolutePath() + " not found.");}
             }
 
             SoundFuncs.loadMIDIs(wads);

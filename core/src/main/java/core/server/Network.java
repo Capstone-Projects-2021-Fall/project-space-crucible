@@ -140,7 +140,6 @@ public class Network {
     public static class CreateLobby{
         public ArrayList<String> names;
         public ArrayList<String> hashes;
-        public ArrayList<byte[]> levelFile;
     }
     public static class JoinLobby{
         public String lobbyCode;

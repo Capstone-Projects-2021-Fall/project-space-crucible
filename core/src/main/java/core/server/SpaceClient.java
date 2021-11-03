@@ -14,6 +14,7 @@ import core.wad.funcs.SoundFuncs;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 
 public class SpaceClient implements Listener {
 
@@ -137,15 +138,16 @@ public class SpaceClient implements Listener {
 
     public void makeLobby(){
         CreateLobby createLobby = new CreateLobby();
-        createLobby.names = MyGDxTest.addonList;
+        createLobby.names = new ArrayList<>();
+        MyGDxTest.addons.forEach(f -> createLobby.names.add(f.getName()));
         createLobby.hashes = MyGDxTest.addonHashes;
-        createLobby.levelFile = MyGDxTest.addonFiles;
         client.sendTCP(createLobby);
     }
     public void sendLobbyCode(String lCode){
         Network.JoinLobby joinLobby = new Network.JoinLobby();
         joinLobby.lobbyCode = lCode;
-        joinLobby.names = MyGDxTest.addonList;
+        joinLobby.names = new ArrayList<>();
+        MyGDxTest.addons.forEach(f -> joinLobby.names.add(f.getName()));
         joinLobby.hashes = MyGDxTest.addonHashes;
         client.sendTCP(joinLobby);
     }
