@@ -19,6 +19,10 @@ import java.io.*;
 
 public class WadFuncs {
 
+    public static Texture TITLESCREEN;
+    public static Texture SETTINGSSCREEN;
+    public static Texture LOBBYSCREEN;
+
     //Gets output from WAD graphics and turns it into input for Pixmap
     public static Pixmap lumpToPixmap(WadFile file, String name) {
         //PNGPicture is a type defined by Doomstruct

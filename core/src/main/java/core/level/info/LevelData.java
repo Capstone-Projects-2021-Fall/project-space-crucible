@@ -1,13 +1,11 @@
 package core.level.info;
 
-import com.badlogic.gdx.utils.Array;
 import net.mtrop.doom.WadFile;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
 
 public class LevelData {
     public String name = "";
@@ -24,6 +22,15 @@ public class LevelData {
         this.levelnumber = levelnumber;
     }
 
+    public LevelData(String readString) {
+        try {
+            readLevelData(readString);
+        } catch (IOException e) {
+            System.out.println("Could not read file!");
+            e.printStackTrace();
+        }
+    }
+
     public int getLevelnumber() {
         return this.levelnumber;
     }
@@ -35,11 +42,14 @@ public class LevelData {
 
         try {
             leveldata = file.getTextData(entry, Charset.defaultCharset());
+            readLevelData(leveldata);
         } catch (IOException e) {
             System.out.println("Could not read entry \"" + entry + "\" from " + file.getFileName() + "!");
             e.printStackTrace();
         }
+    }
 
+    private void readLevelData(String leveldata) throws IOException {
         Scanner stringReader = new Scanner(leveldata);
 
         while (stringReader.hasNextLine()) {
@@ -50,7 +60,7 @@ public class LevelData {
             } else if (line.startsWith("midi")) {
                 this.midi = line.substring(line.indexOf("= ") + 2);
             } else if (line.equals("floortile {")) {
-                readTile(stringReader, file);
+                readTile(stringReader);
             } else if (line.equals("object {")) {
                 readObject(stringReader);
             } else if (!line.isEmpty()){
@@ -161,7 +171,7 @@ public class LevelData {
     }
 
     //Reads a map tile from level data
-    private void readTile(Scanner stringReader, WadFile file) throws IOException {
+    private void readTile(Scanner stringReader) throws IOException {
 
         int xpos = 0, ypos = 0;
         boolean solid = false;

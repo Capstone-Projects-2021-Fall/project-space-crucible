@@ -33,6 +33,7 @@ import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
 import core.server.Network.ClientData;
 import core.server.Network.ServerDetails;
+import core.wad.funcs.WadFuncs;
 
 
 public class GameScreen implements Screen {
@@ -63,7 +64,6 @@ public class GameScreen implements Screen {
     //graphics
     SpriteBatch batch;
     Stage lobbyStage;
-    Texture background = new Texture("spaceBackground.png");
     Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
     TextButton play = new TextButton("Start Game", uiSkin);
     public boolean startGame = false;
@@ -148,7 +148,7 @@ public class GameScreen implements Screen {
             if (!startGame) {
                 lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
                 lobbyStage.getBatch().begin();
-                lobbyStage.getBatch().draw(background, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
+                lobbyStage.getBatch().draw(WadFuncs.LOBBYSCREEN, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
                 int x = 100;
                 int y = 400;
                 for (int element : clientData.idToPlayerNum) {
