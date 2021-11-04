@@ -374,6 +374,7 @@ public class EditorScreen implements Screen {
                 RenderFuncs.spriteMap.put(s.getSprite(), new GameSprite(resources, s.getSprite()));
             }
         });
+        GameLogic.loadEntities(level, true);
     }
 
     public void loadNewLevel(String name, Integer level) {
