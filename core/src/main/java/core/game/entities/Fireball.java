@@ -17,7 +17,7 @@ public class Fireball extends Projectile {
     public Fireball(){}
 
     public Fireball(Position pos, Entity owner) {
-        super(pos, SPEED, WIDTH, HEIGHT,
+        super("Fireball", pos, SPEED, WIDTH, HEIGHT,
                 new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, owner, DAMAGE,
                 0);
     }

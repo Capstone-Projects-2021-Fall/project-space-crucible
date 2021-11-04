@@ -1,18 +1,10 @@
 package core.game.entities;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import core.game.logic.CollisionLogic;
 import core.game.logic.EntityState;
 import core.game.logic.GameLogic;
-import core.wad.funcs.GameSprite;
-import net.mtrop.doom.WadFile;
-
-import java.nio.channels.FileLock;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public abstract class Entity {
 
@@ -62,7 +54,7 @@ public abstract class Entity {
     public Entity(){}
 
     //Like sprites, each state is only stored once in a global ArrayList, which is memory-efficient.
-    public Entity (int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags) {
+    public Entity (String name, int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags) {
         this.health = health;
         this.pos = pos;
         this.speed = speed;

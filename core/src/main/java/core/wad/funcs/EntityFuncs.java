@@ -2,8 +2,12 @@ package core.wad.funcs;
 
 import core.game.entities.BaseMonster;
 import core.game.entities.Entity;
-import core.game.entities.actions.StateAction;
+import core.game.entities.Fireball;
+import core.game.entities.actions.*;
+import core.game.logic.EntityState;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -12,6 +16,7 @@ public class EntityFuncs {
     private static int line = 0;
     private static Scanner stringReader;
     private static String currentLine;
+    private static LinkedList<EntityState> testList = new LinkedList<>();
 
     public static void loadEntityClasses(String rawData) throws ParseException {
         stringReader = new Scanner(rawData);
@@ -208,13 +213,11 @@ public class EntityFuncs {
     private static Integer[] getStates(StringTokenizer st) throws ParseException {
         Integer[] states = {-1, -1, -1, -1, -1, -1};
         Boolean[] isState = {false, false, false, false, false, false};
+        int lastStateIndex = -1;
         String[] defaultStates = {"Spawn", "See", "Melee", "Missile", "Pain", "Death"};
-        int lastStateLabel = -1;
         String[] keyWords = {"loop", "stop", "goto"};
 
-        System.out.println("Getting states:");
         do {
-            System.out.println("Line " + line + ":\t" + currentLine);
             st = new StringTokenizer(currentLine, DELIMS);
 
             String firstToken = st.nextToken();
@@ -223,7 +226,7 @@ public class EntityFuncs {
             int stateIndex = isKeyWord(firstToken, defaultStates);
             if (stateIndex > -1) {
                 isState[stateIndex] = true;
-                lastStateLabel = stateIndex;
+                lastStateIndex = stateIndex;
                 continue;
             }
 
@@ -232,12 +235,18 @@ public class EntityFuncs {
             if (keyWordIndex > -1) {
                 switch (keyWords[keyWordIndex]) {
                     case "loop":
+                        testList.getLast().setNextState(states[lastStateIndex]);
                         break;
 
                     case "stop":
+                        testList.getLast().setNextState(-1);
                         break;
 
                     case "goto":
+                        try {
+                            String next = st.nextToken();
+                            testList.getLast().setNextState(states[isKeyWord(next, defaultStates)]);
+                        } catch (Exception e) {throw new ParseException();}
                         break;
 
                     default:
@@ -255,8 +264,24 @@ public class EntityFuncs {
             //If there's any more, there should be a code pointer.
             if (st.hasMoreTokens()) {
                 if (!currentLine.contains("A_")) {throw new ParseException();}
-                System.out.println(currentLine.substring(currentLine.indexOf("A_")));
+                String actionDef = currentLine.substring(currentLine.indexOf("A_"));
+                System.out.println(actionDef);
+                action = readAction(actionDef);
                 nextLine();
+            }
+
+            //You can define multiple frames with the same duration, sprite, and action on one line
+            for (int i = 0; i < frames.length(); i++) {
+                testList.add(new EntityState(firstToken, frames.charAt(i), duration,
+                        testList.size()+1, action));
+
+                //If it's under any state labels, set those states to this one.
+                for (int j = 0; i < isState.length; i++) {
+                    if (isState[j]) {
+                        states[j] = testList.size();
+                        isState[j] = false;
+                    }
+                }
             }
 
         }while (!checkBracket(st, true));
@@ -270,5 +295,66 @@ public class EntityFuncs {
             if (string.equals(keyWords[i])) return i;
         }
         return -1;
+    }
+
+    private static StateAction readAction(String actionDef) throws ParseException {
+        StateAction ret = null;
+        try {
+            StringTokenizer actionST = new StringTokenizer(actionDef, " ,()\"");
+            String action = actionST.nextToken();
+
+            switch (action) {
+                case "A_BulletAttack":
+                    int bulletdamage = Integer.parseInt(actionST.nextToken());
+                    float angle = Float.parseFloat(actionST.nextToken());
+                    String sound = actionST.nextToken();
+                    ret = new A_BulletAttack(bulletdamage, angle, sound);
+                    break;
+
+                case "A_Chase":
+                    ret = new A_Chase();
+                    break;
+
+                case "A_FaceTarget":
+                    ret = new A_FaceTarget();
+                    break;
+
+                case "A_Fall":
+                    ret = new A_Fall();
+                    break;
+
+                case "A_Look":
+                    ret = new A_Look();
+                    break;
+
+                case "A_MeleeAttack":
+                    int meleedamage = Integer.parseInt(actionST.nextToken());
+                    ret = new A_MeleeAttack(meleedamage);
+                    break;
+
+                case "A_Pain":
+                    ret = new A_Pain();
+                    break;
+
+                case "A_PrintMessage":
+                    String message = actionST.nextToken();
+                    ret = new A_PrintMessage(message);
+                    break;
+
+                case "A_Projectile":
+                    ret = new A_Projectile(Fireball.class);
+                    break;
+
+                case "A_Scream":
+                    ret = new A_Scream();
+                    break;
+
+                default:
+                    throw new ParseException();
+
+            }
+        } catch (Exception e) {throw new ParseException();}
+
+        return ret;
     }
 }

@@ -20,6 +20,7 @@ public class EntityState {
         this.duration = duration;
         this.nextState = nextState;
         this.action = action;
+        System.out.println(this);
     }
 
     public String getSprite() {return spriteName;}
@@ -35,6 +36,11 @@ public class EntityState {
     public Integer getNextState() {
         return nextState;
     }
+    public void setNextState(int next) {nextState = next;}
 
     public StateAction getAction() {return action;}
+
+    public String toString() {
+        return spriteName + " " + frame + " " + duration + action.getClass().getSimpleName() + "\tNext: " + nextState;
+    }
 }

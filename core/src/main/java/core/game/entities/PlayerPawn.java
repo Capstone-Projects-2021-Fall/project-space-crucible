@@ -7,7 +7,6 @@ import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
-import core.server.SpaceServer;
 import core.wad.funcs.SoundFuncs;
 
 public class PlayerPawn extends Entity {
@@ -35,9 +34,9 @@ public class PlayerPawn extends Entity {
     public PlayerPawn(){}
 
     public PlayerPawn(Position pos, int tag) {
-        super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
-                new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag,
-                SOLID);
+        super("PlayerPawn", HEALTH, pos, SPEED, WIDTH,
+                HEIGHT, new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE},
+                tag, SOLID);
     }
 
     public void movementUpdate() {

@@ -22,7 +22,7 @@ public class Worm extends BaseMonster {
     public Worm(){}
 
     public Worm(Position pos, int tag) {
-        super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
+        super("Worm", HEALTH, pos, SPEED, WIDTH, HEIGHT,
                 new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, tag, SOLID,
                 new String[]{seeSound, painSound, dieSound, activeSound});
     }

@@ -11,8 +11,8 @@ public abstract class Projectile extends Entity {
     public Projectile(){}
 
     //Projectiles have no health or tag.
-    public Projectile(Position pos, int speed, int width, int height, Integer[] states, Entity owner, int damage, long flags) {
-        super(-1, pos, speed, width, height, states, -1, flags);
+    public Projectile(String name, Position pos, int speed, int width, int height, Integer[] states, Entity owner, int damage, long flags) {
+        super(name, -1, pos, speed, width, height, states, -1, flags);
         this.owner = owner;
         this.damage = damage;
     }

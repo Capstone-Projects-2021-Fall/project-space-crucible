@@ -17,7 +17,7 @@ public class Blood extends Entity {
     public Blood(){}
 
     public Blood(Position pos) {
-        super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
-                new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, 0, 0);
+        super("Blood", HEALTH, pos, SPEED, WIDTH,
+                HEIGHT, new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, 0, 0);
     }
 }

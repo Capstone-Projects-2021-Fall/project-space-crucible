@@ -1,7 +1,5 @@
 package core.game.entities;
 
-import core.game.entities.Entity;
-
 public class BulletPuff extends Entity {
 
     final public static int HEALTH = -1;
@@ -19,7 +17,7 @@ public class BulletPuff extends Entity {
     public BulletPuff(){}
 
     public BulletPuff(Position pos) {
-        super(HEALTH, pos, SPEED, WIDTH, HEIGHT,
-                new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, 0, 0);
+        super("BulletPuff", HEALTH, pos, SPEED, WIDTH,
+                HEIGHT, new Integer[]{IDLESTATE, WALKSTATE, MELEESTATE, MISSILESTATE, PAINSTATE, DEATHSTATE}, 0, 0);
     }
 }
