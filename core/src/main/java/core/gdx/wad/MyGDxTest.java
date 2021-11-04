@@ -6,10 +6,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
 import core.wad.funcs.EntityFuncs;
+import core.wad.funcs.GameSprite;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
 import org.checkerframework.checker.units.qual.A;
+import org.lwjgl.system.CallbackI;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -74,7 +76,6 @@ public class MyGDxTest extends Game {
             SoundFuncs.loadMIDIs(wads);
             SoundFuncs.loadSounds(wads);
             GameLogic.loadLevels(wads);
-            WadFuncs.loadSprites(wads);
             WadFuncs.loadTextures(wads);
             WadFuncs.TITLESCREEN = WadFuncs.getTexture(wads, "TITLESCR");
             WadFuncs.SETTINGSSCREEN = WadFuncs.getTexture(wads, "BLANKSCR");
@@ -92,6 +93,12 @@ public class MyGDxTest extends Game {
                         System.exit(1);
                     }
                 }});
+
+            GameLogic.stateList.forEach(s -> {
+                if (!RenderFuncs.spriteMap.containsKey(s.getSprite())) {
+                    RenderFuncs.spriteMap.put(s.getSprite(), new GameSprite(wads, s.getSprite()));
+                }
+            });
 
             SoundFuncs.playSound("pistol/shoot");
 

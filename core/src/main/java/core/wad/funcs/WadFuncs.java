@@ -87,17 +87,6 @@ public class WadFuncs {
         }
     }
 
-    public static void loadSprites(Array<WadFile> wads) {
-        //For now, just load player sprites. I'll generalize this later.
-        RenderFuncs.spriteMap.put("PLAY", new GameSprite(wads, "PLAY"));
-        RenderFuncs.spriteMap.put("SARG", new GameSprite(wads, "SARG"));
-        RenderFuncs.spriteMap.put("BAL1", new GameSprite(wads, "BAL1"));
-        RenderFuncs.spriteMap.put("PUFF", new GameSprite(wads, "PUFF"));
-        RenderFuncs.spriteMap.put("BLUD", new GameSprite(wads, "BLUD"));
-        RenderFuncs.spriteMap.put("TROO", new GameSprite(wads, "TROO"));
-        RenderFuncs.spriteMap.put("POSS", new GameSprite(wads, "POSS"));
-    }
-
     public static void loadTextures(Array<WadFile> wads) {
 
         for (WadFile w : wads) {

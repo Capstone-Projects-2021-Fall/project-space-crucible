@@ -22,6 +22,7 @@ import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.level.info.LevelTile;
 import core.wad.funcs.EntityFuncs;
+import core.wad.funcs.GameSprite;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import editor.copy.CopiedThingData;
@@ -356,7 +357,6 @@ public class EditorScreen implements Screen {
             level = WadFuncs.loadLevel(file, levelnum);
         }
 
-        WadFuncs.loadSprites(resources);
         WadFuncs.loadTextures(resources);
         resources.forEach(w -> {
             if (w.contains("ENTITIES")) {
@@ -366,7 +366,14 @@ public class EditorScreen implements Screen {
                     e.printStackTrace();
                     System.exit(1);
                 }
-            }});
+            }
+        });
+
+        GameLogic.stateList.forEach(s -> {
+            if (!RenderFuncs.spriteMap.containsKey(s.getSprite())) {
+                RenderFuncs.spriteMap.put(s.getSprite(), new GameSprite(resources, s.getSprite()));
+            }
+        });
     }
 
     public void loadNewLevel(String name, Integer level) {
