@@ -1,6 +1,7 @@
 package core.wad.funcs;
 
 import core.game.entities.BaseMonster;
+import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.game.entities.actions.*;
 import core.game.logic.EntitySpawner;
@@ -42,17 +43,14 @@ public class EntityFuncs {
 
         //Second token should be name
         className = st.nextToken();
-        System.out.println("Entity " + className);
 
         //Third token could be parent OR id. Check for ":"
         if (currentLine.contains(":")) {
             parentClass = st.nextToken();
-            System.out.println("Inheriting from " + parentClass);
         }
 
         if (st.countTokens() > 1) {
             mapID = Integer.parseInt(st.nextToken());
-            System.out.println("Map ID:\t" + mapID);
         }
 
         //If there is another token and it's NOT an opening bracket or comment, throw.
@@ -118,12 +116,12 @@ public class EntityFuncs {
 
         do {
             st = new StringTokenizer(currentLine, DELIMS);
-            System.out.println("Line " + line + ": " + currentLine);
 
             //If starts with +, read a flag
             if (currentLine.strip().startsWith("+")) {
                 switch (currentLine.strip().substring(1)) {
                     case "SOLID":
+                        p.flags |= Entity.SOLID;
                         break;
 
                     default:
@@ -220,7 +218,6 @@ public class EntityFuncs {
                 //If is a state label
                 int stateIndex = isKeyWord(firstToken, defaultStates);
                 if (stateIndex > -1) {
-                    System.out.println("Reading state " + defaultStates[stateIndex]);
                     isState[stateIndex] = true;
                     lastStateIndex = stateIndex;
                     continue;
@@ -232,22 +229,17 @@ public class EntityFuncs {
                     switch (keyWords[keyWordIndex]) {
                         case "loop":
                             GameLogic.stateList.getLast().setNextState(states[lastStateIndex]);
-                            System.out.println(GameLogic.stateList.getLast());
                             break;
 
                         case "stop":
                             GameLogic.stateList.getLast().setNextState(-1);
-                            System.out.println(GameLogic.stateList.getLast());
                             break;
 
                         case "goto":
                             try {
                                 String next = st.nextToken();
-                                System.out.println("Set next to \"" + next + "\"");
                                 int nextState = isKeyWord(next, defaultStates);
-                                System.out.println("states[" + nextState + "] = " + states[nextState]);
                                 GameLogic.stateList.getLast().setNextState(states[nextState]);
-                                System.out.println(GameLogic.stateList.getLast());
                             } catch (Exception e) {
                                 throw new ParseException();
                             }
@@ -277,7 +269,6 @@ public class EntityFuncs {
 
                 //You can define multiple frames with the same duration, sprite, and action on one line
                 for (int i = 0; i < frames.length(); i++) {
-                    System.out.print("Index " + GameLogic.stateList.size() + ":\t");
                     GameLogic.stateList.add(new EntityState(firstToken, frames.charAt(i), duration,
                             GameLogic.stateList.size() + 1, action));
 
@@ -285,7 +276,6 @@ public class EntityFuncs {
                     for (int j = 0; j < isState.length; j++) {
                         if (isState[j]) {
                             states[j] = GameLogic.stateList.size() - 1;
-                            System.out.println("states[" + j + "] = " + states[j]);
                             isState[j] = false;
                         }
                     }
@@ -352,7 +342,8 @@ public class EntityFuncs {
                     break;
 
                 case "A_Projectile":
-                    ret = new A_Projectile("Fireball");
+                    String projClass = actionST.nextToken();
+                    ret = new A_Projectile(projClass);
                     break;
 
                 case "A_Scream":

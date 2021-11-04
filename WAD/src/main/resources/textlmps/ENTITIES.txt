@@ -73,7 +73,7 @@ Entity Serpentipede : BaseMonster 2 {
         Melee:
         Missile:
         TROO EF 8 A_FaceTarget()
-        TROO G 8 A_Projectile(Fireball)
+        TROO G 8 A_Projectile("Fireball")
         goto See
 
         Pain:
@@ -190,7 +190,7 @@ Entity CruciblePlayer : PlayerPawn 0 {
         stop
 
         See:
-        PLAY ABCD 4
+        PLAY ABCD 8
         loop
 
         Melee:

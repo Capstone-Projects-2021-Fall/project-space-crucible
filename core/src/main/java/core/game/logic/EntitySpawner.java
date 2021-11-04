@@ -12,6 +12,7 @@ public class EntitySpawner {
     public EntitySpawner (String baseClass, Properties properties) {
         this.baseClass = baseClass;
         this.properties = properties;
+        System.out.println(baseClass + "flags: " + properties.flags);
     }
 
     public Entity spawnEntity(Entity.Position pos, int tag) {

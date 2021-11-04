@@ -20,7 +20,6 @@ public class EntityState {
         this.duration = duration;
         this.nextState = nextState;
         this.action = action;
-        System.out.println(this);
     }
 
     public String getSprite() {return spriteName;}
