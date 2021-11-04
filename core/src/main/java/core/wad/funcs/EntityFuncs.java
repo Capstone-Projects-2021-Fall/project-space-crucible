@@ -1,12 +1,14 @@
 package core.wad.funcs;
 
 import core.game.entities.BaseMonster;
+import core.game.entities.PlayerPawn;
 import core.game.entities.actions.*;
 import core.game.logic.EntitySpawner;
 import core.game.logic.EntityState;
 import core.game.logic.GameLogic;
 import core.game.logic.Properties;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -160,17 +162,23 @@ public class EntityFuncs {
                         break;
 
                     case "PainSound":
-                        if (!parentClass.equals("BaseMonster")) {
-                            throw new ParseException("Line " + line + ":\t" + className + " does not extend BaseMonster!");
+                        if (parentClass.equals("BaseMonster")) {
+                            p.monsterSounds[BaseMonster.PAINSOUND] = value.replaceAll("\"", "");
+                        } else if(parentClass.equals("PlayerPawn")) {
+                            p.playerSounds[PlayerPawn.PAINSOUND] = value.replaceAll("\"", "");
+                        } else {
+                            throw new ParseException("Line " + line + ":\t" + className + " does not extend BaseMonster or PlayerPawn!");
                         }
-                        p.monsterSounds[BaseMonster.PAINSOUND] = value.replaceAll("\"", "");
                         break;
 
                     case "DieSound":
-                        if (!parentClass.equals("BaseMonster")) {
-                            throw new ParseException("Line " + line + ":\t" + className + " does not extend BaseMonster!");
+                        if (parentClass.equals("BaseMonster")) {
+                            p.monsterSounds[BaseMonster.DIESOUND] = value.replaceAll("\"", "");
+                        } else if(parentClass.equals("PlayerPawn")) {
+                            p.playerSounds[PlayerPawn.DIESOUND] = value.replaceAll("\"", "");
+                        } else {
+                            throw new ParseException("Line " + line + ":\t" + className + " does not extend BaseMonster or PlayerPawn!");
                         }
-                        p.monsterSounds[BaseMonster.DIESOUND] = value.replaceAll("\"", "");
                         break;
 
                     case "ActiveSound":
@@ -203,84 +211,93 @@ public class EntityFuncs {
         String[] defaultStates = {"Spawn", "See", "Melee", "Missile", "Pain", "Death"};
         String[] keyWords = {"loop", "stop", "goto"};
 
-        do {
-            st = new StringTokenizer(currentLine, DELIMS);
+        try {
+            do {
+                st = new StringTokenizer(currentLine, DELIMS);
 
-            String firstToken = st.nextToken();
+                String firstToken = st.nextToken();
 
-            //If is a state label
-            int stateIndex = isKeyWord(firstToken, defaultStates);
-            if (stateIndex > -1) {
-                System.out.println("Reading state " + defaultStates[stateIndex]);
-                isState[stateIndex] = true;
-                lastStateIndex = stateIndex;
-                continue;
-            }
-
-            //If is a keyword
-            int keyWordIndex = isKeyWord(firstToken, keyWords);
-            if (keyWordIndex > -1) {
-                switch (keyWords[keyWordIndex]) {
-                    case "loop":
-                        GameLogic.stateList.getLast().setNextState(states[lastStateIndex]);
-                        System.out.println( GameLogic.stateList.getLast());
-                        break;
-
-                    case "stop":
-                        GameLogic.stateList.getLast().setNextState(-1);
-                        System.out.println(GameLogic.stateList.getLast());
-                        break;
-
-                    case "goto":
-                        try {
-                            String next = st.nextToken();
-                            System.out.println("Set next to \"" + next + "\"");
-                            int nextState = isKeyWord(next, defaultStates);
-                            System.out.println("states[" +  nextState + "] = " + states[nextState]);
-                            GameLogic.stateList.getLast().setNextState(states[nextState]);
-                            System.out.println(GameLogic.stateList.getLast());
-                        } catch (Exception e) {throw new ParseException();}
-                        break;
-
-                    default:
-                        throw new ParseException();
+                //If is a state label
+                int stateIndex = isKeyWord(firstToken, defaultStates);
+                if (stateIndex > -1) {
+                    System.out.println("Reading state " + defaultStates[stateIndex]);
+                    isState[stateIndex] = true;
+                    lastStateIndex = stateIndex;
+                    continue;
                 }
-                //nextLine();
-                continue;
-            }
 
-            //Otherwise, read the states.
-            String frames = st.nextToken();
-            Integer duration = Integer.parseInt(st.nextToken());
-            StateAction action = null;
+                //If is a keyword
+                int keyWordIndex = isKeyWord(firstToken, keyWords);
+                if (keyWordIndex > -1) {
+                    switch (keyWords[keyWordIndex]) {
+                        case "loop":
+                            GameLogic.stateList.getLast().setNextState(states[lastStateIndex]);
+                            System.out.println(GameLogic.stateList.getLast());
+                            break;
 
-            //If there's any more, there should be a code pointer.
-            if (st.hasMoreTokens()) {
-                if (!currentLine.contains("A_")) {throw new ParseException();}
-                String actionDef = currentLine.substring(currentLine.indexOf("A_"));
-                action = readAction(actionDef);
-                nextLine();
-            }
+                        case "stop":
+                            GameLogic.stateList.getLast().setNextState(-1);
+                            System.out.println(GameLogic.stateList.getLast());
+                            break;
 
-            //You can define multiple frames with the same duration, sprite, and action on one line
-            for (int i = 0; i < frames.length(); i++) {
-                System.out.print("Index " + GameLogic.stateList.size() + ":\t");
-                GameLogic.stateList.add(new EntityState(firstToken, frames.charAt(i), duration,
-                        GameLogic.stateList.size(), action));
+                        case "goto":
+                            try {
+                                String next = st.nextToken();
+                                System.out.println("Set next to \"" + next + "\"");
+                                int nextState = isKeyWord(next, defaultStates);
+                                System.out.println("states[" + nextState + "] = " + states[nextState]);
+                                GameLogic.stateList.getLast().setNextState(states[nextState]);
+                                System.out.println(GameLogic.stateList.getLast());
+                            } catch (Exception e) {
+                                throw new ParseException();
+                            }
+                            break;
 
-                //If it's under any state labels, set those states to this one.
-                for (int j = 0; j < isState.length; j++) {
-                    if (isState[j]) {
-                        states[j] = GameLogic.stateList.size()-1;
-                        System.out.println("states[" +  j + "] = " + states[j]);
-                        isState[j] = false;
+                        default:
+                            throw new ParseException();
+                    }
+                    //nextLine();
+                    continue;
+                }
+
+                //Otherwise, read the states.
+                String frames = st.nextToken();
+                Integer duration = Integer.parseInt(st.nextToken());
+                StateAction action = null;
+
+                //If there's any more, there should be a code pointer.
+                if (st.hasMoreTokens()) {
+                    if (!currentLine.contains("A_")) {
+                        throw new ParseException();
+                    }
+                    String actionDef = currentLine.substring(currentLine.indexOf("A_"));
+                    action = readAction(actionDef);
+                    nextLine();
+                }
+
+                //You can define multiple frames with the same duration, sprite, and action on one line
+                for (int i = 0; i < frames.length(); i++) {
+                    System.out.print("Index " + GameLogic.stateList.size() + ":\t");
+                    GameLogic.stateList.add(new EntityState(firstToken, frames.charAt(i), duration,
+                            GameLogic.stateList.size() + 1, action));
+
+                    //If it's under any state labels, set those states to this one.
+                    for (int j = 0; j < isState.length; j++) {
+                        if (isState[j]) {
+                            states[j] = GameLogic.stateList.size() - 1;
+                            System.out.println("states[" + j + "] = " + states[j]);
+                            isState[j] = false;
+                        }
                     }
                 }
-            }
 
-        }while (!checkBracket(st, true));
+            } while (!checkBracket(st, true));
 
-        return states;
+            return states;
+        } catch (NoSuchElementException nse) {
+            nse.printStackTrace();
+            throw new ParseException();
+        }
     }
 
     private static int isKeyWord(String string, String[] keyWords) {

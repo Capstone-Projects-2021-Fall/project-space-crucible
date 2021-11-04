@@ -2,6 +2,7 @@ package core.game.logic;
 
 import core.game.entities.BaseMonster;
 import core.game.entities.Entity;
+import core.game.entities.PlayerPawn;
 import core.game.entities.Projectile;
 
 public class EntitySpawner {
@@ -53,6 +54,20 @@ public class EntitySpawner {
                     null, //A projectile spawned by the map, for whatever reason, will have no owner
                     properties.projDamage,
                     properties.flags
+                );
+
+            case "PlayerPawn":
+                return new PlayerPawn(
+                    properties.name,
+                    properties.health,
+                    pos,
+                    properties.speed,
+                    properties.width,
+                    properties.height,
+                    properties.states,
+                    tag,
+                    properties.flags,
+                    properties.playerSounds
                 );
         }
 

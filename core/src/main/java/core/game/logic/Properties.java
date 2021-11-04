@@ -9,5 +9,6 @@ public class Properties {
     public Integer[] states = {-1, -1, -1, -1, -1, -1};
     public long flags = 0;
     public String[] monsterSounds = new String[4];
+    public String[] playerSounds = new String[2];
     public int projDamage = 0;
 }

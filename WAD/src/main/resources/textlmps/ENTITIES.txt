@@ -175,3 +175,43 @@ Entity Zombieman : BaseMonster 3 {
         stop
     }
 }
+Entity CruciblePlayer : PlayerPawn 0 {
+    Properties {
+        Health 100
+        Speed 160
+        Width 32
+        Height 56
+        PainSound "player/pain"
+        DieSound "player/die"
+    }
+    States {
+        Spawn:
+        PLAY A -1
+        stop
+
+        See:
+        PLAY ABCD 4
+        loop
+
+        Melee:
+        PLAY E 12
+        goto See
+
+        Missile:
+        PLAY F 6
+        goto Melee
+
+        Pain:
+        PLAY G 4
+        PLAY G 4 A_Pain()
+        goto See
+
+        Death:
+        PLAY H 10
+        PLAY I 10 A_Scream()
+        PLAY J 10 A_Fall()
+        PLAY KLM 10
+        PLAY N -1
+        stop
+    }
+}

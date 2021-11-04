@@ -12,7 +12,7 @@ public class A_Scream implements StateAction{
         if (caller instanceof BaseMonster) {
             SoundFuncs.playSound(((BaseMonster) caller).getSound(BaseMonster.DIESOUND));
         } else if (caller instanceof PlayerPawn) {
-            SoundFuncs.playSound(PlayerPawn.DIESOUND);
+            SoundFuncs.playSound(((PlayerPawn) caller).getSound(PlayerPawn.DIESOUND));
         }
     }
 }

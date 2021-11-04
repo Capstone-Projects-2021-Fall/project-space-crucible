@@ -167,12 +167,8 @@ public class GameLogic {
             }
 
             try {
-                if (obj.type > 0) {
-                    entityList.add(mapIDTable.get(obj.type)
-                            .spawnEntity(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag));
-                } else {
-                    entityList.add(new PlayerPawn(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag));
-                }
+                entityList.add(GameLogic.mapIDTable.get(obj.type)
+                        .spawnEntity(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag));
             } catch (Exception e) {
                 System.out.println("Unknown Entity with map ID " + obj.type);
             }

@@ -12,7 +12,7 @@ public class A_Pain implements StateAction{
         if (caller instanceof BaseMonster) {
             SoundFuncs.playSound(((BaseMonster) caller).getSound(BaseMonster.PAINSOUND));
         } else if (caller instanceof PlayerPawn) {
-            SoundFuncs.playSound(PlayerPawn.PAINSOUND);
+            SoundFuncs.playSound(((PlayerPawn) caller).getSound(PlayerPawn.PAINSOUND));
         }
     }
 }

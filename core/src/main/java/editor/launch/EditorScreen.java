@@ -487,7 +487,8 @@ public class EditorScreen implements Screen {
                     new boolean[]{true, true, true, true, true}, false, 0);
             level.getObjects().add(newObj);
 
-            Entity newThing = new PlayerPawn(new Entity.Position(x, y, 0), 0);
+            Entity newThing = GameLogic.mapIDTable.get(0)
+                    .spawnEntity(new Entity.Position(x, y, 0), 0);
             GameLogic.entityList.add(newThing);
 
             GameLogic.loadEntities(level, true);
