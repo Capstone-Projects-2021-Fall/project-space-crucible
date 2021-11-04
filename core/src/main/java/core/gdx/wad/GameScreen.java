@@ -3,7 +3,6 @@ package core.gdx.wad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,29 +11,23 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Null;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
-import core.game.entities.PlayerPawn;
 import core.server.Network;
+import core.server.Network.ClientData;
 import core.server.Network.RenderData;
+import core.server.Network.ServerDetails;
 import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
-import core.server.Network.ClientData;
-import core.server.Network.ServerDetails;
 
 import java.awt.*;
-import java.util.Objects;
 
 public class GameScreen implements Screen {
 
@@ -85,7 +78,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        addMiniMap();
         SoundFuncs.stopMIDI();
         if (isSinglePlayer) {
             gameLoop.start();
@@ -125,6 +117,12 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
 
+        //addMiniMap();
+        Gdx.input.setInputProcessor(stage);
+        PausedGameWindow pausedGameWindow = new PausedGameWindow("Paused", skin, this, myGDxTest);
+        stage.addActor(pausedGameWindow);
+        pausedGameWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
+
         if(isSinglePlayer){
             getAngle(true);
             GameLogic.getPlayer(1).getPos().angle = angle; //Turn the vector2 into a degree angle
@@ -133,7 +131,15 @@ public class GameScreen implements Screen {
             camera.update();
             RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
-            font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
+            if(GameLogic.getPlayer(playerNumber).getHeight()>0){
+                font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
+                        GameLogic.getPlayer(playerNumber).getPos().x,
+                        GameLogic.getPlayer(playerNumber).getPos().y);
+            }else{
+                font.draw(batch,"HP:0",
+                        GameLogic.getPlayer(playerNumber).getPos().x,
+                        GameLogic.getPlayer(playerNumber).getPos().y);
+            }
             font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
                     GameLogic.getPlayer(playerNumber).getPos().x,
                     GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+10);
@@ -185,9 +191,15 @@ public class GameScreen implements Screen {
                 camera.update();
                 RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
                 RenderFuncs.entityDraw(batch, renderData.entityList);
-
-                font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
-                        getPlayer(playerNumber).getPos().y);
+                if(GameLogic.getPlayer(playerNumber).getHeight()>0){
+                    font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
+                            GameLogic.getPlayer(playerNumber).getPos().x,
+                            GameLogic.getPlayer(playerNumber).getPos().y);
+                }else{
+                    font.draw(batch,"HP: 0",
+                            GameLogic.getPlayer(playerNumber).getPos().x,
+                            GameLogic.getPlayer(playerNumber).getPos().y);
+                }
                 font.draw(batch, "Player: " + getPlayer(playerNumber).getTag(),
                         getPlayer(playerNumber).getPos().x,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() + 10);
