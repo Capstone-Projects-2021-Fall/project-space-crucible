@@ -73,7 +73,9 @@ public class EntityFuncs {
         nextLine();
         p.states = getStates(st);
 
-        GameLogic.entityTable.put(className, new EntitySpawner(parentClass, p));
+        EntitySpawner newEntity = new EntitySpawner(parentClass, p);
+        GameLogic.entityTable.put(className, newEntity);
+        GameLogic.mapIDTable.put(mapID, newEntity);
     }
 
     public static class ParseException extends Exception {

@@ -60,8 +60,6 @@ public class SpaceServer implements Listener {
         GameLogic.isSinglePlayer = false;
 
         //Load prepare all Entity logic, open game screen and initiate game loop.
-        WadFuncs.loadStates();
-        WadFuncs.setEntityTypes();
         WadFuncs.loadLevelEffects();
         Network.register(server);
 
