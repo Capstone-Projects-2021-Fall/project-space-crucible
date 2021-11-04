@@ -2,9 +2,8 @@ package core.wad.funcs;
 
 import core.game.entities.BaseMonster;
 import core.game.entities.Entity;
-import org.lwjgl.system.CallbackI;
+import core.game.entities.actions.StateAction;
 
-import java.text.ParseException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -68,6 +67,7 @@ public class EntityFuncs {
         st = new StringTokenizer(currentLine, DELIMS);
         if (!st.nextToken().equals("States")) {throw new ParseException();}
         if (!checkBracket(st, false)) {throw new ParseException();}
+        nextLine();
         p.states = getStates(st);
 
 
@@ -205,13 +205,70 @@ public class EntityFuncs {
         return p;
     }
 
-    private static Integer[] getStates(StringTokenizer st) {
+    private static Integer[] getStates(StringTokenizer st) throws ParseException {
         Integer[] states = {-1, -1, -1, -1, -1, -1};
+        Boolean[] isState = {false, false, false, false, false, false};
+        String[] defaultStates = {"Spawn", "See", "Melee", "Missile", "Pain", "Death"};
+        int lastStateLabel = -1;
+        String[] keyWords = {"loop", "stop", "goto"};
 
+        System.out.println("Getting states:");
         do {
             System.out.println("Line " + line + ":\t" + currentLine);
+            st = new StringTokenizer(currentLine, DELIMS);
+
+            String firstToken = st.nextToken();
+
+            //If is a state label
+            int stateIndex = isKeyWord(firstToken, defaultStates);
+            if (stateIndex > -1) {
+                isState[stateIndex] = true;
+                lastStateLabel = stateIndex;
+                continue;
+            }
+
+            //If is a keyword
+            int keyWordIndex = isKeyWord(firstToken, keyWords);
+            if (keyWordIndex > -1) {
+                switch (keyWords[keyWordIndex]) {
+                    case "loop":
+                        break;
+
+                    case "stop":
+                        break;
+
+                    case "goto":
+                        break;
+
+                    default:
+                        throw new ParseException();
+                }
+                nextLine();
+                continue;
+            }
+
+            //Otherwise, read the states.
+            String frames = st.nextToken();
+            Integer duration = Integer.parseInt(st.nextToken());
+            StateAction action = null;
+
+            //If there's any more, there should be a code pointer.
+            if (st.hasMoreTokens()) {
+                if (!currentLine.contains("A_")) {throw new ParseException();}
+                System.out.println(currentLine.substring(currentLine.indexOf("A_")));
+                nextLine();
+            }
+
         }while (!checkBracket(st, true));
 
         return states;
+    }
+
+    private static int isKeyWord(String string, String[] keyWords) {
+        for (int i = 0; i < keyWords.length; i++) {
+            System.out.println("Does " + string + " = " + keyWords[i] + "?");
+            if (string.equals(keyWords[i])) return i;
+        }
+        return -1;
     }
 }
