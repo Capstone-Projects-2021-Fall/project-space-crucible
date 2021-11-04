@@ -85,8 +85,12 @@ public class MasterServer implements Listener {
                             connection.sendTCP(validLobby);
                             return;
                         }
-
+                        //If the client does not have the level files lobby host added
                         if (serverEntry.getFiles().size() != ((Network.JoinLobby) object).names.size()) {
+                            //Ping the host to grab the file
+                            //Host sends file
+                            //Server sends file to client
+
                             /*
                             for (int i = 0; i < serverEntry.getFiles().size(); i++) {
                                 Network.WadFile wadFile = new Network.WadFile();
@@ -172,6 +176,9 @@ public class MasterServer implements Listener {
                 //RCON Command
                 else if (object instanceof Network.RCONMessage) {
                    handleRCON(((Network.RCONMessage) object).message);
+                }
+                else if(object instanceof Network.OpenLobby){
+                    ports.entrySet().removeIf(entry -> ((Network.OpenLobby) object).tcpPort == entry.getValue());
                 }
             }
             //This method will run when a client disconnects from the server, remove the character from the game

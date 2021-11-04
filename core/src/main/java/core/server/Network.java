@@ -51,7 +51,7 @@ public class Network {
         kryo.register(CheckConnection.class);
         kryo.register(ConnectionType.class);
         kryo.register(PromptConnectionType.class);
-        kryo.register(WadFile.class);
+        kryo.register(OpenLobby.class);
 
         //Level Classes
         kryo.register(LevelData.class);
@@ -188,8 +188,7 @@ public class Network {
     }
     public static class PromptConnectionType{}
 
-    public static class WadFile{
-        public byte[] levelFile;
-        public String levelFileName;
+    public static class OpenLobby{
+        public int tcpPort;
     }
 }
