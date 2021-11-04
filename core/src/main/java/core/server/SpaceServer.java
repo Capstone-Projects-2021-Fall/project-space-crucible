@@ -160,6 +160,20 @@ public class SpaceServer implements Listener {
                             .add(((Network.AddObject) packetData).levelObject);
                 }
 
+                else if (packetData instanceof Network.GameEntity) {
+                    GameLogic.entityTable.put(((Network.GameEntity) packetData).name, ((Network.GameEntity) packetData).spawner);
+                    if (((Network.GameEntity) packetData).mapID > -1) {
+                        GameLogic.mapIDTable.put(((Network.GameEntity) packetData).mapID, ((Network.GameEntity) packetData).spawner);
+                        System.out.println(((Network.GameEntity) packetData).mapID);
+                    }
+                }
+
+                else if (packetData instanceof Network.State) {
+                    System.out.println("adding state");
+                    GameLogic.stateList.add(((Network.State) packetData).state);
+                    System.out.println("StateList: " + GameLogic.stateList.size());
+                }
+
                 else if (packetData instanceof Network.CheckConnection) {
                     if (((Network.CheckConnection) packetData).type == Network.ConnectionType.PLAYER) {
                         System.out.println("Client connected to game server: " + c.getID());

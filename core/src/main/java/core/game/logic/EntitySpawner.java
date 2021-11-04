@@ -9,6 +9,8 @@ public class EntitySpawner {
     String baseClass;
     Properties properties;
 
+    public EntitySpawner (){}
+
     public EntitySpawner (String baseClass, Properties properties) {
         this.baseClass = baseClass;
         this.properties = properties;

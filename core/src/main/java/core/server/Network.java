@@ -7,12 +7,16 @@ import com.esotericsoftware.kryonet.EndPoint;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.game.entities.actions.*;
+import core.game.logic.EntitySpawner;
+import core.game.logic.EntityState;
+import core.game.logic.Properties;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.level.info.LevelTile;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 //This class will store things common to both client and server
@@ -51,6 +55,8 @@ public class Network {
         kryo.register(CheckConnection.class);
         kryo.register(ConnectionType.class);
         kryo.register(PromptConnectionType.class);
+        kryo.register(GameEntity.class);
+        kryo.register(State.class);
 
         //Level Classes
         kryo.register(LevelData.class);
@@ -59,9 +65,11 @@ public class Network {
         kryo.register(LevelObject.class);
 
         //Entity classes
-        kryo.register(core.game.entities.Entity.class);
-        kryo.register(core.game.entities.Entity.Position.class);
-        kryo.register(core.game.logic.EntityState.class);
+        kryo.register(Entity.class);
+        kryo.register(Entity.Position.class);
+        kryo.register(EntityState.class);
+        kryo.register(EntitySpawner.class);
+        kryo.register(Properties.class);
 
         //State Actions
         kryo.register(A_BulletAttack.class);
@@ -168,6 +176,14 @@ public class Network {
     public static class AddObject {
         public Integer levelNumber;
         public LevelObject levelObject;
+    }
+    public static class GameEntity {
+        public EntitySpawner spawner;
+        public String name;
+        public int mapID;
+    }
+    public static class State {
+        public EntityState state;
     }
     public static class RCONLogin {
         public String code;

@@ -10,6 +10,8 @@ import core.gdx.wad.MyGDxTest;
 import core.gdx.wad.StartMenu;
 import core.server.Network.*;
 import core.wad.funcs.SoundFuncs;
+import org.lwjgl.system.CallbackI;
+
 import java.io.IOException;
 
 public class SpaceClient implements Listener {
@@ -45,6 +47,7 @@ public class SpaceClient implements Listener {
                         if (getClient().getID() == 1) {
                             System.out.println("Sending .WAD data...");
                             sendLevels();
+                            sendEntities();
                             System.out.println("Done!");
                         }
                     } catch (IOException ex) {
@@ -173,6 +176,30 @@ public class SpaceClient implements Listener {
                 client.sendTCP(ao);
             });
 
+        });
+    }
+
+    private void sendEntities() {
+
+        GameLogic.stateList.forEach(s -> {
+            State state = new State();
+            state.state = s;
+            client.sendTCP(state);
+        });
+
+        GameLogic.entityTable.forEach((k, v) -> {
+            GameEntity ge = new GameEntity();
+            ge.spawner = v;
+            ge.name = k;
+            ge.mapID = -1;
+
+            GameLogic.mapIDTable.forEach((i, e) -> {
+                if (e.equals(ge.spawner)) {
+                    ge.mapID = i;
+                }
+            });
+
+            client.sendTCP(ge);
         });
     }
 }
