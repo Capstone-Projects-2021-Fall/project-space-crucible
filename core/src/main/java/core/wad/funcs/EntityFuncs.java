@@ -225,6 +225,7 @@ public class EntityFuncs {
             //If is a state label
             int stateIndex = isKeyWord(firstToken, defaultStates);
             if (stateIndex > -1) {
+                System.out.println("Reading state " + defaultStates[stateIndex]);
                 isState[stateIndex] = true;
                 lastStateIndex = stateIndex;
                 continue;
@@ -236,23 +237,29 @@ public class EntityFuncs {
                 switch (keyWords[keyWordIndex]) {
                     case "loop":
                         testList.getLast().setNextState(states[lastStateIndex]);
+                        System.out.println(testList.getLast());
                         break;
 
                     case "stop":
                         testList.getLast().setNextState(-1);
+                        System.out.println(testList.getLast());
                         break;
 
                     case "goto":
                         try {
                             String next = st.nextToken();
-                            testList.getLast().setNextState(states[isKeyWord(next, defaultStates)]);
+                            System.out.println("Set next to \"" + next + "\"");
+                            int nextState = isKeyWord(next, defaultStates);
+                            System.out.println("states[" +  nextState + "] = " + states[nextState]);
+                            testList.getLast().setNextState(states[nextState]);
+                            System.out.println(testList.getLast());
                         } catch (Exception e) {throw new ParseException();}
                         break;
 
                     default:
                         throw new ParseException();
                 }
-                nextLine();
+                //nextLine();
                 continue;
             }
 
@@ -265,20 +272,21 @@ public class EntityFuncs {
             if (st.hasMoreTokens()) {
                 if (!currentLine.contains("A_")) {throw new ParseException();}
                 String actionDef = currentLine.substring(currentLine.indexOf("A_"));
-                System.out.println(actionDef);
                 action = readAction(actionDef);
                 nextLine();
             }
 
             //You can define multiple frames with the same duration, sprite, and action on one line
             for (int i = 0; i < frames.length(); i++) {
+                System.out.print("Index " + testList.size() + ":\t");
                 testList.add(new EntityState(firstToken, frames.charAt(i), duration,
-                        testList.size()+1, action));
+                        testList.size(), action));
 
                 //If it's under any state labels, set those states to this one.
-                for (int j = 0; i < isState.length; i++) {
+                for (int j = 0; j < isState.length; j++) {
                     if (isState[j]) {
-                        states[j] = testList.size();
+                        states[j] = testList.size()-1;
+                        System.out.println("states[" +  j + "] = " + states[j]);
                         isState[j] = false;
                     }
                 }
@@ -291,7 +299,6 @@ public class EntityFuncs {
 
     private static int isKeyWord(String string, String[] keyWords) {
         for (int i = 0; i < keyWords.length; i++) {
-            System.out.println("Does " + string + " = " + keyWords[i] + "?");
             if (string.equals(keyWords[i])) return i;
         }
         return -1;

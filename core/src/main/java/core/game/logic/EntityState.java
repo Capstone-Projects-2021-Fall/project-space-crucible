@@ -41,6 +41,8 @@ public class EntityState {
     public StateAction getAction() {return action;}
 
     public String toString() {
-        return spriteName + " " + frame + " " + duration + action.getClass().getSimpleName() + "\tNext: " + nextState;
+        return spriteName + " " + frame + " " + duration + " "
+                + (action == null ?  "null" : action.getClass().getSimpleName())
+                + "\tNext: " + nextState;
     }
 }
