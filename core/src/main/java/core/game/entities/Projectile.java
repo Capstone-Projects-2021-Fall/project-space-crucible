@@ -3,7 +3,7 @@ package core.game.entities;
 import com.badlogic.gdx.math.Rectangle;
 import core.game.logic.CollisionLogic;
 
-public abstract class Projectile extends Entity {
+public class Projectile extends Entity {
 
     private int damage;
     private Entity owner;

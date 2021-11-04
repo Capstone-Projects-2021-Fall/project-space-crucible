@@ -30,8 +30,9 @@ public class GameLogic {
     public static ArrayList<Entity> entityList = new ArrayList<>();
     final public static Queue<Entity> newEntityQueue = new Queue<>();
     final public static Queue<Entity> deleteEntityQueue = new Queue<>();
-    final public static ArrayList<EntityState> stateList = new ArrayList<>();
-    final public static ArrayList<Class<? extends Entity>> entityType = new ArrayList<>();
+    final public static LinkedList<EntityState> stateList = new LinkedList<>();
+    final public static Map<String, EntitySpawner> entityTable = new HashMap<>();
+    final public static Map<Integer, EntitySpawner> mapIDTable = new HashMap<>();
     final public static Map<Integer, LevelData> levels = new HashMap<>();
     final public static ArrayList<TileAction> effectList = new ArrayList<>();
     public static LevelData currentLevel = null;
@@ -166,11 +167,14 @@ public class GameLogic {
             }
 
             try {
-                entityList.add(entityType.get(obj.type)
-                        .getConstructor(Entity.Position.class, int.class)
-                        .newInstance(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag));
+                if (obj.type > 0) {
+                    entityList.add(mapIDTable.get(obj.type)
+                            .spawnEntity(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag));
+                } else {
+                    entityList.add(new PlayerPawn(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag));
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Unknown Entity with map ID " + obj.type);
             }
         }
     }

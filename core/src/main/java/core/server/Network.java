@@ -77,12 +77,8 @@ public class Network {
 
         //Entities
         kryo.register(core.game.entities.PlayerPawn.class);
-        kryo.register(core.game.entities.Worm.class);
-        kryo.register(core.game.entities.Fireball.class);
-        kryo.register(core.game.entities.Serpentipede.class);
-        kryo.register(core.game.entities.BulletPuff.class);
-        kryo.register(core.game.entities.Blood.class);
-        kryo.register(core.game.entities.Zombieman.class);
+        kryo.register(core.game.entities.BaseMonster.class);
+        kryo.register(core.game.entities.Projectile.class);
 
         //LibGDX classes
         kryo.register(Rectangle.class);

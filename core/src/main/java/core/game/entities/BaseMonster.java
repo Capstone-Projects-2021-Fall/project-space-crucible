@@ -6,7 +6,7 @@ import core.game.logic.GameLogic;
 //The parent class of all AI-controlled enemies.
 //The hold a target pointer for whichever Entity is drawing their aggression. This need not be a PlayerPawn.
 //If target is null, the monster goes idle.
-public abstract class BaseMonster extends Entity {
+public class BaseMonster extends Entity {
 
     private int target = -1;
     final private String[] sounds = new String[4];

@@ -6,7 +6,7 @@ import core.game.logic.CollisionLogic;
 import core.game.logic.EntityState;
 import core.game.logic.GameLogic;
 
-public abstract class Entity {
+public class Entity {
 
     final public static int IDLE = 0;
     final public static int WALK = 1;

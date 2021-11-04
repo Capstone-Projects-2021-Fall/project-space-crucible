@@ -1,13 +1,12 @@
 package core.wad.funcs;
 
 import core.game.entities.BaseMonster;
-import core.game.entities.Entity;
-import core.game.entities.Fireball;
 import core.game.entities.actions.*;
+import core.game.logic.EntitySpawner;
 import core.game.logic.EntityState;
+import core.game.logic.GameLogic;
+import core.game.logic.Properties;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -16,9 +15,9 @@ public class EntityFuncs {
     private static int line = 0;
     private static Scanner stringReader;
     private static String currentLine;
-    private static LinkedList<EntityState> testList = new LinkedList<>();
 
     public static void loadEntityClasses(String rawData) throws ParseException {
+
         stringReader = new Scanner(rawData);
 
         while (stringReader.hasNextLine()) {
@@ -30,8 +29,7 @@ public class EntityFuncs {
 
     }
 
-    public static Class<? extends Entity> loadEntityClass() throws ParseException {
-        Class<? extends Entity> newClass = null;
+    public static void loadEntityClass() throws ParseException {
         String className;
         String parentClass = "Entity";
         StringTokenizer st = new StringTokenizer(currentLine, DELIMS);
@@ -75,11 +73,8 @@ public class EntityFuncs {
         nextLine();
         p.states = getStates(st);
 
-
-        return newClass;
+        GameLogic.entityTable.put(className, new EntitySpawner(parentClass, p));
     }
-
-    public static int getLine() {return line;}
 
     public static class ParseException extends Exception {
         public ParseException(){super("Line " + line + ":\tInvalid token.");}
@@ -111,22 +106,11 @@ public class EntityFuncs {
         return true;
     }
 
-
-    private static class Properties {
-        public int health = -1;
-        public int speed = 0;
-        public int width = 0;
-        public int height = 0;
-        Integer[] states = {-1, -1, -1, -1, -1, -1};
-        long flags = 0;
-        String[] monsterSounds = new String[4];
-        int projDamage = 0;
-    }
-
     //Read Properties block from ENTITIES file
     private static Properties getProperties(StringTokenizer st, String parentClass, String className) throws ParseException {
 
         Properties p = new Properties();
+        p.name = className;
 
         do {
             st = new StringTokenizer(currentLine, DELIMS);
@@ -236,13 +220,13 @@ public class EntityFuncs {
             if (keyWordIndex > -1) {
                 switch (keyWords[keyWordIndex]) {
                     case "loop":
-                        testList.getLast().setNextState(states[lastStateIndex]);
-                        System.out.println(testList.getLast());
+                        GameLogic.stateList.getLast().setNextState(states[lastStateIndex]);
+                        System.out.println( GameLogic.stateList.getLast());
                         break;
 
                     case "stop":
-                        testList.getLast().setNextState(-1);
-                        System.out.println(testList.getLast());
+                        GameLogic.stateList.getLast().setNextState(-1);
+                        System.out.println(GameLogic.stateList.getLast());
                         break;
 
                     case "goto":
@@ -251,8 +235,8 @@ public class EntityFuncs {
                             System.out.println("Set next to \"" + next + "\"");
                             int nextState = isKeyWord(next, defaultStates);
                             System.out.println("states[" +  nextState + "] = " + states[nextState]);
-                            testList.getLast().setNextState(states[nextState]);
-                            System.out.println(testList.getLast());
+                            GameLogic.stateList.getLast().setNextState(states[nextState]);
+                            System.out.println(GameLogic.stateList.getLast());
                         } catch (Exception e) {throw new ParseException();}
                         break;
 
@@ -278,14 +262,14 @@ public class EntityFuncs {
 
             //You can define multiple frames with the same duration, sprite, and action on one line
             for (int i = 0; i < frames.length(); i++) {
-                System.out.print("Index " + testList.size() + ":\t");
-                testList.add(new EntityState(firstToken, frames.charAt(i), duration,
-                        testList.size(), action));
+                System.out.print("Index " + GameLogic.stateList.size() + ":\t");
+                GameLogic.stateList.add(new EntityState(firstToken, frames.charAt(i), duration,
+                        GameLogic.stateList.size(), action));
 
                 //If it's under any state labels, set those states to this one.
                 for (int j = 0; j < isState.length; j++) {
                     if (isState[j]) {
-                        states[j] = testList.size()-1;
+                        states[j] = GameLogic.stateList.size()-1;
                         System.out.println("states[" +  j + "] = " + states[j]);
                         isState[j] = false;
                     }
@@ -349,7 +333,7 @@ public class EntityFuncs {
                     break;
 
                 case "A_Projectile":
-                    ret = new A_Projectile(Fireball.class);
+                    ret = new A_Projectile("Fireball");
                     break;
 
                 case "A_Scream":

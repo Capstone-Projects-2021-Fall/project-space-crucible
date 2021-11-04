@@ -21,6 +21,7 @@ import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.level.info.LevelTile;
+import core.wad.funcs.EntityFuncs;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import editor.copy.CopiedThingData;
@@ -34,6 +35,7 @@ import net.mtrop.doom.WadFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 
 public class EditorScreen implements Screen {
@@ -355,10 +357,16 @@ public class EditorScreen implements Screen {
         }
 
         WadFuncs.loadSprites(resources);
-        WadFuncs.loadStates();
         WadFuncs.loadTextures(resources);
-        WadFuncs.setEntityTypes();
-        GameLogic.loadEntities(level, true);
+        resources.forEach(w -> {
+            if (w.contains("ENTITIES")) {
+                try {
+                    EntityFuncs.loadEntityClasses(w.getTextData("ENTITIES", Charset.defaultCharset()));
+                } catch (IOException | EntityFuncs.ParseException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+            }});
     }
 
     public void loadNewLevel(String name, Integer level) {
