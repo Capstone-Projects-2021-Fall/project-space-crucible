@@ -3,6 +3,7 @@ package core.gdx.wad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,8 +28,6 @@ import core.server.Network.ServerDetails;
 import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
 
-import java.awt.*;
-
 public class GameScreen implements Screen {
 
     Thread gameLoop;
@@ -46,6 +45,7 @@ public class GameScreen implements Screen {
     private final Vector2 mouseInWorld2D = new Vector2();
     private final Vector3 mouseInWorld3D = new Vector3();
     ShapeRenderer sr = new ShapeRenderer();
+    ShapeRenderer shapeRenderer = new ShapeRenderer();
     boolean showBoxes = false;
     boolean isSinglePlayer;
     BitmapFont font = new BitmapFont();
@@ -117,7 +117,6 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
 
-        //addMiniMap();
         Gdx.input.setInputProcessor(stage);
         PausedGameWindow pausedGameWindow = new PausedGameWindow("Paused", skin, this, myGDxTest);
         stage.addActor(pausedGameWindow);
@@ -131,6 +130,8 @@ public class GameScreen implements Screen {
             camera.update();
             RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
+//            for(Entity playerPawn : GameLogic.entityList){
+//            }
             if(GameLogic.getPlayer(playerNumber).getHeight()>0){
                 font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
                         GameLogic.getPlayer(playerNumber).getPos().x,
@@ -234,6 +235,14 @@ public class GameScreen implements Screen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+
+//        Rectangle mapTiles = new Rectangle(100,100);
+//        mapTiles.setLocation(0, (int) camera.viewportHeight);
+        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.DARK_GRAY);
+        shapeRenderer.rect(0, 345, 130,130);
+        shapeRenderer.end();
     }
 
     private void showBoxes() {
@@ -353,13 +362,13 @@ public class GameScreen implements Screen {
         chatWindow.addToChatLog(chat.sender + ": " + chat.message);
     }
 
-    public void addMiniMap(){
-        Rectangle mapTiles = new Rectangle(100,100);
-        mapTiles.setLocation(0, (int) camera.viewportHeight);
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(150/255f, 150/255f, 150/255f, 1);
-        shapeRenderer.rect(mapTiles.x, mapTiles.y, mapTiles.width, mapTiles.height);
-        shapeRenderer.end();
-    }
+//    public void addMiniMap(){
+//        Rectangle mapTiles = new Rectangle(10,10);
+//        mapTiles.setLocation(0, (int) camera.viewportHeight);
+//        ShapeRenderer shapeRenderer = new ShapeRenderer();
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//        shapeRenderer.setColor(150/255f, 150/255f, 150/255f, 1);
+//        shapeRenderer.rect(mapTiles.x, mapTiles.y, mapTiles.width, mapTiles.height);
+//        shapeRenderer.end();
+//    }
 }

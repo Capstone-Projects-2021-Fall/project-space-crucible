@@ -38,7 +38,12 @@ public class PausedGameWindow extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                myGDxTest.setScreen(myGDxTest.titleScreen);
+                try {
+                    //myGDxTest.setScreen(myGDxTest.titleScreen); //null
+                    myGDxTest.setScreen(new TitleScreen(myGDxTest, myGDxTest.gameLoop));
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
