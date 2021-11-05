@@ -32,7 +32,7 @@ public class ChooseDifficultyWindow extends Window {
                 GameLogic.difficulty = levelList.getSelectedIndex();
                 remove();
                 startMenu.remove();
-                screen.game.setScreen(new GameScreen(screen.gameLoop, true));
+                screen.game.setScreen(new GameScreen(screen.gameLoop, true, startMenu.myGDxTest));
                 screen.dispose();
             }
         });

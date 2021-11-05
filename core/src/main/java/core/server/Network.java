@@ -51,7 +51,11 @@ public class Network {
         kryo.register(CheckConnection.class);
         kryo.register(ConnectionType.class);
         kryo.register(PromptConnectionType.class);
+        kryo.register(WadFile.class);
         kryo.register(OpenLobby.class);
+        kryo.register(Ping.class);
+        kryo.register(SendServerInfo.class);
+        kryo.register(CreateWadFile.class);
 
         //Level Classes
         kryo.register(LevelData.class);
@@ -190,5 +194,24 @@ public class Network {
 
     public static class OpenLobby{
         public int tcpPort;
+    }
+    public static class SendServerInfo{
+        public int tcpPort;
+    }
+    public static class Ping{
+        public boolean getAddonFiles;
+        public boolean sendingFiles;
+        public int masterClientThatNeedsTheFiles;
+    }
+    public static class CreateWadFile{
+        public String levelFileName;
+        public boolean createFile;
+        public int sendFileTo;
+    }
+    public static class WadFile{
+        public byte[] levelFile;
+        public String levelFileName;
+        public int levelFileSize;
+        public int sendFileTo;
     }
 }

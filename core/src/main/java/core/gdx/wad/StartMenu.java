@@ -1,14 +1,11 @@
 package core.gdx.wad;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.server.SpaceClient;
 import editor.launch.EditorScreen;
 
@@ -43,8 +40,8 @@ public class StartMenu extends Actor{
         exitButton.button.setBounds((int)((Gdx.graphics.getWidth() - 150)/ 2), (int)((Gdx.graphics.getHeight() - 420)/ 2), 150, 50);
         stage.addActor(exitButton.button);
 
-
         Button buttons[] = {startButton.button, coopButton.button, settingsButton.button, exitButton.button, levelEditorButton.button};
+
         startButton.button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -61,9 +58,9 @@ public class StartMenu extends Actor{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                GameScreen gameScreen= new GameScreen(null, false);
+                GameScreen gameScreen= new GameScreen(null, false, myGDxTest);
                 client = new SpaceClient(gameScreen, startMenu);
-                if(client.getClient() == null) {
+                if(client.getMasterClient() == null) {
                     Dialog error = new Dialog("Error", skin);
                     error.text("Error connecting to the server!\nTry Again Later.");
                     error.setBounds((int)((Gdx.graphics.getWidth() - 250)/ 2), (int)((Gdx.graphics.getHeight() - 70) / 2), 250, 100);

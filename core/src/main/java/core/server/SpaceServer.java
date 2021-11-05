@@ -218,8 +218,11 @@ public class SpaceServer implements Listener {
 
         serverClient.addListener(new ThreadedListener(new Listener() {
             public void connected(Connection connection) {
+                Network.SendServerInfo serverInfo = new Network.SendServerInfo();
+                serverInfo.tcpPort = tcpPort;
+                serverClient.sendTCP(serverInfo);
             }
-            public void received (Connection connection, Object object) {
+            public void received (Connection connection, Object packetData) {
             }
 
         }));
