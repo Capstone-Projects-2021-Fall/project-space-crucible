@@ -118,10 +118,10 @@ public class GameScreen implements Screen {
         batch.enableBlending();
 
         Gdx.input.setInputProcessor(stage);
-        PausedGameWindow pausedGameWindow = new PausedGameWindow("Paused", skin, this, myGDxTest);
+        DeadPlayerWindow deadPlayerWindow = new DeadPlayerWindow("Paused", skin, myGDxTest);
         if(GameLogic.getPlayer(playerNumber).getHealth()<=0){
-            stage.addActor(pausedGameWindow);
-            pausedGameWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
+            stage.addActor(deadPlayerWindow);
+            deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
         }
 
         if(isSinglePlayer){

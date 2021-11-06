@@ -1,5 +1,7 @@
 package core.gdx.wad;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -9,15 +11,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.game.logic.GameLogic;
 
 
-public class PausedGameWindow extends Window {
+
+public class DeadPlayerWindow extends Window {
     MyGDxTest myGDxTest;
-    public PausedGameWindow(String title, Skin skin, GameScreen gameScreen, MyGDxTest myGDxTest) {
+    public DeadPlayerWindow(String title, Skin skin, MyGDxTest myGDxTest) {
         super(title, skin);
-        setModal(true);
         setMovable(false);
         setResizable(false);
-        //this.myGDxTest = myGDxTest;
-        //this.settingsScreen=new SettingsScreen(myGDxTest); //makes the game super slow
+        this.myGDxTest = myGDxTest;
 
         Button restartButton = new TextButton("Restart Level", skin);
         add(restartButton);
@@ -40,8 +41,7 @@ public class PausedGameWindow extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 try {
-//                    myGDxTest.setScreen(myGDxTest.titleScreen); //null
-
+                    myGDxTest.setScreen(myGDxTest.titleScreen); //null for some reason
 //                    TitleScreen titleScreen = new TitleScreen(myGDxTest, myGDxTest.gameLoop); //also null
 //                    myGDxTest.setScreen(titleScreen);
                 } catch (NullPointerException e) {
