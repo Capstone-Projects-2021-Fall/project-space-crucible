@@ -1,4 +1,4 @@
-package editor.windows;
+package editor.scene2d.windows;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,7 +11,7 @@ import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
 import editor.launch.EditorScreen;
-import editor.windows.actors.NumberField;
+import editor.scene2d.actors.NumberField;
 import net.mtrop.doom.WadFile;
 
 public class EditTileWindow extends Window {

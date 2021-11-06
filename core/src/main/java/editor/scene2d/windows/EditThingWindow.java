@@ -1,4 +1,4 @@
-package editor.windows;
+package editor.scene2d.windows;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -9,7 +9,7 @@ import core.game.logic.GameLogic;
 import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelObject;
 import editor.launch.EditorScreen;
-import editor.windows.actors.NumberField;
+import editor.scene2d.actors.NumberField;
 import net.mtrop.doom.WadFile;
 
 public class EditThingWindow extends Window {

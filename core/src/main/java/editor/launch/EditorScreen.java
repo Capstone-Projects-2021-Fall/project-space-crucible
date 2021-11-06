@@ -12,10 +12,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
-import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
 import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelData;
@@ -27,10 +27,12 @@ import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import editor.copy.CopiedThingData;
 import editor.copy.CopiedTileData;
-import editor.windows.EditThingWindow;
-import editor.windows.EditTileWindow;
-import editor.windows.FileChooserWindow;
-import editor.windows.LevelChooserWindow;
+import editor.scene2d.actors.EditorHUDActor;
+import editor.scene2d.actors.MIDINameField;
+import editor.scene2d.windows.EditThingWindow;
+import editor.scene2d.windows.EditTileWindow;
+import editor.scene2d.windows.FileChooserWindow;
+import editor.scene2d.windows.LevelChooserWindow;
 import editor.write.LevelWriter;
 import net.mtrop.doom.WadFile;
 
@@ -76,6 +78,7 @@ public class EditorScreen implements Screen {
     //UI Stuff
     public Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
+    private EditorHUDActor hud = new EditorHUDActor(new TextField("", skin), new MIDINameField("", skin));
 
     public EditorScreen() {
 
@@ -194,6 +197,9 @@ public class EditorScreen implements Screen {
 
         if (isCtrlPressed()) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+
+                level.name = hud.getLevelName().getText();
+                level.midi = hud.getMusic().getText();
 
                 try {
                     if (file == null && soloFile != null) {
@@ -375,6 +381,9 @@ public class EditorScreen implements Screen {
             }
         });
         GameLogic.loadEntities(level, true);
+        hud.getLevelName().setText(level.name);
+        hud.getMusic().setText(level.midi);
+        stage.addActor(hud);
     }
 
     public void loadNewLevel(String name, Integer level) {

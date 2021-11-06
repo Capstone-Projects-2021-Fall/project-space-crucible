@@ -1,4 +1,4 @@
-package editor.windows;
+package editor.scene2d.windows;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -11,7 +11,6 @@ import net.mtrop.doom.WadFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Objects;
 
 public class FileChooserWindow extends Window {
