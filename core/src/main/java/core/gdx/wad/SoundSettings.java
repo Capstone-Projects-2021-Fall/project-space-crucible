@@ -1,6 +1,5 @@
 package core.gdx.wad;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -9,18 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.wad.funcs.SoundFuncs;
 
-import static com.badlogic.gdx.audio.Sound.*;
-
 public class SoundSettings extends Window {
     MyGDxTest myGDxTest;
     SettingsScreen settingsScreen;
-    //public static float masterVolume = 1f;
 
     public SoundSettings(String title, Skin skin, SettingsScreen settingsScreen, Stage stage, MyGDxTest myGDxTest) {
         super(title, skin);
         setModal(false);
         this.myGDxTest=myGDxTest;
-        this.settingsScreen=new SettingsScreen(myGDxTest);
 
         Label sfxLabel = new Label("SFX: ", skin);
         add(sfxLabel);
@@ -50,7 +45,6 @@ public class SoundSettings extends Window {
                 super.clicked(event, x, y);
                 remove();
                 //settingsScreen.remove = true;
-
             }
         });
         soundEffectSlider.addListener(new ChangeListener() {
