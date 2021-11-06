@@ -24,6 +24,9 @@ public class SettingsMenu extends Window {
         Button sfxButton = new TextButton("Volume", skin);
         add(sfxButton);
         row();
+        Button changeNameButton = new TextButton("Change Player Name", skin);
+        add(changeNameButton);
+        row();
         Button backButton = new TextButton("Back", skin);
         add(backButton);
         row();
@@ -45,6 +48,14 @@ public class SettingsMenu extends Window {
                 super.clicked(event, x, y);
                 Actor volumeActor = new SoundSettings("Volume", skin, settingsScreen, stage, myGDxTest);
                 stage.addActor(volumeActor);
+            }
+        });
+        changeNameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                Actor nameChangeWindow = new NameChangeWindow("Enter player name", skin, settingsScreen, stage, myGDxTest);
+                stage.addActor(nameChangeWindow);
             }
         });
         backButton.addListener(new ClickListener() {

@@ -6,21 +6,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Null;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -34,8 +28,6 @@ import core.server.Network.RenderData;
 import core.server.Network.ServerDetails;
 import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
-import core.server.Network.ClientData;
-import core.server.Network.ServerDetails;
 import core.wad.funcs.WadFuncs;
 
 
@@ -131,7 +123,7 @@ public class GameScreen implements Screen {
         batch.enableBlending();
 
         Gdx.input.setInputProcessor(stage);
-        DeadPlayerWindow deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest);
+        DeadPlayerWindow deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
         if(GameLogic.getPlayer(playerNumber).getHealth()<=0){
             stage.addActor(deadPlayerWindow);
             deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
@@ -140,7 +132,7 @@ public class GameScreen implements Screen {
             stage.addActor(deadPlayerWindow);
             deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
         }
-        if(Gdx.input.isTouched()){
+        if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)){
             for(Actor actor : stage.getActors()){
                 if(actor.getHeight()==deadPlayerWindow.getHeight() && actor.getWidth()==deadPlayerWindow.getWidth()){
                     //normal deadPlayerWindow.remove() not working

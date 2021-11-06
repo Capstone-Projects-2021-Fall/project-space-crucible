@@ -1,6 +1,9 @@
 package core.gdx.wad;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -11,7 +14,7 @@ import core.game.logic.GameLogic;
 
 public class DeadPlayerWindow extends Window {
     MyGDxTest myGDxTest;
-    public DeadPlayerWindow(String title, Skin skin, MyGDxTest myGDxTest) {
+    public DeadPlayerWindow(String title, Skin skin, MyGDxTest myGDxTest, Stage stage, GameScreen gameScreen) {
         super(title, skin);
         setMovable(false);
         setResizable(false);
@@ -30,7 +33,7 @@ public class DeadPlayerWindow extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 GameLogic.readyChangeLevel(GameLogic.currentLevel);
-                remove(); //this remove not working for some reason
+                remove(); //TODO this remove not working for some reason. workaround on game screen
             }
         });
         titleScreenButton.addListener(new ClickListener() {
@@ -38,11 +41,12 @@ public class DeadPlayerWindow extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 try {
-                    myGDxTest.setScreen(myGDxTest.titleScreen); //null for some reason
-
-//                    TitleScreen titleScreen = new TitleScreen(myGDxTest, myGDxTest.gameLoop); //also null
-//                    myGDxTest.setScreen(titleScreen);
-                } catch (NullPointerException e) {
+                    //start menu gone
+//                    myGDxTest.setScreen(myGDxTest.titleScreen);
+                    //start menu there but crashes when you start game (IllegalThreadStateException)
+                    TitleScreen titleScreen = new TitleScreen(myGDxTest, myGDxTest.gameLoop);
+                    myGDxTest.setScreen(titleScreen);
+                } catch (IllegalThreadStateException e) {
                     e.printStackTrace();
                 }
             }

@@ -1,39 +1,58 @@
 package core.gdx.wad;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.game.logic.GameLogic;
 import core.server.Network;
 
 public class NameChangeWindow extends Window {
     MyGDxTest myGDxTest;
-    public NameChangeWindow(String title, Skin skin, MyGDxTest myGDxTest) {
+    SettingsScreen settingsScreen;
+    public int playerNumber = 1;
+    public static String playerName="Current Name";
+
+    public NameChangeWindow(String title, Skin skin, SettingsScreen settingsScreen, Stage stage, MyGDxTest myGDxTest) {
         super(title, skin);
-        TextField newName = new TextField("",skin);
+        setModal(false);
+        this.myGDxTest=myGDxTest;
+
+        TextField enterNewName = new TextField("Enter new name",skin);
+        add(enterNewName);
+        row();
+        TextField newName = new TextField("Current Name",skin);
         add(newName);
-        Button confirmNameButton = new Button();
+        row();
+        Button confirmNameButton = new TextButton("Confirm", skin);
         add(confirmNameButton);
         pack();
 
-        newName.setTextFieldListener((textField, key) -> {
+        newName.setDisabled(false);
+        newName.setText(playerName);
+
+
+        enterNewName.setTextFieldListener((textField, key) -> {
             if (key == '\n' || key == '\r') {
-                newName.setText("");
-                newName.setDisabled(true);
-                /*
-                StringBuilder sb = new StringBuilder();
-                sb.append("Player ")
-                        .append(gameScreen.playerNumber)
-                        .append(": ").append(chatField.getText());
-                qA.add(sb.toString());
-                chatLog.setItems(qA);
-//                    chatLog.appendText("Player " +(Objects.requireNonNull(GameLogic.getPlayer(0)).getTag())
-//                            + ": "+ sb + "\n");
-                chatField.setText("");
-                chatField.setDisabled(true);
-                scrollPane.setScrollPercentY(100f);
-                */
+                playerName = enterNewName.getText();
+                newName.setText(playerName);
+            }
+        });
+
+        confirmNameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                playerName = enterNewName.getText();
+                newName.setText(playerName);
+                remove();
+                //settingsScreen.remove = true;
+            }
+        });
+        enterNewName.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                enterNewName.setText("");
             }
         });
     }

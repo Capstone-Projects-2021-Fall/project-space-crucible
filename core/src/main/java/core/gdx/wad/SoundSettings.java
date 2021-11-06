@@ -66,7 +66,7 @@ public class SoundSettings extends Window {
                 }
                 if(bgmSlider.getValue()>=50){
                     for(int i=0; i<=100; i++){
-                        SoundFuncs.sequencer.setTrackMute(i,false);//mutes BGM but you can still hear drums
+                        SoundFuncs.sequencer.setTrackMute(i,false);//unmutes BGM
                     }
                 }
                 // supposed to change BGM volume
