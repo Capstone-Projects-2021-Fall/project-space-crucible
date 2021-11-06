@@ -45,7 +45,7 @@ public class A_Chase implements StateAction {
         distance.y = target.getPos().y - startY;
         float angleToTarget = distance.angleDeg();
 
-        if (distance.len() <= 64f) {
+        if (distance.len() <= 64f && caller.currentLayer == target.currentLayer) {
             caller.setState(caller.getStates()[Entity.MELEE]);
             return;
         }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import core.game.entities.*;
 import core.game.logic.tileactions.T_ChangeLevel;
 import core.level.info.LevelTile;
+import org.lwjgl.system.CallbackI;
 
 public class CollisionLogic {
 
@@ -18,7 +19,7 @@ public class CollisionLogic {
                 || !entity2.getFlag(Entity.SOLID)){
                 continue;
             }
-            if(bounds.overlaps(entity2.getBounds())){
+            if(bounds.overlaps(entity2.getBounds()) && (entity.currentLayer == entity2.currentLayer)) {
                 collidedEntity = entity2;
                 break;
             }
@@ -74,11 +75,8 @@ public class CollisionLogic {
                     if (entity.getPos().x < 0) {tilex--;}
                     if (entity.getPos().y < 0) {tiley--;}
 
-                    System.out.println("In tile " + tilex + ", " + tiley + ", " + entity.currentLayer);
-
                     //Block if solid or if you're not connected to the floor (i.e. above the floor)
                     //Don't block lower layers because you want them to walk under
-                    System.out.println("Try collide with " + levelTile.pos.x + ", " + levelTile.pos.y + ", " + levelTile.pos.layer);
                     if (levelTile.solid || (entity.currentLayer > levelTile.pos.layer
                             && (tilex != levelTile.pos.x || tiley != levelTile.pos.y))) {
                         collidedTile = levelTile;
@@ -86,7 +84,7 @@ public class CollisionLogic {
                 }
             }
         }
-        if (noBridge) {entity.bridgeLayer = -1;}
+        if (noBridge && !(entity instanceof Projectile)) {entity.bridgeLayer = -1;}
         return collidedTile;
     }
 

@@ -28,6 +28,7 @@ public class BaseMonster extends Entity {
 
     public String getSound(int index) {return sounds[index];}
 
+    public int getTarget() {return this.target;}
     public void setTarget(int target) {
         this.target = target;
     }
