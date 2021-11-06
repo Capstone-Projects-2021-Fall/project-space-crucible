@@ -117,10 +117,13 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
 
-        Gdx.input.setInputProcessor(stage);
-        PausedGameWindow pausedGameWindow = new PausedGameWindow("Paused", skin, this, myGDxTest);
-        stage.addActor(pausedGameWindow);
-        pausedGameWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
+        if(GameLogic.getPlayer(playerNumber).getHealth()<=0){
+            Gdx.input.setInputProcessor(stage);
+            PausedGameWindow pausedGameWindow = new PausedGameWindow("Paused", skin, this, myGDxTest);
+            stage.addActor(pausedGameWindow);
+            pausedGameWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
+
+        }
 
         if(isSinglePlayer){
             getAngle(true);
@@ -132,7 +135,7 @@ public class GameScreen implements Screen {
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
 //            for(Entity playerPawn : GameLogic.entityList){
 //            }
-            if(GameLogic.getPlayer(playerNumber).getHeight()>0){
+            if(GameLogic.getPlayer(playerNumber).getHealth()>0){
                 font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
                         GameLogic.getPlayer(playerNumber).getPos().x,
                         GameLogic.getPlayer(playerNumber).getPos().y);
@@ -192,7 +195,7 @@ public class GameScreen implements Screen {
                 camera.update();
                 RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
                 RenderFuncs.entityDraw(batch, renderData.entityList);
-                if(GameLogic.getPlayer(playerNumber).getHeight()>0){
+                if(GameLogic.getPlayer(playerNumber).getHealth()>0){
                     font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
                             GameLogic.getPlayer(playerNumber).getPos().x,
                             GameLogic.getPlayer(playerNumber).getPos().y);
@@ -361,14 +364,4 @@ public class GameScreen implements Screen {
     public void addChatToWindow(Network.ChatMessage chat) {
         chatWindow.addToChatLog(chat.sender + ": " + chat.message);
     }
-
-//    public void addMiniMap(){
-//        Rectangle mapTiles = new Rectangle(10,10);
-//        mapTiles.setLocation(0, (int) camera.viewportHeight);
-//        ShapeRenderer shapeRenderer = new ShapeRenderer();
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        shapeRenderer.setColor(150/255f, 150/255f, 150/255f, 1);
-//        shapeRenderer.rect(mapTiles.x, mapTiles.y, mapTiles.width, mapTiles.height);
-//        shapeRenderer.end();
-//    }
 }

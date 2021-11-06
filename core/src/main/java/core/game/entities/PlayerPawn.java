@@ -97,8 +97,6 @@ public class PlayerPawn extends Entity {
                 setState(getStates()[Entity.MISSILE]);
                 hitScanAttack(getPos().angle, 15);
                 SoundFuncs.playSound("pistol/shoot");
-            } else if (getRemainingStateTics() == -1) {
-                GameLogic.readyChangeLevel(GameLogic.currentLevel);
             }
         }
 

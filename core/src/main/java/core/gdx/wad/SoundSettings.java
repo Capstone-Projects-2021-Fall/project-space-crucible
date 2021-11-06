@@ -22,11 +22,22 @@ public class SoundSettings extends Window {
         this.myGDxTest=myGDxTest;
         this.settingsScreen=new SettingsScreen(myGDxTest);
 
+        Label sfxLabel = new Label("SFX: ", skin);
+        add(sfxLabel);
         Slider soundEffectSlider = new Slider(0, 100, 1, false, skin);
         soundEffectSlider.setValue(50);
         add(soundEffectSlider);
-        Label volumeValue = new Label("50", skin);
-        add(volumeValue);
+        Label sfxVolumeValue = new Label("50", skin);
+        add(sfxVolumeValue);
+        row();
+        Label bgmLabel = new Label("BGM: ", skin);
+        add(bgmLabel);
+        Slider bgmSlider = new Slider(0, 100, 1, false, skin);
+        bgmSlider.setValue(50);
+        add(bgmSlider);
+        Label bgmVolumeValue = new Label("50", skin);
+        add(bgmVolumeValue);
+        row();
         Button confirmButton = new TextButton("Confirm", skin);
         add(confirmButton);
         row();
@@ -37,7 +48,6 @@ public class SoundSettings extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                System.out.println("Confirm Button\n");
                 remove();
                 //settingsScreen.remove = true;
 
@@ -46,9 +56,16 @@ public class SoundSettings extends Window {
         soundEffectSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("Volume Changed to " +soundEffectSlider.getValue() +"\n");
-                volumeValue.setText((int) soundEffectSlider.getValue());
+                sfxVolumeValue.setText((int) soundEffectSlider.getValue());
                 SoundFuncs.volume=soundEffectSlider.getValue()/100f;
+            }
+        });
+        bgmSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("BGM volume Changed to " +bgmSlider.getValue() +"\n");
+                bgmVolumeValue.setText((int) bgmSlider.getValue());
+                //SoundFuncs.volume=soundEffectSlider.getValue()/100f;
             }
         });
     }

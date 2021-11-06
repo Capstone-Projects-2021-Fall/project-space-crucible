@@ -1,21 +1,24 @@
 package core.gdx.wad;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import core.game.logic.GameLogic;
 
 
 public class PausedGameWindow extends Window {
     MyGDxTest myGDxTest;
     public PausedGameWindow(String title, Skin skin, GameScreen gameScreen, MyGDxTest myGDxTest) {
         super(title, skin);
-        setModal(false);
-        setMovable(true);
+        setModal(true);
+        setMovable(false);
         setResizable(false);
-        this.myGDxTest = myGDxTest;
+        //this.myGDxTest = myGDxTest;
         //this.settingsScreen=new SettingsScreen(myGDxTest); //makes the game super slow
 
         Button restartButton = new TextButton("Restart Level", skin);
@@ -30,7 +33,8 @@ public class PausedGameWindow extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                //myGDxTest.gameLoop.start();
+                GameLogic.readyChangeLevel(GameLogic.currentLevel);
+                remove();
             }
         });
 
@@ -39,8 +43,10 @@ public class PausedGameWindow extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 try {
-                    //myGDxTest.setScreen(myGDxTest.titleScreen); //null
-                    myGDxTest.setScreen(new TitleScreen(myGDxTest, myGDxTest.gameLoop));
+//                    myGDxTest.setScreen(myGDxTest.titleScreen); //null
+
+//                    TitleScreen titleScreen = new TitleScreen(myGDxTest, myGDxTest.gameLoop); //also null
+//                    myGDxTest.setScreen(titleScreen);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
