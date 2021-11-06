@@ -208,12 +208,7 @@ public class GameScreen implements Screen {
                 client.getCameraData(getCameraData());
             }
             catch (NullPointerException n) {
-                camera.position.set(getPlayer(1).getPos().x + getPlayer(1).getWidth() / (float) 2.0,
-                        getPlayer(1).getPos().y + getPlayer(1).getHeight() / (float) 2.0, 0);
-                camera.update();
-                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
-                RenderFuncs.entityDraw(batch, renderData.entityList);
-
+                return;
             }
         }
 
