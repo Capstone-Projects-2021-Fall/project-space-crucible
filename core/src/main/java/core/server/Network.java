@@ -55,6 +55,11 @@ public class Network {
         kryo.register(CheckConnection.class);
         kryo.register(ConnectionType.class);
         kryo.register(PromptConnectionType.class);
+        kryo.register(WadFile.class);
+        kryo.register(OpenLobby.class);
+        kryo.register(Ping.class);
+        kryo.register(SendServerInfo.class);
+        kryo.register(CreateWadFile.class);
         kryo.register(GameEntity.class);
         kryo.register(State.class);
 
@@ -100,6 +105,8 @@ public class Network {
         kryo.register(String[].class);
         kryo.register(java.util.HashSet.class);
         kryo.register(java.util.LinkedList.class);
+        kryo.register(byte[].class);
+
     }
 
     //Send this to the CLIENT
@@ -196,4 +203,27 @@ public class Network {
         public ConnectionType type;
     }
     public static class PromptConnectionType{}
+
+    public static class OpenLobby{
+        public int tcpPort;
+    }
+    public static class SendServerInfo{
+        public int tcpPort;
+    }
+    public static class Ping{
+        public boolean getAddonFiles;
+        public boolean sendingFiles;
+        public int masterClientThatNeedsTheFiles;
+    }
+    public static class CreateWadFile{
+        public String levelFileName;
+        public boolean createFile;
+        public int sendFileTo;
+    }
+    public static class WadFile{
+        public byte[] levelFile;
+        public String levelFileName;
+        public int levelFileSize;
+        public int sendFileTo;
+    }
 }

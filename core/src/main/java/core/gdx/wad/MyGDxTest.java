@@ -2,7 +2,6 @@ package core.gdx.wad;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
 import core.wad.funcs.EntityFuncs;
@@ -13,6 +12,7 @@ import net.mtrop.doom.WadFile;
 import org.checkerframework.checker.units.qual.A;
 import org.lwjgl.system.CallbackI;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -23,10 +23,8 @@ import java.util.ArrayList;
 public class MyGDxTest extends Game {
 
     public TitleScreen titleScreen;
-    public GameScreen gameScreen;
     public SettingsScreen settingsScreen;
-    public static ArrayList<String> addonPaths = new ArrayList<>();
-    public static ArrayList<String> addonList = new ArrayList<>();
+    public static ArrayList<File> addons = new ArrayList<>(); //Addons has all the files host added
     public static ArrayList<String> addonHashes = new ArrayList<>();
 
     //This is the thread that runs the Game Logic. It is separate from the rendering code.
@@ -64,13 +62,13 @@ public class MyGDxTest extends Game {
             Array<WadFile> wads = new Array<>();
             wads.add(file);
 
-            for (String s : addonPaths) {
+            for (File f : addons) {
 
-                System.out.println(s.substring(s.lastIndexOf("/")+1));
+                System.out.println(f.getName());
 
                 try {
-                    wads.add(new WadFile(s));
-                } catch (IOException e) {System.out.println("Wad " + s + " not found.");}
+                    wads.add(new WadFile(f));
+                } catch (IOException e) {System.out.println("Wad " + f.getAbsolutePath() + " not found.");}
             }
 
             SoundFuncs.loadMIDIs(wads);

@@ -1,14 +1,11 @@
 package core.gdx.wad;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.server.SpaceClient;
 import editor.launch.EditorScreen;
 
@@ -23,44 +20,29 @@ public class StartMenu extends Actor{
         this.myGDxTest=myGDxTest;
         this.settingsScreen=new SettingsScreen(myGDxTest);
 
-        ImageButton.ImageButtonStyle startStyle = new ImageButton.ImageButtonStyle();
-        startStyle.over = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/start.png")));
-        startStyle.up = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/startnobg.png")));
-        Button startButton = new ImageButton(startStyle);
-        startButton.setBounds((int)((Gdx.graphics.getWidth()-200)/ 2),(int)((Gdx.graphics.getHeight())/ 2), 200, 50);
-        stage.addActor(startButton);
+        CreateImageButton startButton = new CreateImageButton("buttons/start.png", "buttons/startnobg.png");
+        startButton.button.setBounds((int)((Gdx.graphics.getWidth()-200)/ 2),(int)((Gdx.graphics.getHeight())/ 2), 200, 50);
+        stage.addActor(startButton.button);
 
-        ImageButton.ImageButtonStyle coopStyle = new ImageButton.ImageButtonStyle();
-        coopStyle.over = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/coop.png")));
-        coopStyle.up = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/coopnobg.png")));
-        Button coopButton = new ImageButton(coopStyle);
-        coopButton.setBounds((int)((Gdx.graphics.getWidth() - 150)/ 2), (int)((Gdx.graphics.getHeight() - 100)/ 2), 150, 50);
-        stage.addActor(coopButton);
+        CreateImageButton coopButton = new CreateImageButton("buttons/coop.png", "buttons/coopnobg.png");
+        coopButton.button.setBounds((int)((Gdx.graphics.getWidth() - 150)/ 2), (int)((Gdx.graphics.getHeight() - 100)/ 2), 150, 50);
+        stage.addActor(coopButton.button);
 
-        ImageButton.ImageButtonStyle settingsStyle = new ImageButton.ImageButtonStyle();
-        settingsStyle.over = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/settings.png")));
-        settingsStyle.up = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/settingsnobg.png")));
-        Button settingsButton = new ImageButton(settingsStyle);
-        settingsButton.setBounds((int)((Gdx.graphics.getWidth() - 200)/ 2), (int)((Gdx.graphics.getHeight() - 200)/ 2), 200, 50);
-        stage.addActor(settingsButton);
+        CreateImageButton settingsButton = new CreateImageButton("buttons/settings.png", "buttons/settingsnobg.png");
+        settingsButton.button.setBounds((int)((Gdx.graphics.getWidth() - 200)/ 2), (int)((Gdx.graphics.getHeight() - 200)/ 2), 200, 50);
+        stage.addActor(settingsButton.button);
 
-        ImageButton.ImageButtonStyle levelEditorStyle = new ImageButton.ImageButtonStyle();
-        levelEditorStyle.up = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/leveleditornobg.png")));
-        levelEditorStyle.over = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/leveleditor.png")));
-        Button levelEditorButton = new ImageButton(levelEditorStyle);
-        levelEditorButton.setBounds((int)((Gdx.graphics.getWidth() - 250)/ 2), (int)((Gdx.graphics.getHeight() - 320)/ 2), 250, 60);
-        stage.addActor(levelEditorButton);
+        CreateImageButton levelEditorButton = new CreateImageButton("buttons/leveleditor.png", "buttons/leveleditornobg.png");
+        levelEditorButton.button.setBounds((int)((Gdx.graphics.getWidth() - 250)/ 2), (int)((Gdx.graphics.getHeight() - 320)/ 2), 250, 60);
+        stage.addActor(levelEditorButton.button);
 
-        ImageButton.ImageButtonStyle exitStyle = new ImageButton.ImageButtonStyle();
-        exitStyle.up = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/exitnobg.png")));
-        exitStyle.over = new TextureRegionDrawable(new TextureRegion( new Texture("buttons/exit.png")));
-        Button exitButton = new ImageButton(exitStyle);
-        exitButton.setBounds((int)((Gdx.graphics.getWidth() - 150)/ 2), (int)((Gdx.graphics.getHeight() - 420)/ 2), 150, 50);
-        stage.addActor(exitButton);
+        CreateImageButton exitButton = new CreateImageButton("buttons/exit.png", "buttons/exitnobg.png");
+        exitButton.button.setBounds((int)((Gdx.graphics.getWidth() - 150)/ 2), (int)((Gdx.graphics.getHeight() - 420)/ 2), 150, 50);
+        stage.addActor(exitButton.button);
 
+        Button buttons[] = {startButton.button, coopButton.button, settingsButton.button, exitButton.button, levelEditorButton.button};
 
-        Button buttons[] = {startButton, coopButton, settingsButton, exitButton, levelEditorButton};
-        startButton.addListener(new ClickListener() {
+        startButton.button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -72,13 +54,13 @@ public class StartMenu extends Actor{
                 stage.addActor(window);
             }
         });
-        coopButton.addListener(new ClickListener() {
+        coopButton.button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                GameScreen gameScreen= new GameScreen(null, false);
+                GameScreen gameScreen= new GameScreen(null, false, myGDxTest);
                 client = new SpaceClient(gameScreen, startMenu);
-                if(client.getClient() == null) {
+                if(client.getMasterClient() == null) {
                     Dialog error = new Dialog("Error", skin);
                     error.text("Error connecting to the server!\nTry Again Later.");
                     error.setBounds((int)((Gdx.graphics.getWidth() - 250)/ 2), (int)((Gdx.graphics.getHeight() - 70) / 2), 250, 100);
@@ -177,7 +159,7 @@ public class StartMenu extends Actor{
                 });
             }
         });
-        settingsButton.addListener(new ClickListener() {
+        settingsButton.button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -187,7 +169,7 @@ public class StartMenu extends Actor{
             }
         });
 
-        levelEditorButton.addListener(new ClickListener() {
+        levelEditorButton.button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -197,7 +179,7 @@ public class StartMenu extends Actor{
             }
         });
 
-        exitButton.addListener(new ClickListener() {
+        exitButton.button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);

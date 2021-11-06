@@ -71,8 +71,9 @@ public class GameScreen implements Screen {
     boolean remove = false;
 
 
-    public GameScreen(Thread gameLoop, boolean isSinglePlayer) {
+    public GameScreen(Thread gameLoop, boolean isSinglePlayer, MyGDxTest myGdxTest) {
         this.gameLoop = gameLoop;
+        this.myGDxTest = myGdxTest;
         GameLogic.loadEntities(GameLogic.currentLevel, false);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
@@ -89,7 +90,7 @@ public class GameScreen implements Screen {
             playerNumber = 1;
             gameLoop.start();
         } else {
-            playerNumber = clientData.idToPlayerNum.indexOf(client.getClient().getID());
+            playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
             System.out.println("I am player " + playerNumber);
         }
         if(!isSinglePlayer) {
@@ -102,7 +103,7 @@ public class GameScreen implements Screen {
                         startGame = true;
                         Network.StartGame startGame = new Network.StartGame();
                         startGame.startGame = true;
-                        client.getClient().sendTCP(startGame);
+                        client.getGameClient().sendTCP(startGame);
                         addChatWindow();
                         play.removeListener(this);
                     }
@@ -160,7 +161,7 @@ public class GameScreen implements Screen {
                     y -= 50;
                 }
                 if (serverDetails.lobbyCode != null && !remove) {
-                    if (client.getClient().getID() == 1) {
+                    if (client.getGameClient().getID() == 1) {
                         lobbyCode = new Label("Lobby Code\n" + serverDetails.lobbyCode + "\nRCON Pass:\n" + serverDetails.rconPass, uiSkin);
                     } else {
                         lobbyCode = new Label("Lobby Code\n" + serverDetails.lobbyCode, uiSkin);
@@ -285,7 +286,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        client.getClient().stop();
+        client.getGameClient().stop();
         System.exit(0);
     }
 
@@ -352,6 +353,10 @@ public class GameScreen implements Screen {
     }
 
     public void updatePlayerNumber() {
-        playerNumber = clientData.idToPlayerNum.indexOf(client.getClient().getID());
+        playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
+    }
+
+    public void changeScreen(){
+        myGDxTest.setScreen(myGDxTest.settingsScreen);
     }
 }

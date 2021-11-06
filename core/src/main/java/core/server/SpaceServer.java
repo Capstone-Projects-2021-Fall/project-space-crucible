@@ -1,6 +1,7 @@
 package core.server;
 
 import com.badlogic.gdx.Game;
+import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -21,6 +22,8 @@ public class SpaceServer implements Listener {
 
     //Server Object
     Server server;
+    Client serverClient;
+    public static String ip = "localhost";
     public static Network.ClientData clientData;
     public static HashSet<Integer> connected = new HashSet<>();
     public static HashSet<Integer> rconConnected = new HashSet<>();
@@ -60,6 +63,8 @@ public class SpaceServer implements Listener {
         GameLogic.isSinglePlayer = false;
 
         //Load prepare all Entity logic, open game screen and initiate game loop.
+        WadFuncs.loadStates();
+        WadFuncs.setEntityTypes();
         WadFuncs.loadLevelEffects();
         Network.register(server);
 
@@ -78,7 +83,6 @@ public class SpaceServer implements Listener {
                     server.sendToTCP(c.getID(), start);
                     packetsSent += server.getConnections().size();
                 }
-
             }
             //When the client sends a packet to the server handle it
             public void received(Connection c, Object packetData) {
@@ -111,11 +115,9 @@ public class SpaceServer implements Listener {
                         gameLoop.start();
                     }
                 }
-
                 else if(packetData instanceof Network.CameraData) {
                     connection.cameraData = (Network.CameraData) packetData;
                 }
-
                 else if(packetData instanceof Network.ChatMessage) {
                     server.sendToAllTCP(packetData);
                     packetsSent += server.getConnections().size();
@@ -124,56 +126,33 @@ public class SpaceServer implements Listener {
                             + ((Network.ChatMessage) packetData).message
                     );
                 }
-
-
                 //Send level data upon creation
                 else if (packetData instanceof Network.LevelInfo) {
                     if (!GameLogic.levels.containsKey(((Network.LevelInfo) packetData).levelNumber)) {
                         GameLogic.levels.put(((Network.LevelInfo) packetData).levelNumber, new LevelData());
                         GameLogic.levels.get(((Network.LevelInfo) packetData).levelNumber).levelnumber = ((Network.LevelInfo) packetData).levelNumber;
                     }
-
                     GameLogic.levels.get(((Network.LevelInfo) packetData).levelNumber)
                             .name = (((Network.LevelInfo) packetData).levelName);
-
                     GameLogic.levels.get(((Network.LevelInfo) packetData).levelNumber)
                             .midi = (((Network.LevelInfo) packetData).levelMIDI);
                 }
-
                 else if (packetData instanceof Network.AddTile) {
                     if (!GameLogic.levels.containsKey(((Network.AddTile) packetData).levelNumber)) {
                         GameLogic.levels.put(((Network.AddTile) packetData).levelNumber, new LevelData());
                         GameLogic.levels.get(((Network.AddTile) packetData).levelNumber).levelnumber = ((Network.LevelInfo) packetData).levelNumber;
                     }
-
                     GameLogic.levels.get(((Network.AddTile) packetData).levelNumber).getTiles()
                             .add(((Network.AddTile) packetData).levelTile);
                 }
-
                 else if (packetData instanceof Network.AddObject) {
                     if (!GameLogic.levels.containsKey(((Network.AddObject) packetData).levelNumber)) {
                         GameLogic.levels.put(((Network.AddObject) packetData).levelNumber, new LevelData());
                         GameLogic.levels.get(((Network.AddObject) packetData).levelNumber).levelnumber = ((Network.LevelInfo) packetData).levelNumber;
                     }
-
                     GameLogic.levels.get(((Network.AddObject) packetData).levelNumber).getObjects()
                             .add(((Network.AddObject) packetData).levelObject);
                 }
-
-                else if (packetData instanceof Network.GameEntity) {
-                    GameLogic.entityTable.put(((Network.GameEntity) packetData).name, ((Network.GameEntity) packetData).spawner);
-                    if (((Network.GameEntity) packetData).mapID > -1) {
-                        GameLogic.mapIDTable.put(((Network.GameEntity) packetData).mapID, ((Network.GameEntity) packetData).spawner);
-                        System.out.println(((Network.GameEntity) packetData).mapID);
-                    }
-                }
-
-                else if (packetData instanceof Network.State) {
-                    System.out.println("adding state");
-                    GameLogic.stateList.add(((Network.State) packetData).state);
-                    System.out.println("StateList: " + GameLogic.stateList.size());
-                }
-
                 else if (packetData instanceof Network.CheckConnection) {
                     if (((Network.CheckConnection) packetData).type == Network.ConnectionType.PLAYER) {
                         System.out.println("Client connected to game server: " + c.getID());
@@ -184,11 +163,9 @@ public class SpaceServer implements Listener {
                         System.out.println("Player connected " + idToPlayerNum.indexOf(c.getID()));
 
                         if (gameStartedByHost) {
-
                             for (LevelObject lo : GameLogic.currentLevel.getObjects()) {
-
                                 if (lo.type == 0 && lo.tag == idToPlayerNum.indexOf(c.getID())) {
-                                    GameLogic.newEntityQueue.addLast(GameLogic.mapIDTable.get(0).spawnEntity(
+                                    GameLogic.newEntityQueue.addLast(new PlayerPawn(
                                             new Entity.Position(lo.xpos, lo.ypos, lo.angle),
                                             idToPlayerNum.indexOf(c.getID())
                                     ));
@@ -196,14 +173,13 @@ public class SpaceServer implements Listener {
                                 }
                             }
                         }
-
                         server.sendToAllTCP(clientData);
                         packetsSent += server.getConnections().size();
-                    } else if (((Network.CheckConnection) packetData).type == Network.ConnectionType.RCON) {
+                    }
+                    else if (((Network.CheckConnection) packetData).type == Network.ConnectionType.RCON) {
                         rconConnected.add(c.getID());
                     }
                 }
-
                 //RCON Command
                 else if (packetData instanceof Network.RCONMessage) {
                     handleRCON(((Network.RCONMessage) packetData).message);
@@ -216,6 +192,12 @@ public class SpaceServer implements Listener {
                     disconnected.add(c.getID());
                     connected.remove(c.getID());
                     clientData.connected = connected;
+                    if(connected.size() == 0){
+                        //Ping the master server that this server is empty
+                        Network.OpenLobby openLobby = new Network.OpenLobby();
+                        openLobby.tcpPort = tcpPort;
+                        serverClient.sendTCP(openLobby);
+                    }
                     //clientData.idToPlayerNum = idToPlayerNum;
                     server.sendToAllTCP(clientData);
                     packetsSent += server.getConnections().size();
@@ -227,7 +209,29 @@ public class SpaceServer implements Listener {
         });
         server.bind(tcpPort);
         server.start();
-        System.out.println("Server is running");
+
+        //Start a connection to the master server as a client
+        serverClient = new Client(8192, 8192);
+        serverClient.start();
+        //register the packets
+        Network.register(serverClient);
+
+        serverClient.addListener(new ThreadedListener(new Listener() {
+            public void connected(Connection connection) {
+                Network.SendServerInfo serverInfo = new Network.SendServerInfo();
+                serverInfo.tcpPort = tcpPort;
+                serverClient.sendTCP(serverInfo);
+            }
+            public void received (Connection connection, Object packetData) {
+            }
+
+        }));
+        try {
+            serverClient.connect(5000, ip, Network.tcpPort);
+        } catch (IOException e) {
+            System.out.println("Master Server is not running!");
+            serverClient = null;
+        }
     }
 
     public static class PlayerConnection extends Connection{

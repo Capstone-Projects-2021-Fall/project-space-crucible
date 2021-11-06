@@ -52,7 +52,7 @@ public class ChatWindow extends com.badlogic.gdx.scenes.scene2d.ui.Window {
                 Network.ChatMessage chat = new Network.ChatMessage();
                 chat.sender = "Player " + gameScreen.playerNumber;
                 chat.message = chatField.getText();
-                gameScreen.client.getClient().sendTCP(chat);
+                gameScreen.client.getGameClient().sendTCP(chat);
                 chatField.setText("");
                 chatField.setDisabled(true);
                 scrollPane.setScrollPercentY(100f);
