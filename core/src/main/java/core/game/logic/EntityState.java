@@ -11,12 +11,10 @@ public class EntityState {
     private Integer duration;
     private Integer nextState;
     private StateAction action;
-    private Integer index;
 
     public EntityState(){}
 
-    public EntityState(Integer index, String spriteName, Character frame, Integer duration, Integer nextState, StateAction action) {
-        this.index = index;
+    public EntityState(String spriteName, Character frame, Integer duration, Integer nextState, StateAction action) {
         this.spriteName = spriteName;
         this.frame = frame;
         this.duration = duration;
@@ -37,8 +35,13 @@ public class EntityState {
     public Integer getNextState() {
         return nextState;
     }
+    public void setNextState(int next) {nextState = next;}
 
     public StateAction getAction() {return action;}
 
-    public Integer getIndex() {return index;}
+    public String toString() {
+        return spriteName + " " + frame + " " + duration + " "
+                + (action == null ?  "null" : action.getClass().getSimpleName())
+                + "\tNext: " + nextState;
+    }
 }

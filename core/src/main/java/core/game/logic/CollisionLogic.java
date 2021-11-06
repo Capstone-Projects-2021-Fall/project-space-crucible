@@ -72,7 +72,8 @@ public class CollisionLogic {
                 if(entity2.getBounds().contains(xpos, ypos)){
                     if (attack) {
                         GameLogic.newEntityQueue.addLast(
-                                new Blood(new Entity.Position(xpos, ypos, 0)));
+                                GameLogic.entityTable.get("Blood")
+                                        .spawnEntity(new Entity.Position(xpos, ypos, 0f), 0));
                     }
                     return entity2;
                 }
@@ -93,7 +94,8 @@ public class CollisionLogic {
                     if (t.solid) {
                         if (attack) {
                             GameLogic.newEntityQueue.addLast(
-                                    new BulletPuff(new Entity.Position(xpos, ypos, 0)));
+                                    GameLogic.entityTable.get("BulletPuff")
+                                            .spawnEntity(new Entity.Position(xpos, ypos, 0f), 0));
                         }
                         return null;
                     }

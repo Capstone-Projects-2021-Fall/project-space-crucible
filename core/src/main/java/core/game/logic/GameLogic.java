@@ -30,12 +30,14 @@ public class GameLogic {
     public static ArrayList<Entity> entityList = new ArrayList<>();
     final public static Queue<Entity> newEntityQueue = new Queue<>();
     final public static Queue<Entity> deleteEntityQueue = new Queue<>();
-    final public static ArrayList<EntityState> stateList = new ArrayList<>();
-    final public static ArrayList<Class<? extends Entity>> entityType = new ArrayList<>();
+    final public static LinkedList<EntityState> stateList = new LinkedList<>();
+    final public static Map<String, EntitySpawner> entityTable = new HashMap<>();
+    final public static Map<Integer, EntitySpawner> mapIDTable = new HashMap<>();
     final public static Map<Integer, LevelData> levels = new HashMap<>();
     final public static ArrayList<TileAction> effectList = new ArrayList<>();
     public static LevelData currentLevel = null;
     public static Server server = null;
+    public static SpaceServer spaceServer = null;
     static boolean goingToNextLevel = false;
     static LevelData nextLevel = null;
     public static boolean switchingLevels = false;
@@ -61,6 +63,7 @@ public class GameLogic {
             Network.MIDIData midi = new Network.MIDIData();
             midi.midi = currentLevel.getMIDI();
             server.sendToAllTCP(midi);
+            spaceServer.packetsSent += server.getConnections().size();
         }
         gameTimer = new Timer();
         gameTimer.schedule( new TimerTask() {
@@ -105,8 +108,9 @@ public class GameLogic {
             for (Connection c : server.getConnections()) {
                 RenderData renderData = new RenderData();
                 renderData.entityList = entitiesInsideView(c);
-                renderData.playerPawn = getPlayer(c.getID());
+                renderData.playerPawn = getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()));
                 server.sendToTCP(c.getID(), renderData);
+                spaceServer.packetsSent++;
             }
         }
 
@@ -124,9 +128,17 @@ public class GameLogic {
         } else {
             switchingLevels = true;
             if (!isSinglePlayer) {
+                System.out.println("Size before: " + SpaceServer.idToPlayerNum.size());
+                SpaceServer.idToPlayerNum.removeIf(integer -> (!SpaceServer.connected.contains(integer) && integer != -1));
+                SpaceServer.clientData.idToPlayerNum = SpaceServer.idToPlayerNum;
+                server.sendToAllTCP(SpaceServer.clientData);
+                spaceServer.packetsSent += server.getConnections().size();
+                System.out.println("Size after: " + SpaceServer.idToPlayerNum.size());
                 Network.LevelChange lc = new Network.LevelChange();
+                System.out.println("Going to level " + nextLevel.getLevelnumber());
                 lc.number = nextLevel.getLevelnumber();
                 server.sendToAllTCP(lc);
+                spaceServer.packetsSent += server.getConnections().size();
             }
             changeLevel(nextLevel);
         }
@@ -148,18 +160,17 @@ public class GameLogic {
 
                 System.out.println("Server IS " + (server == null ? "" : "NOT") +  " null.");
 
-                if (server != null && obj.tag > server.getConnections().size()) {
+                if (server != null && obj.tag > SpaceServer.connected.size()) {
                     System.out.println("Skipping player " + obj.tag + " because they don't exist.");
                     continue;
                 }
             }
 
             try {
-                entityList.add(entityType.get(obj.type)
-                        .getConstructor(Entity.Position.class, int.class)
-                        .newInstance(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag));
+                entityList.add(GameLogic.mapIDTable.get(obj.type)
+                        .spawnEntity(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag));
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Unknown Entity with map ID " + obj.type);
             }
         }
     }
@@ -195,6 +206,7 @@ public class GameLogic {
             Network.MIDIData midi = new Network.MIDIData();
             midi.midi = level.getMIDI();
             server.sendToAllTCP(midi);
+            spaceServer.packetsSent += server.getConnections().size();
         }
         goingToNextLevel = false;
         switchingLevels = false;
@@ -229,6 +241,7 @@ public class GameLogic {
     public static ArrayList<Entity> entitiesInsideView(Connection c) {
         ArrayList<Entity> inside = new ArrayList<>();
         Network.CameraData player = ((SpaceServer.PlayerConnection)c).cameraData;
+        int playerNum = SpaceServer.idToPlayerNum.indexOf(c.getID());
         try {
             Rectangle playerview = new Rectangle(player.camerapositon.x, player.camerapositon.y, player.width, player.hight);
             for (Entity e : entityList) {
@@ -237,11 +250,11 @@ public class GameLogic {
                 }
             }
 
-            if (!inside.contains(getPlayer(c.getID()))) {
-                inside.add(getPlayer(c.getID()));
+            if (!inside.contains(getPlayer(playerNum))) {
+                inside.add(getPlayer(playerNum));
             }
         } catch(NullPointerException n) {
-            inside.add(getPlayer(c.getID()));
+            inside.add(getPlayer(playerNum));
         }
         return inside;
     }
@@ -250,6 +263,7 @@ public class GameLogic {
         Network.SoundData soundData = new Network.SoundData();
         soundData.sound = name;
         server.sendToAllTCP(soundData);
+        spaceServer.packetsSent += server.getConnections().size();
     }
 }
 

@@ -9,7 +9,6 @@ def os = System.properties['os.name'].toLowerCase()
 
 dependencies {
 	implementation project(':core')
-	implementation project(':editor')
 	if (os.contains('mac')) {
 		implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
 		implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"

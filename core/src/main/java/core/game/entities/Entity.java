@@ -1,20 +1,12 @@
 package core.game.entities;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import core.game.logic.CollisionLogic;
 import core.game.logic.EntityState;
 import core.game.logic.GameLogic;
-import core.wad.funcs.GameSprite;
-import net.mtrop.doom.WadFile;
 
-import java.nio.channels.FileLock;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
-public abstract class Entity {
+public class Entity {
 
     final public static int IDLE = 0;
     final public static int WALK = 1;
@@ -52,23 +44,17 @@ public abstract class Entity {
     private int width;
     private int height;
     protected EntityState currentState;
+    protected int currentStateIndex;
     protected int remainingStateTics;
     private Integer[] states;
-    private int tag;
+    protected int tag;
     private Rectangle bound;
     public long flags;
-
-
-
-    //Used for collision detection to determine where the monster should go next.
-    //Upon colliding in one way, the monster changes movement and moves the opposite way until there is no obstacle
-    public boolean hitx = false;
-    public boolean hity = false;
 
     public Entity(){}
 
     //Like sprites, each state is only stored once in a global ArrayList, which is memory-efficient.
-    public Entity (int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags) {
+    public Entity (String name, int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags) {
         this.health = health;
         this.pos = pos;
         this.speed = speed;
@@ -130,6 +116,7 @@ public abstract class Entity {
         }
 
         currentState = GameLogic.stateList.get(state);
+        currentStateIndex = state;
         remainingStateTics = currentState.getDuration();
 
         if (currentState.getAction() != null) {currentState.getAction().run(this, null);}
@@ -138,7 +125,7 @@ public abstract class Entity {
     //Damage this Entity. Set painstate if non-lethal, deathstate if lethal.
     public void takeDamage(Entity cause, int damage) {
 
-        if (currentState.getIndex() > getStates()[DIE]) {return;}
+        if (currentStateIndex >= getStates()[DIE]) {return;}
 
         health -= damage;
 

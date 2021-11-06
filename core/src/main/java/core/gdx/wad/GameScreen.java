@@ -13,6 +13,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Null;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -26,6 +34,10 @@ import core.server.Network.RenderData;
 import core.server.Network.ServerDetails;
 import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
+import core.server.Network.ClientData;
+import core.server.Network.ServerDetails;
+import core.wad.funcs.WadFuncs;
+
 
 public class GameScreen implements Screen {
 
@@ -37,7 +49,7 @@ public class GameScreen implements Screen {
     ServerDetails serverDetails = new ServerDetails();
     ChatWindow chatWindow;
 
-    int playerNumber = 1;
+    public int playerNumber = 0;
 
     //screen
     OrthographicCamera camera;
@@ -56,16 +68,16 @@ public class GameScreen implements Screen {
     //graphics
     SpriteBatch batch;
     Stage lobbyStage;
-    Texture background = new Texture("spaceBackground.png");
     Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
     TextButton play = new TextButton("Start Game", uiSkin);
     public boolean startGame = false;
-    TextButton lobbyCode;
+    Label lobbyCode;
     boolean remove = false;
 
 
-    public GameScreen(Thread gameLoop, boolean isSinglePlayer) {
+    public GameScreen(Thread gameLoop, boolean isSinglePlayer, MyGDxTest myGdxTest) {
         this.gameLoop = gameLoop;
+        this.myGDxTest = myGdxTest;
         GameLogic.loadEntities(GameLogic.currentLevel, false);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
@@ -79,9 +91,11 @@ public class GameScreen implements Screen {
     public void show() {
         SoundFuncs.stopMIDI();
         if (isSinglePlayer) {
+            playerNumber = 1;
             gameLoop.start();
         } else {
-            playerNumber = client.getClient().getID();
+            playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
+            System.out.println("I am player " + playerNumber);
         }
         if(!isSinglePlayer) {
             if (playerNumber == 1) {
@@ -93,7 +107,7 @@ public class GameScreen implements Screen {
                         startGame = true;
                         Network.StartGame startGame = new Network.StartGame();
                         startGame.startGame = true;
-                        client.getClient().sendTCP(startGame);
+                        client.getGameClient().sendTCP(startGame);
                         addChatWindow();
                         play.removeListener(this);
                     }
@@ -141,7 +155,7 @@ public class GameScreen implements Screen {
             camera.position.set(GameLogic.getPlayer(1).getPos().x + GameLogic.getPlayer(1).getWidth() / (float) 2.0,
                     GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight() / (float) 2.0, 0);
             camera.update();
-            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
+            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
 
             if(GameLogic.getPlayer(playerNumber).getHealth()>0){
@@ -168,19 +182,23 @@ public class GameScreen implements Screen {
                 //TODO after testing in single player, add change tag here
                 lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
                 lobbyStage.getBatch().begin();
-                lobbyStage.getBatch().draw(background, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
+                lobbyStage.getBatch().draw(WadFuncs.LOBBYSCREEN, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
                 int x = 100;
                 int y = 400;
-                for (int element : clientData.connected) {
-                    String clientId = "Player " + element;
+                for (int element : clientData.idToPlayerNum) {
+                    if (element == -1) {continue;} //Skip dummy
+                    String clientId = "Player " + clientData.idToPlayerNum.indexOf(element);
                     TextButton player = new TextButton(clientId, uiSkin);
                     player.setBounds(x, y, 80, 50);
                     lobbyStage.addActor(player);
                     y -= 50;
                 }
                 if (serverDetails.lobbyCode != null && !remove) {
-                    lobbyCode = new TextButton("Lobby Code\n" + serverDetails.lobbyCode, uiSkin);
-                    lobbyCode.setSize(100, 60);
+                    if (client.getGameClient().getID() == 1) {
+                        lobbyCode = new Label("Lobby Code\n" + serverDetails.lobbyCode + "\nRCON Pass:\n" + serverDetails.rconPass, uiSkin);
+                    } else {
+                        lobbyCode = new Label("Lobby Code\n" + serverDetails.lobbyCode, uiSkin);
+                    }
                     lobbyStage.addActor(lobbyCode);
                     remove = true;
                 }
@@ -199,11 +217,15 @@ public class GameScreen implements Screen {
             }
             getAngle(false);
 
+            if (GameLogic.currentLevel == null) {
+                batch.end();
+                return;
+            }
             try {
                 camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
                 camera.update();
-                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
+                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
                 RenderFuncs.entityDraw(batch, renderData.entityList);
                 if(GameLogic.getPlayer(playerNumber).getHealth()>0){
                     font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
@@ -225,12 +247,7 @@ public class GameScreen implements Screen {
                 client.getCameraData(getCameraData());
             }
             catch (NullPointerException n) {
-                camera.position.set(getPlayer(1).getPos().x + getPlayer(1).getWidth() / (float) 2.0,
-                        getPlayer(1).getPos().y + getPlayer(1).getHeight() / (float) 2.0, 0);
-                camera.update();
-                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
-                RenderFuncs.entityDraw(batch, renderData.entityList);
-
+                return;
             }
         }
 
@@ -289,9 +306,9 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
-        if (startGame) {
-            stage.getViewport().update(width, height);
-        }
+//        if (startGame) {
+//            stage.getViewport().update(width, height);
+//        }
     }
 
     @Override
@@ -311,7 +328,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        client.getClient().stop();
+        client.getGameClient().stop();
         System.exit(0);
     }
 
@@ -356,8 +373,10 @@ public class GameScreen implements Screen {
     private PlayerPawn getPlayer(int tag) {
 
         for (Entity e : renderData.entityList) {
-            if (e instanceof PlayerPawn && e.getTag() == tag) {
-                return (PlayerPawn) e;
+            if (e instanceof PlayerPawn) {
+                if (e.getTag() == tag) {
+                    return (PlayerPawn) e;
+                }
             }
         }
         return null;
@@ -373,5 +392,13 @@ public class GameScreen implements Screen {
 
     public void addChatToWindow(Network.ChatMessage chat) {
         chatWindow.addToChatLog(chat.sender + ": " + chat.message);
+    }
+
+    public void updatePlayerNumber() {
+        playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
+    }
+
+    public void changeScreen(){
+        myGDxTest.setScreen(myGDxTest.settingsScreen);
     }
 }

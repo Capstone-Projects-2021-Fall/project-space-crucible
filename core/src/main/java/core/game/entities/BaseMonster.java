@@ -6,7 +6,7 @@ import core.game.logic.GameLogic;
 //The parent class of all AI-controlled enemies.
 //The hold a target pointer for whichever Entity is drawing their aggression. This need not be a PlayerPawn.
 //If target is null, the monster goes idle.
-public abstract class BaseMonster extends Entity {
+public class BaseMonster extends Entity {
 
     private int target = -1;
     final private String[] sounds = new String[4];
@@ -18,8 +18,8 @@ public abstract class BaseMonster extends Entity {
 
     public BaseMonster(){}
 
-    public BaseMonster(int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags, String[] sounds) {
-        super(health, pos, speed, width, height, states, tag, flags);
+    public BaseMonster(String name, int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags, String[] sounds) {
+        super(name, health, pos, speed, width, height, states, tag, flags);
         this.sounds[SEESOUND] = sounds[SEESOUND];
         this.sounds[PAINSOUND] = sounds[PAINSOUND];
         this.sounds[DIESOUND] = sounds[DIESOUND];
@@ -35,10 +35,20 @@ public abstract class BaseMonster extends Entity {
     @Override
     public void setState(Integer state) {
         currentState = GameLogic.stateList.get(state);
+        currentStateIndex = state;
         remainingStateTics = currentState.getDuration();
 
-        if (currentState.getAction() != null) {currentState.getAction().run(this,
-                target > -1 ? GameLogic.entityList.get(target) : null);}
+        try {
+            if (currentState.getAction() != null) {
+                currentState.getAction().run(this,
+                        target > -1 ? GameLogic.entityList.get(target) : null);
+            }
+        } catch (IndexOutOfBoundsException ignored){
+
+            if (currentState.getAction() != null) {
+                currentState.getAction().run(this, null);
+            }
+        }
     }
 
     @Override

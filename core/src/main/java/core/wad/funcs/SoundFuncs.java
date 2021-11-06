@@ -88,9 +88,7 @@ public class SoundFuncs {
 
                     try {
                         join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    } catch (InterruptedException | IndexOutOfBoundsException ignored) {}
                 }
             }.start();
         } else {
