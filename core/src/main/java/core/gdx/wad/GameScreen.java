@@ -117,12 +117,11 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
 
+        Gdx.input.setInputProcessor(stage);
+        PausedGameWindow pausedGameWindow = new PausedGameWindow("Paused", skin, this, myGDxTest);
         if(GameLogic.getPlayer(playerNumber).getHealth()<=0){
-            Gdx.input.setInputProcessor(stage);
-            PausedGameWindow pausedGameWindow = new PausedGameWindow("Paused", skin, this, myGDxTest);
             stage.addActor(pausedGameWindow);
             pausedGameWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
-
         }
 
         if(isSinglePlayer){
@@ -133,8 +132,7 @@ public class GameScreen implements Screen {
             camera.update();
             RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false);
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
-//            for(Entity playerPawn : GameLogic.entityList){
-//            }
+
             if(GameLogic.getPlayer(playerNumber).getHealth()>0){
                 font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
                         GameLogic.getPlayer(playerNumber).getPos().x,
