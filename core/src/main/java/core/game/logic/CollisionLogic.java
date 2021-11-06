@@ -54,10 +54,8 @@ public class CollisionLogic {
                     //Apply bridge layers
                     if (levelTile.bridge != -1) {
                         noBridge = false;
-                        System.out.println("Entity: " + entity.bridgeLayer + "\nTile: " + levelTile.bridge);
                         if (levelTile.bridge != entity.bridgeLayer ) {
                             entity.bridgeLayer = levelTile.bridge;
-                            System.out.println("Setting bridge layer to " + entity.bridgeLayer);
                         }
                         if (levelTile.bridge == entity.currentLayer) {
                             entity.currentLayer = levelTile.pos.layer;
@@ -66,13 +64,23 @@ public class CollisionLogic {
 
                     //Change layer if valid
                     if (!layerChanged && levelTile.pos.layer == entity.bridgeLayer && levelTile.pos.layer != entity.currentLayer) {
-                        System.out.println("Moving from layer " + entity.currentLayer + " to " + entity.bridgeLayer);
                         entity.currentLayer = Math.min(levelTile.pos.layer, entity.bridgeLayer);
                         layerChanged = true;
                     }
 
-                    //Block if solid or non-connected layer
-                    if (levelTile.solid) {
+                    int tilex = (int) entity.getPos().x/LevelTile.TILE_SIZE;
+                    int tiley = (int) entity.getPos().y/LevelTile.TILE_SIZE;
+
+                    if (entity.getPos().x < 0) {tilex--;}
+                    if (entity.getPos().y < 0) {tiley--;}
+
+                    System.out.println("In tile " + tilex + ", " + tiley + ", " + entity.currentLayer);
+
+                    //Block if solid or if you're not connected to the floor (i.e. above the floor)
+                    //Don't block lower layers because you want them to walk under
+                    System.out.println("Try collide with " + levelTile.pos.x + ", " + levelTile.pos.y + ", " + levelTile.pos.layer);
+                    if (levelTile.solid || (entity.currentLayer > levelTile.pos.layer
+                            && (tilex != levelTile.pos.x || tiley != levelTile.pos.y))) {
                         collidedTile = levelTile;
                     }
                 }

@@ -119,12 +119,14 @@ public class GameLogic {
             long endTime = new Date().getTime();
             long subtract = MathUtils.clamp(endTime - startTime, 0, Entity.TIC);
 
-            gameTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    gameTick();
-                }
-            }, Entity.TIC - subtract);
+            try {
+                gameTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        gameTick();
+                    }
+                }, Entity.TIC - subtract);
+            } catch (IllegalStateException ignored){}
         } else {
             switchingLevels = true;
             if (!isSinglePlayer) {

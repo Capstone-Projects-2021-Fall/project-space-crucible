@@ -70,6 +70,45 @@ public class RenderFuncs {
         }
     }
 
+    //Draw only one world layer, meant for the editor
+    public static void worldDraw(SpriteBatch batch, ArrayList <LevelTile> tiles, boolean editor, boolean fullbright, ArrayList<Entity> entityList, int layer) {
+
+        for (LevelTile tile : tiles) {
+
+            if (tile.pos.layer == layer) {
+
+                //Special exception, draw edges as black always, but only in non-editor mode
+                if (!fullbright) {
+                    if (tile.graphicname.equals("EDGE") && !editor) {
+                        batch.setColor(0f, 0f, 0f, 255f);
+                    } else {
+                        float light = (float) tile.light / 255;
+                        batch.setColor(light, light, light, 255f);
+                    }
+                } else {
+                    batch.setColor(255f, 255f, 255f, 255f);
+                }
+
+                if (tile.solid) {
+                    batch.draw(textureMap.get(tile.graphicname),
+                            tile.pos.x * LevelTile.TILE_SIZE,
+                            tile.pos.y * LevelTile.TILE_SIZE);
+                } else {
+                    batch.draw(textureMap.get(tile.graphicname),
+                            tile.pos.x * LevelTile.TILE_SIZE,
+                            tile.pos.y * LevelTile.TILE_SIZE,
+                            LevelTile.TILE_SIZE, (float) LevelTile.TILE_SIZE / 2);
+                    batch.draw(textureMap.get(tile.graphicname),
+                            tile.pos.x * LevelTile.TILE_SIZE,
+                            tile.pos.y * LevelTile.TILE_SIZE + (float) (LevelTile.TILE_SIZE / 2),
+                            LevelTile.TILE_SIZE, (float) LevelTile.TILE_SIZE / 2);
+                }
+            }
+        }
+
+        entityDraw(batch, entityList, layer);
+    }
+
     private static void entityDraw(SpriteBatch batch, ArrayList <Entity> entities, int layer) {
 
         try {
@@ -77,10 +116,15 @@ public class RenderFuncs {
                 if (Math.max(e.currentLayer, e.bridgeLayer) != layer) {continue;}
                 //Check tile light level at player half-height
                 float x = e.getPos().x, y = (e.getPos().y);
-                int tilex = (int)x/LevelTile.TILE_SIZE, tiley = (int)y/LevelTile.TILE_SIZE;
+
+                int tilex = (int) x/LevelTile.TILE_SIZE;
+                int tiley = (int) y/LevelTile.TILE_SIZE;
+
+                if (x < 0) {tilex--;}
+                if (y < 0) {tiley--;}
 
                 if (GameLogic.currentLevel != null) {
-                    LevelTile tile = GameLogic.currentLevel.getTile(tilex, tiley);
+                    LevelTile tile = GameLogic.currentLevel.getTile(tilex, tiley, e.currentLayer);
 
                     if (!GameLogic.switchingLevels) {
 

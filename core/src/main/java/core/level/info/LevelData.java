@@ -79,14 +79,27 @@ public class LevelData {
         return tiles;
     }
 
-    public LevelTile getTile(int x, int y) {
+    public LevelTile getTile(int x, int y, int layer) {
         for (LevelTile tile : tiles) {
-            if (tile.pos.x == x && tile.pos.y == y) {
+            if (tile.pos.x == x && tile.pos.y == y && tile.pos.layer == layer) {
                 return tile;
             }
         }
 
         return null;
+    }
+    
+    public LevelTile getTopTile(int x, int y) {
+        LevelTile ret = null;
+        for (LevelTile tile : tiles) {
+            if (tile.pos.x == x && tile.pos.y == y) {
+                if (ret == null || tile.pos.layer > ret.pos.layer) {
+                    ret = tile;
+                }
+            }
+        }
+
+        return ret;
     }
 
     public ArrayList<LevelObject> getObjects() {

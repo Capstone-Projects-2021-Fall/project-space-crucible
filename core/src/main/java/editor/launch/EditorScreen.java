@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Array;
@@ -29,6 +30,7 @@ import editor.copy.CopiedThingData;
 import editor.copy.CopiedTileData;
 import editor.scene2d.actors.EditorHUDActor;
 import editor.scene2d.actors.MIDINameField;
+import editor.scene2d.actors.NumberField;
 import editor.scene2d.windows.EditThingWindow;
 import editor.scene2d.windows.EditTileWindow;
 import editor.scene2d.windows.FileChooserWindow;
@@ -78,7 +80,8 @@ public class EditorScreen implements Screen {
     //UI Stuff
     public Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
-    private EditorHUDActor hud = new EditorHUDActor(new TextField("", skin), new MIDINameField("", skin));
+    private EditorHUDActor hud = new EditorHUDActor(new TextField("", skin), new MIDINameField("", skin),
+            new CheckBox("Layer view", skin), new NumberField("0", skin));
 
     public EditorScreen() {
 
@@ -108,7 +111,11 @@ public class EditorScreen implements Screen {
         if (level != null) {
             batch.setProjectionMatrix(camera.combined);
             batch.begin();
-            RenderFuncs.worldDraw(batch, level.getTiles(), true, fullbright, GameLogic.entityList);
+            if (hud.getSingleLayer().isChecked()) {
+                RenderFuncs.worldDraw(batch, level.getTiles(), true, fullbright, GameLogic.entityList, hud.getLayer().getInteger());
+            } else {
+                RenderFuncs.worldDraw(batch, level.getTiles(), true, fullbright, GameLogic.entityList);
+            }
             //RenderFuncs.entityDraw(batch, GameLogic.entityList);
             batch.end();
 
@@ -234,7 +241,7 @@ public class EditorScreen implements Screen {
                     }
                 }
 
-                LevelTile tile = level.getTile(tilex, tiley);
+                LevelTile tile = level.getTopTile(tilex, tiley);
                 if (tile != null) {
                     copiedTileData = new CopiedTileData(tile.solid, tile.graphicname, tile.light,
                             tile.effect, tile.arg1, tile.arg2, tile.repeat, tile.tag, resources);
@@ -280,7 +287,8 @@ public class EditorScreen implements Screen {
     //Show menu for editing level tiles
     private void editTilePrompt(int tilex, int tiley) {
 
-        LevelTile tile = level.getTile(tilex, tiley);
+        LevelTile tile = hud.getSingleLayer().isChecked() ?
+                level.getTopTile(tilex, tiley) : level.getTile(tilex, tiley, hud.getLayer().getInteger());
 
         if (tile == null) {
             //TODO replace hardcoded layer
@@ -406,7 +414,8 @@ public class EditorScreen implements Screen {
 
     private void pasteTile(int tilex, int tiley) {
 
-        LevelTile tile = level.getTile(tilex, tiley);
+        LevelTile tile = hud.getSingleLayer().isChecked() ?
+                level.getTopTile(tilex, tiley) : level.getTile(tilex, tiley, hud.getLayer().getInteger());
 
         if (tile != null) {
             tile.graphicname = copiedTileData.graphicname;
@@ -484,7 +493,7 @@ public class EditorScreen implements Screen {
             }
         }
 
-        LevelTile tile = level.getTile(tilex, tiley);
+        LevelTile tile = level.getTopTile(tilex, tiley);
         level.getTiles().remove(tile);
     }
 

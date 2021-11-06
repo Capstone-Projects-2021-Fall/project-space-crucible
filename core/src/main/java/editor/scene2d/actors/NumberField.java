@@ -12,6 +12,10 @@ public class NumberField extends TextField {
         setTextFieldFilter(numberFilter);
     }
 
+    public Integer getInteger() {
+        return Integer.parseInt(getText());
+    }
+
     private static class DigitsPlusNegativeFilter extends TextField.TextFieldFilter.DigitsOnlyFilter {
 
         @Override
