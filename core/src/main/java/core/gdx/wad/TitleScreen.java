@@ -38,7 +38,7 @@ public class TitleScreen implements Screen {
             texture = WadFuncs.TITLESCREEN; //title screen
             texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             file.close();
-            Actor startMenuActor = new StartMenu("", skin, this, stage, game);
+            Actor startMenuActor = new StartMenu(skin, this, stage, game);
             stage.addActor(startMenuActor);
             startMenuActor.setPosition(Gdx.graphics.getWidth() / 2 - startMenuActor.getWidth()/2 , Gdx.graphics.getHeight() / 2 - startMenuActor.getWidth()/2);
         } catch (IOException e) {
