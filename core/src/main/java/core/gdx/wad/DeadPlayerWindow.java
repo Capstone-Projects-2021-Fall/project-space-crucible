@@ -1,7 +1,5 @@
 package core.gdx.wad;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -9,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.game.logic.GameLogic;
-
 
 
 public class DeadPlayerWindow extends Window {
@@ -32,8 +29,8 @@ public class DeadPlayerWindow extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                remove(); //this remove not working for some reason
                 GameLogic.readyChangeLevel(GameLogic.currentLevel);
+                remove(); //this remove not working for some reason
             }
         });
         titleScreenButton.addListener(new ClickListener() {
@@ -42,6 +39,7 @@ public class DeadPlayerWindow extends Window {
                 super.clicked(event, x, y);
                 try {
                     myGDxTest.setScreen(myGDxTest.titleScreen); //null for some reason
+
 //                    TitleScreen titleScreen = new TitleScreen(myGDxTest, myGDxTest.gameLoop); //also null
 //                    myGDxTest.setScreen(titleScreen);
                 } catch (NullPointerException e) {

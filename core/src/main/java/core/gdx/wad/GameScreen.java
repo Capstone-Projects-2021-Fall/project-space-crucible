@@ -12,8 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -118,10 +117,22 @@ public class GameScreen implements Screen {
         batch.enableBlending();
 
         Gdx.input.setInputProcessor(stage);
-        DeadPlayerWindow deadPlayerWindow = new DeadPlayerWindow("Paused", skin, myGDxTest);
+        DeadPlayerWindow deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest);
         if(GameLogic.getPlayer(playerNumber).getHealth()<=0){
             stage.addActor(deadPlayerWindow);
             deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+            stage.addActor(deadPlayerWindow);
+            deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
+        }
+        if(Gdx.input.isTouched()){
+            for(Actor actor : stage.getActors()){
+                if(actor.getHeight()==deadPlayerWindow.getHeight() && actor.getWidth()==deadPlayerWindow.getWidth()){
+                    //normal deadPlayerWindow.remove() not working
+                    actor.remove();
+                }
+            }
         }
 
         if(isSinglePlayer){
@@ -154,6 +165,7 @@ public class GameScreen implements Screen {
                 return;
             }
             if (!startGame) {
+                //TODO after testing in single player, add change tag here
                 lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
                 lobbyStage.getBatch().begin();
                 lobbyStage.getBatch().draw(background, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());

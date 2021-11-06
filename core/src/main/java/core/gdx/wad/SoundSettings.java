@@ -57,9 +57,21 @@ public class SoundSettings extends Window {
         bgmSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("BGM volume Changed to " +bgmSlider.getValue() +"\n");
+                //TODO implement actual slider volumes. This just mutes and unmutes sequencer
                 bgmVolumeValue.setText((int) bgmSlider.getValue());
-                //SoundFuncs.volume=soundEffectSlider.getValue()/100f;
+                if(bgmSlider.getValue()<49){
+                    for(int i=0; i<=100; i++){
+                        SoundFuncs.sequencer.setTrackMute(i,true);//mutes BGM but you can still hear drums
+                    }
+                }
+                if(bgmSlider.getValue()>=50){
+                    for(int i=0; i<=100; i++){
+                        SoundFuncs.sequencer.setTrackMute(i,false);//mutes BGM but you can still hear drums
+                    }
+                }
+                // supposed to change BGM volume
+                // based on: http://www.java2s.com/Code/Java/Development-Class/SettingtheVolumeofPlayingMidiAudio.htm
+                //SoundFuncs.seqVolume=bgmSlider.getValue();
             }
         });
     }
