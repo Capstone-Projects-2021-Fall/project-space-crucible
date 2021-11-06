@@ -214,6 +214,7 @@ public class SpaceClient implements Listener {
         if (getGameClient().getID() == 1) {
             System.out.println("Sending .WAD data...");
             sendLevels();
+            sendEntities();
             System.out.println("Done!");
         }
     }
@@ -252,6 +253,7 @@ public class SpaceClient implements Listener {
     public Client getMasterClient(){
         return masterClient;
     }
+
     private void sendLevels() {
 
         GameLogic.levels.forEach((integer, levelData) -> {
@@ -277,6 +279,30 @@ public class SpaceClient implements Listener {
                 gameClient.sendTCP(ao);
             });
 
+        });
+    }
+
+    private void sendEntities() {
+
+        GameLogic.stateList.forEach(s -> {
+            State state = new State();
+            state.state = s;
+            gameClient.sendTCP(state);
+        });
+
+        GameLogic.entityTable.forEach((k, v) -> {
+            GameEntity ge = new GameEntity();
+            ge.spawner = v;
+            ge.name = k;
+            ge.mapID = -1;
+
+            GameLogic.mapIDTable.forEach((i, e) -> {
+                if (e.equals(ge.spawner)) {
+                    ge.mapID = i;
+                }
+            });
+
+            gameClient.sendTCP(ge);
         });
     }
 }

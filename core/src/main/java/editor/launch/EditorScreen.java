@@ -21,6 +21,8 @@ import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.level.info.LevelTile;
+import core.wad.funcs.EntityFuncs;
+import core.wad.funcs.GameSprite;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import editor.copy.CopiedThingData;
@@ -34,6 +36,7 @@ import net.mtrop.doom.WadFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 
 public class EditorScreen implements Screen {
@@ -354,10 +357,23 @@ public class EditorScreen implements Screen {
             level = WadFuncs.loadLevel(file, levelnum);
         }
 
-        WadFuncs.loadSprites(resources);
-        WadFuncs.loadStates();
         WadFuncs.loadTextures(resources);
-        WadFuncs.setEntityTypes();
+        resources.forEach(w -> {
+            if (w.contains("ENTITIES")) {
+                try {
+                    EntityFuncs.loadEntityClasses(w.getTextData("ENTITIES", Charset.defaultCharset()));
+                } catch (IOException | EntityFuncs.ParseException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+            }
+        });
+
+        GameLogic.stateList.forEach(s -> {
+            if (!RenderFuncs.spriteMap.containsKey(s.getSprite())) {
+                RenderFuncs.spriteMap.put(s.getSprite(), new GameSprite(resources, s.getSprite()));
+            }
+        });
         GameLogic.loadEntities(level, true);
     }
 
@@ -479,7 +495,8 @@ public class EditorScreen implements Screen {
                     new boolean[]{true, true, true, true, true}, false, 0);
             level.getObjects().add(newObj);
 
-            Entity newThing = new PlayerPawn(new Entity.Position(x, y, 0), 0);
+            Entity newThing = GameLogic.mapIDTable.get(0)
+                    .spawnEntity(new Entity.Position(x, y, 0), 0);
             GameLogic.entityList.add(newThing);
 
             GameLogic.loadEntities(level, true);

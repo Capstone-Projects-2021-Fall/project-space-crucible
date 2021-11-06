@@ -63,8 +63,6 @@ public class SpaceServer implements Listener {
         GameLogic.isSinglePlayer = false;
 
         //Load prepare all Entity logic, open game screen and initiate game loop.
-        WadFuncs.loadStates();
-        WadFuncs.setEntityTypes();
         WadFuncs.loadLevelEffects();
         Network.register(server);
 
@@ -140,7 +138,7 @@ public class SpaceServer implements Listener {
                 else if (packetData instanceof Network.AddTile) {
                     if (!GameLogic.levels.containsKey(((Network.AddTile) packetData).levelNumber)) {
                         GameLogic.levels.put(((Network.AddTile) packetData).levelNumber, new LevelData());
-                        GameLogic.levels.get(((Network.AddTile) packetData).levelNumber).levelnumber = ((Network.LevelInfo) packetData).levelNumber;
+                        GameLogic.levels.get(((Network.AddTile) packetData).levelNumber).levelnumber = ((Network.AddTile) packetData).levelNumber;
                     }
                     GameLogic.levels.get(((Network.AddTile) packetData).levelNumber).getTiles()
                             .add(((Network.AddTile) packetData).levelTile);
@@ -148,10 +146,22 @@ public class SpaceServer implements Listener {
                 else if (packetData instanceof Network.AddObject) {
                     if (!GameLogic.levels.containsKey(((Network.AddObject) packetData).levelNumber)) {
                         GameLogic.levels.put(((Network.AddObject) packetData).levelNumber, new LevelData());
-                        GameLogic.levels.get(((Network.AddObject) packetData).levelNumber).levelnumber = ((Network.LevelInfo) packetData).levelNumber;
+                        GameLogic.levels.get(((Network.AddObject) packetData).levelNumber).levelnumber = ((Network.AddObject) packetData).levelNumber;
                     }
                     GameLogic.levels.get(((Network.AddObject) packetData).levelNumber).getObjects()
                             .add(((Network.AddObject) packetData).levelObject);
+                }
+                else if (packetData instanceof Network.GameEntity) {
+                    GameLogic.entityTable.put(((Network.GameEntity) packetData).name, ((Network.GameEntity) packetData).spawner);
+                    if (((Network.GameEntity) packetData).mapID > -1) {
+                        GameLogic.mapIDTable.put(((Network.GameEntity) packetData).mapID, ((Network.GameEntity) packetData).spawner);
+                        System.out.println(((Network.GameEntity) packetData).mapID);
+                    }
+                }
+                else if (packetData instanceof Network.State) {
+                    System.out.println("adding state");
+                    GameLogic.stateList.add(((Network.State) packetData).state);
+                    System.out.println("StateList: " + GameLogic.stateList.size());
                 }
                 else if (packetData instanceof Network.CheckConnection) {
                     if (((Network.CheckConnection) packetData).type == Network.ConnectionType.PLAYER) {
@@ -165,10 +175,8 @@ public class SpaceServer implements Listener {
                         if (gameStartedByHost) {
                             for (LevelObject lo : GameLogic.currentLevel.getObjects()) {
                                 if (lo.type == 0 && lo.tag == idToPlayerNum.indexOf(c.getID())) {
-                                    GameLogic.newEntityQueue.addLast(new PlayerPawn(
-                                            new Entity.Position(lo.xpos, lo.ypos, lo.angle),
-                                            idToPlayerNum.indexOf(c.getID())
-                                    ));
+                                    GameLogic.newEntityQueue.addLast(GameLogic.mapIDTable.get(0)
+                                            .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), lo.tag));
                                     break;
                                 }
                             }

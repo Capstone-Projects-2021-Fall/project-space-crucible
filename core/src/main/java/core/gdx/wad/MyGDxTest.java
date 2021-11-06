@@ -4,12 +4,19 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
+import core.wad.funcs.EntityFuncs;
+import core.wad.funcs.GameSprite;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
+import org.checkerframework.checker.units.qual.A;
+import org.lwjgl.system.CallbackI;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -67,11 +74,30 @@ public class MyGDxTest extends Game {
             SoundFuncs.loadMIDIs(wads);
             SoundFuncs.loadSounds(wads);
             GameLogic.loadLevels(wads);
-            WadFuncs.loadSprites(wads);
             WadFuncs.loadTextures(wads);
             WadFuncs.TITLESCREEN = WadFuncs.getTexture(wads, "TITLESCR");
             WadFuncs.SETTINGSSCREEN = WadFuncs.getTexture(wads, "BLANKSCR");
             WadFuncs.LOBBYSCREEN = WadFuncs.getTexture(wads, "LOBBYSCR");
+
+            //Load prepare all Entity and level logic, open game screen and initiate game loop.
+            WadFuncs.loadLevelEffects();
+
+            wads.forEach(w -> {
+                if (w.contains("ENTITIES")) {
+                    try {
+                        EntityFuncs.loadEntityClasses(w.getTextData("ENTITIES", Charset.defaultCharset()));
+                    } catch (IOException | EntityFuncs.ParseException e) {
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
+                }});
+
+            GameLogic.stateList.forEach(s -> {
+                if (!RenderFuncs.spriteMap.containsKey(s.getSprite())) {
+                    RenderFuncs.spriteMap.put(s.getSprite(), new GameSprite(wads, s.getSprite()));
+                }
+            });
+
             SoundFuncs.playSound("pistol/shoot");
 
             //When we add add-on support we will also close other files inside of 'wads"
@@ -80,10 +106,5 @@ public class MyGDxTest extends Game {
             e.printStackTrace();
             System.exit(1);
         }
-
-        //Load prepare all Entity and level logic, open game screen and initiate game loop.
-        WadFuncs.loadLevelEffects();
-        WadFuncs.loadStates();
-        WadFuncs.setEntityTypes();
     }
 }
