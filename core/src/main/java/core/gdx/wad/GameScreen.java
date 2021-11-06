@@ -35,6 +35,8 @@ import core.server.Network.ClientData;
 import core.server.Network.ServerDetails;
 import core.wad.funcs.WadFuncs;
 
+import java.util.ConcurrentModificationException;
+
 
 public class GameScreen implements Screen {
 
@@ -132,13 +134,22 @@ public class GameScreen implements Screen {
             camera.position.set(GameLogic.getPlayer(1).getPos().x + GameLogic.getPlayer(1).getWidth() / (float) 2.0,
                     GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight() / (float) 2.0, 0);
             camera.update();
-            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
-            RenderFuncs.entityDraw(batch, GameLogic.entityList);
-            font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
-            font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
-                    GameLogic.getPlayer(playerNumber).getPos().x,
-                    GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+10);
-            if (showBoxes) {showBoxes();}
+            try {
+                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, GameLogic.entityList);
+                //RenderFuncs.entityDraw(batch, GameLogic.entityList);
+                font.draw(batch, "HP:" + GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
+                font.draw(batch, "Layer:" + GameLogic.getPlayer(playerNumber).currentLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-10);
+                font.draw(batch, "Bridge:" + GameLogic.getPlayer(playerNumber).bridgeLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-20);
+                font.draw(batch, "Player: " + GameLogic.getPlayer(playerNumber).getTag(),
+                        GameLogic.getPlayer(playerNumber).getPos().x,
+                        GameLogic.getPlayer(playerNumber).getPos().y + GameLogic.getPlayer(playerNumber).getHeight() + 10);
+                if (showBoxes) {
+                    showBoxes();
+                }
+            } catch (ConcurrentModificationException cme) {
+                batch.end();
+                return;
+            }
             GameLogic.getPlayer(1).controls = getControls();
 
         }else { //If co-op mode
@@ -192,8 +203,8 @@ public class GameScreen implements Screen {
                 camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
                 camera.update();
-                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
-                RenderFuncs.entityDraw(batch, renderData.entityList);
+                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, renderData.entityList);
+                //RenderFuncs.entityDraw(batch, renderData.entityList);
 
                 font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
                         getPlayer(playerNumber).getPos().y);
@@ -207,7 +218,8 @@ public class GameScreen implements Screen {
                 client.getInput(getControls());
                 client.getCameraData(getCameraData());
             }
-            catch (NullPointerException n) {
+            catch (NullPointerException | ConcurrentModificationException e) {
+                batch.end();
                 return;
             }
         }

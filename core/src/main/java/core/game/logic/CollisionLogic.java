@@ -28,26 +28,57 @@ public class CollisionLogic {
 
     public static LevelTile entityTileCollision(Rectangle bounds, Entity entity){
         LevelTile collidedTile = null;
+        boolean noBridge = true;
+        boolean layerChanged = false;
         for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
-            if(levelTile.solid || levelTile.effect > 0) {
+
+            if(levelTile.solid || levelTile.effect > 0
+                    || levelTile.pos.layer != entity.currentLayer || levelTile.bridge != entity.bridgeLayer) {
                 Rectangle tileBounds
                         = new Rectangle(levelTile.pos.x * LevelTile.TILE_SIZE,
                                         levelTile.pos.y * LevelTile.TILE_SIZE,
                                             LevelTile.TILE_SIZE, LevelTile.TILE_SIZE);
 
+
                 if(bounds.overlaps(tileBounds)) {
+
+//                    System.out.println("Tile: " + levelTile.pos.x + ", " + levelTile.pos.y + ", " + levelTile.pos.layer
+//                        + "\nBridge: " + levelTile.bridge);
+
+                    //Do effects if there are any
                     if(levelTile.effect > 0) {
                         GameLogic.effectList.get(levelTile.effect - 1)
                                 .run(entity, levelTile.arg1, levelTile.arg2);
-                        break;
                     }
-                    else if (levelTile.solid) {
+
+                    //Apply bridge layers
+                    if (levelTile.bridge != -1) {
+                        noBridge = false;
+                        System.out.println("Entity: " + entity.bridgeLayer + "\nTile: " + levelTile.bridge);
+                        if (levelTile.bridge != entity.bridgeLayer ) {
+                            entity.bridgeLayer = levelTile.bridge;
+                            System.out.println("Setting bridge layer to " + entity.bridgeLayer);
+                        }
+                        if (levelTile.bridge == entity.currentLayer) {
+                            entity.currentLayer = levelTile.pos.layer;
+                        }
+                    }
+
+                    //Change layer if valid
+                    if (!layerChanged && levelTile.pos.layer == entity.bridgeLayer && levelTile.pos.layer != entity.currentLayer) {
+                        System.out.println("Moving from layer " + entity.currentLayer + " to " + entity.bridgeLayer);
+                        entity.currentLayer = Math.min(levelTile.pos.layer, entity.bridgeLayer);
+                        layerChanged = true;
+                    }
+
+                    //Block if solid or non-connected layer
+                    if (levelTile.solid) {
                         collidedTile = levelTile;
-                        break;
                     }
                 }
             }
         }
+        if (noBridge) {entity.bridgeLayer = -1;}
         return collidedTile;
     }
 

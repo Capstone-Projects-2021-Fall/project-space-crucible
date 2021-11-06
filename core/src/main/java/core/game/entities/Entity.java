@@ -50,6 +50,9 @@ public class Entity {
     protected int tag;
     private Rectangle bound;
     public long flags;
+    public int currentLayer = 0;
+    public int bridgeLayer = -1;
+    private String name;
 
     public Entity(){}
 
@@ -63,6 +66,7 @@ public class Entity {
         this.states = states;
         this.tag = tag;
         this.flags = flags;
+        this.name = name;
         bound = new Rectangle(pos.x, pos.y, width, height);
         setState(this.states[IDLE]);
     }
@@ -82,6 +86,8 @@ public class Entity {
     public int getSpeed() {return speed;}
 
     public int getTag() {return tag;}
+
+    public String getName() {return name;}
 
     public String getCurrentSprite() {return currentState.getSprite();}
 

@@ -21,40 +21,60 @@ public class RenderFuncs {
     final public static Map<String, GameSprite> spriteMap = new HashMap<>();
     final public static Map<String, Texture> textureMap = new HashMap<>();
 
-    public static void worldDraw(SpriteBatch batch, ArrayList <LevelTile> tiles, boolean editor, boolean fullbright) {
-        for (LevelTile tile : tiles) {
+    public static void worldDraw(SpriteBatch batch, ArrayList <LevelTile> tiles, boolean editor, boolean fullbright, ArrayList<Entity> entityList) {
 
-            //Special exception, draw edges as black always, but only in non-editor mode
-            if (!fullbright) {
-                if (tile.graphicname.equals("EDGE") && !editor) {
-                    batch.setColor(0f, 0f, 0f, 255f);
-                } else {
-                    float light = (float) tile.light / 255;
-                    batch.setColor(light, light, light, 255f);
+        ArrayList<LevelTile> tilesToDraw = new ArrayList<>(tiles);
+        ArrayList<LevelTile> iterate = new ArrayList<>(tilesToDraw);
+        int layer = 0;
+
+        while (!tilesToDraw.isEmpty()) {
+            for (LevelTile tile : iterate) {
+
+                if (tile.pos.layer == layer) {
+
+                    //Special exception, draw edges as black always, but only in non-editor mode
+                    if (!fullbright) {
+                        if (tile.graphicname.equals("EDGE") && !editor) {
+                            batch.setColor(0f, 0f, 0f, 255f);
+                        } else {
+                            float light = (float) tile.light / 255;
+                            batch.setColor(light, light, light, 255f);
+                        }
+                    } else {
+                        batch.setColor(255f, 255f, 255f, 255f);
+                    }
+
+                    if (tile.solid) {
+                        batch.draw(textureMap.get(tile.graphicname),
+                                tile.pos.x * LevelTile.TILE_SIZE,
+                                tile.pos.y * LevelTile.TILE_SIZE);
+                    } else {
+                        batch.draw(textureMap.get(tile.graphicname),
+                                tile.pos.x * LevelTile.TILE_SIZE,
+                                tile.pos.y * LevelTile.TILE_SIZE,
+                                LevelTile.TILE_SIZE, (float) LevelTile.TILE_SIZE / 2);
+                        batch.draw(textureMap.get(tile.graphicname),
+                                tile.pos.x * LevelTile.TILE_SIZE,
+                                tile.pos.y * LevelTile.TILE_SIZE + (float) (LevelTile.TILE_SIZE / 2),
+                                LevelTile.TILE_SIZE, (float) LevelTile.TILE_SIZE / 2);
+                    }
+
+                    tilesToDraw.remove(tile);
                 }
-            } else {batch.setColor(255f, 255f, 255f, 255f);}
-
-            if (tile.solid) {
-                batch.draw(textureMap.get(tile.graphicname),
-                        tile.pos.x * LevelTile.TILE_SIZE,
-                        tile.pos.y * LevelTile.TILE_SIZE);
-            } else {
-                batch.draw(textureMap.get(tile.graphicname),
-                        tile.pos.x * LevelTile.TILE_SIZE,
-                        tile.pos.y * LevelTile.TILE_SIZE,
-                        LevelTile.TILE_SIZE, (float)LevelTile.TILE_SIZE / 2);
-                batch.draw(textureMap.get(tile.graphicname),
-                        tile.pos.x * LevelTile.TILE_SIZE,
-                        tile.pos.y * LevelTile.TILE_SIZE + (float)(LevelTile.TILE_SIZE / 2),
-                        LevelTile.TILE_SIZE, (float)LevelTile.TILE_SIZE / 2);
             }
+
+            entityDraw(batch, entityList, layer);
+
+            layer++;
+            iterate = new ArrayList<>(tilesToDraw);
         }
     }
 
-    public static void entityDraw(SpriteBatch batch, ArrayList <Entity> entities) {
+    private static void entityDraw(SpriteBatch batch, ArrayList <Entity> entities, int layer) {
 
         try {
             for (Entity e : entities) {
+                if (Math.max(e.currentLayer, e.bridgeLayer) != layer) {continue;}
                 //Check tile light level at player half-height
                 float x = e.getPos().x, y = (e.getPos().y);
                 int tilex = (int)x/LevelTile.TILE_SIZE, tiley = (int)y/LevelTile.TILE_SIZE;
@@ -76,7 +96,7 @@ public class RenderFuncs {
                 }
                 batch.draw(spriteMap.get(e.getCurrentSprite()).getFrame(e.getCurrentFrame(), e.getPos().angle), e.getPos().x, e.getPos().y);
             }
-        } catch (ConcurrentModificationException | NullPointerException ignored) {}
+        } catch (ConcurrentModificationException | NullPointerException ignored) {System.out.println("Abort draw.");}
     }
 
     public static void gridDraw(OrthographicCamera camera, ShapeRenderer sr) {

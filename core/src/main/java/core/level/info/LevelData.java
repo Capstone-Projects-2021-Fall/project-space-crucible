@@ -176,7 +176,7 @@ public class LevelData {
         int xpos = 0, ypos = 0;
         boolean solid = false;
         String graphic = "";
-        int light = 0, effect = 0, arg1 = 0, arg2 = 0, tag = 0;
+        int light = 0, effect = 0, arg1 = 0, arg2 = 0, tag = 0, bridge = -1;
         boolean repeat = false;
 
         //TODO replace hardcoded layer
@@ -224,7 +224,15 @@ public class LevelData {
             } else if (line.startsWith("tag")) {
                 tag = Integer.parseInt(rawvalue);
                 leveldata[9] = true;
-            } else {
+            }
+            else if (line.startsWith("layer")) {
+                layer = Integer.parseInt(rawvalue);
+                //TODO add layer to leveldata once it's fully implemented
+            }
+            else if (line.startsWith("bridge")) {
+                bridge = Integer.parseInt(rawvalue);
+            }
+            else {
                 System.out.println("Error: unrecognized level tile data!");
                 throw new IOException();
             }
@@ -242,7 +250,7 @@ public class LevelData {
         }
 
         LevelTile.TilePosition pos = new LevelTile.TilePosition(xpos, ypos, layer);
-        LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag);
+        LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag, bridge);
         tiles.add(tile);
     }
 

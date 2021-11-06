@@ -108,8 +108,8 @@ public class EditorScreen implements Screen {
         if (level != null) {
             batch.setProjectionMatrix(camera.combined);
             batch.begin();
-            RenderFuncs.worldDraw(batch, level.getTiles(), true, fullbright);
-            RenderFuncs.entityDraw(batch, GameLogic.entityList);
+            RenderFuncs.worldDraw(batch, level.getTiles(), true, fullbright, GameLogic.entityList);
+            //RenderFuncs.entityDraw(batch, GameLogic.entityList);
             batch.end();
 
             sr.setProjectionMatrix(camera.combined);
@@ -286,7 +286,7 @@ public class EditorScreen implements Screen {
             //TODO replace hardcoded layer
             tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley, 0),
                     false, "TAN1", 0, 0,
-                    0, 0, false, 0);
+                    0, 0, false, 0, -1);
             level.getTiles().add(tile);
         }
 
@@ -421,7 +421,7 @@ public class EditorScreen implements Screen {
             //TODO replace hardcoded layer
             tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley, 0), copiedTileData.solid,
                     copiedTileData.graphicname, copiedTileData.light, copiedTileData.effect, copiedTileData.arg1,
-                    copiedTileData.arg2, copiedTileData.repeat, copiedTileData.tag);
+                    copiedTileData.arg2, copiedTileData.repeat, copiedTileData.tag, -1);
             level.getTiles().add(tile);
         }
     }

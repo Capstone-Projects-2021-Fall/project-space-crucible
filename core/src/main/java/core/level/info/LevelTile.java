@@ -34,13 +34,14 @@ public class LevelTile {
     public int arg2;
     public boolean repeat;
     public int tag;
+    public int bridge;
 
     public LevelTile(){
         pos = new LevelTile.TilePosition();
     }
 
     public LevelTile(TilePosition pos, boolean solid, String tex, int light, int effect, int arg1, int arg2,
-                     boolean repeat, int tag) {
+                     boolean repeat, int tag, int bridge) {
         this.pos = pos;
         this.solid = solid;
         this.light = light;
@@ -49,6 +50,7 @@ public class LevelTile {
         this.arg2 = arg2;
         this.repeat = repeat;
         this.tag = tag;
+        this.bridge = bridge;
 
         graphicname = tex;
     }
