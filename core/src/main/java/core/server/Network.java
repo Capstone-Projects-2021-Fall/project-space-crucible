@@ -7,12 +7,16 @@ import com.esotericsoftware.kryonet.EndPoint;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.game.entities.actions.*;
+import core.game.logic.EntitySpawner;
+import core.game.logic.EntityState;
+import core.game.logic.Properties;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.level.info.LevelTile;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 //This class will store things common to both client and server
@@ -51,6 +55,13 @@ public class Network {
         kryo.register(CheckConnection.class);
         kryo.register(ConnectionType.class);
         kryo.register(PromptConnectionType.class);
+        kryo.register(WadFile.class);
+        kryo.register(OpenLobby.class);
+        kryo.register(Ping.class);
+        kryo.register(SendServerInfo.class);
+        kryo.register(CreateWadFile.class);
+        kryo.register(GameEntity.class);
+        kryo.register(State.class);
 
         //Level Classes
         kryo.register(LevelData.class);
@@ -59,9 +70,11 @@ public class Network {
         kryo.register(LevelObject.class);
 
         //Entity classes
-        kryo.register(core.game.entities.Entity.class);
-        kryo.register(core.game.entities.Entity.Position.class);
-        kryo.register(core.game.logic.EntityState.class);
+        kryo.register(Entity.class);
+        kryo.register(Entity.Position.class);
+        kryo.register(EntityState.class);
+        kryo.register(EntitySpawner.class);
+        kryo.register(Properties.class);
 
         //State Actions
         kryo.register(A_BulletAttack.class);
@@ -77,12 +90,8 @@ public class Network {
 
         //Entities
         kryo.register(core.game.entities.PlayerPawn.class);
-        kryo.register(core.game.entities.Worm.class);
-        kryo.register(core.game.entities.Fireball.class);
-        kryo.register(core.game.entities.Serpentipede.class);
-        kryo.register(core.game.entities.BulletPuff.class);
-        kryo.register(core.game.entities.Blood.class);
-        kryo.register(core.game.entities.Zombieman.class);
+        kryo.register(core.game.entities.BaseMonster.class);
+        kryo.register(core.game.entities.Projectile.class);
 
         //LibGDX classes
         kryo.register(Rectangle.class);
@@ -96,6 +105,8 @@ public class Network {
         kryo.register(String[].class);
         kryo.register(java.util.HashSet.class);
         kryo.register(java.util.LinkedList.class);
+        kryo.register(byte[].class);
+
     }
 
     //Send this to the CLIENT
@@ -173,6 +184,14 @@ public class Network {
         public Integer levelNumber;
         public LevelObject levelObject;
     }
+    public static class GameEntity {
+        public EntitySpawner spawner;
+        public String name;
+        public int mapID;
+    }
+    public static class State {
+        public EntityState state;
+    }
     public static class RCONLogin {
         public String code;
         public String pass;
@@ -184,4 +203,27 @@ public class Network {
         public ConnectionType type;
     }
     public static class PromptConnectionType{}
+
+    public static class OpenLobby{
+        public int tcpPort;
+    }
+    public static class SendServerInfo{
+        public int tcpPort;
+    }
+    public static class Ping{
+        public boolean getAddonFiles;
+        public boolean sendingFiles;
+        public int masterClientThatNeedsTheFiles;
+    }
+    public static class CreateWadFile{
+        public String levelFileName;
+        public boolean createFile;
+        public int sendFileTo;
+    }
+    public static class WadFile{
+        public byte[] levelFile;
+        public String levelFileName;
+        public int levelFileSize;
+        public int sendFileTo;
+    }
 }

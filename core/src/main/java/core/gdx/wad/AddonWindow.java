@@ -6,10 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
-import org.checkerframework.checker.units.qual.A;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Objects;
 
 public class AddonWindow extends Window {
@@ -135,8 +135,7 @@ public class AddonWindow extends Window {
     private void addResource() {
         if (!files.contains(chosenFile.getAbsolutePath(), true)) {
             try {
-                MyGDxTest.addonPaths.add(chosenFile.getAbsolutePath());
-                MyGDxTest.addonList.add(chosenFile.getName());
+                MyGDxTest.addons.add(chosenFile);
                 String hash = Files.asByteSource(chosenFile).hash(Hashing.sha256()).toString();
                 MyGDxTest.addonHashes.add(hash);
 
@@ -156,8 +155,7 @@ public class AddonWindow extends Window {
         files.removeIndex(index);
         hashes.removeIndex(index);
 
-        MyGDxTest.addonPaths.remove(index);
-        MyGDxTest.addonList.remove(index);
+        MyGDxTest.addons.remove(index);
         MyGDxTest.addonHashes.remove(index);
         updateResources();
     }

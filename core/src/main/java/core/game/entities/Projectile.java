@@ -3,7 +3,7 @@ package core.game.entities;
 import com.badlogic.gdx.math.Rectangle;
 import core.game.logic.CollisionLogic;
 
-public abstract class Projectile extends Entity {
+public class Projectile extends Entity {
 
     private int damage;
     private Entity owner;
@@ -11,8 +11,8 @@ public abstract class Projectile extends Entity {
     public Projectile(){}
 
     //Projectiles have no health or tag.
-    public Projectile(Position pos, int speed, int width, int height, Integer[] states, Entity owner, int damage, long flags) {
-        super(-1, pos, speed, width, height, states, -1, flags);
+    public Projectile(String name, Position pos, int speed, int width, int height, Integer[] states, Entity owner, int damage, long flags) {
+        super(name, -1, pos, speed, width, height, states, -1, flags);
         this.owner = owner;
         this.damage = damage;
     }
@@ -29,7 +29,7 @@ public abstract class Projectile extends Entity {
     public void decrementTics() {
         super.decrementTics();
 
-        if (currentState.getIndex() >= getStates()[DIE]) {return;}
+        if (currentStateIndex >= getStates()[DIE]) {return;}
 
         float checkPosX = (float) (getPos().x + getSpeed() * Math.cos(Math.toRadians(getPos().angle)));
         float checkPosY = (float) (getPos().y + getSpeed() * Math.sin(Math.toRadians(getPos().angle)));

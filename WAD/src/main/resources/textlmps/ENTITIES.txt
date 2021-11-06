@@ -1,0 +1,217 @@
+//Effects
+Entity Blood {
+    Properties {
+        Health -1
+        Speed 0
+        Width 0
+        Height 0
+    }
+    States {
+        Spawn:
+        BLUD CBA 6
+        stop
+    }
+}
+
+Entity BulletPuff {
+    Properties {
+        Health -1
+        Speed 0
+        Width 0
+        Height 0
+    }
+    States {
+        Spawn:
+        PUFF ABCD 4
+        stop
+    }
+}
+
+//Projectiles
+Entity Fireball : Projectile {
+    Properties {
+        Speed 6
+        Width 8
+        Height 8
+        Damage 20
+    }
+    States {
+        Spawn:
+        BAL1 AB 4
+        loop
+
+        Death:
+        BAL1 C 4
+        BAL1 D 4
+        BAL1 E 4
+        stop
+    }
+}
+
+//Monsters
+Entity Serpentipede : BaseMonster 2 {
+    Properties {
+        Health 60
+        Speed 3
+        Width 32
+        Height 56
+        +SOLID
+        SeeSound "serpentipede/see"
+        PainSound "serpentipede/pain"
+        DieSound "serpentipede/die"
+        ActiveSound "serpentipede/active"
+    }
+    States {
+        Spawn:
+        TROO AB 10 A_Look()
+        loop
+
+        See:
+        TROO AABBCCDD 3 A_Chase()
+        loop
+
+        Melee:
+        Missile:
+        TROO EF 8 A_FaceTarget()
+        TROO G 8 A_Projectile("Fireball")
+        goto See
+
+        Pain:
+        TROO H 2
+        TROO H 2 A_Pain()
+        goto See
+
+        Death:
+        TROO I 8
+        TROO J 8 A_Scream()
+        TROO K 6
+        TROO L 6 A_Fall()
+        TROO M -1
+        stop
+    }
+}
+
+Entity Worm : BaseMonster 1 {
+    Properties {
+        Health 150
+        Speed 8
+        Width 30
+        Height 56
+        +SOLID
+        SeeSound "worm/see"
+        PainSound "worm/pain"
+        DieSound "worm/die"
+        ActiveSound "worm/active"
+    }
+    States {
+        Spawn:
+        SARG AB 10 A_Look()
+        loop
+
+        See:
+        SARG AABBCCDD 2 A_Chase()
+        loop
+
+        Melee:
+        SARG EF 8 A_FaceTarget()
+        SARG G 8 A_MeleeAttack(25)
+        goto See
+
+        Pain:
+        SARG H 2
+        SARG H 2 A_Pain()
+        goto See
+
+        Death:
+        SARG I 8
+        SARG J 8 A_Scream()
+        SARG K 4
+        SARG L 4 A_Fall()
+        SARG M 4
+        SARG N -1
+        stop
+    }
+}
+
+Entity Zombieman : BaseMonster 3 {
+    Properties {
+        Health 30
+        Speed 3
+        Width 32
+        Height 56
+        +SOLID
+        SeeSound "zombieman/see"
+        PainSound "zombieman/pain"
+        DieSound "zombieman/die"
+        ActiveSound "zombieman/active"
+    }
+    States {
+        Spawn:
+        POSS AB 10 A_Look()
+        loop
+
+        See:
+        POSS AABBCCDD 4 A_Chase()
+        loop
+
+        Melee:
+        Missile:
+        POSS E 10 A_FaceTarget()
+        POSS F 8 A_BulletAttack(15, 15, "pistol/shoot")
+        POSS E 8 A_FaceTarget()
+        goto See
+
+        Pain:
+        POSS G 3
+        POSS G 3 A_Pain()
+        goto See
+
+        Death:
+        POSS H 5
+        POSS I 5 A_Scream()
+        POSS J 5 A_Fall()
+        POSS K 5
+        POSS L -1
+        stop
+    }
+}
+Entity CruciblePlayer : PlayerPawn 0 {
+    Properties {
+        Health 100
+        Speed 160
+        Width 32
+        Height 56
+        PainSound "player/pain"
+        DieSound "player/die"
+    }
+    States {
+        Spawn:
+        PLAY A -1
+        stop
+
+        See:
+        PLAY ABCD 8
+        loop
+
+        Melee:
+        PLAY E 12
+        goto See
+
+        Missile:
+        PLAY F 6
+        goto Melee
+
+        Pain:
+        PLAY G 4
+        PLAY G 4 A_Pain()
+        goto See
+
+        Death:
+        PLAY H 10
+        PLAY I 10 A_Scream()
+        PLAY J 10 A_Fall()
+        PLAY KLM 10
+        PLAY N -1
+        stop
+    }
+}
