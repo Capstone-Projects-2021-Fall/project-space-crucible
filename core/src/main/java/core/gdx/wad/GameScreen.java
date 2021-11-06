@@ -45,6 +45,7 @@ public class GameScreen implements Screen {
     ClientData clientData = new ClientData();
     ServerDetails serverDetails = new ServerDetails();
     ChatWindow chatWindow;
+    public boolean update = false;
 
     public int playerNumber = 0;
 
@@ -96,7 +97,7 @@ public class GameScreen implements Screen {
         if(!isSinglePlayer) {
             if (playerNumber == 1) {
                 Gdx.input.setInputProcessor(lobbyStage);
-                play.setBounds((Gdx.graphics.getWidth() - 100) / 2, 50, 100, 60);
+                play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
                 lobbyStage.addActor(play);
                 play.addListener(new ClickListener() {
                     public void clicked(InputEvent event, float x, float y) {
@@ -116,7 +117,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
+        if(update){
+            MyGDxTest.loadWADS();
+            update = false;
+        }
         if (GameLogic.switchingLevels || GameLogic.getPlayer(1) == null) {return;}
 
         Gdx.gl.glClearColor(0,0,0,1F);

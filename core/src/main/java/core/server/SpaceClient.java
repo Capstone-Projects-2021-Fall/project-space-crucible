@@ -115,17 +115,18 @@ public class SpaceClient implements Listener {
 //                        System.out.println("Changing screens");
 //                        screen.changeScreen();
 //                    }
-//                    if((int)file.length() == ((WadFile) object).levelFileSize){
-//                        System.out.println("File receive complete");
-//                        try {
-//                            MyGDxTest.addons.add(file);
-//                            String hash = null;
-//                            hash = com.google.common.io.Files.asByteSource(file).hash(Hashing.sha256()).toString();
-//                            MyGDxTest.addonHashes.add(hash);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
+                    if((int)file.length() == ((WadFile) object).levelFileSize){
+                        System.out.println("File receive complete");
+                        try {
+                            MyGDxTest.addons.add(file);
+                            String hash = null;
+                            hash = com.google.common.io.Files.asByteSource(file).hash(Hashing.sha256()).toString();
+                            MyGDxTest.addonHashes.add(hash);
+                            screen.update = true;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
             public void disconnected (Connection connection) {
