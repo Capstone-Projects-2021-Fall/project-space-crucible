@@ -283,7 +283,8 @@ public class EditorScreen implements Screen {
         LevelTile tile = level.getTile(tilex, tiley);
 
         if (tile == null) {
-            tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley),
+            //TODO replace hardcoded layer
+            tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley, 0),
                     false, "TAN1", 0, 0,
                     0, 0, false, 0);
             level.getTiles().add(tile);
@@ -417,7 +418,8 @@ public class EditorScreen implements Screen {
             tile.repeat = copiedTileData.repeat;
             tile.tag = copiedTileData.tag;
         } else {
-            tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley), copiedTileData.solid,
+            //TODO replace hardcoded layer
+            tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley, 0), copiedTileData.solid,
                     copiedTileData.graphicname, copiedTileData.light, copiedTileData.effect, copiedTileData.arg1,
                     copiedTileData.arg2, copiedTileData.repeat, copiedTileData.tag);
             level.getTiles().add(tile);

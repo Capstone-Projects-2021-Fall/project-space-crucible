@@ -179,6 +179,9 @@ public class LevelData {
         int light = 0, effect = 0, arg1 = 0, arg2 = 0, tag = 0;
         boolean repeat = false;
 
+        //TODO replace hardcoded layer
+        int layer = 0;
+
         boolean[] leveldata = {false, false, false, false, false, false, false, false, false, false};
 
 
@@ -238,7 +241,7 @@ public class LevelData {
             }
         }
 
-        LevelTile.TilePosition pos = new LevelTile.TilePosition(xpos, ypos);
+        LevelTile.TilePosition pos = new LevelTile.TilePosition(xpos, ypos, layer);
         LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag);
         tiles.add(tile);
     }

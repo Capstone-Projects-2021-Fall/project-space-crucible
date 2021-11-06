@@ -14,12 +14,14 @@ public class LevelTile {
     public static class TilePosition {
         public int x;
         public int y;
+        public int layer;
 
         public TilePosition(){
         }
-        public TilePosition (int x, int y) {
+        public TilePosition (int x, int y, int layer) {
             this.x = x;
             this.y = y;
+            this.layer = layer;
         }
     }
 
