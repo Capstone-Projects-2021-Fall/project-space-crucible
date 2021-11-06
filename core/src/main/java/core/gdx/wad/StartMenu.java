@@ -18,42 +18,57 @@ public class StartMenu extends Actor{
     SettingsScreen settingsScreen;
     SpaceClient client;
     final StartMenu startMenu = this;
+    CreateImageButton startButton = new CreateImageButton("buttons/start.png", "buttons/startnobg.png");
+    CreateImageButton coopButton = new CreateImageButton("buttons/coop.png", "buttons/coopnobg.png");
+    CreateImageButton settingsButton = new CreateImageButton("buttons/settings.png", "buttons/settingsnobg.png");
+    CreateImageButton levelEditorButton = new CreateImageButton("buttons/leveleditor.png", "buttons/leveleditornobg.png");
+    CreateImageButton exitButton = new CreateImageButton("buttons/exit.png", "buttons/exitnobg.png");
+    CreateImageButton createLobbyButton = new CreateImageButton("buttons/createlobby.png", "buttons/createlobbynobg.png");
+    CreateImageButton joinLobbyButton = new CreateImageButton("buttons/joinlobby.png", "buttons/joinlobbynobg.png");
+    CreateImageButton backButton = new CreateImageButton("buttons/back.png", "buttons/backnobg.png");
+    Button[] MainMenuButtons = {startButton.button, coopButton.button, settingsButton.button, exitButton.button, levelEditorButton.button};
+    Button[] CoopButtons = {createLobbyButton.button, joinLobbyButton.button, backButton.button};
 
-    public StartMenu(String title, Skin skin, TitleScreen titleScreen, Stage stage, MyGDxTest myGDxTest) {
+    public StartMenu(Skin skin, TitleScreen titleScreen, Stage stage, MyGDxTest myGDxTest) {
         this.myGDxTest=myGDxTest;
         this.settingsScreen=new SettingsScreen(myGDxTest);
 
-        CreateImageButton startButton = new CreateImageButton("buttons/start.png", "buttons/startnobg.png");
-        startButton.button.setBounds((int)((Gdx.graphics.getWidth()-200)/ 2),(int)((Gdx.graphics.getHeight())/ 2), 200, 50);
+        //Main menu buttons
+        startButton.button.setBounds((Gdx.graphics.getWidth()-200)/ 2f, (Gdx.graphics.getHeight())/ 2f, 200, 50);
         stage.addActor(startButton.button);
 
-        CreateImageButton coopButton = new CreateImageButton("buttons/coop.png", "buttons/coopnobg.png");
-        coopButton.button.setBounds((int)((Gdx.graphics.getWidth() - 150)/ 2), (int)((Gdx.graphics.getHeight() - 100)/ 2), 150, 50);
+        coopButton.button.setBounds((Gdx.graphics.getWidth() - 150)/ 2f, (Gdx.graphics.getHeight() - 100)/ 2f, 150, 50);
         stage.addActor(coopButton.button);
 
-        CreateImageButton settingsButton = new CreateImageButton("buttons/settings.png", "buttons/settingsnobg.png");
-        settingsButton.button.setBounds((int)((Gdx.graphics.getWidth() - 200)/ 2), (int)((Gdx.graphics.getHeight() - 200)/ 2), 200, 50);
+        settingsButton.button.setBounds((Gdx.graphics.getWidth() - 200)/ 2f, (Gdx.graphics.getHeight() - 200)/ 2f, 200, 50);
         stage.addActor(settingsButton.button);
 
-        CreateImageButton levelEditorButton = new CreateImageButton("buttons/leveleditor.png", "buttons/leveleditornobg.png");
-        levelEditorButton.button.setBounds((int)((Gdx.graphics.getWidth() - 250)/ 2), (int)((Gdx.graphics.getHeight() - 320)/ 2), 250, 60);
+        levelEditorButton.button.setBounds((Gdx.graphics.getWidth() - 250)/ 2f, (Gdx.graphics.getHeight() - 320)/ 2f, 250, 60);
         stage.addActor(levelEditorButton.button);
 
-        CreateImageButton exitButton = new CreateImageButton("buttons/exit.png", "buttons/exitnobg.png");
-        exitButton.button.setBounds((int)((Gdx.graphics.getWidth() - 150)/ 2), (int)((Gdx.graphics.getHeight() - 420)/ 2), 150, 50);
+        exitButton.button.setBounds((Gdx.graphics.getWidth() - 150)/ 2f, (Gdx.graphics.getHeight() - 420)/ 2f, 150, 50);
         stage.addActor(exitButton.button);
 
-        Button buttons[] = {startButton.button, coopButton.button, settingsButton.button, exitButton.button, levelEditorButton.button};
+        //Coop buttons
+        createLobbyButton.button.setBounds((Gdx.graphics.getWidth() - 200)/ 2f, Gdx.graphics.getHeight() / 2f, 200, 50);
+        stage.addActor(createLobbyButton.button);
+
+        joinLobbyButton.button.setBounds((Gdx.graphics.getWidth() - 200)/ 2f, (Gdx.graphics.getHeight() - 110)/ 2f, 200, 50);
+        stage.addActor(joinLobbyButton.button);
+
+        backButton.button.setBounds((Gdx.graphics.getWidth() - 200)/ 2f, (Gdx.graphics.getHeight() - 220)/ 2f, 200, 50);
+        stage.addActor(backButton.button);
+
+        setCoopButtonsVisible(false);
 
         startButton.button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 System.out.println("Start\n");
-                ChooseDifficultyWindow window = new ChooseDifficultyWindow("Choose Difficulty:", skin, titleScreen, startMenu, buttons);
-                window.setBounds((int)((Gdx.graphics.getWidth() - 150)/ 2), (int)((Gdx.graphics.getHeight() - 110) / 2), 150, 110);
-                for(Button button : buttons)
-                    button.setVisible(false);
+                ChooseDifficultyWindow window = new ChooseDifficultyWindow("Choose Difficulty:", skin, titleScreen, startMenu, MainMenuButtons);
+                window.setBounds(((Gdx.graphics.getWidth() - 150)/ 2f), ((Gdx.graphics.getHeight() - 110) / 2f), 150, 110);
+                setMainMenuButtonsVisible(false);
                 stage.addActor(window);
             }
         });
@@ -64,59 +79,42 @@ public class StartMenu extends Actor{
                 GameScreen gameScreen= new GameScreen(null, false, myGDxTest);
                 client = new SpaceClient(gameScreen, startMenu);
                 if(client.getMasterClient() == null) {
-                    Dialog error = new Dialog("Error", skin);
-                    error.text("Error connecting to the server!\nTry Again Later.");
-                    error.setBounds((int)((Gdx.graphics.getWidth() - 250)/ 2), (int)((Gdx.graphics.getHeight() - 70) / 2), 250, 100);
-                    error.button("Ok").addListener(new ClickListener(){
-                        public void clicked(InputEvent event, float x, float y) {
-                            super.clicked(event, x, y);
-                            error.remove();
-                        }
-                    });
-                    stage.addActor(error);
+                    PopupWindow error = new PopupWindow("Connection Error", skin,
+                            "Error connecting to the server!\nTry Again Later.");
+                    titleScreen.showPopup(error);
+                    error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
                     return;
                 }
                 gameScreen.client = client;
-                System.out.println("Co-op\n");
 
-                Window lobbyMenu = new Window("Lobby", skin);
-                lobbyMenu.setMovable(false);
-                TextButton joinLobby = new TextButton("Join Lobby", skin);
-                TextButton createLobby = new TextButton("Create Lobby", skin);
-                TextButton back = new TextButton("Back", skin);
-                lobbyMenu.add(createLobby).row();
-                lobbyMenu.add(joinLobby).row();
-                lobbyMenu.add(back);
-                lobbyMenu.setBounds((int)((Gdx.graphics.getWidth() - 250)/ 2), (int)((Gdx.graphics.getHeight() - 150) / 2), 250, 150);
-                stage.addActor(lobbyMenu);
-                for(Button button : buttons)
-                    button.setVisible(false);
-                back.addListener(new ClickListener(){
+                setCoopButtonsVisible(true);
+                setMainMenuButtonsVisible(false);
+
+                backButton.button.addListener(new ClickListener(){
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
-                        for(Button button : buttons)
-                            button.setVisible(true);
-                        lobbyMenu.remove();
+                        setCoopButtonsVisible(false);
+                        setMainMenuButtonsVisible(true);
                     }
                 });
-                createLobby.addListener(new ClickListener(){
+                createLobbyButton.button.addListener(new ClickListener(){
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
+                        setCoopButtonsVisible(false);
                         client.makeLobby();
-                        //myGDxTest.setScreen(gameScreen);
-                        //titleScreen.dispose();
                     }
                 });
-                joinLobby.addListener(new ClickListener(){
+                joinLobbyButton.button.addListener(new ClickListener(){
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
                         TextButton submit = new TextButton("submit", skin);
                         TextButton back = new TextButton("back", skin);
                         TextField lobbyCode = new TextField("Lobby Code", skin);
-                        lobbyCode.setBounds((int)((Gdx.graphics.getWidth() - 100)/ 2),(int)((Gdx.graphics.getHeight() - 25)/ 2), 100, 35);
-                        submit.setBounds((int)((Gdx.graphics.getWidth() + 105)/ 2),(int)((Gdx.graphics.getHeight() - 25)/ 2),60,35);
-                        back.setBounds((int)((Gdx.graphics.getWidth() - 50)/ 2),(int)((Gdx.graphics.getHeight() - 100)/ 2),50,35);
-                        lobbyMenu.setVisible(false);
+                        lobbyCode.setBounds(((Gdx.graphics.getWidth() - 100)/ 2f),((Gdx.graphics.getHeight() - 25)/ 2f), 100, 35);
+                        submit.setBounds(((Gdx.graphics.getWidth() + 105)/ 2f),((Gdx.graphics.getHeight() - 25)/ 2f),60,35);
+                        back.setBounds(((Gdx.graphics.getWidth() - 50)/ 2f),((Gdx.graphics.getHeight() - 100)/ 2f),50,35);
+                        setCoopButtonsVisible(false);
+
                         stage.addActor(lobbyCode);
                         stage.addActor(submit);
                         stage.addActor(back);
@@ -154,7 +152,7 @@ public class StartMenu extends Actor{
                                 submit.remove();
                                 back.remove();
                                 lobbyCode.remove();
-                                lobbyMenu.setVisible(true);
+                                setCoopButtonsVisible(true);
 
                             }
                         });
@@ -167,7 +165,6 @@ public class StartMenu extends Actor{
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 myGDxTest.setScreen(settingsScreen);
-                //((MyGDxTest) Gdx.app.getApplicationListener()).setScreen(new SettingsScreen());
             }
         });
 
@@ -175,9 +172,7 @@ public class StartMenu extends Actor{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                System.out.println("Editor\n");
                 myGDxTest.setScreen(new EditorScreen());
-                //((MyGDxTest) Gdx.app.getApplicationListener()).setScreen(new SettingsScreen());
             }
         });
 
@@ -188,5 +183,14 @@ public class StartMenu extends Actor{
                 System.exit(0);
             }
         });
+    }
+
+    public void setCoopButtonsVisible(boolean visible){
+        for(Button button : CoopButtons)
+            button.setVisible(visible);
+    }
+    public void setMainMenuButtonsVisible(boolean visible){
+        for(Button button : MainMenuButtons)
+            button.setVisible(visible);
     }
 }
