@@ -33,6 +33,7 @@ public class EditThingWindow extends Window {
     CheckBox skill5Check;
     CheckBox ambushCheck;
     NumberField tagField;
+    NumberField layerField;
     TextButton okButton;
     TextButton cancelButton;
 
@@ -105,6 +106,10 @@ public class EditThingWindow extends Window {
         tagField = new NumberField(Integer.toString(obj.tag), skin);
         add(tagField);
         row();
+        add(new Label("Layer:", skin));
+        layerField = new NumberField(Integer.toString(obj.layer), skin);
+        add(layerField);
+        row();
         okButton = new TextButton("OK", skin);
 
         okButton.addListener(new ClickListener() {
@@ -139,10 +144,10 @@ public class EditThingWindow extends Window {
         }
 
         for (LevelObject lo : objs) {
-            lo.type = Integer.parseInt(typeField.getText());
+            lo.type = typeField.getInteger();
             //lo.xpos = Float.parseFloat(xField.getText());
             //lo.ypos = Float.parseFloat(yField.getText());
-            lo.angle = Float.parseFloat(angleField.getText());
+            lo.angle = angleField.getFloat();
             lo.singleplayer = singleCheck.isChecked();
             lo.cooperative = coopCheck.isChecked();
             lo.skill[0] = skill1Check.isChecked();
@@ -151,7 +156,8 @@ public class EditThingWindow extends Window {
             lo.skill[3] = skill4Check.isChecked();
             lo.skill[4] = skill5Check.isChecked();
             lo.ambush = ambushCheck.isChecked();
-            lo.tag = Integer.parseInt(tagField.getText());
+            lo.tag = tagField.getInteger();
+            lo.layer = layerField.getInteger();
         }
         GameLogic.loadEntities(editor.level, true);
         close();

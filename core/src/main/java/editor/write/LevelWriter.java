@@ -32,6 +32,8 @@ public class LevelWriter {
                     + "arg2 = " + tile.arg2 + "\n"
                     + "repeat = " + tile.repeat + "\n"
                     + "tag = " + tile.tag + "\n"
+                    + "layer = " + tile.pos.layer + "\n"
+                    + "bridge = " + tile.bridge + "\n"
                     + "}\n\n";
         }
 

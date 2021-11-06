@@ -114,6 +114,7 @@ public class LevelData {
         float angle = 0;
         boolean singleplayer = false, cooperative = false, ambush = false;
         boolean[] skill = {false, false, false, false, false};
+        int layer = 0;
 
         boolean[] objectdata = {false, false, false, false, false, false, false, false,
                 false, false, false, false, false};
@@ -162,6 +163,8 @@ public class LevelData {
             } else if (line.startsWith("tag")) {
                 tag = Integer.parseInt(rawvalue);
                 objectdata[12] = true;
+            } else if (line.startsWith("layer")) {
+                layer = Integer.parseInt(rawvalue);
             } else {
                 System.out.println("Error: unrecognized level object data!");
                 throw new IOException();
@@ -179,7 +182,7 @@ public class LevelData {
             }
         }
 
-        LevelObject obj = new LevelObject(type, xpos, ypos, angle, singleplayer, cooperative, skill, ambush, tag);
+        LevelObject obj = new LevelObject(type, xpos, ypos, angle, singleplayer, cooperative, skill, ambush, tag, layer);
         objects.add(obj);
     }
 

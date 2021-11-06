@@ -288,11 +288,10 @@ public class EditorScreen implements Screen {
     private void editTilePrompt(int tilex, int tiley) {
 
         LevelTile tile = hud.getSingleLayer().isChecked() ?
-                level.getTopTile(tilex, tiley) : level.getTile(tilex, tiley, hud.getLayer().getInteger());
+                level.getTile(tilex, tiley, hud.getLayer().getInteger()) : level.getTopTile(tilex, tiley) ;
 
         if (tile == null) {
-            //TODO replace hardcoded layer
-            tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley, 0),
+            tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley, hud.getLayer().getInteger()),
                     false, "TAN1", 0, 0,
                     0, 0, false, 0, -1);
             level.getTiles().add(tile);
@@ -415,7 +414,7 @@ public class EditorScreen implements Screen {
     private void pasteTile(int tilex, int tiley) {
 
         LevelTile tile = hud.getSingleLayer().isChecked() ?
-                level.getTopTile(tilex, tiley) : level.getTile(tilex, tiley, hud.getLayer().getInteger());
+                level.getTile(tilex, tiley, hud.getLayer().getInteger()) : level.getTopTile(tilex, tiley) ;
 
         if (tile != null) {
             tile.graphicname = copiedTileData.graphicname;
@@ -438,7 +437,7 @@ public class EditorScreen implements Screen {
     private void pasteThing(float x, float y) {
         level.getObjects().add(new LevelObject(copiedThingData.type, x, y, copiedThingData.angle,
                 copiedThingData.singleplayer, copiedThingData.cooperative, copiedThingData.skill,
-                copiedThingData.ambush, copiedThingData.tag));
+                copiedThingData.ambush, copiedThingData.tag, 0));
         GameLogic.loadEntities(level, true);
     }
 
@@ -512,7 +511,7 @@ public class EditorScreen implements Screen {
 
         if (isShiftPressed()) {
             LevelObject newObj = new LevelObject(0, x, y, 0, true, true,
-                    new boolean[]{true, true, true, true, true}, false, 0);
+                    new boolean[]{true, true, true, true, true}, false, 0, 0);
             level.getObjects().add(newObj);
 
             Entity newThing = GameLogic.mapIDTable.get(0)

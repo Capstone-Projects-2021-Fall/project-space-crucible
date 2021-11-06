@@ -16,6 +16,10 @@ public class NumberField extends TextField {
         return Integer.parseInt(getText());
     }
 
+    public Float getFloat() {
+        return Float.parseFloat(getText());
+    }
+
     private static class DigitsPlusNegativeFilter extends TextField.TextFieldFilter.DigitsOnlyFilter {
 
         @Override
