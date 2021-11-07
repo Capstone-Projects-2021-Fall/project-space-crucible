@@ -170,7 +170,7 @@ public class GameLogic {
 
             try {
                 entityList.add(GameLogic.mapIDTable.get(obj.type)
-                        .spawnEntity(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag));
+                        .spawnEntity(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag, obj.layer));
             } catch (Exception e) {
                 System.out.println("Unknown Entity with map ID " + obj.type);
             }

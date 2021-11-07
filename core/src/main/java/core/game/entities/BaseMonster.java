@@ -18,8 +18,8 @@ public class BaseMonster extends Entity {
 
     public BaseMonster(){}
 
-    public BaseMonster(String name, int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags, String[] sounds) {
-        super(name, health, pos, speed, width, height, states, tag, flags);
+    public BaseMonster(String name, int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags, String[] sounds, int layer) {
+        super(name, health, pos, speed, width, height, states, tag, flags, layer);
         this.sounds[SEESOUND] = sounds[SEESOUND];
         this.sounds[PAINSOUND] = sounds[PAINSOUND];
         this.sounds[DIESOUND] = sounds[DIESOUND];

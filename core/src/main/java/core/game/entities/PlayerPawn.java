@@ -22,8 +22,8 @@ public class PlayerPawn extends Entity {
 
     public PlayerPawn(){}
 
-    public PlayerPawn(String name, int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags, String[] sounds) {
-        super(name, health, pos, speed, width, height, states, tag, SOLID);
+    public PlayerPawn(String name, int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags, String[] sounds, int layer) {
+        super(name, health, pos, speed, width, height, states, tag, SOLID, layer);
         this.sounds = sounds;
     }
 
@@ -99,7 +99,7 @@ public class PlayerPawn extends Entity {
 
                         if (lo.type == 0 && lo.tag == tag) {
                             GameLogic.newEntityQueue.addLast(GameLogic.mapIDTable.get(0)
-                                    .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), tag));
+                                    .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), tag, lo.layer));
                             break;
                         }
                     }

@@ -246,8 +246,9 @@ public class EditorScreen implements Screen {
                     copiedTileData = new CopiedTileData(tile.solid, tile.graphicname, tile.light,
                             tile.effect, tile.arg1, tile.arg2, tile.repeat, tile.tag, resources);
                 }
-            } else  if (Gdx.input.isKeyPressed(Input.Keys.V)) {
-                if (isShiftPressed()) {
+            } else if (Gdx.input.isKeyPressed(Input.Keys.V)) {
+                //Don't allow holding paste for things, but for tiles it's ok
+                if (isShiftPressed() && Gdx.input.isKeyJustPressed(Input.Keys.V)) {
                     if (copiedThingData == null) {
                         return;
                     }
@@ -515,7 +516,7 @@ public class EditorScreen implements Screen {
             level.getObjects().add(newObj);
 
             Entity newThing = GameLogic.mapIDTable.get(0)
-                    .spawnEntity(new Entity.Position(x, y, 0), 0);
+                    .spawnEntity(new Entity.Position(x, y, 0), 0, 0);
             GameLogic.entityList.add(newThing);
 
             GameLogic.loadEntities(level, true);

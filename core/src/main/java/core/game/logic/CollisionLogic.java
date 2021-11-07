@@ -110,7 +110,7 @@ public class CollisionLogic {
                     if (attack) {
                         GameLogic.newEntityQueue.addLast(
                                 GameLogic.entityTable.get("Blood")
-                                        .spawnEntity(new Entity.Position(xpos, ypos, 0f), 0));
+                                        .spawnEntity(new Entity.Position(xpos, ypos, 0f), 0, entity2.currentLayer));
                     }
                     return entity2;
                 }
@@ -132,7 +132,7 @@ public class CollisionLogic {
                         if (attack) {
                             GameLogic.newEntityQueue.addLast(
                                     GameLogic.entityTable.get("BulletPuff")
-                                            .spawnEntity(new Entity.Position(xpos, ypos, 0f), 0));
+                                            .spawnEntity(new Entity.Position(xpos, ypos, 0f), 0, t.pos.layer));
                         }
                         return null;
                     }

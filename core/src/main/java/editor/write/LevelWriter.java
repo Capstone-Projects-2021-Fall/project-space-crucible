@@ -52,6 +52,7 @@ public class LevelWriter {
                     + "skill5 = " + obj.skill[4] + "\n"
                     + "ambush = " + obj.ambush + "\n"
                     + "tag = " + obj.tag + "\n"
+                    + "layer = " + obj.layer + "\n"
                     + "}\n\n";
         }
 

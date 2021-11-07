@@ -57,7 +57,7 @@ public class Entity {
     public Entity(){}
 
     //Like sprites, each state is only stored once in a global ArrayList, which is memory-efficient.
-    public Entity (String name, int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags) {
+    public Entity (String name, int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags, int layer) {
         this.health = health;
         this.pos = pos;
         this.speed = speed;
@@ -67,6 +67,7 @@ public class Entity {
         this.tag = tag;
         this.flags = flags;
         this.name = name;
+        this.currentLayer = layer;
         bound = new Rectangle(pos.x, pos.y, width, height);
         setState(this.states[IDLE]);
     }
