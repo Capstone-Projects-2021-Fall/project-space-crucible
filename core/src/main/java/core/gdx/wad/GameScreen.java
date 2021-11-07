@@ -3,36 +3,29 @@ package core.gdx.wad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Null;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
-import core.game.entities.PlayerPawn;
 import core.server.Network;
+import core.server.Network.ClientData;
 import core.server.Network.RenderData;
+import core.server.Network.ServerDetails;
 import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
-import core.server.Network.ClientData;
-import core.server.Network.ServerDetails;
 import core.wad.funcs.WadFuncs;
 
 
@@ -71,7 +64,6 @@ public class GameScreen implements Screen {
     Label lobbyCode;
     boolean remove = false;
 
-
     public GameScreen(Thread gameLoop, boolean isSinglePlayer, MyGDxTest myGdxTest) {
         this.gameLoop = gameLoop;
         this.myGDxTest = myGdxTest;
@@ -81,7 +73,6 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         lobbyStage = new Stage();
         this.isSinglePlayer = isSinglePlayer;
-
     }
 
     @Override
@@ -263,9 +254,6 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
-//        if (startGame) {
-//            stage.getViewport().update(width, height);
-//        }
     }
 
     @Override
@@ -280,7 +268,6 @@ public class GameScreen implements Screen {
     public void hide() {
         SoundFuncs.stopMIDI();
         try {GameLogic.stop();} catch (NullPointerException ignored){}
-//        System.exit(0);
     }
 
     @Override
@@ -353,9 +340,5 @@ public class GameScreen implements Screen {
 
     public void updatePlayerNumber() {
         playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
-    }
-
-    public void changeScreen(){
-        myGDxTest.setScreen(myGDxTest.settingsScreen);
     }
 }

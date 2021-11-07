@@ -96,7 +96,9 @@ public class SpaceClient implements Listener {
                         System.out.println("Creating new file " + ((CreateWadFile) object).levelFileName);
                         try {
                             file = Gdx.files.internal("assets/" + ((CreateWadFile) object).levelFileName).file();
-                            file.createNewFile();
+                            if(file.createNewFile()){
+                                System.out.println("Couldn't create file " + file.getName());
+                            }
                             System.out.println("Created a new file");
                             return;
                         } catch (IOException ioException) {
@@ -119,7 +121,7 @@ public class SpaceClient implements Listener {
                         System.out.println("File receive complete");
                         try {
                             MyGDxTest.addons.add(file);
-                            String hash = null;
+                            String hash;
                             hash = com.google.common.io.Files.asByteSource(file).hash(Hashing.sha256()).toString();
                             MyGDxTest.addonHashes.add(hash);
                             screen.update = true;

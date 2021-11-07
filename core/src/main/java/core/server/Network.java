@@ -16,7 +16,6 @@ import core.level.info.LevelTile;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 
 //This class will store things common to both client and server

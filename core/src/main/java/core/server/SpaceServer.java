@@ -1,13 +1,10 @@
 package core.server;
 
-import com.badlogic.gdx.Game;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-
 import core.game.entities.Entity;
-import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;

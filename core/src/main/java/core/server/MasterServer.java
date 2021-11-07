@@ -235,10 +235,10 @@ public class MasterServer implements Listener {
     }
 
     public static class ServerEntry {
-        private int port;
-        private ArrayList<String> files;
-        private ArrayList<String> hashes;
-        private String rconPass;
+        private final int port;
+        private final ArrayList<String> files;
+        private final ArrayList<String> hashes;
+        private final String rconPass;
         private final int masterID;
 
         public ServerEntry(int port, ArrayList<String> files, ArrayList<String> hashes, String rconPass, int masterID) {
