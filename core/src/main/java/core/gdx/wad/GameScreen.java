@@ -249,8 +249,8 @@ public class GameScreen implements Screen {
             mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(1).getPos().x - GameLogic.getPlayer(1).getWidth()/2f;
             mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight()/2f;
         } else if(renderData.entityList != null && getPlayer(playerNumber) != null) {
-            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(playerNumber).getPos().x;
-            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y;
+            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(playerNumber).getPos().x - GameLogic.getPlayer(1).getWidth()/2f;
+            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y + GameLogic.getPlayer(1).getHeight()/2f;
         }
         mouseInWorld3D.z = 0;
         camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
