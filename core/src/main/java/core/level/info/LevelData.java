@@ -244,7 +244,6 @@ public class LevelData {
             }
             else if (line.startsWith("layer")) {
                 layer = Integer.parseInt(rawvalue);
-                //TODO add layer to leveldata once it's fully implemented
             }
             else if (line.startsWith("bridge")) {
                 bridge = Integer.parseInt(rawvalue);

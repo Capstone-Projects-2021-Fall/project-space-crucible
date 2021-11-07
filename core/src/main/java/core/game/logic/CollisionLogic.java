@@ -65,20 +65,16 @@ public class CollisionLogic {
 
                     //Change layer if valid
                     if (!layerChanged && levelTile.pos.layer == entity.bridgeLayer && levelTile.pos.layer != entity.currentLayer) {
-                        entity.currentLayer = Math.min(levelTile.pos.layer, entity.bridgeLayer);
+                        entity.currentLayer = levelTile.pos.layer;
                         layerChanged = true;
                     }
 
-                    int tilex = (int) entity.getPos().x/LevelTile.TILE_SIZE;
-                    int tiley = (int) entity.getPos().y/LevelTile.TILE_SIZE;
-
-                    if (entity.getPos().x < 0) {tilex--;}
-                    if (entity.getPos().y < 0) {tiley--;}
 
                     //Block if solid or if you're not connected to the floor (i.e. above the floor)
                     //Don't block lower layers because you want them to walk under
-                    if (levelTile.solid || (entity.currentLayer > levelTile.pos.layer
-                            && (tilex != levelTile.pos.x || tiley != levelTile.pos.y))) {
+                    if ((levelTile.solid && levelTile.pos.layer == entity.currentLayer)
+                            || (entity.currentLayer > levelTile.pos.layer
+                            && GameLogic.currentLevel.getTile(levelTile.pos.x, levelTile.pos.y, entity.currentLayer) == null)) {
                         collidedTile = levelTile;
                     }
                 }
