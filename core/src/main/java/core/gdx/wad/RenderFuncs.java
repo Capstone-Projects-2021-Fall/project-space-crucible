@@ -126,6 +126,10 @@ public class RenderFuncs {
                 if (GameLogic.currentLevel != null) {
                     LevelTile tile = GameLogic.currentLevel.getTile(tilex, tiley, e.currentLayer);
 
+                    if (tile == null) {
+                        tile = GameLogic.currentLevel.getTile(tilex, tiley, e.bridgeLayer);
+                    }
+
                     if (!GameLogic.switchingLevels) {
 
                         float light;

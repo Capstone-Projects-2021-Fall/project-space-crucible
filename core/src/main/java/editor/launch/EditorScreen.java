@@ -236,7 +236,7 @@ public class EditorScreen implements Screen {
                     if (e.getBounds().contains(x, y)) {
                         LevelObject obj = level.getObjects().get(GameLogic.entityList.indexOf(e));
                         copiedThingData = new CopiedThingData(obj.type, obj.angle, obj.singleplayer,
-                                obj.cooperative, obj.skill, obj.ambush, obj.tag);
+                                obj.cooperative, obj.skill, obj.ambush, obj.tag, obj.layer);
                         return;
                     }
                 }
@@ -244,7 +244,8 @@ public class EditorScreen implements Screen {
                 LevelTile tile = level.getTopTile(tilex, tiley);
                 if (tile != null) {
                     copiedTileData = new CopiedTileData(tile.solid, tile.graphicname, tile.light,
-                            tile.effect, tile.arg1, tile.arg2, tile.repeat, tile.tag, resources);
+                            tile.effect, tile.arg1, tile.arg2, tile.repeat, tile.tag,
+                            tile.pos.layer, tile.bridge, resources);
                 }
             } else if (Gdx.input.isKeyPressed(Input.Keys.V)) {
                 //Don't allow holding paste for things, but for tiles it's ok
@@ -426,11 +427,12 @@ public class EditorScreen implements Screen {
             tile.arg2 = copiedTileData.arg2;
             tile.repeat = copiedTileData.repeat;
             tile.tag = copiedTileData.tag;
+            tile.pos.layer = copiedTileData.layer;
+            tile.bridge = copiedTileData.bridge;
         } else {
-            //TODO replace hardcoded layer
-            tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley, 0), copiedTileData.solid,
+            tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley, copiedTileData.layer), copiedTileData.solid,
                     copiedTileData.graphicname, copiedTileData.light, copiedTileData.effect, copiedTileData.arg1,
-                    copiedTileData.arg2, copiedTileData.repeat, copiedTileData.tag, -1);
+                    copiedTileData.arg2, copiedTileData.repeat, copiedTileData.tag, copiedTileData.bridge);
             level.getTiles().add(tile);
         }
     }
@@ -438,7 +440,7 @@ public class EditorScreen implements Screen {
     private void pasteThing(float x, float y) {
         level.getObjects().add(new LevelObject(copiedThingData.type, x, y, copiedThingData.angle,
                 copiedThingData.singleplayer, copiedThingData.cooperative, copiedThingData.skill,
-                copiedThingData.ambush, copiedThingData.tag, 0));
+                copiedThingData.ambush, copiedThingData.tag, copiedThingData.layer));
         GameLogic.loadEntities(level, true);
     }
 
