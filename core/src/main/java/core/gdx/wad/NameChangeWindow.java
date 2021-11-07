@@ -11,7 +11,7 @@ public class NameChangeWindow extends Window {
     MyGDxTest myGDxTest;
     SettingsScreen settingsScreen;
     public int playerNumber = 1;
-    public static String playerName="Current Name";
+    public static String playerName="";
 
     public NameChangeWindow(String title, Skin skin, SettingsScreen settingsScreen, Stage stage, MyGDxTest myGDxTest) {
         super(title, skin);
@@ -28,7 +28,7 @@ public class NameChangeWindow extends Window {
         add(confirmNameButton);
         pack();
 
-        newName.setDisabled(false);
+        newName.setDisabled(true);
         newName.setText(playerName);
 
 
