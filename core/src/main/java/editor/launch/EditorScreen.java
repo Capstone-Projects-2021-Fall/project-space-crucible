@@ -246,7 +246,7 @@ public class EditorScreen implements Screen {
                     copiedTileData = new CopiedTileData(tile.solid, tile.graphicname, tile.light,
                             tile.effect, tile.arg1, tile.arg2, tile.repeat, tile.tag, resources);
                 }
-            } else  if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
+            } else  if (Gdx.input.isKeyPressed(Input.Keys.V)) {
                 if (isShiftPressed()) {
                     if (copiedThingData == null) {
                         return;

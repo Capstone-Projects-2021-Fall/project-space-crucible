@@ -13,11 +13,15 @@ public class NumberField extends TextField {
     }
 
     public Integer getInteger() {
-        return Integer.parseInt(getText());
+        try {
+            return Integer.parseInt(getText());
+        } catch(NumberFormatException nfe) {return 0;}
     }
 
     public Float getFloat() {
-        return Float.parseFloat(getText());
+        try {
+            return Float.parseFloat(getText());
+        } catch(NumberFormatException nfe) {return 0f;}
     }
 
     private static class DigitsPlusNegativeFilter extends TextField.TextFieldFilter.DigitsOnlyFilter {
