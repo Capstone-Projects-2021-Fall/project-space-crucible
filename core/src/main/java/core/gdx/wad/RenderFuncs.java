@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import core.game.entities.Entity;
+import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
 import core.level.info.LevelTile;
@@ -21,7 +22,7 @@ public class RenderFuncs {
     final public static Map<String, GameSprite> spriteMap = new HashMap<>();
     final public static Map<String, Texture> textureMap = new HashMap<>();
 
-    public static void worldDraw(SpriteBatch batch, ArrayList <LevelTile> tiles, boolean editor, boolean fullbright, ArrayList<Entity> entityList) {
+    public static void worldDraw(SpriteBatch batch, ArrayList <LevelTile> tiles, boolean editor, boolean fullbright, ArrayList<Entity> entityList, PlayerPawn player) {
 
         ArrayList<LevelTile> tilesToDraw = new ArrayList<>(tiles);
         ArrayList<LevelTile> iterate = new ArrayList<>(tilesToDraw);
@@ -33,15 +34,21 @@ public class RenderFuncs {
                 if (tile.pos.layer == layer) {
 
                     //Special exception, draw edges as black always, but only in non-editor mode
-                    if (!fullbright) {
-                        if (tile.graphicname.equals("EDGE") && !editor) {
-                            batch.setColor(0f, 0f, 0f, 255f);
+                    if (tile.graphicname.equals("EDGE") && !editor) {
+                        batch.setColor(0f, 0f, 0f, 1f);
+                    } else if (fullbright) {
+                        batch.setColor(255f, 255f, 255f, 1f);
+                    }
+                    else if (player != null) {
+                        LevelTile bottomTile = GameLogic.currentLevel.getBottomTile(tile.pos.x, tile.pos.y);
+                        if (layer > Math.max(player.bridgeLayer, player.currentLayer)
+                            && (tile != bottomTile && !bottomTile.graphicname.equals("EDGE"))) {
+                            batch.setColor(255f, 255f, 255f, 0.5f);
                         } else {
-                            float light = (float) tile.light / 255;
-                            batch.setColor(light, light, light, 255f);
+                            batch.setColor(255f, 255f, 255f, 1f);
                         }
                     } else {
-                        batch.setColor(255f, 255f, 255f, 255f);
+                        batch.setColor(255f, 255f, 255f, 1f);
                     }
 
                     if (tile.solid) {
@@ -63,7 +70,7 @@ public class RenderFuncs {
                 }
             }
 
-            entityDraw(batch, entityList, layer);
+            entityDraw(batch, entityList, layer, editor);
 
             layer++;
             iterate = new ArrayList<>(tilesToDraw);
@@ -106,10 +113,10 @@ public class RenderFuncs {
             }
         }
 
-        entityDraw(batch, entityList, layer);
+        entityDraw(batch, entityList, layer, editor);
     }
 
-    private static void entityDraw(SpriteBatch batch, ArrayList <Entity> entities, int layer) {
+    private static void entityDraw(SpriteBatch batch, ArrayList <Entity> entities, int layer, boolean editor) {
 
         try {
             for (Entity e : entities) {
@@ -123,7 +130,10 @@ public class RenderFuncs {
                 if (x < 0) {tilex--;}
                 if (y < 0) {tiley--;}
 
-                if (GameLogic.currentLevel != null) {
+                if (editor) {
+                    batch.setColor(255f, 255f, 255f, 1f);
+                }
+                else if (GameLogic.currentLevel != null) {
                     LevelTile tile = GameLogic.currentLevel.getTile(tilex, tiley, e.currentLayer);
 
                     if (tile == null) {
@@ -139,7 +149,8 @@ public class RenderFuncs {
                         } else {
                             light = 0f;
                         }
-                        batch.setColor(light, light, light, 255f);
+                        float alpha = batch.getColor().a;
+                        batch.setColor(light, light, light, alpha);
                     }
                 }
                 batch.draw(spriteMap.get(e.getCurrentSprite()).getFrame(e.getCurrentFrame(), e.getPos().angle), e.getPos().x, e.getPos().y);

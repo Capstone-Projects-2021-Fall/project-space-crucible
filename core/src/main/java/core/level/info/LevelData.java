@@ -102,6 +102,19 @@ public class LevelData {
         return ret;
     }
 
+    public LevelTile getBottomTile(int x, int y) {
+        LevelTile ret = null;
+        for (LevelTile tile : tiles) {
+            if (tile.pos.x == x && tile.pos.y == y) {
+                if (ret == null || tile.pos.layer < ret.pos.layer) {
+                    ret = tile;
+                }
+            }
+        }
+
+        return ret;
+    }
+
     public ArrayList<LevelObject> getObjects() {
         return objects;
     }
@@ -195,8 +208,6 @@ public class LevelData {
         String graphic = "";
         int light = 0, effect = 0, arg1 = 0, arg2 = 0, tag = 0, bridge = -1;
         boolean repeat = false;
-
-        //TODO replace hardcoded layer
         int layer = 0;
 
         boolean[] leveldata = {false, false, false, false, false, false, false, false, false, false};

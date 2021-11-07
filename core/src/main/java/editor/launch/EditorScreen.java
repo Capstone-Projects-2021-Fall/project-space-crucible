@@ -114,7 +114,7 @@ public class EditorScreen implements Screen {
             if (hud.getSingleLayer().isChecked()) {
                 RenderFuncs.worldDraw(batch, level.getTiles(), true, fullbright, GameLogic.entityList, hud.getLayer().getInteger());
             } else {
-                RenderFuncs.worldDraw(batch, level.getTiles(), true, fullbright, GameLogic.entityList);
+                RenderFuncs.worldDraw(batch, level.getTiles(), true, fullbright, GameLogic.entityList, null);
             }
             //RenderFuncs.entityDraw(batch, GameLogic.entityList);
             batch.end();
