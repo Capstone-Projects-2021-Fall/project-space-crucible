@@ -1,0 +1,10683 @@
+name = Dungeon
+midi = D_DDTBLU
+floortile {
+xpos = 0
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = 0
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -1
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -3
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -4
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -4
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -4
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -4
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -4
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -3
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -3
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -3
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -3
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -5
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -6
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -6
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -6
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -5
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -5
+solid = false
+graphic = FLAT14
+light = 132
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -3
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -3
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -3
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -3
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -3
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -3
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -3
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -3
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -4
+solid = false
+graphic = HEXAGON1
+light = 162
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -4
+solid = false
+graphic = HEXAGON1
+light = 162
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -4
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -4
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -5
+solid = false
+graphic = HEXAGON1
+light = 190
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -5
+solid = false
+graphic = HEXAGON1
+light = 190
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -5
+solid = false
+graphic = HEXAGON1
+light = 190
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -5
+solid = false
+graphic = HEXAGON1
+light = 190
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -5
+solid = false
+graphic = HEXAGON1
+light = 190
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -5
+solid = false
+graphic = HEXAGON1
+light = 190
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -5
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -4
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -5
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -4
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -4
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -4
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -6
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -6
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -6
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -6
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -6
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -6
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -6
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -5
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -5
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -4
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -6
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -6
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -6
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -7
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -7
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -7
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -7
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -7
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -7
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -7
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -7
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -7
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -7
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -7
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -9
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -8
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -10
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -11
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -12
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -13
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -13
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -13
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -13
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -13
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -13
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -13
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -13
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -13
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -13
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -13
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -13
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -3
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -3
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -4
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -5
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -6
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -8
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -9
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -10
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -7
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -11
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -12
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -11
+solid = true
+graphic = BROWN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -11
+solid = true
+graphic = BROWN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -10
+solid = true
+graphic = BROWN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -10
+solid = true
+graphic = BROWN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -9
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -9
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -8
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -8
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -8
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -8
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -8
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -8
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -8
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -8
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -8
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -9
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -8
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -9
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -9
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -9
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -9
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -9
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -9
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -10
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -9
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -10
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -10
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -10
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -10
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -10
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -10
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -10
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -11
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -11
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -11
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -11
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -11
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -11
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -11
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -11
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -12
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -12
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -12
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -12
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -12
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -12
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -12
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -12
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -12
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -12
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -14
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -14
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -14
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -14
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -14
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -14
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -14
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -14
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -14
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -14
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -15
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -15
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -15
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -15
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -15
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -15
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -15
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -15
+solid = false
+graphic = HEXAGON1
+light = 224
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -15
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -15
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -14
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -15
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -14
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -15
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -16
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -17
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -17
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -17
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -17
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -17
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -16
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -17
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -17
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -17
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -17
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -17
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -16
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -16
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -16
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -16
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -16
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -16
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -16
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -16
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -16
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -17
+solid = false
+graphic = HEXAGON1
+light = 97
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -17
+solid = false
+graphic = HEXAGON1
+light = 97
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -16
+solid = false
+graphic = HEXAGON1
+light = 134
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -18
+solid = false
+graphic = HEXAGON1
+light = 59
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -18
+solid = false
+graphic = HEXAGON1
+light = 59
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -19
+solid = false
+graphic = HEXAGON1
+light = 59
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -19
+solid = false
+graphic = HEXAGON1
+light = 59
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -20
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -20
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -21
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -21
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -18
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -19
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -20
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -18
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -18
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -19
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -20
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -22
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -23
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -24
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -25
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -22
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -23
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -24
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -25
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -22
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -22
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -23
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -23
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -24
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -24
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -25
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -25
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -25
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -25
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -26
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -27
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -27
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -27
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -29
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -32
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -35
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -32
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -29
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -28
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -29
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -30
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -31
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -31
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -32
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -32
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -33
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -33
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -34
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -28
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -26
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -27
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -29
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -29
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -29
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -27
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -26
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -28
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -28
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -29
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -29
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -29
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -28
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -27
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -29
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -32
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -32
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -29
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -28
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -28
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -29
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -29
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -30
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -30
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -31
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -31
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = -32
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -32
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = -33
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -33
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -32
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -31
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -29
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -33
+solid = false
+graphic = FLAT5
+light = 17
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -32
+solid = false
+graphic = FLAT5
+light = 17
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -31
+solid = false
+graphic = FLAT5
+light = 17
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -30
+solid = false
+graphic = FLAT5
+light = 17
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = -29
+solid = false
+graphic = FLAT5
+light = 17
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -29
+solid = false
+graphic = NUKAGE1
+light = 35
+effect = 2
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -29
+solid = false
+graphic = NUKAGE1
+light = 35
+effect = 2
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -29
+solid = false
+graphic = NUKAGE1
+light = 79
+effect = 2
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -29
+solid = false
+graphic = NUKAGE1
+light = 109
+effect = 2
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -30
+solid = false
+graphic = NUKAGE1
+light = 79
+effect = 2
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -30
+solid = false
+graphic = NUKAGE1
+light = 35
+effect = 2
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -30
+solid = false
+graphic = NUKAGE1
+light = 35
+effect = 2
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -31
+solid = false
+graphic = NUKAGE1
+light = 35
+effect = 2
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -31
+solid = false
+graphic = NUKAGE1
+light = 35
+effect = 2
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -32
+solid = false
+graphic = NUKAGE1
+light = 35
+effect = 2
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = -33
+solid = false
+graphic = NUKAGE1
+light = 35
+effect = 2
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -32
+solid = false
+graphic = NUKAGE1
+light = 35
+effect = 2
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = -30
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -29
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -30
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -31
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -32
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -32
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -34
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -32
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -32
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -31
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -33
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -34
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -34
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -35
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -35
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -35
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -36
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -36
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -36
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -35
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = -36
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -33
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -35
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -35
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -35
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -36
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -36
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -36
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -35
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -36
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -37
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -37
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -38
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -39
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -39
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -39
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -38
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -37
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -36
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -35
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -24
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -23
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -22
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -21
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -21
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -21
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -21
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -24
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -23
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -22
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -22
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -22
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -22
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -20
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -20
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -20
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -20
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -20
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -20
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -22
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -23
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -24
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -24
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -23
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -22
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -22
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -23
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -22
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -22
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -23
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -24
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -25
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -26
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -26
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -22
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -22
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -23
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -24
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -24
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -23
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -24
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -24
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -23
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -24
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -24
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -23
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -22
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -22
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -22
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -23
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -23
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -24
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -24
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -25
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -29
+solid = false
+graphic = HEXAGON1
+light = 53
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -29
+solid = false
+graphic = HEXAGON1
+light = 59
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 22
+ypos = -29
+solid = false
+graphic = HEXAGON1
+light = 113
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 23
+ypos = -29
+solid = false
+graphic = FLAT14
+light = 162
+effect = 1
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 24
+ypos = -29
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 22
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 23
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 24
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 24
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 23
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 22
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -30
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -35
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -35
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -35
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -34
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -33
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -32
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -31
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -32
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -36
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -36
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -36
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -36
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -35
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -32
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -38
+solid = false
+graphic = FLAT5
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -26
+solid = false
+graphic = HEXAGON1
+light = 21
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -23
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -22
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 20
+ypos = -27
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 21
+ypos = -27
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -32
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -32
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -32
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -32
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -29
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -24
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -23
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -22
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -21
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -20
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -19
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = -18
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -18
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -18
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = -19
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = -19
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -18
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -19
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -23
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -24
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -23
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -24
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -23
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -24
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 9
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 8
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 7
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 6
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 5
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 4
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 3
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 2
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 1
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = 1
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 0
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -1
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -35
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -36
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -35
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -5
+ypos = -34
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -5
+ypos = -33
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -32
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -29
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -2
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -28
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -27
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -29
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -29
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -3
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -31
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = -4
+ypos = -30
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = 0
+solid = true
+graphic = TAN2
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = 1
+solid = true
+graphic = TAN1
+light = 99
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -1
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = -2
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -3
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -3
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -3
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -3
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -3
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -3
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -3
+solid = false
+graphic = HEXAGON1
+light = 89
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = -4
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = -4
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = -4
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = -4
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = -4
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = -4
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = -4
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -4
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -3
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = -1
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = 0
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = 1
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 19
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 18
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 17
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 16
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 15
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 14
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 13
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 12
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 11
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+floortile {
+xpos = 10
+ypos = 2
+solid = true
+graphic = EDGE
+light = 255
+effect = 0
+arg1 = 0
+arg2 = 0
+repeat = false
+tag = 0
+}
+
+object {
+type = 0
+xpos = -37.0
+ypos = -94.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 1
+}
+
+object {
+type = 3
+xpos = 168.0
+ypos = -589.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 249.0
+ypos = -583.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 518.0
+ypos = -584.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 605.0
+ypos = -581.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 126.0
+ypos = -696.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 186.0
+ypos = -671.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 513.0
+ypos = -674.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 602.0
+ypos = -736.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 190.0
+ypos = -426.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 292.0
+ypos = -418.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 388.0
+ypos = -422.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 472.0
+ypos = -423.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 580.0
+ypos = -430.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 139.0
+ypos = -823.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 248.0
+ypos = -817.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 339.0
+ypos = -829.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 423.0
+ypos = -830.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 530.0
+ypos = -840.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 597.0
+ypos = -886.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 567.0
+ypos = -939.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 454.0
+ypos = -946.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 125.0
+ypos = -931.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 196.0
+ypos = -946.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 255.0
+ypos = -944.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 326.0
+ypos = -936.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 258.0
+ypos = -711.0
+angle = 90.0
+single = true
+coop = false
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 463.0
+ypos = -718.0
+angle = 90.0
+single = true
+coop = false
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 109.0
+ypos = -550.0
+angle = 90.0
+single = true
+coop = false
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 477.0
+ypos = -541.0
+angle = 90.0
+single = true
+coop = false
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 2
+xpos = 77.0
+ypos = -1435.0
+angle = 270.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 2
+xpos = -109.0
+ypos = -1664.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = -192.0
+ypos = -2126.0
+angle = 0.0
+single = true
+coop = false
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 406.0
+ypos = -1935.0
+angle = 135.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 369.0
+ypos = -1983.0
+angle = 135.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 507.0
+ypos = -1999.0
+angle = 135.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 415.0
+ypos = -2053.0
+angle = 135.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 545.0
+ypos = -1892.0
+angle = 180.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 2
+xpos = 795.0
+ypos = -1711.0
+angle = 180.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 794.0
+ypos = -1710.0
+angle = 180.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = false
+skill4 = false
+skill5 = false
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 844.0
+ypos = -1520.0
+angle = 270.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 1286.0
+ypos = -1554.0
+angle = 135.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 1211.0
+ypos = -1434.0
+angle = 225.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = false
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 1294.0
+ypos = -1977.0
+angle = 270.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 1298.0
+ypos = -2088.0
+angle = 270.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 1
+xpos = 1280.0
+ypos = -2234.0
+angle = 180.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 1038.0
+ypos = -2390.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 850.0
+ypos = -2226.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 718.0
+ypos = -2205.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 658.0
+ypos = -2209.0
+angle = 90.0
+single = true
+coop = true
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 355.0
+ypos = -1636.0
+angle = 90.0
+single = true
+coop = false
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 418.0
+ypos = -1652.0
+angle = 90.0
+single = true
+coop = false
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 362.0
+ypos = -1511.0
+angle = 90.0
+single = true
+coop = false
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 388.0
+ypos = -1388.0
+angle = 90.0
+single = true
+coop = false
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 354.0
+ypos = -1225.0
+angle = 90.0
+single = true
+coop = false
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 382.0
+ypos = -1101.0
+angle = 90.0
+single = true
+coop = false
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 3
+xpos = 348.0
+ypos = -1039.0
+angle = 90.0
+single = true
+coop = false
+skill1 = false
+skill2 = false
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 0
+}
+
+object {
+type = 0
+xpos = -97.0
+ypos = -111.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 2
+}
+
+object {
+type = 0
+xpos = 95.0
+ypos = -88.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 3
+}
+
+object {
+type = 0
+xpos = -43.0
+ypos = -180.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 4
+}
+
+object {
+type = 0
+xpos = 1145.0
+ypos = -99.0
+angle = 180.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 5
+}
+
+object {
+type = 0
+xpos = 1096.0
+ypos = -153.0
+angle = 180.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 6
+}
+
+object {
+type = 0
+xpos = 1047.0
+ypos = -133.0
+angle = 180.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 7
+}
+
+object {
+type = 0
+xpos = 969.0
+ypos = -123.0
+angle = 180.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 8
+}
+
+object {
+type = 0
+xpos = 896.0
+ypos = -126.0
+angle = 180.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 9
+}
+
+object {
+type = 0
+xpos = 772.0
+ypos = -89.0
+angle = 180.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 10
+}
+
+object {
+type = 0
+xpos = 707.0
+ypos = -84.0
+angle = 180.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 11
+}
+
+object {
+type = 0
+xpos = 835.0
+ypos = -164.0
+angle = 180.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 12
+}
+
+object {
+type = 0
+xpos = 854.0
+ypos = -66.0
+angle = 180.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 13
+}
+
+object {
+type = 0
+xpos = 32.0
+ypos = -116.0
+angle = 0.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 14
+}
+
+object {
+type = 0
+xpos = 350.0
+ypos = -101.0
+angle = 270.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 15
+}
+
+object {
+type = 0
+xpos = 394.0
+ypos = -174.0
+angle = 270.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 16
+}
+

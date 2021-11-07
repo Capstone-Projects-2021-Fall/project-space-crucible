@@ -1,0 +1,19 @@
+zombieman/see DSPOSIT1
+zombieman/pain DSPOPAIN
+zombieman/die DSPODTH1
+zombieman/active DSPOSACT
+
+worm/see DSSGTSIT
+worm/pain DSDMPAIN
+worm/die DSSGTDTH
+worm/active DSDMACT
+
+serpentipede/see DSBGSIT1
+serpentipede/pain DSPOPAIN
+serpentipede/die DSBGDTH1
+serpentipede/active DSBGACT
+
+player/pain DSPLPAIN
+player/die DSPLDETH
+
+pistol/shoot DSPISTOL
