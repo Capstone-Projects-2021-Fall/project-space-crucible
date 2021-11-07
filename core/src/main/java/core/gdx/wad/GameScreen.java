@@ -173,7 +173,6 @@ public class GameScreen implements Screen {
                 return;
             }
             if (!startGame) {
-                //TODO after testing in single player, add change tag here
                 lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
                 lobbyStage.getBatch().begin();
                 lobbyStage.getBatch().draw(WadFuncs.LOBBYSCREEN, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());

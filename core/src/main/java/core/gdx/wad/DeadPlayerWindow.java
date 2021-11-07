@@ -33,22 +33,30 @@ public class DeadPlayerWindow extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 GameLogic.readyChangeLevel(GameLogic.currentLevel);
-                remove(); //TODO this remove not working for some reason. workaround on game screen
+                remove();
             }
         });
         titleScreenButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void clicked(InputEvent event, float x, float y) throws IllegalThreadStateException {
                 super.clicked(event, x, y);
-                try {
-                    //start menu gone
-//                    myGDxTest.setScreen(myGDxTest.titleScreen);
-                    //start menu there but crashes when you start game (IllegalThreadStateException)
-                    TitleScreen titleScreen = new TitleScreen(myGDxTest, myGDxTest.gameLoop);
+//                myGDxTest.setScreen(myGDxTest.titleScreen);
+//                StartMenu.setMainMenuButtonsVisible(true);
+                Thread gameLoop = new Thread() {
+                    @Override
+                    public void run() {
+                        GameLogic.start();
+                    }
+
+                    @Override
+                    public void interrupt() {
+                        GameLogic.stop();
+                    }
+                };
+                    TitleScreen titleScreen = new TitleScreen(myGDxTest, gameLoop);
                     myGDxTest.setScreen(titleScreen);
-                } catch (IllegalThreadStateException e) {
-                    e.printStackTrace();
-                }
+                    StartMenu.setMainMenuButtonsVisible(true);
+
             }
         });
     }
