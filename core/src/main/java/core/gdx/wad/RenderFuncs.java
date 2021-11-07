@@ -33,22 +33,24 @@ public class RenderFuncs {
 
                 if (tile.pos.layer == layer) {
 
+                    float light = tile.light/255f;
+
                     //Special exception, draw edges as black always, but only in non-editor mode
                     if (tile.graphicname.equals("EDGE") && !editor) {
                         batch.setColor(0f, 0f, 0f, 1f);
                     } else if (fullbright) {
-                        batch.setColor(255f, 255f, 255f, 1f);
+                        batch.setColor(1f, 1f, 1f, 1f);
                     }
                     else if (player != null) {
                         LevelTile bottomTile = GameLogic.currentLevel.getBottomTile(tile.pos.x, tile.pos.y);
                         if (layer > Math.max(player.bridgeLayer, player.currentLayer)
                             && (tile != bottomTile && !bottomTile.graphicname.equals("EDGE"))) {
-                            batch.setColor(255f, 255f, 255f, 0.5f);
+                            batch.setColor(light, light, light, 0.25f);
                         } else {
-                            batch.setColor(255f, 255f, 255f, 1f);
+                            batch.setColor(light, light, light, 1f);
                         }
                     } else {
-                        batch.setColor(255f, 255f, 255f, 1f);
+                        batch.setColor(light, light, light, 1f);
                     }
 
                     if (tile.solid) {
