@@ -31,6 +31,10 @@ public class CollisionLogic {
         LevelTile collidedTile = null;
         boolean noBridge = true;
         boolean layerChanged = false;
+
+        int oldlayer = entity.currentLayer;
+        int oldbridge = entity.bridgeLayer;
+
         for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
 
             if(levelTile.solid || levelTile.effect > 0
@@ -68,19 +72,33 @@ public class CollisionLogic {
                         entity.currentLayer = levelTile.pos.layer;
                         layerChanged = true;
                     }
+                }
+            }
+        }
+        if (noBridge && !(entity instanceof Projectile)) {entity.bridgeLayer = -1;}
 
 
-                    //Block if solid or if you're not connected to the floor (i.e. above the floor)
-                    //Don't block lower layers because you want them to walk under
-                    if ((levelTile.solid && levelTile.pos.layer == entity.currentLayer)
+        //Block if solid or if you're not connected to the floor (i.e. above the floor)
+        //Don't block lower layers because you want them to walk under
+        for(LevelTile levelTile : GameLogic.currentLevel.getTiles()) {
+
+            if (levelTile.solid || levelTile.effect > 0 || levelTile.pos.layer != entity.currentLayer) {
+                Rectangle tileBounds
+                        = new Rectangle(levelTile.pos.x * LevelTile.TILE_SIZE,
+                        levelTile.pos.y * LevelTile.TILE_SIZE,
+                        LevelTile.TILE_SIZE, LevelTile.TILE_SIZE);
+
+
+                if (bounds.overlaps(tileBounds)) {
+                    if ((levelTile.solid && levelTile.pos.layer == entity.currentLayer && GameLogic.currentLevel.getTile(levelTile.pos.x, levelTile.pos.y, entity.bridgeLayer) == null)
                             || (entity.currentLayer > levelTile.pos.layer
-                            && GameLogic.currentLevel.getTile(levelTile.pos.x, levelTile.pos.y, entity.currentLayer) == null)) {
+                            && GameLogic.currentLevel.getTile(levelTile.pos.x, levelTile.pos.y, entity.currentLayer) == null
+                            && levelTile.bridge != entity.currentLayer)) {
                         collidedTile = levelTile;
                     }
                 }
             }
         }
-        if (noBridge && !(entity instanceof Projectile)) {entity.bridgeLayer = -1;}
         return collidedTile;
     }
 
