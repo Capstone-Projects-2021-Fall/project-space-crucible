@@ -64,6 +64,7 @@ public class SettingsMenu extends Window {
                 super.clicked(event, x, y);
                 //((MyGDxTest) Gdx.app.getApplicationListener()).setScreen(new TitleScreen(game,gameLoop));
                 myGDxTest.setScreen(myGDxTest.titleScreen);
+                StartMenu.setMainMenuButtonsVisible(true);
             }
         });
     }
