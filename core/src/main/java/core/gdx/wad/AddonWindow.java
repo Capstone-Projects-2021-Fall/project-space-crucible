@@ -1,5 +1,6 @@
 package core.gdx.wad;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -32,7 +33,7 @@ public class AddonWindow extends Window {
 
     public AddonWindow(String title, Skin skin) {
         super(title, skin);
-        currentPath = System.getProperty("user.home");
+        currentPath = Gdx.files.internal("assets").file().getAbsolutePath();
         currentDir = new File(currentPath);
 
         files = new Array<>();
@@ -41,9 +42,9 @@ public class AddonWindow extends Window {
         setModal(true);
         setResizable(true);
 
-        currentPathLabel = new Label(currentPath, skin);
+        currentPathLabel = new Label(currentDir.getName(), skin);
         add(currentPathLabel);
-        add(new Label("resources", skin));
+        add(new Label("Add-ons", skin));
         row();
         fileList = new List<>(skin);
         filePane = new ScrollPane(fileList, skin);
@@ -164,6 +165,8 @@ public class AddonWindow extends Window {
         Array<String> listMembers = new Array<>();
         Array<String> directoryNames = new Array<>();
         Array<String> fileNames = new Array<>();
+
+        currentPathLabel.setText(currentDir.getName());
 
         listMembers.add("..");
 
