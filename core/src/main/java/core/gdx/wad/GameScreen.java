@@ -28,7 +28,6 @@ import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 
-
 public class GameScreen implements Screen {
 
     Thread gameLoop;
@@ -60,6 +59,7 @@ public class GameScreen implements Screen {
     Stage lobbyStage;
     Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
     TextButton play = new TextButton("Start Game", uiSkin);
+    TextButton exitToMenu = new TextButton("Exit Lobby", uiSkin);
     public boolean startGame = false;
     Label lobbyCode;
     boolean remove = false;
@@ -86,20 +86,23 @@ public class GameScreen implements Screen {
             System.out.println("I am player " + playerNumber);
         }
         if(!isSinglePlayer) {
-            if (playerNumber == 1) {
+            if(!startGame) {
                 Gdx.input.setInputProcessor(lobbyStage);
-                play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
-                lobbyStage.addActor(play);
-                play.addListener(new ClickListener() {
-                    public void clicked(InputEvent event, float x, float y) {
-                        startGame = true;
-                        Network.StartGame startGame = new Network.StartGame();
-                        startGame.startGame = true;
-                        client.getGameClient().sendTCP(startGame);
-                        addChatWindow();
-                        play.removeListener(this);
-                    }
-                });
+                addExitButton();
+                if (playerNumber == 1) {
+                    play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
+                    lobbyStage.addActor(play);
+                    play.addListener(new ClickListener() {
+                        public void clicked(InputEvent event, float x, float y) {
+                            startGame = true;
+                            Network.StartGame startGame = new Network.StartGame();
+                            startGame.startGame = true;
+                            client.getGameClient().sendTCP(startGame);
+                            addChatWindow();
+                            play.removeListener(this);
+                        }
+                    });
+                }
             } else {
                 addChatWindow();
             }
@@ -332,6 +335,19 @@ public class GameScreen implements Screen {
         stage.addActor(chatWindow);
         chatWindow.setPosition(camera.viewportWidth,0);
         chatWindow.setSize(chatWindow.getWidth(), chatWindow.getHeight());
+    }
+
+    private void addExitButton(){
+        exitToMenu.setBounds((Gdx.graphics.getWidth() + 250) / 2f, 50, 100, 60);
+        lobbyStage.addActor(exitToMenu);
+        exitToMenu.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("exit");
+                client.getGameClient().close();
+                client.getMasterClient().close();
+                myGDxTest.setScreen(new TitleScreen(myGDxTest, myGDxTest.gameLoop));
+            }
+        });
     }
 
     public void addChatToWindow(Network.ChatMessage chat) {

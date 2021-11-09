@@ -202,6 +202,8 @@ public class SpaceServer implements Listener {
                         //Ping the master server that this server is empty
                         Network.OpenLobby openLobby = new Network.OpenLobby();
                         openLobby.tcpPort = tcpPort;
+                        GameLogic.stop();
+                        gameStartedByHost = false;
                         serverClient.sendTCP(openLobby);
                     }
                     //clientData.idToPlayerNum = idToPlayerNum;
