@@ -197,6 +197,7 @@ public class SpaceServer implements Listener {
                     disconnected.add(c.getID());
                     connected.remove(c.getID());
                     clientData.connected = connected;
+                    idToPlayerNum.remove((Object) c.getID());
                     if(connected.size() == 0){
                         //Ping the master server that this server is empty
                         Network.OpenLobby openLobby = new Network.OpenLobby();
