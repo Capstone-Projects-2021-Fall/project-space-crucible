@@ -34,19 +34,10 @@ public class SpaceServer implements Listener {
     public long packetsSent = 0;
 
     //Game loop
-    Thread gameLoop = new Thread() {
-        @Override
-        public void run() {
-            GameLogic.start();
-        }
-
-        @Override
-        public void interrupt() {
-            GameLogic.stop();
-        }
-    };
+    Thread gameLoop;
 
     public SpaceServer(int tcpPort) throws IOException {
+        createGameLoopThread();
         startTime = new Date();
         idToPlayerNum.add(-1);
         server = new Server(8192,8192) {
@@ -202,9 +193,11 @@ public class SpaceServer implements Listener {
                         //Ping the master server that this server is empty
                         Network.OpenLobby openLobby = new Network.OpenLobby();
                         openLobby.tcpPort = tcpPort;
-                        GameLogic.stop();
                         gameStartedByHost = false;
                         serverClient.sendTCP(openLobby);
+                        //Stop the GameLogic and restart the thread so when a new lobby starts everything gets reset
+                        GameLogic.stop();
+                        createGameLoopThread();
                     }
                     //clientData.idToPlayerNum = idToPlayerNum;
                     server.sendToAllTCP(clientData);
@@ -240,6 +233,20 @@ public class SpaceServer implements Listener {
             System.out.println("Master Server is not running!");
             serverClient = null;
         }
+    }
+
+    private void createGameLoopThread() {
+        gameLoop = new Thread() {
+            @Override
+            public void run() {
+                GameLogic.start();
+            }
+
+            @Override
+            public void interrupt() {
+                GameLogic.stop();
+            }
+        };
     }
 
     public static class PlayerConnection extends Connection{
