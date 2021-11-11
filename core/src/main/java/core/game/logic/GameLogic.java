@@ -114,6 +114,9 @@ public class GameLogic {
             }
         }
 
+
+
+
         if (!goingToNextLevel) {
 
             long endTime = new Date().getTime();
