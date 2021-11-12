@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
+import core.game.logic.CollisionLogic;
 import core.game.logic.GameLogic;
 import core.level.info.LevelTile;
 import core.server.Network;
@@ -261,38 +262,35 @@ public class GameScreen implements Screen {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
-        float miniSquareWidth = camera.viewportWidth/600;
+        float miniSquareWidth = camera.viewportWidth/200;
         float miniSquareHeight = miniSquareWidth;
         float drawMiniX = 0;
         float drawMiniY = 345;
         shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        shapeRenderer.rect(drawMiniX, drawMiniY, 130,130,
-//                Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY);
-//        for(int i=0; i<=3; i++){
-//            for(int j=0; j<=3; j++){
-//                drawMiniX = drawMiniX+miniSquareWidth;
-//                drawMiniY = drawMiniY+miniSquareHeight;
-//                shapeRenderer.rect(drawMiniX, drawMiniY, miniSquareWidth,miniSquareHeight,
-//                        Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW);
-//            }
-//        }
-
+        float mapSpacing =4;
         for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
-                shapeRenderer.rect(levelTile.pos.x+drawMiniX+ camera.viewportWidth/12,
-                        levelTile.pos.y+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
+                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
+                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
                         Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY);
             if(levelTile.solid==true) {
-                shapeRenderer.rect(levelTile.pos.x+drawMiniX+ camera.viewportWidth/12,
-                        levelTile.pos.y+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
+                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
+                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
                         Color.RED, Color.RED, Color.RED, Color.RED);
                  }
 
-            if(levelTile.solid==false &&
-                    levelTile.pos.x == GameLogic.getPlayer(playerNumber).getPos().x &&
-                    levelTile.pos.y == GameLogic.getPlayer(playerNumber).getPos().y){
+            //blue room???
+//            if(levelTile.solid==false && levelTile == CollisionLogic.entityTileCollision(LevelTile.getTileBounds(levelTile),
+//                    GameLogic.getPlayer(playerNumber))){
+//                shapeRenderer.rect(levelTile.pos.x+drawMiniX+ camera.viewportWidth/12,
+//                        levelTile.pos.y+drawMiniY+ camera.viewportHeight/7, miniSquareWidth+100,miniSquareHeight+100,
+//                        Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
+//            }
+
+            if(levelTile.solid==false && levelTile.pos.x  == (int)GameLogic.getPlayer(playerNumber).getPos().x/64 &&
+                    levelTile.pos.y == GameLogic.getPlayer(playerNumber).getPos().y/64){
                 shapeRenderer.rect(levelTile.pos.x+drawMiniX+ camera.viewportWidth/12,
-                        levelTile.pos.y+drawMiniY+ camera.viewportHeight/7, miniSquareWidth+100,miniSquareHeight+100,
+                        levelTile.pos.y+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
                         Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
             }
         }
