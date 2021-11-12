@@ -67,7 +67,8 @@ public class CollisionLogic {
 
                 //Skip source Entity and non-solid Entities
                 if (entity2 == source
-                        || (!entity2.getFlag(Entity.SOLID))) {continue;}
+                        || (!entity2.getFlag(Entity.SOLID)
+                            || (entity2 instanceof PlayerPawn && source instanceof PlayerPawn))) {continue;}
 
                 if(entity2.getBounds().contains(xpos, ypos)){
                     if (attack) {
