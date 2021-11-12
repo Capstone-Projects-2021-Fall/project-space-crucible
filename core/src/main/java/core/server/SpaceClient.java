@@ -3,6 +3,7 @@ package core.server;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.kryonet.Listener;
 
 import com.esotericsoftware.kryonet.util.InputStreamSender;
@@ -152,6 +153,8 @@ public class SpaceClient implements Listener {
 
         gameClient.addListener(new ThreadedListener(new Listener() {
             public void connected(Connection connection) {
+                gameClient.updateReturnTripTime();
+
             }
 
             public void received(Connection connection, Object object) {
@@ -200,6 +203,14 @@ public class SpaceClient implements Listener {
                     CheckConnection cc = new CheckConnection();
                     cc.type = ConnectionType.PLAYER;
                     gameClient.sendTCP(cc);
+                }
+                if(object instanceof FrameworkMessage.Ping){
+                    FrameworkMessage.Ping ping = (FrameworkMessage.Ping)object;
+                    if (ping.isReply) System.out.println("Ping: " + connection.getReturnTripTime());
+                    SendPing sendPing = new SendPing();
+                    sendPing.ping = connection.getReturnTripTime();
+                    gameClient.sendTCP(sendPing);
+                    gameClient.updateReturnTripTime();
                 }
             }
 

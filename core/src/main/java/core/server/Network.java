@@ -61,6 +61,7 @@ public class Network {
         kryo.register(CreateWadFile.class);
         kryo.register(GameEntity.class);
         kryo.register(State.class);
+        kryo.register(SendPing.class);
 
         //Level Classes
         kryo.register(LevelData.class);
@@ -224,5 +225,8 @@ public class Network {
         public String levelFileName;
         public int levelFileSize;
         public int sendFileTo;
+    }
+    public static class SendPing{
+        public int ping;
     }
 }

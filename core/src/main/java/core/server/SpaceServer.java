@@ -1,9 +1,6 @@
 package core.server;
 
-import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.kryonet.Server;
+import com.esotericsoftware.kryonet.*;
 import core.game.entities.Entity;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
@@ -11,7 +8,9 @@ import core.level.info.LevelObject;
 import core.server.Network.InputData;
 import core.server.Network.StartGame;
 import core.wad.funcs.WadFuncs;
+import core.server.Network.SendPing;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -32,6 +31,7 @@ public class SpaceServer implements Listener {
     final private SpaceServer spaceServer = this;
     public long packetsReceived = 0;
     public long packetsSent = 0;
+    File serverInfo;
 
     //Game loop
     Thread gameLoop;
@@ -180,10 +180,12 @@ public class SpaceServer implements Listener {
                 else if (packetData instanceof Network.RCONMessage) {
                     handleRCON(((Network.RCONMessage) packetData).message);
                 }
+                else if (packetData instanceof SendPing){
+                    System.out.println(((SendPing) packetData).ping);
+                }
             }
             //This method will run when a client disconnects from the server, remove the character from the game
             public void disconnected(Connection c){
-
                 if (connected.contains(c.getID())) {
                     disconnected.add(c.getID());
                     connected.remove(c.getID());
@@ -225,7 +227,6 @@ public class SpaceServer implements Listener {
             }
             public void received (Connection connection, Object packetData) {
             }
-
         }));
         try {
             serverClient.connect(5000, ip, Network.tcpPort);
