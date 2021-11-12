@@ -279,16 +279,9 @@ public class GameScreen implements Screen {
                         Color.RED, Color.RED, Color.RED, Color.RED);
                  }
 
-            //blue room???
-//            if(levelTile.solid==false && levelTile == CollisionLogic.entityTileCollision(LevelTile.getTileBounds(levelTile),
-//                    GameLogic.getPlayer(playerNumber))){
-//                shapeRenderer.rect(levelTile.pos.x+drawMiniX+ camera.viewportWidth/12,
-//                        levelTile.pos.y+drawMiniY+ camera.viewportHeight/7, miniSquareWidth+100,miniSquareHeight+100,
-//                        Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
-//            }
 
-            if(levelTile.solid==false && levelTile.pos.x  == (int)GameLogic.getPlayer(playerNumber).getPos().x/64 &&
-                    levelTile.pos.y == GameLogic.getPlayer(playerNumber).getPos().y/64){
+            if(levelTile.solid==false && levelTile.pos.x  == (int)GameLogic.getPlayer(playerNumber).getPos().x/LevelTile.TILE_SIZE &&
+                    levelTile.pos.y == (int)GameLogic.getPlayer(playerNumber).getPos().y/LevelTile.TILE_SIZE){
                 shapeRenderer.rect(levelTile.pos.x+drawMiniX+ camera.viewportWidth/12,
                         levelTile.pos.y+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
                         Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
