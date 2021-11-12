@@ -261,33 +261,7 @@ public class GameScreen implements Screen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-
-        float miniSquareWidth = camera.viewportWidth/200;
-        float miniSquareHeight = miniSquareWidth;
-        float drawMiniX = 0;
-        float drawMiniY = 345;
-        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        float mapSpacing =4;
-        for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
-                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
-                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
-                        Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY);
-            if(levelTile.solid==true) {
-                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
-                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
-                        Color.RED, Color.RED, Color.RED, Color.RED);
-                 }
-
-
-            if(levelTile.solid==false && levelTile.pos.x  == (int)GameLogic.getPlayer(playerNumber).getPos().x/LevelTile.TILE_SIZE &&
-                    levelTile.pos.y == (int)GameLogic.getPlayer(playerNumber).getPos().y/LevelTile.TILE_SIZE){
-                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
-                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
-                        Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
-            }
-        }
-        shapeRenderer.end();
+        drawMiniMap();
     }
 
     private void showBoxes() {
@@ -415,5 +389,32 @@ public class GameScreen implements Screen {
 
     public void changeScreen(){
         myGDxTest.setScreen(myGDxTest.settingsScreen);
+    }
+
+    private void drawMiniMap() {
+        float miniSquareWidth = camera.viewportWidth/200;
+        float miniSquareHeight = miniSquareWidth;
+        float drawMiniX = 0;
+        float drawMiniY = 345;
+        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        float mapSpacing =4;
+        for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
+            shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
+                    levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
+                    Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY);
+            if(levelTile.solid==true) {
+                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
+                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
+                        Color.RED, Color.RED, Color.RED, Color.RED);
+            }
+            if(levelTile.solid==false && levelTile.pos.x  == (int)GameLogic.getPlayer(playerNumber).getPos().x/LevelTile.TILE_SIZE &&
+                    levelTile.pos.y == (int)GameLogic.getPlayer(playerNumber).getPos().y/LevelTile.TILE_SIZE){
+                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
+                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
+                        Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
+            }
+        }
+        shapeRenderer.end();
     }
 }
