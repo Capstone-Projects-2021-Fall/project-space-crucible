@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -22,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
+import core.level.info.LevelTile;
 import core.server.Network;
 import core.server.Network.ClientData;
 import core.server.Network.RenderData;
@@ -261,10 +263,33 @@ public class GameScreen implements Screen {
 
 //        Rectangle mapTiles = new Rectangle(100,100);
 //        mapTiles.setLocation(0, (int) camera.viewportHeight);
+        float miniSquareWidth = camera.viewportWidth/500;
+        float miniSquareHeight = miniSquareWidth;
+        float drawMiniX = 0;
+        float drawMiniY = 345;
         shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.rect(0, 345, 130,130);
+        shapeRenderer.rect(drawMiniX, drawMiniY, 130,130,
+                Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY);
+//        for(int i=0; i<=3; i++){
+//            for(int j=0; j<=3; j++){
+//                drawMiniX = drawMiniX+miniSquareWidth;
+//                drawMiniY = drawMiniY+miniSquareHeight;
+//                shapeRenderer.rect(drawMiniX, drawMiniY, miniSquareWidth,miniSquareHeight,
+//                        Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW);
+//            }
+//        }
+
+        for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
+            if(levelTile.solid==true) {
+                shapeRenderer.rect(levelTile.pos.x+drawMiniX+30, levelTile.pos.y+drawMiniY+30, miniSquareWidth,miniSquareHeight,
+                        Color.RED, Color.RED, Color.RED, Color.RED);
+            }
+        }
+
+        shapeRenderer.rect((GameLogic.getPlayer(playerNumber).getPos().x+drawMiniX), (GameLogic.getPlayer(playerNumber).getPos().y+drawMiniY+30), miniSquareWidth,miniSquareHeight,
+                Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
+
         shapeRenderer.end();
     }
 
