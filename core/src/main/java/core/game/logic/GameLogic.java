@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import core.game.entities.Entity;
@@ -13,12 +12,11 @@ import core.game.logic.tileactions.TileAction;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.server.Network;
+import core.server.Network.RenderData;
 import core.server.SpaceServer;
 import core.wad.funcs.SoundFuncs;
 import net.mtrop.doom.WadEntry;
 import net.mtrop.doom.WadFile;
-
-import core.server.Network.RenderData;
 
 import java.io.IOException;
 import java.util.*;
