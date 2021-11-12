@@ -1,0 +1,327 @@
+2021-11-12 16:55:06.733 Client 1 has connected to the master server
+2021-11-12 16:55:06.772 Client 2 has connected to the master server
+2021-11-12 16:55:06.792 Client 1 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:06.792 Client 2 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:06.798 Client 3 has connected to the master server
+2021-11-12 16:55:06.799 Client 3 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:06.802 Client 4 has connected to the master server
+2021-11-12 16:55:06.807 Client 4 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:06.816 Client 5 has connected to the master server
+2021-11-12 16:55:06.818 Client 5 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:07.825 Client 6 has connected to the master server
+2021-11-12 16:55:07.829 Client 6 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:07.837 Client 7 has connected to the master server
+2021-11-12 16:55:07.838 Client 7 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:08.341 Client 8 has connected to the master server
+2021-11-12 16:55:08.343 Client 8 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:08.347 Client 9 has connected to the master server
+2021-11-12 16:55:08.348 Client 9 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:09.102 Client 10 has connected to the master server
+2021-11-12 16:55:09.103 Client 10 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.358 Client 11 has connected to the master server
+2021-11-12 16:55:10.36 Client 11 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.372 Client 12 has connected to the master server
+2021-11-12 16:55:10.372 Client 12 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.379 Client 13 has connected to the master server
+2021-11-12 16:55:10.38 Client 13 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.38 Client 14 has connected to the master server
+2021-11-12 16:55:10.381 Client 14 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.386 Client 15 has connected to the master server
+2021-11-12 16:55:10.387 Client 15 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.902 Client 16 has connected to the master server
+2021-11-12 16:55:10.906 Client 16 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.907 Client 17 has connected to the master server
+2021-11-12 16:55:10.908 Client 17 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.908 Client 18 has connected to the master server
+2021-11-12 16:55:10.911 Client 18 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.921 Client 19 has connected to the master server
+2021-11-12 16:55:10.922 Client 19 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.922 Client 20 has connected to the master server
+2021-11-12 16:55:10.922 Client 20 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.932 Client 21 has connected to the master server
+2021-11-12 16:55:10.933 Client 21 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.934 Client 22 has connected to the master server
+2021-11-12 16:55:10.937 Client 22 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.94 Client 23 has connected to the master server
+2021-11-12 16:55:10.94 Client 23 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.942 Client 24 has connected to the master server
+2021-11-12 16:55:10.945 Client 24 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:10.946 Client 25 has connected to the master server
+2021-11-12 16:55:10.947 Client 25 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.452 Client 26 has connected to the master server
+2021-11-12 16:55:11.453 Client 26 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.469 Client 27 has connected to the master server
+2021-11-12 16:55:11.472 Client 27 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.477 Client 28 has connected to the master server
+2021-11-12 16:55:11.478 Client 28 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.481 Client 29 has connected to the master server
+2021-11-12 16:55:11.482 Client 29 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.488 Client 30 has connected to the master server
+2021-11-12 16:55:11.489 Client 30 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.5 Client 31 has connected to the master server
+2021-11-12 16:55:11.502 Client 31 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.508 Client 32 has connected to the master server
+2021-11-12 16:55:11.509 Client 32 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.513 Client 33 has connected to the master server
+2021-11-12 16:55:11.516 Client 33 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.517 Client 34 has connected to the master server
+2021-11-12 16:55:11.519 Client 34 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.525 Client 35 has connected to the master server
+2021-11-12 16:55:11.528 Client 35 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.538 Client 36 has connected to the master server
+2021-11-12 16:55:11.545 Client 36 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.551 Client 37 has connected to the master server
+2021-11-12 16:55:11.552 Client 37 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.562 Client 38 has connected to the master server
+2021-11-12 16:55:11.563 Client 38 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.568 Client 39 has connected to the master server
+2021-11-12 16:55:11.568 Client 39 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.569 Client 40 has connected to the master server
+2021-11-12 16:55:11.571 Client 40 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.573 Client 41 has connected to the master server
+2021-11-12 16:55:11.577 Client 41 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.582 Client 42 has connected to the master server
+2021-11-12 16:55:11.583 Client 42 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.585 Client 43 has connected to the master server
+2021-11-12 16:55:11.589 Client 43 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.595 Client 44 has connected to the master server
+2021-11-12 16:55:11.598 Client 44 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:11.598 Client 45 has connected to the master server
+2021-11-12 16:55:11.599 Client 45 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:12.607 Client 46 has connected to the master server
+2021-11-12 16:55:12.607 Client 46 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.115 Client 47 has connected to the master server
+2021-11-12 16:55:13.117 Client 47 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.118 Client 48 has connected to the master server
+2021-11-12 16:55:13.12 Client 48 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.132 Client 49 has connected to the master server
+2021-11-12 16:55:13.132 Client 49 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.138 Client 50 has connected to the master server
+2021-11-12 16:55:13.139 Client 50 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.14 Client 51 has connected to the master server
+2021-11-12 16:55:13.144 Client 51 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.147 Client 52 has connected to the master server
+2021-11-12 16:55:13.148 Client 52 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.151 Client 53 has connected to the master server
+2021-11-12 16:55:13.153 Client 53 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.154 Client 54 has connected to the master server
+2021-11-12 16:55:13.156 Client 54 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.159 Client 55 has connected to the master server
+2021-11-12 16:55:13.16 Client 55 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.164 Client 56 has connected to the master server
+2021-11-12 16:55:13.165 Client 56 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.168 Client 57 has connected to the master server
+2021-11-12 16:55:13.168 Client 57 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.171 Client 58 has connected to the master server
+2021-11-12 16:55:13.171 Client 58 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.177 Client 59 has connected to the master server
+2021-11-12 16:55:13.178 Client 59 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.181 Client 60 has connected to the master server
+2021-11-12 16:55:13.181 Client 60 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.189 Client 61 has connected to the master server
+2021-11-12 16:55:13.19 Client 61 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.197 Client 62 has connected to the master server
+2021-11-12 16:55:13.198 Client 62 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.205 Client 63 has connected to the master server
+2021-11-12 16:55:13.211 Client 63 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.214 Client 64 has connected to the master server
+2021-11-12 16:55:13.217 Client 64 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.218 Client 65 has connected to the master server
+2021-11-12 16:55:13.218 Client 65 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:13.22 Client 66 has connected to the master server
+2021-11-12 16:55:13.221 Client 66 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:21.49 Client 67 has connected to the master server
+2021-11-12 16:55:21.491 Client 67 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:21.495 Client 68 has connected to the master server
+2021-11-12 16:55:21.496 Client 68 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:21.499 Client 69 has connected to the master server
+2021-11-12 16:55:21.5 Client 69 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:21.505 Client 70 has connected to the master server
+2021-11-12 16:55:21.507 Client 70 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:21.508 Client 71 has connected to the master server
+2021-11-12 16:55:21.508 Client 71 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:22.011 Client 72 has connected to the master server
+2021-11-12 16:55:22.011 Client 72 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:23.767 Client 73 has connected to the master server
+2021-11-12 16:55:23.768 Client 73 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:25.522 Client 74 has connected to the master server
+2021-11-12 16:55:25.523 Client 74 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:25.525 Client 75 has connected to the master server
+2021-11-12 16:55:25.527 Client 75 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:25.528 Client 76 has connected to the master server
+2021-11-12 16:55:25.529 Client 76 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:47.081 Client 77 has connected to the master server
+2021-11-12 16:55:47.083 Client 77 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:47.085 Client 78 has connected to the master server
+2021-11-12 16:55:47.086 Client 78 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:47.088 Client 79 has connected to the master server
+2021-11-12 16:55:47.089 Client 79 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:47.092 Client 80 has connected to the master server
+2021-11-12 16:55:47.092 Client 80 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:47.097 Client 81 has connected to the master server
+2021-11-12 16:55:47.099 Client 81 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:47.099 Client 82 has connected to the master server
+2021-11-12 16:55:47.1 Client 82 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:47.104 Client 83 has connected to the master server
+2021-11-12 16:55:47.105 Client 83 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:47.111 Client 84 has connected to the master server
+2021-11-12 16:55:47.112 Client 84 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:47.122 Client 85 has connected to the master server
+2021-11-12 16:55:47.126 Client 85 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:47.13 Client 86 has connected to the master server
+2021-11-12 16:55:47.131 Client 86 Sent a ping to server and server sent a ping back
+2021-11-12 16:55:47.131 Client 87 has connected to the master server
+2021-11-12 16:55:47.132 Client 87 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:11.932 Client 88 has connected to the master server
+2021-11-12 16:56:11.933 Client 88 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.94 Client 89 has connected to the master server
+2021-11-12 16:56:13.94 Client 89 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.943 Client 90 has connected to the master server
+2021-11-12 16:56:13.943 Client 90 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.948 Client 91 has connected to the master server
+2021-11-12 16:56:13.949 Client 91 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.95 Client 92 has connected to the master server
+2021-11-12 16:56:13.95 Client 92 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.952 Client 93 has connected to the master server
+2021-11-12 16:56:13.955 Client 93 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.956 Client 94 has connected to the master server
+2021-11-12 16:56:13.956 Client 94 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.959 Client 95 has connected to the master server
+2021-11-12 16:56:13.96 Client 95 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.965 Client 96 has connected to the master server
+2021-11-12 16:56:13.966 Client 96 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.967 Client 97 has connected to the master server
+2021-11-12 16:56:13.967 Client 97 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.973 Client 98 has connected to the master server
+2021-11-12 16:56:13.974 Client 98 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.975 Client 99 has connected to the master server
+2021-11-12 16:56:13.975 Client 99 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.982 Client 100 has connected to the master server
+2021-11-12 16:56:13.982 Client 100 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.987 Client 101 has connected to the master server
+2021-11-12 16:56:13.987 Client 101 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.988 Client 102 has connected to the master server
+2021-11-12 16:56:13.988 Client 102 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.99 Client 103 has connected to the master server
+2021-11-12 16:56:13.991 Client 103 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.997 Client 104 has connected to the master server
+2021-11-12 16:56:13.997 Client 104 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:13.998 Client 105 has connected to the master server
+2021-11-12 16:56:13.998 Client 105 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.003 Client 106 has connected to the master server
+2021-11-12 16:56:14.004 Client 106 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.009 Client 107 has connected to the master server
+2021-11-12 16:56:14.01 Client 107 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.015 Client 108 has connected to the master server
+2021-11-12 16:56:14.015 Client 108 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.019 Client 109 has connected to the master server
+2021-11-12 16:56:14.019 Client 109 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.02 Client 110 has connected to the master server
+2021-11-12 16:56:14.02 Client 110 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.034 Client 111 has connected to the master server
+2021-11-12 16:56:14.035 Client 111 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.041 Client 112 has connected to the master server
+2021-11-12 16:56:14.041 Client 112 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.047 Client 113 has connected to the master server
+2021-11-12 16:56:14.048 Client 113 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.051 Client 114 has connected to the master server
+2021-11-12 16:56:14.052 Client 114 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.052 Client 115 has connected to the master server
+2021-11-12 16:56:14.053 Client 115 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.055 Client 116 has connected to the master server
+2021-11-12 16:56:14.055 Client 116 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.058 Client 117 has connected to the master server
+2021-11-12 16:56:14.058 Client 117 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.061 Client 118 has connected to the master server
+2021-11-12 16:56:14.062 Client 118 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.065 Client 119 has connected to the master server
+2021-11-12 16:56:14.066 Client 119 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.067 Client 120 has connected to the master server
+2021-11-12 16:56:14.068 Client 120 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.07 Client 121 has connected to the master server
+2021-11-12 16:56:14.07 Client 121 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.075 Client 122 has connected to the master server
+2021-11-12 16:56:14.078 Client 122 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.08 Client 123 has connected to the master server
+2021-11-12 16:56:14.08 Client 123 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.081 Client 124 has connected to the master server
+2021-11-12 16:56:14.082 Client 124 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.084 Client 125 has connected to the master server
+2021-11-12 16:56:14.085 Client 125 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.09 Client 126 has connected to the master server
+2021-11-12 16:56:14.092 Client 126 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.098 Client 127 has connected to the master server
+2021-11-12 16:56:14.099 Client 127 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.099 Client 128 has connected to the master server
+2021-11-12 16:56:14.106 Client 128 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.114 Client 129 has connected to the master server
+2021-11-12 16:56:14.115 Client 129 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.119 Client 130 has connected to the master server
+2021-11-12 16:56:14.12 Client 130 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.12 Client 131 has connected to the master server
+2021-11-12 16:56:14.121 Client 131 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.122 Client 132 has connected to the master server
+2021-11-12 16:56:14.124 Client 132 Sent a ping to server and server sent a ping back
+2021-11-12 16:56:14.126 Client 133 has connected to the master server
+2021-11-12 16:56:14.126 Client 133 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.01 Client 134 has connected to the master server
+2021-11-12 16:57:18.011 Client 134 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.018 Client 135 has connected to the master server
+2021-11-12 16:57:18.019 Client 135 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.021 Client 136 has connected to the master server
+2021-11-12 16:57:18.022 Client 136 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.035 Client 137 has connected to the master server
+2021-11-12 16:57:18.036 Client 137 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.036 Client 138 has connected to the master server
+2021-11-12 16:57:18.037 Client 138 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.04 Client 139 has connected to the master server
+2021-11-12 16:57:18.041 Client 139 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.042 Client 140 has connected to the master server
+2021-11-12 16:57:18.042 Client 140 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.048 Client 141 has connected to the master server
+2021-11-12 16:57:18.049 Client 141 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.05 Client 142 has connected to the master server
+2021-11-12 16:57:18.05 Client 142 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.052 Client 143 has connected to the master server
+2021-11-12 16:57:18.053 Client 143 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.057 Client 144 has connected to the master server
+2021-11-12 16:57:18.058 Client 144 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.059 Client 145 has connected to the master server
+2021-11-12 16:57:18.06 Client 145 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.065 Client 146 has connected to the master server
+2021-11-12 16:57:18.065 Client 146 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.067 Client 147 has connected to the master server
+2021-11-12 16:57:18.068 Client 147 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.068 Client 148 has connected to the master server
+2021-11-12 16:57:18.069 Client 148 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.071 Client 149 has connected to the master server
+2021-11-12 16:57:18.072 Client 149 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.075 Client 150 has connected to the master server
+2021-11-12 16:57:18.075 Client 150 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.079 Client 151 has connected to the master server
+2021-11-12 16:57:18.08 Client 151 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.083 Client 152 has connected to the master server
+2021-11-12 16:57:18.084 Client 152 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.086 Client 153 has connected to the master server
+2021-11-12 16:57:18.087 Client 153 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.088 Client 154 has connected to the master server
+2021-11-12 16:57:18.089 Client 154 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.091 Client 155 has connected to the master server
+2021-11-12 16:57:18.091 Client 155 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.103 Client 156 has connected to the master server
+2021-11-12 16:57:18.103 Client 156 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.104 Client 157 has connected to the master server
+2021-11-12 16:57:18.104 Client 157 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.107 Client 158 has connected to the master server
+2021-11-12 16:57:18.107 Client 158 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.11 Client 159 has connected to the master server
+2021-11-12 16:57:18.113 Client 159 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.115 Client 160 has connected to the master server
+2021-11-12 16:57:18.116 Client 160 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.119 Client 161 has connected to the master server
+2021-11-12 16:57:18.119 Client 161 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.122 Client 162 has connected to the master server
+2021-11-12 16:57:18.124 Client 162 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:18.125 Client 163 has connected to the master server
+2021-11-12 16:57:18.126 Client 163 Sent a ping to server and server sent a ping back
+2021-11-12 16:57:49.441 Client 164 has connected to the master server

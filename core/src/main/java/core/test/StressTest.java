@@ -17,7 +17,7 @@ public class StressTest implements Listener {
     ArrayList<Client> masterClient = new ArrayList<>();
     Client gameClient;
     static String ip = "localhost";//100.19.127.86
-    File file = new File("C:\\Users\\Parth\\Documents\\GitHub\\project-space-crucible\\core\\src\\main\\java\\core\\test\\stressTest.txt");
+    File file = new File("C:\\Users\\Parth\\Documents\\GitHub\\project-space-crucible\\core\\src\\main\\java\\core\\test\\stressTest2.txt");
 
     int numOfInstance = 0;
 
@@ -41,6 +41,7 @@ public class StressTest implements Listener {
             //register the packets
             Network.register(mclient);
 
+            Client finalMclient = mclient;
             mclient.addListener(new ThreadedListener(new Listener() {
                 public void connected(Connection connection) {
                     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -51,9 +52,19 @@ public class StressTest implements Listener {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    Network.Ping ping = new Network.Ping();
+                    finalMclient.sendTCP(ping);
                 }
 
                 public void received(Connection connection, Object object) {
+                    if(object instanceof Network.Ping){
+                        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                        try {
+                            write.append( timestamp + " Client " + connection.getID() +" Sent a ping to server and send sent a ping back\n");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
 
                 public void disconnected(Connection connection) {

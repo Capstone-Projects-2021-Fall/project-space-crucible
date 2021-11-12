@@ -43,6 +43,12 @@ public class MasterServer implements Listener {
             }
             public void received (Connection connection, Object object) {
                 //If the server sends RenderData object update the client's gamescreen
+
+                if(object instanceof  Ping){
+                    Ping ping = new Ping();
+                    connection.sendTCP(ping);
+                }
+
                 if(object instanceof CreateLobby){
                     int tcpPort = 0;
                     for(int port : availablePorts ){
