@@ -282,8 +282,8 @@ public class GameScreen implements Screen {
 
             if(levelTile.solid==false && levelTile.pos.x  == (int)GameLogic.getPlayer(playerNumber).getPos().x/LevelTile.TILE_SIZE &&
                     levelTile.pos.y == (int)GameLogic.getPlayer(playerNumber).getPos().y/LevelTile.TILE_SIZE){
-                shapeRenderer.rect(levelTile.pos.x+drawMiniX+ camera.viewportWidth/12,
-                        levelTile.pos.y+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
+                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
+                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
                         Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
             }
         }
