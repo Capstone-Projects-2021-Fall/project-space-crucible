@@ -518,7 +518,7 @@ public class EditorScreen implements Screen {
             level.getObjects().add(newObj);
 
             Entity newThing = GameLogic.mapIDTable.get(0)
-                    .spawnEntity(new Entity.Position(x, y, 0), 0, 0);
+                    .spawnEntity(new Entity.Position(x, y, 0), 0, 0, newObj.ambush);
             GameLogic.entityList.add(newThing);
 
             GameLogic.loadEntities(level, true);

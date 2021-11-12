@@ -17,7 +17,7 @@ public class EntitySpawner {
         System.out.println(baseClass + "flags: " + properties.flags);
     }
 
-    public Entity spawnEntity(Entity.Position pos, int tag, int layer) {
+    public Entity spawnEntity(Entity.Position pos, int tag, int layer, boolean ambush) {
         switch (baseClass) {
             case "Entity":
                 return new Entity(
@@ -45,7 +45,8 @@ public class EntitySpawner {
                     tag,
                     properties.flags,
                     properties.monsterSounds,
-                    layer
+                    layer,
+                    ambush
                 );
 
             case "Projectile":

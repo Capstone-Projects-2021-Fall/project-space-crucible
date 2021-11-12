@@ -86,6 +86,7 @@ public class PlayerPawn extends Entity {
                 setState(getStates()[Entity.MISSILE]);
                 hitScanAttack(getPos().angle, 15);
                 SoundFuncs.playSound("pistol/shoot");
+                GameLogic.alertMonsters(this);
             } else if (getRemainingStateTics() == -1) {
 
                 if (GameLogic.isSinglePlayer) {
@@ -99,7 +100,7 @@ public class PlayerPawn extends Entity {
 
                         if (lo.type == 0 && lo.tag == tag) {
                             GameLogic.newEntityQueue.addLast(GameLogic.mapIDTable.get(0)
-                                    .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), tag, lo.layer));
+                                    .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), tag, lo.layer, false));
                             break;
                         }
                     }

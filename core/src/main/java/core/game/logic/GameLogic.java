@@ -2,11 +2,13 @@ package core.game.logic;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
+import core.game.entities.BaseMonster;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.game.logic.tileactions.TileAction;
@@ -170,7 +172,7 @@ public class GameLogic {
 
             try {
                 entityList.add(GameLogic.mapIDTable.get(obj.type)
-                        .spawnEntity(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag, obj.layer));
+                        .spawnEntity(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag, obj.layer, obj.ambush));
             } catch (Exception e) {
                 System.out.println("Unknown Entity with map ID " + obj.type);
             }
@@ -266,6 +268,28 @@ public class GameLogic {
         soundData.sound = name;
         server.sendToAllTCP(soundData);
         spaceServer.packetsSent += server.getConnections().size();
+    }
+
+    public static void alertMonsters(Entity soundSource) {
+
+        for (Entity e : entityList) {
+
+            Vector2 distance = new Vector2();
+            distance.x = soundSource.getPos().x - e.getPos().x;
+            distance.y = soundSource.getPos().y - e.getPos().y;
+
+            //Alert monster IF...
+
+            if (e.getStates()[Entity.WALK] != -1        //There is a walk animation
+                && e instanceof BaseMonster             //And the entity is a monster
+                && ((BaseMonster) e).getTarget() == -1  //And is not busy
+                && distance.len() < 1024f               //And is in hearing range
+                && !((BaseMonster) e).ambush) {         //And is not in ambush mode
+                ((BaseMonster) e).setTarget(GameLogic.entityList.indexOf(soundSource));
+                SoundFuncs.playSound(((BaseMonster) e).getSound(BaseMonster.SEESOUND));
+                e.setState(e.getStates()[Entity.WALK]);
+            }
+        }
     }
 }
 

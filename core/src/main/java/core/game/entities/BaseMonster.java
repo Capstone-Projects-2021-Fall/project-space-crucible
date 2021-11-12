@@ -10,6 +10,7 @@ public class BaseMonster extends Entity {
 
     private int target = -1;
     final private String[] sounds = new String[4];
+    public boolean ambush = false;
 
     final public static int SEESOUND = 0;
     final public static int PAINSOUND = 1;
@@ -18,12 +19,13 @@ public class BaseMonster extends Entity {
 
     public BaseMonster(){}
 
-    public BaseMonster(String name, int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags, String[] sounds, int layer) {
+    public BaseMonster(String name, int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags, String[] sounds, int layer, boolean ambush) {
         super(name, health, pos, speed, width, height, states, tag, flags, layer);
         this.sounds[SEESOUND] = sounds[SEESOUND];
         this.sounds[PAINSOUND] = sounds[PAINSOUND];
         this.sounds[DIESOUND] = sounds[DIESOUND];
         this.sounds[ACTIVESOUND] = sounds[ACTIVESOUND];
+        this.ambush = ambush;
     }
 
     public String getSound(int index) {return sounds[index];}

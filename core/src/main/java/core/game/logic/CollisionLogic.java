@@ -54,6 +54,10 @@ public class CollisionLogic {
                     if(levelTile.effect > 0) {
                         GameLogic.effectList.get(levelTile.effect - 1)
                                 .run(entity, levelTile.arg1, levelTile.arg2);
+
+                        if (!levelTile.repeat) {
+                            levelTile.effect = 0;
+                        }
                     }
 
                     //Apply bridge layers
@@ -92,13 +96,20 @@ public class CollisionLogic {
                 if (bounds.overlaps(tileBounds)) {
                     if ((levelTile.solid && levelTile.pos.layer == entity.currentLayer && GameLogic.currentLevel.getTile(levelTile.pos.x, levelTile.pos.y, entity.bridgeLayer) == null)
                             || (entity.currentLayer > levelTile.pos.layer
-                            && GameLogic.currentLevel.getTile(levelTile.pos.x, levelTile.pos.y, entity.currentLayer) == null
+                            && (GameLogic.currentLevel.getTile(levelTile.pos.x, levelTile.pos.y, entity.currentLayer) == null
+                            || GameLogic.currentLevel.getTile(levelTile.pos.x, levelTile.pos.y, entity.currentLayer).solid)
                             && levelTile.bridge != entity.currentLayer)) {
                         collidedTile = levelTile;
                     }
                 }
             }
         }
+
+        if (collidedTile != null) {
+            entity.bridgeLayer = oldbridge;
+            entity.currentLayer = oldlayer;
+        }
+
         return collidedTile;
     }
 
@@ -124,7 +135,7 @@ public class CollisionLogic {
                     if (attack) {
                         GameLogic.newEntityQueue.addLast(
                                 GameLogic.entityTable.get("Blood")
-                                        .spawnEntity(new Entity.Position(xpos, ypos, 0f), 0, entity2.currentLayer));
+                                        .spawnEntity(new Entity.Position(xpos, ypos, 0f), 0, entity2.currentLayer, false));
                     }
                     return entity2;
                 }
@@ -146,7 +157,7 @@ public class CollisionLogic {
                         if (attack) {
                             GameLogic.newEntityQueue.addLast(
                                     GameLogic.entityTable.get("BulletPuff")
-                                            .spawnEntity(new Entity.Position(xpos, ypos, 0f), 0, t.pos.layer));
+                                            .spawnEntity(new Entity.Position(xpos, ypos, 0f), 0, t.pos.layer, false));
                         }
                         return null;
                     }
