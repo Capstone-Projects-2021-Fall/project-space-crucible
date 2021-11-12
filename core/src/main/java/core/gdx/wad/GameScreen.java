@@ -261,16 +261,14 @@ public class GameScreen implements Screen {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
-//        Rectangle mapTiles = new Rectangle(100,100);
-//        mapTiles.setLocation(0, (int) camera.viewportHeight);
-        float miniSquareWidth = camera.viewportWidth/500;
+        float miniSquareWidth = camera.viewportWidth/600;
         float miniSquareHeight = miniSquareWidth;
         float drawMiniX = 0;
         float drawMiniY = 345;
         shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.rect(drawMiniX, drawMiniY, 130,130,
-                Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY);
+//        shapeRenderer.rect(drawMiniX, drawMiniY, 130,130,
+//                Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY);
 //        for(int i=0; i<=3; i++){
 //            for(int j=0; j<=3; j++){
 //                drawMiniX = drawMiniX+miniSquareWidth;
@@ -281,15 +279,23 @@ public class GameScreen implements Screen {
 //        }
 
         for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
+                shapeRenderer.rect(levelTile.pos.x+drawMiniX+ camera.viewportWidth/12,
+                        levelTile.pos.y+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
+                        Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY);
             if(levelTile.solid==true) {
-                shapeRenderer.rect(levelTile.pos.x+drawMiniX+30, levelTile.pos.y+drawMiniY+30, miniSquareWidth,miniSquareHeight,
+                shapeRenderer.rect(levelTile.pos.x+drawMiniX+ camera.viewportWidth/12,
+                        levelTile.pos.y+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
                         Color.RED, Color.RED, Color.RED, Color.RED);
+                 }
+
+            if(levelTile.solid==false &&
+                    levelTile.pos.x == GameLogic.getPlayer(playerNumber).getPos().x &&
+                    levelTile.pos.y == GameLogic.getPlayer(playerNumber).getPos().y){
+                shapeRenderer.rect(levelTile.pos.x+drawMiniX+ camera.viewportWidth/12,
+                        levelTile.pos.y+drawMiniY+ camera.viewportHeight/7, miniSquareWidth+100,miniSquareHeight+100,
+                        Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
             }
         }
-
-        shapeRenderer.rect((GameLogic.getPlayer(playerNumber).getPos().x+drawMiniX), (GameLogic.getPlayer(playerNumber).getPos().y+drawMiniY+30), miniSquareWidth,miniSquareHeight,
-                Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
-
         shapeRenderer.end();
     }
 
