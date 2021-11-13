@@ -3,36 +3,29 @@ package core.gdx.wad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Null;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
-import core.game.entities.PlayerPawn;
 import core.server.Network;
+import core.server.Network.ClientData;
 import core.server.Network.RenderData;
+import core.server.Network.ServerDetails;
 import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
-import core.server.Network.ClientData;
-import core.server.Network.ServerDetails;
 import core.wad.funcs.WadFuncs;
 
 import java.util.ConcurrentModificationException;
@@ -47,6 +40,7 @@ public class GameScreen implements Screen {
     ClientData clientData = new ClientData();
     ServerDetails serverDetails = new ServerDetails();
     ChatWindow chatWindow;
+    public boolean update = false;
 
     public int playerNumber = 0;
 
@@ -68,10 +62,10 @@ public class GameScreen implements Screen {
     Stage lobbyStage;
     Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
     TextButton play = new TextButton("Start Game", uiSkin);
+    TextButton exitToMenu = new TextButton("Exit Lobby", uiSkin);
     public boolean startGame = false;
     Label lobbyCode;
     boolean remove = false;
-
 
     public GameScreen(Thread gameLoop, boolean isSinglePlayer, MyGDxTest myGdxTest) {
         this.gameLoop = gameLoop;
@@ -82,7 +76,6 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         lobbyStage = new Stage();
         this.isSinglePlayer = isSinglePlayer;
-
     }
 
     @Override
@@ -96,20 +89,23 @@ public class GameScreen implements Screen {
             System.out.println("I am player " + playerNumber);
         }
         if(!isSinglePlayer) {
-            if (playerNumber == 1) {
+            if(!startGame) {
                 Gdx.input.setInputProcessor(lobbyStage);
-                play.setBounds((Gdx.graphics.getWidth() - 100) / 2, 50, 100, 60);
-                lobbyStage.addActor(play);
-                play.addListener(new ClickListener() {
-                    public void clicked(InputEvent event, float x, float y) {
-                        startGame = true;
-                        Network.StartGame startGame = new Network.StartGame();
-                        startGame.startGame = true;
-                        client.getGameClient().sendTCP(startGame);
-                        addChatWindow();
-                        play.removeListener(this);
-                    }
-                });
+                addExitButton();
+                if (playerNumber == 1) {
+                    play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
+                    lobbyStage.addActor(play);
+                    play.addListener(new ClickListener() {
+                        public void clicked(InputEvent event, float x, float y) {
+                            startGame = true;
+                            Network.StartGame startGame = new Network.StartGame();
+                            startGame.startGame = true;
+                            client.getGameClient().sendTCP(startGame);
+                            addChatWindow();
+                            play.removeListener(this);
+                        }
+                    });
+                }
             } else {
                 addChatWindow();
             }
@@ -118,7 +114,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
+        if(update){
+            MyGDxTest.loadWADS();
+            update = false;
+        }
         if (GameLogic.switchingLevels || GameLogic.getPlayer(1) == null) {return;}
 
         Gdx.gl.glClearColor(0,0,0,1F);
@@ -255,11 +254,11 @@ public class GameScreen implements Screen {
         //Get the angle where the mouse is pointing to on the screen in relation to where the player is
         //Referenced code - https://stackoverflow.com/questions/16381031/get-cursor-position-in-libgdx
         if (isSinglePlayer) {
-            mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(1).getPos().x;
-            mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(1).getPos().y;
+            mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(1).getPos().x - GameLogic.getPlayer(1).getWidth()/2f;
+            mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight()/2f;
         } else if(renderData.entityList != null && getPlayer(playerNumber) != null) {
-            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(playerNumber).getPos().x;
-            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y;
+            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(playerNumber).getPos().x - GameLogic.getPlayer(1).getWidth()/2f;
+            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y + GameLogic.getPlayer(1).getHeight()/2f;
         }
         mouseInWorld3D.z = 0;
         camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
@@ -272,9 +271,6 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
-//        if (startGame) {
-//            stage.getViewport().update(width, height);
-//        }
     }
 
     @Override
@@ -289,7 +285,6 @@ public class GameScreen implements Screen {
     public void hide() {
         SoundFuncs.stopMIDI();
         try {GameLogic.stop();} catch (NullPointerException ignored){}
-//        System.exit(0);
     }
 
     @Override
@@ -356,15 +351,24 @@ public class GameScreen implements Screen {
         chatWindow.setSize(chatWindow.getWidth(), chatWindow.getHeight());
     }
 
+    private void addExitButton(){
+        exitToMenu.setBounds((Gdx.graphics.getWidth() + 250) / 2f, 50, 100, 60);
+        lobbyStage.addActor(exitToMenu);
+        exitToMenu.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("exit");
+                client.getGameClient().close();
+                client.getMasterClient().close();
+                myGDxTest.setScreen(new TitleScreen(myGDxTest, myGDxTest.gameLoop));
+            }
+        });
+    }
+
     public void addChatToWindow(Network.ChatMessage chat) {
         chatWindow.addToChatLog(chat.sender + ": " + chat.message);
     }
 
     public void updatePlayerNumber() {
         playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
-    }
-
-    public void changeScreen(){
-        myGDxTest.setScreen(myGDxTest.settingsScreen);
     }
 }
