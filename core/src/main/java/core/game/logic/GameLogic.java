@@ -95,34 +95,39 @@ public class GameLogic {
                 if (isSinglePlayer || SpaceServer.connected.contains(SpaceServer.idToPlayerNum.get(e.getTag()))) {
                     ((PlayerPawn) e).movementUpdate();
                 } else {
-                    //Set player to chase closest enemy
+                    if (e.getHealth() <= 0) {continue;}
+                    //Set player to chase closest enemy or player (bot only attacks monsters)
                     setPlayerBotTarget((PlayerPawn) e);
 
                     try {
-                        if (e.getHealth() > 0) {
 
-                            Vector2 start = e.getCenter();
-                            Entity target = ((PlayerPawn) e).botTarget;
+                        Vector2 start = e.getCenter();
+                        Entity target = ((PlayerPawn) e).botTarget;
 
-                            Vector2 distance = new Vector2();
-                            distance.x = target.getPos().x - e.getPos().x;
-                            distance.y = target.getPos().y - e.getPos().y;
+                        Vector2 distance = new Vector2();
+                        distance.x = target.getPos().x - e.getPos().x;
+                        distance.y = target.getPos().y - e.getPos().y;
 
-                            if ((CollisionLogic.checkFOVForEntity(start.x, start.y, e.getPos().angle, e, target)
-                                    || distance.len() < 64f)
-                                    && e.getCurrentStateIndex() <= e.getStates()[Entity.MELEE]) {
+                        if ((CollisionLogic.checkFOVForEntity(start.x, start.y, e.getPos().angle, e, target)
+                                || distance.len() < 64f)
+                                && e.getCurrentStateIndex() <= e.getStates()[Entity.MELEE]
+                                && !(target instanceof PlayerPawn)) {
 
 
-                                e.getPos().angle = distance.angleDeg();
-                                e.setState(e.getStates()[Entity.MISSILE]);
-                                e.hitScanAttack(e.getPos().angle, 15);
-                                SoundFuncs.playSound("pistol/shoot");
-                                GameLogic.alertMonsters(e);
-                            } else {
+                            e.getPos().angle = distance.angleDeg();
+                            e.setState(e.getStates()[Entity.MISSILE]);
+                            e.hitScanAttack(e.getPos().angle, 15);
+                            SoundFuncs.playSound("pistol/shoot");
+                            GameLogic.alertMonsters(e);
+                        } else {
+                            if (!(((PlayerPawn) e).botTarget instanceof PlayerPawn && distance.len() < 128f)) {
                                 e.pursueTarget(target);
+
                                 if (e.getCurrentStateIndex() == e.getStates()[Entity.IDLE]) {
                                     e.setState(e.getStates()[Entity.WALK]);
                                 }
+                            } else if (e.getCurrentStateIndex() != e.getStates()[Entity.IDLE]) {
+                                e.setState(e.getStates()[Entity.IDLE]);
                             }
                         }
                     } catch (NullPointerException ignored){}
@@ -331,7 +336,8 @@ public class GameLogic {
         Vector2 targetDistance = null;
 
         for (Entity t : GameLogic.entityList) {
-            if (t.getHealth() > 0 && t instanceof BaseMonster) {
+            if (t.getHealth() > 0 && (t instanceof BaseMonster
+                    || (t instanceof PlayerPawn && !t.equals(p)))) {
                 final float startX = p.getPos().x;
                 final float startY = p.getPos().y;
 
@@ -344,12 +350,13 @@ public class GameLogic {
                     newTarget = t;
                     targetDistance = distance;
                 } else {
-                    if (distance.len() < targetDistance.len()) {
+                    if (distance.len() < targetDistance.len()
+                        //Don't follow other player if you're closer than 128
+                        && !(t instanceof PlayerPawn && distance.len() < 128f)) {
                         newTarget = t;
                         targetDistance = distance;
                     }
                 }
-                System.out.println("NewTarget: " + newTarget.getClass().getName());
             }
         }
         p.botTarget = newTarget;
