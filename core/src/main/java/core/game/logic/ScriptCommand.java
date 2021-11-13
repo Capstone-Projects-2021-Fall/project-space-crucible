@@ -6,9 +6,11 @@ import core.game.logic.tileactions.TileAction;
 public class ScriptCommand {
     public int delay;
     public TileAction action;
-    int arg1, arg2;
+    public int arg1, arg2;
 
-    private ScriptCommand(TileAction action, int arg1, int arg2, int delay) {
+    public ScriptCommand(){delay = 0;}
+
+    public ScriptCommand(TileAction action, int arg1, int arg2, int delay) {
         this.action = action;
         this.delay = delay;
         this.arg1 = arg1;
@@ -16,6 +18,9 @@ public class ScriptCommand {
     }
 
     public void run(Entity activator) {
-        action.run(activator, arg1, arg2);
+        if (action != null) {
+            System.out.println(action.getClass().getName());
+            action.run(activator, arg1, arg2);
+        }
     }
 }

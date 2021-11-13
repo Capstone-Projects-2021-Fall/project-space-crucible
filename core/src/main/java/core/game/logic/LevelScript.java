@@ -2,6 +2,7 @@ package core.game.logic;
 
 import core.game.entities.Entity;
 
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -12,12 +13,12 @@ public class LevelScript {
 
     public LevelScript() {
         activator = null;
-        commandQueue = new PriorityQueue<>();
+        commandQueue = new LinkedList<>();
     }
 
     public LevelScript(Entity activator, Queue<ScriptCommand> commandQueue) {
         this.activator = activator;
-        this.commandQueue = new PriorityQueue<>();
+        this.commandQueue = new LinkedList<>();
         this.commandQueue.addAll(commandQueue);
     }
 

@@ -137,7 +137,6 @@ public class LevelData {
 
         while(!line.equals("}")) {
 
-            System.out.println(line);
             if (line.startsWith("type")) {
                 type = Integer.parseInt(rawvalue);
                 objectdata[0] = true;

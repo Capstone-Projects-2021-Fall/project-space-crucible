@@ -10,13 +10,18 @@ import core.game.entities.actions.*;
 import core.game.logic.*;
 import core.game.logic.tileactions.T_ChangeLevel;
 import core.game.logic.tileactions.T_ExecuteScript;
+import core.game.logic.tileactions.T_InstantDamage;
 import core.game.logic.tileactions.T_SlimeDamage;
 import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelData;
+import net.mtrop.doom.WadEntry;
 import net.mtrop.doom.WadFile;
 import net.mtrop.doom.graphics.PNGPicture;
+import org.lwjgl.system.CallbackI;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.util.*;
 
 public class WadFuncs {
 
@@ -108,5 +113,72 @@ public class WadFuncs {
         GameLogic.effectList.add(new T_ChangeLevel());
         GameLogic.effectList.add(new T_SlimeDamage());
         GameLogic.effectList.add(new T_ExecuteScript());
+        GameLogic.effectList.add(new T_InstantDamage());
+    }
+
+    public static void loadScripts(Array<WadFile> wads) {
+
+        for (WadFile w : wads) {
+            for (WadEntry we : w) {
+                if (we.getName().startsWith("SCRIPT")) {
+                    System.out.println("Reading " + we.getName());
+                    int scriptnum = Integer.parseInt(we.getName().substring(6));
+                    Queue<ScriptCommand> commandQueue = new LinkedList<>();
+
+                    try {
+                        String script = w.getTextData(we.getName(), Charset.defaultCharset());
+                        Scanner scriptScanner = new Scanner(script);
+                        ScriptCommand nextCommand = new ScriptCommand();
+
+                        //Read script text
+                        while (scriptScanner.hasNextLine()) {
+                            String line = scriptScanner.nextLine();
+                            StringTokenizer st = new StringTokenizer(line, " ,()");
+                            String command = st.nextToken();
+
+                            if (command.equals("delay")) {
+                                nextCommand.delay = Integer.parseInt(st.nextToken());
+                                System.out.println("Adding " + nextCommand.action.getClass().getName() + ", (" + nextCommand.arg1 + ", " + nextCommand.arg2 + ")");
+                                commandQueue.add(nextCommand);
+                                nextCommand = new ScriptCommand();
+                            } else {
+                                commandQueue.add(nextCommand);
+                                nextCommand = new ScriptCommand();
+
+                                switch (command) {
+                                    case "ChangeLevel":
+                                        nextCommand.action = new T_ChangeLevel();
+                                        break;
+
+                                    case "SlimeDamage":
+                                        nextCommand.action = new T_SlimeDamage();
+                                        break;
+
+                                    case "ExecuteScript":
+                                        nextCommand.action = new T_ExecuteScript();
+                                        break;
+
+                                    case "InstantDamage":
+                                        nextCommand.action = new T_InstantDamage();
+                                        break;
+
+                                }
+
+                                nextCommand.arg1 = Integer.parseInt(st.nextToken());
+                                nextCommand.arg2 = Integer.parseInt(st.nextToken());
+
+                                if (!scriptScanner.hasNextLine()) {commandQueue.add(nextCommand);}
+                            }
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    GameLogic.scripts.put(scriptnum, commandQueue);
+                }
+            }
+        }
+
     }
 }

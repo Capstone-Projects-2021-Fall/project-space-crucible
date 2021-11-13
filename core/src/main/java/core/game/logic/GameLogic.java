@@ -30,8 +30,8 @@ public class GameLogic {
 
     //Entities
     public static ArrayList<Entity> entityList = new ArrayList<>();
-    final public static PriorityQueue<Entity> newEntityQueue = new PriorityQueue<>();
-    final public static PriorityQueue<Entity> deleteEntityQueue = new PriorityQueue<>();
+    final public static Queue<Entity> newEntityQueue = new LinkedList<>();
+    final public static Queue<Entity> deleteEntityQueue = new LinkedList<>();
     final public static LinkedList<EntityState> stateList = new LinkedList<>();
     final public static Map<String, EntitySpawner> entityTable = new HashMap<>();
 
@@ -44,10 +44,10 @@ public class GameLogic {
     public static boolean switchingLevels = false;
 
     //Scripts
-    final public static Map<Integer, PriorityQueue<ScriptCommand>> scripts = new HashMap<>();
+    final public static Map<Integer, Queue<ScriptCommand>> scripts = new HashMap<>();
     final public static LinkedList<LevelScript> runningScripts = new LinkedList<>();
-    final public static PriorityQueue<LevelScript> newScriptQueue = new PriorityQueue<>();
-    final public static PriorityQueue<LevelScript> deleteScriptQueue = new PriorityQueue<>();
+    final public static Queue<LevelScript> newScriptQueue = new LinkedList<>();
+    final public static Queue<LevelScript> deleteScriptQueue = new LinkedList<>();
 
     public static Server server = null;
     public static SpaceServer spaceServer = null;
