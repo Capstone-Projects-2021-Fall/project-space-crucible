@@ -9,6 +9,7 @@ import core.game.entities.*;
 import core.game.entities.actions.*;
 import core.game.logic.*;
 import core.game.logic.tileactions.T_ChangeLevel;
+import core.game.logic.tileactions.T_ExecuteScript;
 import core.game.logic.tileactions.T_SlimeDamage;
 import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelData;
@@ -106,5 +107,6 @@ public class WadFuncs {
     public static void loadLevelEffects() {
         GameLogic.effectList.add(new T_ChangeLevel());
         GameLogic.effectList.add(new T_SlimeDamage());
+        GameLogic.effectList.add(new T_ExecuteScript());
     }
 }

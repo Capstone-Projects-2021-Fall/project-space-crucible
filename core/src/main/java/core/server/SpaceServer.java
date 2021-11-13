@@ -163,7 +163,7 @@ public class SpaceServer implements Listener {
                         if (gameStartedByHost) {
                             for (LevelObject lo : GameLogic.currentLevel.getObjects()) {
                                 if (lo.type == 0 && lo.tag == idToPlayerNum.indexOf(c.getID())) {
-                                    GameLogic.newEntityQueue.addLast(GameLogic.mapIDTable.get(0)
+                                    GameLogic.newEntityQueue.add(GameLogic.mapIDTable.get(0)
                                             .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), lo.tag, lo.layer, lo.ambush));
                                     break;
                                 }

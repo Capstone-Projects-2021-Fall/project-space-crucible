@@ -4,13 +4,11 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Queue;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import core.game.entities.BaseMonster;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
-import core.game.entities.actions.A_Chase;
 import core.game.logic.tileactions.TileAction;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
@@ -29,20 +27,31 @@ public class GameLogic {
 
     private static Timer gameTimer;
     public static Boolean isSinglePlayer = true;
+
+    //Entities
     public static ArrayList<Entity> entityList = new ArrayList<>();
-    final public static Queue<Entity> newEntityQueue = new Queue<>();
-    final public static Queue<Entity> deleteEntityQueue = new Queue<>();
+    final public static PriorityQueue<Entity> newEntityQueue = new PriorityQueue<>();
+    final public static PriorityQueue<Entity> deleteEntityQueue = new PriorityQueue<>();
     final public static LinkedList<EntityState> stateList = new LinkedList<>();
     final public static Map<String, EntitySpawner> entityTable = new HashMap<>();
+
+    //Level Data
     final public static Map<Integer, EntitySpawner> mapIDTable = new HashMap<>();
     final public static Map<Integer, LevelData> levels = new HashMap<>();
     final public static ArrayList<TileAction> effectList = new ArrayList<>();
     public static LevelData currentLevel = null;
+    static LevelData nextLevel = null;
+    public static boolean switchingLevels = false;
+
+    //Scripts
+    final public static Map<Integer, PriorityQueue<ScriptCommand>> scripts = new HashMap<>();
+    final public static LinkedList<LevelScript> runningScripts = new LinkedList<>();
+    final public static PriorityQueue<LevelScript> newScriptQueue = new PriorityQueue<>();
+    final public static PriorityQueue<LevelScript> deleteScriptQueue = new PriorityQueue<>();
+
     public static Server server = null;
     public static SpaceServer spaceServer = null;
     static boolean goingToNextLevel = false;
-    static LevelData nextLevel = null;
-    public static boolean switchingLevels = false;
     public static int ticCounter = 0;
     public static int difficulty = 2;
 
@@ -137,13 +146,28 @@ public class GameLogic {
             }
         }
 
-        //Now add and remove all queued new entities
+        //Advance any running level scripts
+        for (LevelScript ls : runningScripts) {
+            if (ls.run()) {
+                deleteScriptQueue.add(ls);
+            }
+        }
+
+        //Now add and remove all queued entities and scripts
         while (!newEntityQueue.isEmpty()) {
-            entityList.add(newEntityQueue.removeFirst());
+            entityList.add(newEntityQueue.remove());
         }
 
         while (!deleteEntityQueue.isEmpty()) {
-            entityList.remove(deleteEntityQueue.removeFirst());
+            entityList.remove(deleteEntityQueue.remove());
+        }
+
+        while (!newScriptQueue.isEmpty()) {
+            runningScripts.add(newScriptQueue.remove());
+        }
+
+        while (!deleteScriptQueue.isEmpty()) {
+            runningScripts.remove(deleteScriptQueue.remove());
         }
 
         if(!isSinglePlayer){

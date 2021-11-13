@@ -122,7 +122,7 @@ public class Entity {
 
         //nextState == -1 means remove after state call.
         if (state == -1) {
-            GameLogic.deleteEntityQueue.addLast(this);
+            GameLogic.deleteEntityQueue.add(this);
             return;
         }
 
@@ -157,7 +157,7 @@ public class Entity {
             if (currentState.getNextState() != -1) {
                 setState(currentState.getNextState());
             } else {
-                GameLogic.deleteEntityQueue.addLast(this);
+                GameLogic.deleteEntityQueue.add(this);
             }
         }
     }

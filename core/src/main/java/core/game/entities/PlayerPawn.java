@@ -100,7 +100,7 @@ public class PlayerPawn extends Entity {
                     for (LevelObject lo : GameLogic.currentLevel.getObjects()) {
 
                         if (lo.type == 0 && lo.tag == tag) {
-                            GameLogic.newEntityQueue.addLast(GameLogic.mapIDTable.get(0)
+                            GameLogic.newEntityQueue.add(GameLogic.mapIDTable.get(0)
                                     .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), tag, lo.layer, false));
                             break;
                         }
