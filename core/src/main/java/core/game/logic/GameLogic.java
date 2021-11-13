@@ -98,28 +98,36 @@ public class GameLogic {
                     ((PlayerPawn) e).movementUpdate();
                 } else {
                     //Set player to chase closest enemy
-                    if (((PlayerPawn) e).botTarget == null || ((PlayerPawn) e).botTarget.getHealth() < 1) {
-                        setPlayerBotTarget((PlayerPawn) e);
-                    }
+                    setPlayerBotTarget((PlayerPawn) e);
 
-                    if (e.getHealth() > 0) {
+                    try {
+                        if (e.getHealth() > 0) {
 
-                        Vector2 start = e.getCenter();
-                        Entity target = ((PlayerPawn) e).botTarget;
+                            Vector2 start = e.getCenter();
+                            Entity target = ((PlayerPawn) e).botTarget;
 
-                        if (CollisionLogic.checkFOVForEntity(start.x, start.y, e.getPos().angle, e, target)
-                            && e.getCurrentStateIndex() < e.getStates()[Entity.MELEE]) {
-                            e.setState(e.getStates()[Entity.MISSILE]);
-                            e.hitScanAttack(e.getPos().angle, 15);
-                            SoundFuncs.playSound("pistol/shoot");
-                            GameLogic.alertMonsters(e);
-                        } else {
-                            e.pursueTarget(target);
-                            if (e.getCurrentStateIndex() == e.getStates()[Entity.IDLE]) {
-                                e.setState(e.getStates()[Entity.WALK]);
+                            Vector2 distance = new Vector2();
+                            distance.x = target.getPos().x - e.getPos().x;
+                            distance.y = target.getPos().y - e.getPos().y;
+
+                            if ((CollisionLogic.checkFOVForEntity(start.x, start.y, e.getPos().angle, e, target)
+                                    || distance.len() < 64f)
+                                    && e.getCurrentStateIndex() <= e.getStates()[Entity.MELEE]) {
+
+
+                                e.getPos().angle = distance.angleDeg();
+                                e.setState(e.getStates()[Entity.MISSILE]);
+                                e.hitScanAttack(e.getPos().angle, 15);
+                                SoundFuncs.playSound("pistol/shoot");
+                                GameLogic.alertMonsters(e);
+                            } else {
+                                e.pursueTarget(target);
+                                if (e.getCurrentStateIndex() == e.getStates()[Entity.IDLE]) {
+                                    e.setState(e.getStates()[Entity.WALK]);
+                                }
                             }
                         }
-                    }
+                    } catch (NullPointerException ignored){}
                 }
             }
         }
