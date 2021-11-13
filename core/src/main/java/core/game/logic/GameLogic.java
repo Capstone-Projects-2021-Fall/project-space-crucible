@@ -99,6 +99,10 @@ public class GameLogic {
                     //Set player to chase closest enemy or player (bot only attacks monsters)
                     setPlayerBotTarget((PlayerPawn) e);
 
+                    if (((PlayerPawn) e).botTarget == null) {
+                        e.setState(Entity.IDLE);
+                    }
+
                     try {
 
                         Vector2 start = e.getCenter();
@@ -126,8 +130,6 @@ public class GameLogic {
                                 if (e.getCurrentStateIndex() == e.getStates()[Entity.IDLE]) {
                                     e.setState(e.getStates()[Entity.WALK]);
                                 }
-                            } else if (e.getCurrentStateIndex() != e.getStates()[Entity.IDLE]) {
-                                e.setState(e.getStates()[Entity.IDLE]);
                             }
                         }
                     } catch (NullPointerException ignored){}
