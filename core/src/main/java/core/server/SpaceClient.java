@@ -206,11 +206,13 @@ public class SpaceClient implements Listener {
                 }
                 if(object instanceof FrameworkMessage.Ping){
                     FrameworkMessage.Ping ping = (FrameworkMessage.Ping)object;
-                    if (ping.isReply) System.out.println("Ping: " + connection.getReturnTripTime());
-                    SendPing sendPing = new SendPing();
-                    sendPing.ping = connection.getReturnTripTime();
-                    gameClient.sendTCP(sendPing);
-                    gameClient.updateReturnTripTime();
+
+                    if (ping.isReply){
+                        screen.setPing(connection.getReturnTripTime());
+                    }
+//                    SendPing sendPing = new SendPing();
+//                    sendPing.ping = connection.getReturnTripTime();
+//                    gameClient.sendTCP(sendPing);
                 }
             }
 

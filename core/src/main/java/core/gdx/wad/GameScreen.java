@@ -63,6 +63,8 @@ public class GameScreen implements Screen {
     public boolean startGame = false;
     Label lobbyCode;
     boolean remove = false;
+    int ping;
+    public int updatePing = 0;
 
     public GameScreen(Thread gameLoop, boolean isSinglePlayer, MyGDxTest myGdxTest) {
         this.gameLoop = gameLoop;
@@ -144,6 +146,13 @@ public class GameScreen implements Screen {
                 batch.end();
                 return;
             }
+            //The ping interval
+            if(updatePing == 0) {
+                updatePing = 50;
+                client.getGameClient().updateReturnTripTime();
+            }
+            updatePing--;
+
             if (!startGame) {
                 lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
                 lobbyStage.getBatch().begin();
@@ -198,6 +207,7 @@ public class GameScreen implements Screen {
                 font.draw(batch, "Player: " + getPlayer(playerNumber).getTag(),
                         getPlayer(playerNumber).getPos().x,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() + 10);
+                font.draw(batch, "Ping: " + ping, getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y-13);
                 if (showBoxes) {
                     showBoxes();
                 }
@@ -356,5 +366,9 @@ public class GameScreen implements Screen {
 
     public void updatePlayerNumber() {
         playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
+    }
+
+    public void setPing(int returnTripTime) {
+        ping = returnTripTime;
     }
 }

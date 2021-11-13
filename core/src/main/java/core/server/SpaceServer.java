@@ -181,7 +181,7 @@ public class SpaceServer implements Listener {
                     handleRCON(((Network.RCONMessage) packetData).message);
                 }
                 else if (packetData instanceof SendPing){
-                    System.out.println(((SendPing) packetData).ping);
+//                    System.out.println(((SendPing) packetData).ping);
                 }
             }
             //This method will run when a client disconnects from the server, remove the character from the game
