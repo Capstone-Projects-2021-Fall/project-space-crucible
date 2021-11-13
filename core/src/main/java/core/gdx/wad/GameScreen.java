@@ -3,6 +3,7 @@ package core.gdx.wad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,12 +16,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
+import core.level.info.LevelTile;
 import core.server.Network;
 import core.server.Network.ClientData;
 import core.server.Network.RenderData;
@@ -49,6 +52,7 @@ public class GameScreen implements Screen {
     private final Vector2 mouseInWorld2D = new Vector2();
     private final Vector3 mouseInWorld3D = new Vector3();
     ShapeRenderer sr = new ShapeRenderer();
+    ShapeRenderer shapeRenderer = new ShapeRenderer();
     boolean showBoxes = false;
     boolean isSinglePlayer;
     BitmapFont font = new BitmapFont();
@@ -130,6 +134,25 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
 
+        Gdx.input.setInputProcessor(stage);
+        DeadPlayerWindow deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
+        if(GameLogic.getPlayer(playerNumber).getHealth()<=0){
+            stage.addActor(deadPlayerWindow);
+            deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+            stage.addActor(deadPlayerWindow);
+            deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
+        }
+        if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+            for(Actor actor : stage.getActors()){
+                if(actor.getHeight()==deadPlayerWindow.getHeight() && actor.getWidth()==deadPlayerWindow.getWidth()){
+                    //normal deadPlayerWindow.remove() not working
+                    actor.remove();
+                }
+            }
+        }
+
         if(isSinglePlayer){
             getAngle(true);
             GameLogic.getPlayer(1).getPos().angle = angle; //Turn the vector2 into a degree angle
@@ -138,10 +161,21 @@ public class GameScreen implements Screen {
             camera.update();
             RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
-            font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
+
+            if(GameLogic.getPlayer(playerNumber).getHealth()>0){
+                font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
+                        GameLogic.getPlayer(playerNumber).getPos().x,
+                        GameLogic.getPlayer(playerNumber).getPos().y);
+            }else{
+                font.draw(batch,"HP:0",
+                        GameLogic.getPlayer(playerNumber).getPos().x,
+                        GameLogic.getPlayer(playerNumber).getPos().y);
+            }
             font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
                     GameLogic.getPlayer(playerNumber).getPos().x,
                     GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+10);
+            font.draw(batch,NameChangeWindow.playerName, GameLogic.getPlayer(playerNumber).getPos().x,
+                    GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+25);
             if (showBoxes) {showBoxes();}
             GameLogic.getPlayer(1).controls = getControls();
 
@@ -209,9 +243,15 @@ public class GameScreen implements Screen {
                 camera.update();
                 RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
                 RenderFuncs.entityDraw(batch, renderData.entityList);
-
-                font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
-                        getPlayer(playerNumber).getPos().y);
+                if(GameLogic.getPlayer(playerNumber).getHealth()>0){
+                    font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
+                            GameLogic.getPlayer(playerNumber).getPos().x,
+                            GameLogic.getPlayer(playerNumber).getPos().y);
+                }else{
+                    font.draw(batch,"HP: 0",
+                            GameLogic.getPlayer(playerNumber).getPos().x,
+                            GameLogic.getPlayer(playerNumber).getPos().y);
+                }
                 font.draw(batch, "Player: " + getPlayer(playerNumber).getTag(),
                         getPlayer(playerNumber).getPos().x,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() + 10);
@@ -242,6 +282,7 @@ public class GameScreen implements Screen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        drawMiniMap();
     }
 
     private void showBoxes() {
@@ -261,8 +302,8 @@ public class GameScreen implements Screen {
             mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(1).getPos().x - GameLogic.getPlayer(1).getWidth()/2f;
             mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight()/2f;
         } else if(renderData.entityList != null && getPlayer(playerNumber) != null) {
-            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(playerNumber).getPos().x - GameLogic.getPlayer(1).getWidth()/2f;
-            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y + GameLogic.getPlayer(1).getHeight()/2f;
+            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(playerNumber).getPos().x - getPlayer(playerNumber).getWidth()/2f;
+            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight()/2f;
         }
         mouseInWorld3D.z = 0;
         camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
@@ -379,5 +420,32 @@ public class GameScreen implements Screen {
 
     public void setPing(int returnTripTime) {
         ping = returnTripTime;
+    }
+
+    private void drawMiniMap() {
+        float miniSquareWidth = camera.viewportWidth/200;
+        float miniSquareHeight = miniSquareWidth;
+        float drawMiniX = 0;
+        float drawMiniY = 345;
+        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        float mapSpacing =4;
+        for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
+            shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
+                    levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
+                    Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY);
+            if(levelTile.solid==true) {
+                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
+                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
+                        Color.RED, Color.RED, Color.RED, Color.RED);
+            }
+            if(levelTile.solid==false && levelTile.pos.x  == (int)GameLogic.getPlayer(playerNumber).getPos().x/LevelTile.TILE_SIZE &&
+                    levelTile.pos.y == (int)GameLogic.getPlayer(playerNumber).getPos().y/LevelTile.TILE_SIZE){
+                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
+                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
+                        Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
+            }
+        }
+        shapeRenderer.end();
     }
 }

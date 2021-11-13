@@ -7,10 +7,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import core.game.logic.GameLogic;
 import net.mtrop.doom.WadFile;
 
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Sequencer;
+import javax.sound.midi.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -29,12 +26,27 @@ public class SoundFuncs {
     final public static Map<String, String> gameSounds = new HashMap<>();   //Map nice name to lump name
 
     public static float volume = 0.5f;
+    public static double seqVolume;
+
     public static Sequencer sequencer = null;
 
     public static void startSequencer() {
         try {
             sequencer = MidiSystem.getSequencer();
             sequencer.open();
+            // code right below is supposed to change bgm volume:
+            // http://www.java2s.com/Code/Java/Development-Class/SettingtheVolumeofPlayingMidiAudio.htm
+            // not working tho
+            if (sequencer instanceof Synthesizer) {
+                Synthesizer synthesizer = (Synthesizer) sequencer;
+                MidiChannel[] channels = synthesizer.getChannels();
+
+                // gain is a value between 0 and 1 (loudest)
+                seqVolume = 0.9d;
+                for (int i = 0; i < channels.length; i++) {
+                    channels[i].controlChange(7, (int) (seqVolume * 127.0));
+                }
+            }
         } catch (MidiUnavailableException e) {
             System.out.println("Could not get MIDI sequencer. Will continue without music.");
         }

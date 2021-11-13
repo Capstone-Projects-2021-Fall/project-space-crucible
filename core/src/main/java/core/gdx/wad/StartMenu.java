@@ -1,11 +1,14 @@
 package core.gdx.wad;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.server.SpaceClient;
 import editor.launch.EditorScreen;
 
@@ -15,15 +18,15 @@ public class StartMenu extends Actor{
     SettingsScreen settingsScreen;
     SpaceClient client;
     final StartMenu startMenu = this;
-    CreateImageButton startButton = new CreateImageButton("buttons/start.png", "buttons/startnobg.png");
-    CreateImageButton coopButton = new CreateImageButton("buttons/coop.png", "buttons/coopnobg.png");
-    CreateImageButton settingsButton = new CreateImageButton("buttons/settings.png", "buttons/settingsnobg.png");
-    CreateImageButton levelEditorButton = new CreateImageButton("buttons/leveleditor.png", "buttons/leveleditornobg.png");
-    CreateImageButton exitButton = new CreateImageButton("buttons/exit.png", "buttons/exitnobg.png");
+    static CreateImageButton startButton = new CreateImageButton("buttons/start.png", "buttons/startnobg.png");
+    static CreateImageButton coopButton = new CreateImageButton("buttons/coop.png", "buttons/coopnobg.png");
+    static CreateImageButton settingsButton = new CreateImageButton("buttons/settings.png", "buttons/settingsnobg.png");
+    static CreateImageButton levelEditorButton = new CreateImageButton("buttons/leveleditor.png", "buttons/leveleditornobg.png");
+    static CreateImageButton exitButton = new CreateImageButton("buttons/exit.png", "buttons/exitnobg.png");
     CreateImageButton createLobbyButton = new CreateImageButton("buttons/createlobby.png", "buttons/createlobbynobg.png");
     CreateImageButton joinLobbyButton = new CreateImageButton("buttons/joinlobby.png", "buttons/joinlobbynobg.png");
     CreateImageButton backButton = new CreateImageButton("buttons/back.png", "buttons/backnobg.png");
-    Button[] MainMenuButtons = {startButton.button, coopButton.button, settingsButton.button, exitButton.button, levelEditorButton.button};
+    static Button[] MainMenuButtons = {startButton.button, coopButton.button, settingsButton.button, exitButton.button, levelEditorButton.button};
     Button[] CoopButtons = {createLobbyButton.button, joinLobbyButton.button, backButton.button};
 
     public StartMenu(Skin skin, TitleScreen titleScreen, Stage stage, MyGDxTest myGDxTest) {
@@ -62,7 +65,6 @@ public class StartMenu extends Actor{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                System.out.println("Start\n");
                 ChooseDifficultyWindow window = new ChooseDifficultyWindow("Choose Difficulty:", skin, titleScreen, startMenu, MainMenuButtons);
                 window.setBounds(((Gdx.graphics.getWidth() - 150)/ 2f), ((Gdx.graphics.getHeight() - 110) / 2f), 150, 110);
                 setMainMenuButtonsVisible(false);
@@ -176,7 +178,6 @@ public class StartMenu extends Actor{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                System.out.println("Exit\n");
                 System.exit(0);
             }
         });
@@ -186,7 +187,7 @@ public class StartMenu extends Actor{
         for(Button button : CoopButtons)
             button.setVisible(visible);
     }
-    public void setMainMenuButtonsVisible(boolean visible){
+    public static void setMainMenuButtonsVisible(boolean visible){
         for(Button button : MainMenuButtons)
             button.setVisible(visible);
     }

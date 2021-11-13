@@ -21,8 +21,11 @@ public class SettingsMenu extends Window {
         Button addonsButton = new TextButton("Add-ons", skin);
         add(addonsButton);
         row();
-        Button sfxButton = new TextButton("SFX", skin);
+        Button sfxButton = new TextButton("Volume", skin);
         add(sfxButton);
+        row();
+        Button changeNameButton = new TextButton("Change Player Name", skin);
+        add(changeNameButton);
         row();
         Button backButton = new TextButton("Back", skin);
         add(backButton);
@@ -43,18 +46,25 @@ public class SettingsMenu extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                System.out.println("Master Volume\n");
-                Actor volumeActor = new SoundSettings("Adjust SFX", skin, settingsScreen, stage, myGDxTest);
+                Actor volumeActor = new SoundSettings("Volume", skin, settingsScreen, stage, myGDxTest);
                 stage.addActor(volumeActor);
+            }
+        });
+        changeNameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                Actor nameChangeWindow = new NameChangeWindow("Enter player name", skin, settingsScreen, stage, myGDxTest);
+                stage.addActor(nameChangeWindow);
             }
         });
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                System.out.println("Back Button\n");
                 //((MyGDxTest) Gdx.app.getApplicationListener()).setScreen(new TitleScreen(game,gameLoop));
                 myGDxTest.setScreen(myGDxTest.titleScreen);
+                StartMenu.setMainMenuButtonsVisible(true);
             }
         });
     }
