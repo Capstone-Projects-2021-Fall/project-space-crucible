@@ -206,6 +206,9 @@ public class MasterServer implements Listener {
 
             //This method will run when a client disconnects from the server, remove the character from the game
             public void disconnected(Connection c){
+                if(serversConnected.containsValue(c.getID())){
+                    serversConnected.values().removeIf(v -> v.equals(c.getID()));
+                }
             }
         });
         try {
