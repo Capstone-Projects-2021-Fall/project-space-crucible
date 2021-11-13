@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -27,6 +28,8 @@ import core.server.Network.ServerDetails;
 import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
+
+import java.util.ArrayList;
 
 public class GameScreen implements Screen {
 
@@ -65,6 +68,7 @@ public class GameScreen implements Screen {
     boolean remove = false;
     int ping;
     public int updatePing = 0;
+    ArrayList<Button> players = new ArrayList<>();
 
     public GameScreen(Thread gameLoop, boolean isSinglePlayer, MyGDxTest myGdxTest) {
         this.gameLoop = gameLoop;
@@ -159,13 +163,17 @@ public class GameScreen implements Screen {
                 lobbyStage.getBatch().draw(WadFuncs.LOBBYSCREEN, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
                 int x = 100;
                 int y = 400;
-                for (int element : clientData.idToPlayerNum) {
-                    if (element == -1) {continue;} //Skip dummy
-                    String clientId = "Player " + clientData.idToPlayerNum.indexOf(element);
-                    TextButton player = new TextButton(clientId, uiSkin);
-                    player.setBounds(x, y, 80, 50);
-                    lobbyStage.addActor(player);
-                    y -= 50;
+
+                if (clientData.idToPlayerNum.size() - 1 > players.size()) {
+                    for (int element : clientData.idToPlayerNum) {
+                        if (element == -1) {continue;} //Skip dummy
+                        String clientId = "Player " + clientData.idToPlayerNum.indexOf(element);
+                        Button player = new TextButton(clientId, uiSkin);
+                        player.setBounds(x, y, 80, 50);
+                        lobbyStage.addActor(player);
+                        y -= 50;
+                        players.add(player);
+                    }
                 }
                 if (serverDetails.lobbyCode != null && !remove) {
                     if (client.getGameClient().getID() == 1) {
@@ -279,6 +287,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
+        lobbyStage.dispose();
         SoundFuncs.stopMIDI();
         try {GameLogic.stop();} catch (NullPointerException ignored){}
     }
