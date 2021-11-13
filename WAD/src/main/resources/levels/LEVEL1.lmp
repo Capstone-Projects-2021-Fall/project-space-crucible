@@ -5634,7 +5634,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -5649,7 +5649,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -5664,7 +5664,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -5679,7 +5679,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -5694,7 +5694,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6474,7 +6474,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6489,7 +6489,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6579,7 +6579,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6594,7 +6594,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6609,7 +6609,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6624,7 +6624,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6639,7 +6639,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6654,7 +6654,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6669,7 +6669,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6684,7 +6684,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6699,7 +6699,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6714,7 +6714,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6729,7 +6729,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6744,7 +6744,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6759,7 +6759,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6774,7 +6774,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6789,7 +6789,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6804,7 +6804,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6819,7 +6819,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6834,7 +6834,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6849,7 +6849,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6864,7 +6864,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6879,7 +6879,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6894,7 +6894,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6909,7 +6909,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6924,7 +6924,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6939,7 +6939,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6954,7 +6954,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6969,7 +6969,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6984,7 +6984,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -6999,7 +6999,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7014,7 +7014,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7029,7 +7029,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7044,7 +7044,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7059,7 +7059,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7074,7 +7074,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7089,7 +7089,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7104,7 +7104,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7119,7 +7119,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7134,7 +7134,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7149,7 +7149,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7164,7 +7164,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7179,7 +7179,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7194,7 +7194,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7209,7 +7209,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7224,7 +7224,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7239,7 +7239,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -7254,7 +7254,7 @@ light = 255
 effect = 2
 arg1 = 10
 arg2 = 0
-repeat = false
+repeat = true
 tag = 0
 layer = 0
 bridge = -1
@@ -8204,6 +8204,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 1
+layer = 0
 }
 
 object {
@@ -8220,6 +8221,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8236,6 +8238,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8252,6 +8255,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8268,6 +8272,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8284,6 +8289,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8298,8 +8304,9 @@ skill2 = true
 skill3 = true
 skill4 = true
 skill5 = true
-ambush = false
+ambush = true
 tag = 0
+layer = 0
 }
 
 object {
@@ -8314,8 +8321,9 @@ skill2 = true
 skill3 = true
 skill4 = true
 skill5 = true
-ambush = false
+ambush = true
 tag = 0
+layer = 0
 }
 
 object {
@@ -8330,8 +8338,9 @@ skill2 = true
 skill3 = true
 skill4 = true
 skill5 = true
-ambush = false
+ambush = true
 tag = 0
+layer = 0
 }
 
 object {
@@ -8348,6 +8357,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8364,6 +8374,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8378,8 +8389,9 @@ skill2 = true
 skill3 = true
 skill4 = true
 skill5 = true
-ambush = false
+ambush = true
 tag = 0
+layer = 0
 }
 
 object {
@@ -8394,8 +8406,9 @@ skill2 = true
 skill3 = true
 skill4 = true
 skill5 = true
-ambush = false
+ambush = true
 tag = 0
+layer = 0
 }
 
 object {
@@ -8412,6 +8425,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8428,6 +8442,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8444,6 +8459,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8458,8 +8474,9 @@ skill2 = false
 skill3 = true
 skill4 = true
 skill5 = true
-ambush = false
+ambush = true
 tag = 0
+layer = 0
 }
 
 object {
@@ -8471,11 +8488,12 @@ single = true
 coop = true
 skill1 = false
 skill2 = false
-skill3 = false
+skill3 = true
 skill4 = true
 skill5 = true
-ambush = false
+ambush = true
 tag = 0
+layer = 0
 }
 
 object {
@@ -8490,8 +8508,9 @@ skill2 = false
 skill3 = true
 skill4 = true
 skill5 = true
-ambush = false
+ambush = true
 tag = 0
+layer = 0
 }
 
 object {
@@ -8508,6 +8527,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8524,6 +8544,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8540,6 +8561,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8556,6 +8578,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8572,6 +8595,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8588,6 +8612,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8604,6 +8629,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8620,6 +8646,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8636,6 +8663,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 0
+layer = 0
 }
 
 object {
@@ -8652,6 +8680,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 2
+layer = 0
 }
 
 object {
@@ -8668,6 +8697,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 3
+layer = 0
 }
 
 object {
@@ -8684,6 +8714,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 4
+layer = 0
 }
 
 object {
@@ -8700,6 +8731,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 5
+layer = 0
 }
 
 object {
@@ -8716,6 +8748,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 6
+layer = 0
 }
 
 object {
@@ -8732,6 +8765,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 7
+layer = 0
 }
 
 object {
@@ -8748,6 +8782,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 8
+layer = 0
 }
 
 object {
@@ -8764,6 +8799,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 9
+layer = 0
 }
 
 object {
@@ -8780,6 +8816,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 10
+layer = 0
 }
 
 object {
@@ -8796,6 +8833,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 11
+layer = 0
 }
 
 object {
@@ -8812,6 +8850,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 12
+layer = 0
 }
 
 object {
@@ -8828,6 +8867,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 13
+layer = 0
 }
 
 object {
@@ -8844,6 +8884,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 14
+layer = 0
 }
 
 object {
@@ -8860,6 +8901,7 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 15
+layer = 0
 }
 
 object {
@@ -8876,5 +8918,6 @@ skill4 = true
 skill5 = true
 ambush = false
 tag = 16
+layer = 0
 }
 

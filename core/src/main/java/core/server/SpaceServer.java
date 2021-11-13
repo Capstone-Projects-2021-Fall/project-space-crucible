@@ -206,6 +206,8 @@ public class SpaceServer implements Listener {
                         openLobby.tcpPort = tcpPort;
                         serverClient.sendTCP(openLobby);
                     }
+                    GameLogic.getPlayer(idToPlayerNum.get(c.getID()))
+                            .setSpeed(GameLogic.getPlayer(idToPlayerNum.get(c.getID())).getSpeed() / 40);
                     //clientData.idToPlayerNum = idToPlayerNum;
                     server.sendToAllTCP(clientData);
                     packetsSent += server.getConnections().size();

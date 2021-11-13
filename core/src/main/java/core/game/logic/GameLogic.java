@@ -11,6 +11,7 @@ import com.esotericsoftware.kryonet.Server;
 import core.game.entities.BaseMonster;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
+import core.game.entities.actions.A_Chase;
 import core.game.logic.tileactions.TileAction;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
@@ -24,6 +25,7 @@ import core.server.Network.RenderData;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameLogic {
 
@@ -90,9 +92,35 @@ public class GameLogic {
         for (Entity e : GameLogic.entityList) {
             e.decrementTics();
 
-            //Check ticCounter because Concurrency error might occur if player shoots on first tic.
             if (e instanceof PlayerPawn) {
-                ((PlayerPawn) e).movementUpdate();
+                //If PlayerPawn is being controlled by a connected player
+                if (isSinglePlayer || SpaceServer.connected.contains(SpaceServer.idToPlayerNum.get(e.getTag()))) {
+                    ((PlayerPawn) e).movementUpdate();
+                } else {
+                    //Set player to chase closest enemy
+                    if (((PlayerPawn) e).botTarget == null || ((PlayerPawn) e).botTarget.getHealth() < 1) {
+                        setPlayerBotTarget((PlayerPawn) e);
+                    }
+
+                    if (e.getHealth() > 0) {
+
+                        Vector2 start = e.getCenter();
+                        Entity target = ((PlayerPawn) e).botTarget;
+
+                        if (CollisionLogic.checkFOVForEntity(start.x, start.y, e.getPos().angle, e, target)
+                            && e.getCurrentStateIndex() < e.getStates()[Entity.MELEE]) {
+                            e.setState(e.getStates()[Entity.MISSILE]);
+                            e.hitScanAttack(e.getPos().angle, 15);
+                            SoundFuncs.playSound("pistol/shoot");
+                            GameLogic.alertMonsters(e);
+                        } else {
+                            e.pursueTarget(target);
+                            if (e.getCurrentStateIndex() == e.getStates()[Entity.IDLE]) {
+                                e.setState(e.getStates()[Entity.WALK]);
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -290,6 +318,35 @@ public class GameLogic {
                 e.setState(e.getStates()[Entity.WALK]);
             }
         }
+    }
+
+    private static void setPlayerBotTarget(PlayerPawn p) {
+        Entity newTarget = null;
+        Vector2 targetDistance = null;
+
+        for (Entity t : GameLogic.entityList) {
+            if (t.getHealth() > 0 && t instanceof BaseMonster) {
+                final float startX = p.getPos().x;
+                final float startY = p.getPos().y;
+
+                //Get distance
+                Vector2 distance = new Vector2();
+                distance.x = t.getPos().x - startX;
+                distance.y = t.getPos().y - startY;
+
+                if (newTarget == null) {
+                    newTarget = t;
+                    targetDistance = distance;
+                } else {
+                    if (distance.len() < targetDistance.len()) {
+                        newTarget = t;
+                        targetDistance = distance;
+                    }
+                }
+                System.out.println("NewTarget: " + newTarget.getClass().getName());
+            }
+        }
+        p.botTarget = newTarget;
     }
 }
 

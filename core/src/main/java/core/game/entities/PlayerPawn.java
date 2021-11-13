@@ -19,6 +19,7 @@ public class PlayerPawn extends Entity {
     public float velx = 0;
     public float vely = 0;
     public boolean[] controls = new boolean[5];
+    public Entity botTarget = null;
 
     public PlayerPawn(){}
 
