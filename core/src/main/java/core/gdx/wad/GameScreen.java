@@ -253,8 +253,8 @@ public class GameScreen implements Screen {
                 camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
                 camera.update();
-                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
-//                RenderFuncs.entityDraw(batch, renderData.entityList);
+                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, renderData.entityList, getPlayer(playerNumber));
+                //RenderFuncs.entityDraw(batch, renderData.entityList);
                 if(GameLogic.getPlayer(playerNumber).getHealth()>0){
                     font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
                             GameLogic.getPlayer(playerNumber).getPos().x,
@@ -417,8 +417,7 @@ public class GameScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("exit");
                 client.getGameClient().close();
-                client.getMasterClient().close();
-                myGDxTest.setScreen(new TitleScreen(myGDxTest, myGDxTest.gameLoop));
+                myGDxTest.setScreen(myGDxTest.titleScreen);
             }
         });
     }

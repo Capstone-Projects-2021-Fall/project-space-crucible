@@ -254,7 +254,7 @@ public class SpaceServer implements Listener {
                         gameStartedByHost = false;
                         serverClient.sendTCP(openLobby);
                         //Stop the GameLogic and restart the thread so when a new lobby starts everything gets reset
-//                        GameLogic.stop();
+                        try {GameLogic.stop();} catch (NullPointerException ignored){}
                         createGameLoopThread();
                     } else {
                         GameLogic.getPlayer(idToPlayerNum.get(c.getID()))

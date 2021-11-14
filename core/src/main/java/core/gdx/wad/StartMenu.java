@@ -75,6 +75,8 @@ public class StartMenu extends Actor{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                setMainMenuButtonsVisible(false);
+                setCoopButtonsVisible(true);
                 GameScreen gameScreen= new GameScreen(null, false, myGDxTest);
                 client = new SpaceClient(gameScreen, startMenu);
                 if(client.getMasterClient() == null) {
@@ -85,9 +87,6 @@ public class StartMenu extends Actor{
                     return;
                 }
                 gameScreen.client = client;
-
-                setCoopButtonsVisible(true);
-                setMainMenuButtonsVisible(false);
 
                 backButton.button.addListener(new ClickListener(){
                     public void clicked(InputEvent event, float x, float y) {
