@@ -75,6 +75,12 @@ public class StartMenu extends Actor{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if(NameChangeWindow.playerName.length() == 0){
+                    PopupWindow error = new PopupWindow("No Username Found!", skin, "Go to settings and create a username");
+                    titleScreen.showPopup(error);
+                    error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
+                    return;
+                }
                 setMainMenuButtonsVisible(false);
                 setCoopButtonsVisible(true);
                 GameScreen gameScreen= new GameScreen(null, false, myGDxTest);
@@ -100,6 +106,8 @@ public class StartMenu extends Actor{
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
                         client.makeLobby();
+                        setCoopButtonsVisible(false);
+                        setMainMenuButtonsVisible(true);
                     }
                 });
                 joinLobbyButton.button.addListener(new ClickListener(){
