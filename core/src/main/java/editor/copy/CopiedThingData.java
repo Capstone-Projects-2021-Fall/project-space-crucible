@@ -9,9 +9,10 @@ public class CopiedThingData {
     public boolean[] skill;
     public boolean ambush;
     public int tag;
+    public int layer;
 
     public CopiedThingData(int type, float angle, boolean singleplayer,
-                           boolean cooperative, boolean[] skill, boolean ambush, int tag) {
+                           boolean cooperative, boolean[] skill, boolean ambush, int tag, int layer) {
         this.type = type;
         this.angle = angle;
         this.singleplayer = singleplayer;
@@ -19,5 +20,6 @@ public class CopiedThingData {
         this.skill = skill;
         this.ambush = ambush;
         this.tag = tag;
+        this.layer = layer;
     }
 }

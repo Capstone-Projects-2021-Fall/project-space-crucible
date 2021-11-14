@@ -19,11 +19,12 @@ public class PlayerPawn extends Entity {
     public float velx = 0;
     public float vely = 0;
     public boolean[] controls = new boolean[5];
+    public Entity botTarget = null;
 
     public PlayerPawn(){}
 
-    public PlayerPawn(String name, int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags, String[] sounds) {
-        super(name, health, pos, speed, width, height, states, tag, SOLID);
+    public PlayerPawn(String name, int health, Position pos, int speed, int width, int height, Integer[] states, int tag, long flags, String[] sounds, int layer) {
+        super(name, health, pos, speed, width, height, states, tag, SOLID, layer);
         this.sounds = sounds;
     }
 
@@ -86,6 +87,7 @@ public class PlayerPawn extends Entity {
                 setState(getStates()[Entity.MISSILE]);
                 hitScanAttack(getPos().angle, 15);
                 SoundFuncs.playSound("pistol/shoot");
+                GameLogic.alertMonsters(this);
             } else if (getRemainingStateTics() == -1) {
 
                 if (GameLogic.isSinglePlayer) {
@@ -98,8 +100,8 @@ public class PlayerPawn extends Entity {
                     for (LevelObject lo : GameLogic.currentLevel.getObjects()) {
 
                         if (lo.type == 0 && lo.tag == tag) {
-                            GameLogic.newEntityQueue.addLast(GameLogic.mapIDTable.get(0)
-                                    .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), tag));
+                            GameLogic.newEntityQueue.add(GameLogic.mapIDTable.get(0)
+                                    .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), tag, lo.layer, false));
                             break;
                         }
                     }

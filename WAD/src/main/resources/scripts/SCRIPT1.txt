@@ -1,0 +1,5 @@
+InstantDamage(15, 0)
+delay(20)
+InstantDamage(15, 0)
+delay(20)
+InstantDamage(15, 0)

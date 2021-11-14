@@ -2,10 +2,11 @@ package core.game.logic;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Queue;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
+import core.game.entities.BaseMonster;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.game.logic.tileactions.TileAction;
@@ -20,25 +21,37 @@ import net.mtrop.doom.WadFile;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameLogic {
 
     private static Timer gameTimer;
     public static Boolean isSinglePlayer = true;
+
+    //Entities
     public static ArrayList<Entity> entityList = new ArrayList<>();
-    final public static Queue<Entity> newEntityQueue = new Queue<>();
-    final public static Queue<Entity> deleteEntityQueue = new Queue<>();
+    final public static Queue<Entity> newEntityQueue = new LinkedList<>();
+    final public static Queue<Entity> deleteEntityQueue = new LinkedList<>();
     final public static LinkedList<EntityState> stateList = new LinkedList<>();
     final public static Map<String, EntitySpawner> entityTable = new HashMap<>();
+
+    //Level Data
     final public static Map<Integer, EntitySpawner> mapIDTable = new HashMap<>();
     final public static Map<Integer, LevelData> levels = new HashMap<>();
     final public static ArrayList<TileAction> effectList = new ArrayList<>();
     public static LevelData currentLevel = null;
+    static LevelData nextLevel = null;
+    public static boolean switchingLevels = false;
+
+    //Scripts
+    final public static Map<Integer, Queue<ScriptCommand>> scripts = new HashMap<>();
+    final public static LinkedList<LevelScript> runningScripts = new LinkedList<>();
+    final public static Queue<LevelScript> newScriptQueue = new LinkedList<>();
+    final public static Queue<LevelScript> deleteScriptQueue = new LinkedList<>();
+
     public static Server server = null;
     public static SpaceServer spaceServer = null;
     static boolean goingToNextLevel = false;
-    static LevelData nextLevel = null;
-    public static boolean switchingLevels = false;
     public static int ticCounter = 0;
     public static int difficulty = 2;
 
@@ -86,19 +99,75 @@ public class GameLogic {
         for (Entity e : GameLogic.entityList) {
             e.decrementTics();
 
-            //Check ticCounter because Concurrency error might occur if player shoots on first tic.
             if (e instanceof PlayerPawn) {
-                ((PlayerPawn) e).movementUpdate();
+                //If PlayerPawn is being controlled by a connected player
+                if (isSinglePlayer || SpaceServer.connected.contains(SpaceServer.idToPlayerNum.get(e.getTag()))) {
+                    ((PlayerPawn) e).movementUpdate();
+                } else {
+                    if (e.getHealth() <= 0) {continue;}
+                    //Set player to chase closest enemy or player (bot only attacks monsters)
+                    setPlayerBotTarget((PlayerPawn) e);
+
+                    if (((PlayerPawn) e).botTarget == null) {
+                        e.setState(Entity.IDLE);
+                    }
+
+                    try {
+
+                        Vector2 start = e.getCenter();
+                        Entity target = ((PlayerPawn) e).botTarget;
+
+                        Vector2 distance = new Vector2();
+                        distance.x = target.getPos().x - e.getPos().x;
+                        distance.y = target.getPos().y - e.getPos().y;
+
+                        if ((CollisionLogic.checkFOVForEntity(start.x, start.y, e.getPos().angle, e, target)
+                                || distance.len() < 64f)
+                                && e.getCurrentStateIndex() <= e.getStates()[Entity.MELEE]
+                                && !(target instanceof PlayerPawn)) {
+
+
+                            e.getPos().angle = distance.angleDeg();
+                            e.setState(e.getStates()[Entity.MISSILE]);
+                            e.hitScanAttack(e.getPos().angle, 15);
+                            SoundFuncs.playSound("pistol/shoot");
+                            GameLogic.alertMonsters(e);
+                        } else {
+                            if (!(((PlayerPawn) e).botTarget instanceof PlayerPawn && distance.len() < 128f)) {
+                                e.pursueTarget(target);
+
+                                if (e.getCurrentStateIndex() == e.getStates()[Entity.IDLE]) {
+                                    e.setState(e.getStates()[Entity.WALK]);
+                                }
+                            }
+                        }
+                    } catch (NullPointerException ignored){}
+                }
             }
         }
 
-        //Now add and remove all queued new entities
+        //Advance any running level scripts
+        for (LevelScript ls : runningScripts) {
+            if (ls.run()) {
+                deleteScriptQueue.add(ls);
+            }
+        }
+
+        //Now add and remove all queued entities and scripts
         while (!newEntityQueue.isEmpty()) {
-            entityList.add(newEntityQueue.removeFirst());
+            entityList.add(newEntityQueue.remove());
         }
 
         while (!deleteEntityQueue.isEmpty()) {
-            entityList.remove(deleteEntityQueue.removeFirst());
+            entityList.remove(deleteEntityQueue.remove());
+        }
+
+        while (!newScriptQueue.isEmpty()) {
+            runningScripts.add(newScriptQueue.remove());
+        }
+
+        while (!deleteScriptQueue.isEmpty()) {
+            runningScripts.remove(deleteScriptQueue.remove());
         }
 
         if(!isSinglePlayer){
@@ -117,12 +186,14 @@ public class GameLogic {
             long endTime = new Date().getTime();
             long subtract = MathUtils.clamp(endTime - startTime, 0, Entity.TIC);
 
-            gameTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    gameTick();
-                }
-            }, Entity.TIC - subtract);
+            try {
+                gameTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        gameTick();
+                    }
+                }, Entity.TIC - subtract);
+            } catch (IllegalStateException ignored){}
         } else {
             switchingLevels = true;
             if (!isSinglePlayer) {
@@ -166,7 +237,7 @@ public class GameLogic {
 
             try {
                 entityList.add(GameLogic.mapIDTable.get(obj.type)
-                        .spawnEntity(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag));
+                        .spawnEntity(new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag, obj.layer, obj.ambush));
             } catch (Exception e) {
                 System.out.println("Unknown Entity with map ID " + obj.type);
             }
@@ -262,6 +333,59 @@ public class GameLogic {
         soundData.sound = name;
         server.sendToAllTCP(soundData);
         spaceServer.packetsSent += server.getConnections().size();
+    }
+
+    public static void alertMonsters(Entity soundSource) {
+
+        for (Entity e : entityList) {
+
+            Vector2 distance = new Vector2();
+            distance.x = soundSource.getPos().x - e.getPos().x;
+            distance.y = soundSource.getPos().y - e.getPos().y;
+
+            //Alert monster IF...
+
+            if (e.getStates()[Entity.WALK] != -1        //There is a walk animation
+                && e instanceof BaseMonster             //And the entity is a monster
+                && ((BaseMonster) e).getTarget() == -1  //And is not busy
+                && distance.len() < 1024f               //And is in hearing range
+                && !((BaseMonster) e).ambush) {         //And is not in ambush mode
+                ((BaseMonster) e).setTarget(GameLogic.entityList.indexOf(soundSource));
+                SoundFuncs.playSound(((BaseMonster) e).getSound(BaseMonster.SEESOUND));
+                e.setState(e.getStates()[Entity.WALK]);
+            }
+        }
+    }
+
+    private static void setPlayerBotTarget(PlayerPawn p) {
+        Entity newTarget = null;
+        Vector2 targetDistance = null;
+
+        for (Entity t : GameLogic.entityList) {
+            if (t.getHealth() > 0 && (t instanceof BaseMonster
+                    || (t instanceof PlayerPawn && !t.equals(p)))) {
+                final float startX = p.getPos().x;
+                final float startY = p.getPos().y;
+
+                //Get distance
+                Vector2 distance = new Vector2();
+                distance.x = t.getPos().x - startX;
+                distance.y = t.getPos().y - startY;
+
+                if (newTarget == null) {
+                    newTarget = t;
+                    targetDistance = distance;
+                } else {
+                    if (distance.len() < targetDistance.len()
+                        //Don't follow other player if you're closer than 128
+                        && !(t instanceof PlayerPawn && distance.len() < 128f)) {
+                        newTarget = t;
+                        targetDistance = distance;
+                    }
+                }
+            }
+        }
+        p.botTarget = newTarget;
     }
 }
 

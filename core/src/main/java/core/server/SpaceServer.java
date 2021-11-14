@@ -1,7 +1,10 @@
 package core.server;
 
 import com.badlogic.gdx.Gdx;
-import com.esotericsoftware.kryonet.*;
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.kryonet.Server;
 import core.game.entities.Entity;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
@@ -102,6 +105,7 @@ public class SpaceServer implements Listener {
                 if(packetData instanceof InputData){
                     InputData input = (InputData) packetData;
                     connection.playerInput = input;
+
                     if(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())) != null) {
                         try {
                             fileWriter.write(duration + ": Received input data from Player " + c.getID() + ": " + Arrays.toString(input.controls) + ", angle: " + input.angle + "\n");
@@ -197,8 +201,8 @@ public class SpaceServer implements Listener {
                         if (gameStartedByHost) {
                             for (LevelObject lo : GameLogic.currentLevel.getObjects()) {
                                 if (lo.type == 0 && lo.tag == idToPlayerNum.indexOf(c.getID())) {
-                                    GameLogic.newEntityQueue.addLast(GameLogic.mapIDTable.get(0)
-                                            .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), lo.tag));
+                                    GameLogic.newEntityQueue.add(GameLogic.mapIDTable.get(0)
+                                            .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), lo.tag, lo.layer, lo.ambush));
                                     break;
                                 }
                             }
@@ -235,6 +239,8 @@ public class SpaceServer implements Listener {
                     clientData.connected = connected;
                     idToPlayerNum.remove((Object) connectionID);
                     if(connected.size() == 0){
+                        idToPlayerNum.clear();
+                        idToPlayerNum.add(-1);
                         try {
                             fileWriter.write(duration +": All players left, the server is now empty and ready to be reused\n");
                             fileWriter.flush();
@@ -250,12 +256,14 @@ public class SpaceServer implements Listener {
                         //Stop the GameLogic and restart the thread so when a new lobby starts everything gets reset
 //                        GameLogic.stop();
                         createGameLoopThread();
+                    } else {
+                        GameLogic.getPlayer(idToPlayerNum.get(c.getID()))
+                                .setSpeed(GameLogic.getPlayer(idToPlayerNum.get(c.getID())).getSpeed() / 40);
+                        //clientData.idToPlayerNum = idToPlayerNum;
+                        server.sendToAllTCP(clientData);
+                        packetsSent += server.getConnections().size();
+                        System.out.println("Client disconnected from game server! " + connectionID);
                     }
-                    //clientData.idToPlayerNum = idToPlayerNum;
-                    server.sendToAllTCP(clientData);
-                    packetsSent += server.getConnections().size();
-
-                    System.out.println("Client disconnected from game server! " + connectionID);
                 } else if (rconConnected.contains(connectionID)) {
                     rconConnected.remove(connectionID);
                 }

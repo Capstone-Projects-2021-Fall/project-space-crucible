@@ -34,6 +34,10 @@ addFiles()
 dir = File("../resources/levels")
 addFiles()
 
+//Read scripts
+dir = File("../resources/scripts")
+addFiles()
+
 //Read music
 dir = File("../resources/midis")
 wad.addEntry(WadEntry.create("M_START"))

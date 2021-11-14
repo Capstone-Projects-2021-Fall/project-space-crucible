@@ -1,5 +1,6 @@
-package editor.windows;
+package editor.scene2d.windows;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -8,10 +9,10 @@ import core.game.logic.GameLogic;
 import core.wad.funcs.WadFuncs;
 import editor.launch.EditorScreen;
 import net.mtrop.doom.WadFile;
+import org.lwjgl.system.CallbackI;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Objects;
 
 public class FileChooserWindow extends Window {
@@ -108,14 +109,14 @@ public class FileChooserWindow extends Window {
     public FileChooserWindow(String title, Skin skin, EditorScreen editor) {
         super(title, skin);
         this.editor = editor;
-        currentPath = System.getProperty("user.home");
+        currentPath = Gdx.files.internal("assets").file().getAbsolutePath();
         currentDir = new File(currentPath);
         resources = new Array<>();
 
         setModal(true);
         setResizable(true);
 
-        currentPathLabel = new Label(currentPath, skin);
+        currentPathLabel = new Label(currentDir.getName(), skin);
         add(currentPathLabel);
         add(new Label("resources", skin));
         row();
@@ -225,6 +226,12 @@ public class FileChooserWindow extends Window {
         pack();
         updateList();
         updateResources();
+
+        fileList.setSelected("resource.wad");
+        if (fileList.getSelected().equals("resource.wad")) {
+            selectFile();
+            addResource();
+        }
     }
 
     private void updateResources() {
@@ -247,6 +254,8 @@ public class FileChooserWindow extends Window {
         Array<String> listMembers = new Array<>();
         Array<String> directoryNames = new Array<>();
         Array<String> fileNames = new Array<>();
+
+        currentPathLabel.setText(currentDir.getName());
 
         listMembers.add("..");
 

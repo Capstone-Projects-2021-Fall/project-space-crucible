@@ -11,11 +11,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
-import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
 import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelData;
@@ -27,10 +28,13 @@ import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import editor.copy.CopiedThingData;
 import editor.copy.CopiedTileData;
-import editor.windows.EditThingWindow;
-import editor.windows.EditTileWindow;
-import editor.windows.FileChooserWindow;
-import editor.windows.LevelChooserWindow;
+import editor.scene2d.actors.EditorHUDActor;
+import editor.scene2d.actors.MIDINameField;
+import editor.scene2d.actors.NumberField;
+import editor.scene2d.windows.EditThingWindow;
+import editor.scene2d.windows.EditTileWindow;
+import editor.scene2d.windows.FileChooserWindow;
+import editor.scene2d.windows.LevelChooserWindow;
 import editor.write.LevelWriter;
 import net.mtrop.doom.WadFile;
 
@@ -76,6 +80,8 @@ public class EditorScreen implements Screen {
     //UI Stuff
     public Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
+    private EditorHUDActor hud = new EditorHUDActor(new TextField("", skin), new MIDINameField("", skin),
+            new CheckBox("Layer view", skin), new NumberField("0", skin));
 
     public EditorScreen() {
 
@@ -105,8 +111,12 @@ public class EditorScreen implements Screen {
         if (level != null) {
             batch.setProjectionMatrix(camera.combined);
             batch.begin();
-            RenderFuncs.worldDraw(batch, level.getTiles(), true, fullbright);
-            RenderFuncs.entityDraw(batch, GameLogic.entityList);
+            if (hud.getSingleLayer().isChecked()) {
+                RenderFuncs.worldDraw(batch, level.getTiles(), true, fullbright, GameLogic.entityList, hud.getLayer().getInteger());
+            } else {
+                RenderFuncs.worldDraw(batch, level.getTiles(), true, fullbright, GameLogic.entityList, null);
+            }
+            //RenderFuncs.entityDraw(batch, GameLogic.entityList);
             batch.end();
 
             sr.setProjectionMatrix(camera.combined);
@@ -195,6 +205,9 @@ public class EditorScreen implements Screen {
         if (isCtrlPressed()) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
 
+                level.name = hud.getLevelName().getText();
+                level.midi = hud.getMusic().getText();
+
                 try {
                     if (file == null && soloFile != null) {
                         LevelWriter.write(soloFile, level);
@@ -223,18 +236,20 @@ public class EditorScreen implements Screen {
                     if (e.getBounds().contains(x, y)) {
                         LevelObject obj = level.getObjects().get(GameLogic.entityList.indexOf(e));
                         copiedThingData = new CopiedThingData(obj.type, obj.angle, obj.singleplayer,
-                                obj.cooperative, obj.skill, obj.ambush, obj.tag);
+                                obj.cooperative, obj.skill, obj.ambush, obj.tag, obj.layer);
                         return;
                     }
                 }
 
-                LevelTile tile = level.getTile(tilex, tiley);
+                LevelTile tile = level.getTopTile(tilex, tiley);
                 if (tile != null) {
                     copiedTileData = new CopiedTileData(tile.solid, tile.graphicname, tile.light,
-                            tile.effect, tile.arg1, tile.arg2, tile.repeat, tile.tag, resources);
+                            tile.effect, tile.arg1, tile.arg2, tile.repeat, tile.tag,
+                            tile.pos.layer, tile.bridge, resources);
                 }
-            } else  if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
-                if (isShiftPressed()) {
+            } else if (Gdx.input.isKeyPressed(Input.Keys.V)) {
+                //Don't allow holding paste for things, but for tiles it's ok
+                if (isShiftPressed() && Gdx.input.isKeyJustPressed(Input.Keys.V)) {
                     if (copiedThingData == null) {
                         return;
                     }
@@ -274,12 +289,13 @@ public class EditorScreen implements Screen {
     //Show menu for editing level tiles
     private void editTilePrompt(int tilex, int tiley) {
 
-        LevelTile tile = level.getTile(tilex, tiley);
+        LevelTile tile = hud.getSingleLayer().isChecked() ?
+                level.getTile(tilex, tiley, hud.getLayer().getInteger()) : level.getTopTile(tilex, tiley) ;
 
         if (tile == null) {
-            tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley),
+            tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley, hud.getLayer().getInteger()),
                     false, "TAN1", 0, 0,
-                    0, 0, false, 0);
+                    0, 0, false, 0, -1);
             level.getTiles().add(tile);
         }
 
@@ -375,6 +391,9 @@ public class EditorScreen implements Screen {
             }
         });
         GameLogic.loadEntities(level, true);
+        hud.getLevelName().setText(level.name);
+        hud.getMusic().setText(level.midi);
+        stage.addActor(hud);
     }
 
     public void loadNewLevel(String name, Integer level) {
@@ -396,7 +415,8 @@ public class EditorScreen implements Screen {
 
     private void pasteTile(int tilex, int tiley) {
 
-        LevelTile tile = level.getTile(tilex, tiley);
+        LevelTile tile = hud.getSingleLayer().isChecked() ?
+                level.getTile(tilex, tiley, hud.getLayer().getInteger()) : level.getTopTile(tilex, tiley) ;
 
         if (tile != null) {
             tile.graphicname = copiedTileData.graphicname;
@@ -407,10 +427,12 @@ public class EditorScreen implements Screen {
             tile.arg2 = copiedTileData.arg2;
             tile.repeat = copiedTileData.repeat;
             tile.tag = copiedTileData.tag;
+            tile.pos.layer = copiedTileData.layer;
+            tile.bridge = copiedTileData.bridge;
         } else {
-            tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley), copiedTileData.solid,
+            tile = new LevelTile(new LevelTile.TilePosition(tilex, tiley, copiedTileData.layer), copiedTileData.solid,
                     copiedTileData.graphicname, copiedTileData.light, copiedTileData.effect, copiedTileData.arg1,
-                    copiedTileData.arg2, copiedTileData.repeat, copiedTileData.tag);
+                    copiedTileData.arg2, copiedTileData.repeat, copiedTileData.tag, copiedTileData.bridge);
             level.getTiles().add(tile);
         }
     }
@@ -418,7 +440,7 @@ public class EditorScreen implements Screen {
     private void pasteThing(float x, float y) {
         level.getObjects().add(new LevelObject(copiedThingData.type, x, y, copiedThingData.angle,
                 copiedThingData.singleplayer, copiedThingData.cooperative, copiedThingData.skill,
-                copiedThingData.ambush, copiedThingData.tag));
+                copiedThingData.ambush, copiedThingData.tag, copiedThingData.layer));
         GameLogic.loadEntities(level, true);
     }
 
@@ -473,7 +495,7 @@ public class EditorScreen implements Screen {
             }
         }
 
-        LevelTile tile = level.getTile(tilex, tiley);
+        LevelTile tile = level.getTopTile(tilex, tiley);
         level.getTiles().remove(tile);
     }
 
@@ -492,11 +514,11 @@ public class EditorScreen implements Screen {
 
         if (isShiftPressed()) {
             LevelObject newObj = new LevelObject(0, x, y, 0, true, true,
-                    new boolean[]{true, true, true, true, true}, false, 0);
+                    new boolean[]{true, true, true, true, true}, false, 0, 0);
             level.getObjects().add(newObj);
 
             Entity newThing = GameLogic.mapIDTable.get(0)
-                    .spawnEntity(new Entity.Position(x, y, 0), 0);
+                    .spawnEntity(new Entity.Position(x, y, 0), 0, 0, newObj.ambush);
             GameLogic.entityList.add(newThing);
 
             GameLogic.loadEntities(level, true);
