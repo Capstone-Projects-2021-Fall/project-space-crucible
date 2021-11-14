@@ -30,6 +30,7 @@ import core.server.Network.ClientData;
 import core.server.Network.RenderData;
 import core.server.Network.ServerDetails;
 import core.server.SpaceClient;
+import core.server.SpaceServer;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 
@@ -398,15 +399,22 @@ public class GameScreen implements Screen {
 //                    GameLogic.getPlayer(playerNumber).getPos().x,
 //                    GameLogic.getPlayer(playerNumber).getPos().y);
 //        }
-        for(int i = 0 ; i<20 ; i++){
 
+        if(isSinglePlayer){
+            font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
+                    GameLogic.getPlayer(playerNumber).getPos().x,
+                    GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+10);
+            font.draw(batch,NameChangeWindow.playerName, GameLogic.getPlayer(playerNumber).getPos().x,
+                    GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+25);
+        }else{
+            for(int i = 0; i< SpaceServer.connected.size(); i++){
+                font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber+i).getTag(),
+                        GameLogic.getPlayer(playerNumber+i).getPos().x,
+                        GameLogic.getPlayer(playerNumber+i).getPos().y+GameLogic.getPlayer(playerNumber+i).getHeight()+10);
+                font.draw(batch,NameChangeWindow.playerName, GameLogic.getPlayer(playerNumber+i).getPos().x,
+                        GameLogic.getPlayer(playerNumber+i).getPos().y+GameLogic.getPlayer(playerNumber+i).getHeight()+25);
+            }
         }
-
-        font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
-                GameLogic.getPlayer(playerNumber).getPos().x,
-                GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+10);
-        font.draw(batch,NameChangeWindow.playerName, GameLogic.getPlayer(playerNumber).getPos().x,
-                GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+25);
     }
 
     private void drawMiniMap() {
