@@ -34,6 +34,8 @@ import core.server.SpaceServer;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 
+import java.util.ConcurrentModificationException;
+
 
 public class GameScreen implements Screen {
 
@@ -44,6 +46,7 @@ public class GameScreen implements Screen {
     ClientData clientData = new ClientData();
     ServerDetails serverDetails = new ServerDetails();
     ChatWindow chatWindow;
+    public boolean update = false;
 
     public int playerNumber = 0;
 
@@ -66,10 +69,10 @@ public class GameScreen implements Screen {
     Stage lobbyStage;
     Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
     TextButton play = new TextButton("Start Game", uiSkin);
+    TextButton exitToMenu = new TextButton("Exit Lobby", uiSkin);
     public boolean startGame = false;
     Label lobbyCode;
     boolean remove = false;
-
 
     public GameScreen(Thread gameLoop, boolean isSinglePlayer, MyGDxTest myGdxTest) {
         this.gameLoop = gameLoop;
@@ -80,7 +83,6 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         lobbyStage = new Stage();
         this.isSinglePlayer = isSinglePlayer;
-
     }
 
     @Override
@@ -94,20 +96,23 @@ public class GameScreen implements Screen {
             System.out.println("I am player " + playerNumber);
         }
         if(!isSinglePlayer) {
-            if (playerNumber == 1) {
+            if(!startGame) {
                 Gdx.input.setInputProcessor(lobbyStage);
-                play.setBounds((Gdx.graphics.getWidth() - 100) / 2, 50, 100, 60);
-                lobbyStage.addActor(play);
-                play.addListener(new ClickListener() {
-                    public void clicked(InputEvent event, float x, float y) {
-                        startGame = true;
-                        Network.StartGame startGame = new Network.StartGame();
-                        startGame.startGame = true;
-                        client.getGameClient().sendTCP(startGame);
-                        addChatWindow();
-                        play.removeListener(this);
-                    }
-                });
+                addExitButton();
+                if (playerNumber == 1) {
+                    play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
+                    lobbyStage.addActor(play);
+                    play.addListener(new ClickListener() {
+                        public void clicked(InputEvent event, float x, float y) {
+                            startGame = true;
+                            Network.StartGame startGame = new Network.StartGame();
+                            startGame.startGame = true;
+                            client.getGameClient().sendTCP(startGame);
+                            addChatWindow();
+                            play.removeListener(this);
+                        }
+                    });
+                }
             } else {
                 addChatWindow();
             }
@@ -116,15 +121,19 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
+        if(update){
+            MyGDxTest.loadWADS();
+            update = false;
+        }
         if (GameLogic.switchingLevels || GameLogic.getPlayer(1) == null) {return;}
 
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.begin();
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
+        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        batch.begin();
 
         Gdx.input.setInputProcessor(stage);
         DeadPlayerWindow deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
@@ -151,6 +160,22 @@ public class GameScreen implements Screen {
             camera.position.set(GameLogic.getPlayer(1).getPos().x + GameLogic.getPlayer(1).getWidth() / (float) 2.0,
                     GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight() / (float) 2.0, 0);
             camera.update();
+            try {
+                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, GameLogic.entityList, GameLogic.getPlayer(1));
+                //RenderFuncs.entityDraw(batch, GameLogic.entityList);
+                font.draw(batch, "HP:" + GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
+                font.draw(batch, "Layer:" + GameLogic.getPlayer(playerNumber).currentLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-10);
+                font.draw(batch, "Bridge:" + GameLogic.getPlayer(playerNumber).bridgeLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-20);
+                font.draw(batch, "Player: " + GameLogic.getPlayer(playerNumber).getTag(),
+                        GameLogic.getPlayer(playerNumber).getPos().x,
+                        GameLogic.getPlayer(playerNumber).getPos().y + GameLogic.getPlayer(playerNumber).getHeight() + 10);
+                if (showBoxes) {
+                    showBoxes();
+                }
+            } catch (ConcurrentModificationException cme) {
+                batch.end();
+                return;
+            }
             RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
             drawHealthAndName();
@@ -219,6 +244,11 @@ public class GameScreen implements Screen {
                             GameLogic.getPlayer(playerNumber).getPos().x,
                             GameLogic.getPlayer(playerNumber).getPos().y);
                 }
+                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, renderData.entityList, getPlayer(playerNumber));
+                //RenderFuncs.entityDraw(batch, renderData.entityList);
+
+                font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
+                        getPlayer(playerNumber).getPos().y);
                 font.draw(batch, "Player: " + getPlayer(playerNumber).getTag(),
                         getPlayer(playerNumber).getPos().x,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() + 10);
@@ -229,7 +259,8 @@ public class GameScreen implements Screen {
                 client.getInput(getControls());
                 client.getCameraData(getCameraData());
             }
-            catch (NullPointerException n) {
+            catch (NullPointerException | ConcurrentModificationException e) {
+                batch.end();
                 return;
             }
         }
@@ -265,11 +296,11 @@ public class GameScreen implements Screen {
         //Get the angle where the mouse is pointing to on the screen in relation to where the player is
         //Referenced code - https://stackoverflow.com/questions/16381031/get-cursor-position-in-libgdx
         if (isSinglePlayer) {
-            mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(1).getPos().x;
-            mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(1).getPos().y;
+            mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(1).getPos().x - GameLogic.getPlayer(1).getWidth()/2f;
+            mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight()/2f;
         } else if(renderData.entityList != null && getPlayer(playerNumber) != null) {
-            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(playerNumber).getPos().x;
-            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y;
+            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(playerNumber).getPos().x - GameLogic.getPlayer(1).getWidth()/2f;
+            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y + GameLogic.getPlayer(1).getHeight()/2f;
         }
         mouseInWorld3D.z = 0;
         camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
@@ -282,9 +313,6 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
-//        if (startGame) {
-//            stage.getViewport().update(width, height);
-//        }
     }
 
     @Override
@@ -299,7 +327,6 @@ public class GameScreen implements Screen {
     public void hide() {
         SoundFuncs.stopMIDI();
         try {GameLogic.stop();} catch (NullPointerException ignored){}
-//        System.exit(0);
     }
 
     @Override
@@ -364,6 +391,19 @@ public class GameScreen implements Screen {
         stage.addActor(chatWindow);
         chatWindow.setPosition(camera.viewportWidth,0);
         chatWindow.setSize(chatWindow.getWidth(), chatWindow.getHeight());
+    }
+
+    private void addExitButton(){
+        exitToMenu.setBounds((Gdx.graphics.getWidth() + 250) / 2f, 50, 100, 60);
+        lobbyStage.addActor(exitToMenu);
+        exitToMenu.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("exit");
+                client.getGameClient().close();
+                client.getMasterClient().close();
+                myGDxTest.setScreen(new TitleScreen(myGDxTest, myGDxTest.gameLoop));
+            }
+        });
     }
 
     public void addChatToWindow(Network.ChatMessage chat) {

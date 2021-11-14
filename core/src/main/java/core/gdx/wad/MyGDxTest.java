@@ -81,6 +81,7 @@ public class MyGDxTest extends Game {
 
             //Load prepare all Entity and level logic, open game screen and initiate game loop.
             WadFuncs.loadLevelEffects();
+            WadFuncs.loadScripts(wads);
 
             wads.forEach(w -> {
                 if (w.contains("ENTITIES")) {

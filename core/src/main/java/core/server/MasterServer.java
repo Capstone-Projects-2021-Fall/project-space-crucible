@@ -104,7 +104,7 @@ public class MasterServer implements Listener {
                             server.sendToTCP(hostEntry.masterID, pingLobbyHost);
 
                             validLobby.valid = false;
-                            validLobby.reason = "Lobby requires these WADS:\n" + serverEntry.getFiles().toString() + " \n Server is downloading them in your assets folder\n Go to addons and add them from assets folder";
+                            validLobby.reason = "Lobby requires these WADS:\n" + serverEntry.getFiles().toString() + " \n Server is downloading them in your assets folder\n Wait a few seconds and try to join again!";
                             connection.sendTCP(validLobby);
                             System.out.println("No bueno. 2");
                             return;
@@ -235,10 +235,10 @@ public class MasterServer implements Listener {
     }
 
     public static class ServerEntry {
-        private int port;
-        private ArrayList<String> files;
-        private ArrayList<String> hashes;
-        private String rconPass;
+        private final int port;
+        private final ArrayList<String> files;
+        private final ArrayList<String> hashes;
+        private final String rconPass;
         private final int masterID;
 
         public ServerEntry(int port, ArrayList<String> files, ArrayList<String> hashes, String rconPass, int masterID) {

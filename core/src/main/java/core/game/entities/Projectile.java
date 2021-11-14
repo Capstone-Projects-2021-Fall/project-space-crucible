@@ -2,6 +2,7 @@ package core.game.entities;
 
 import com.badlogic.gdx.math.Rectangle;
 import core.game.logic.CollisionLogic;
+import core.game.logic.GameLogic;
 
 public class Projectile extends Entity {
 
@@ -12,9 +13,15 @@ public class Projectile extends Entity {
 
     //Projectiles have no health or tag.
     public Projectile(String name, Position pos, int speed, int width, int height, Integer[] states, Entity owner, int damage, long flags) {
-        super(name, -1, pos, speed, width, height, states, -1, flags);
+        super(name, -1, pos, speed, width, height, states, -1, flags, owner.currentLayer);
         this.owner = owner;
         this.damage = damage;
+
+        //Projectiles get thrown to the layer of their target
+        if (owner instanceof BaseMonster) {
+            this.bridgeLayer = GameLogic.entityList.get(((BaseMonster) owner).getTarget()).currentLayer;
+            System.out.println("Proj bridge layer: " + this.bridgeLayer);
+        }
     }
 
     public int getDamage() {

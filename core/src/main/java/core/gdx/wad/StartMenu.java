@@ -92,6 +92,7 @@ public class StartMenu extends Actor{
                 backButton.button.addListener(new ClickListener(){
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
+                        client.getMasterClient().close();
                         setCoopButtonsVisible(false);
                         setMainMenuButtonsVisible(true);
                     }
@@ -99,7 +100,6 @@ public class StartMenu extends Actor{
                 createLobbyButton.button.addListener(new ClickListener(){
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
-                        setCoopButtonsVisible(false);
                         client.makeLobby();
                     }
                 });
@@ -139,7 +139,6 @@ public class StartMenu extends Actor{
                                 }
                                 System.out.println("Done waiting.");
                                 if(!client.validLobby.valid) {
-                                    //myGDxTest.setScreen(gameScreen);
                                     System.out.println("Invalid.");
                                     titleScreen.showPopup(new PopupWindow("Invalid Lobby", skin,
                                             client.validLobby.reason));
