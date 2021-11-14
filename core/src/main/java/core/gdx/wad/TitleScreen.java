@@ -88,11 +88,6 @@ public class TitleScreen implements Screen {
 
     @Override
     public void dispose() {
-        skin.dispose();
-        texture.dispose();
-        stage.dispose();
-        batch.dispose();
-        game.dispose();
     }
 
     public void showPopup(PopupWindow invalid_lobby) {

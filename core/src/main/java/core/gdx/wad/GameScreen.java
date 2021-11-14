@@ -92,7 +92,6 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         SoundFuncs.stopMIDI();
-        deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
         if (isSinglePlayer) {
             playerNumber = 1;
             gameLoop.start();
@@ -142,6 +141,8 @@ public class GameScreen implements Screen {
 
         if(isSinglePlayer){
             Gdx.input.setInputProcessor(stage);
+            deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
+
             if(GameLogic.getPlayer(playerNumber).getHealth()<=0){
                 stage.addActor(deadPlayerWindow);
                 deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
@@ -255,19 +256,22 @@ public class GameScreen implements Screen {
                 camera.update();
                 RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, renderData.entityList, getPlayer(playerNumber));
                 //RenderFuncs.entityDraw(batch, renderData.entityList);
-                if(GameLogic.getPlayer(playerNumber).getHealth()>0){
-                    font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
-                            GameLogic.getPlayer(playerNumber).getPos().x,
-                            GameLogic.getPlayer(playerNumber).getPos().y);
+//                font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
+//                        getPlayer(playerNumber).getPos().y);
+                if(getPlayer(playerNumber).getHealth()>0){
+                    font.draw(batch,"HP:" +getPlayer(playerNumber).getHealth(),
+                            getPlayer(playerNumber).getPos().x,
+                            getPlayer(playerNumber).getPos().y);
                 }else{
                     font.draw(batch,"HP: 0",
-                            GameLogic.getPlayer(playerNumber).getPos().x,
-                            GameLogic.getPlayer(playerNumber).getPos().y);
+                            getPlayer(playerNumber).getPos().x,
+                            getPlayer(playerNumber).getPos().y);
                 }
                 font.draw(batch, "Player: " + getPlayer(playerNumber).getTag(),
                         getPlayer(playerNumber).getPos().x,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() + 10);
                 font.draw(batch, "Ping: " + ping, getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y-13);
+
                 if (showBoxes) {
                     showBoxes();
                 }
@@ -341,7 +345,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-        lobbyStage.dispose();
         SoundFuncs.stopMIDI();
         try {GameLogic.stop();} catch (NullPointerException ignored){}
     }
@@ -451,11 +454,20 @@ public class GameScreen implements Screen {
                         levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
                         Color.RED, Color.RED, Color.RED, Color.RED);
             }
-            if(!levelTile.solid && levelTile.pos.x  == (int)GameLogic.getPlayer(playerNumber).getPos().x/LevelTile.TILE_SIZE &&
-                    levelTile.pos.y == (int)GameLogic.getPlayer(playerNumber).getPos().y/LevelTile.TILE_SIZE){
-                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
-                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
-                        Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
+            if(isSinglePlayer) {
+                if (!levelTile.solid && levelTile.pos.x == (int) GameLogic.getPlayer(playerNumber).getPos().x / LevelTile.TILE_SIZE &&
+                        levelTile.pos.y == (int) GameLogic.getPlayer(playerNumber).getPos().y / LevelTile.TILE_SIZE) {
+                    shapeRenderer.rect(levelTile.pos.x * mapSpacing + drawMiniX + camera.viewportWidth / 12,
+                            levelTile.pos.y * mapSpacing + drawMiniY + camera.viewportHeight / 7, miniSquareWidth, miniSquareHeight,
+                            Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
+                }
+            }else{
+                if (!levelTile.solid && levelTile.pos.x == (int) getPlayer(playerNumber).getPos().x / LevelTile.TILE_SIZE &&
+                        levelTile.pos.y == (int) getPlayer(playerNumber).getPos().y / LevelTile.TILE_SIZE) {
+                    shapeRenderer.rect(levelTile.pos.x * mapSpacing + drawMiniX + camera.viewportWidth / 12,
+                            levelTile.pos.y * mapSpacing + drawMiniY + camera.viewportHeight / 7, miniSquareWidth, miniSquareHeight,
+                            Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
+                }
             }
         }
         shapeRenderer.end();

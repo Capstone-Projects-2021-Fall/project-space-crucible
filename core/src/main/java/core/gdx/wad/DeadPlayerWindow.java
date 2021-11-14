@@ -42,6 +42,7 @@ public class DeadPlayerWindow extends Window {
                 super.clicked(event, x, y);
 //                myGDxTest.setScreen(myGDxTest.titleScreen);
 //                StartMenu.setMainMenuButtonsVisible(true);
+                myGDxTest.gameLoop.interrupt();
                 Thread gameLoop = new Thread() {
                     @Override
                     public void run() {
