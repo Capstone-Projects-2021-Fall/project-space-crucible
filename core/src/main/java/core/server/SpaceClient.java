@@ -11,6 +11,7 @@ import com.google.common.hash.Hashing;
 import core.game.logic.GameLogic;
 import core.gdx.wad.GameScreen;
 import core.gdx.wad.MyGDxTest;
+import core.gdx.wad.NameChangeWindow;
 import core.gdx.wad.StartMenu;
 import core.server.Network.*;
 import core.wad.funcs.SoundFuncs;
@@ -148,13 +149,16 @@ public class SpaceClient implements Listener {
     public void createGameClient(int tcpPort) {
         gameClient = new Client(8192, 8192);
         gameClient.start();
+
         //register the packets
         Network.register(gameClient);
 
         gameClient.addListener(new ThreadedListener(new Listener() {
             public void connected(Connection connection) {
                 gameClient.updateReturnTripTime();
-
+                SendPlayerName playerName = new SendPlayerName();
+                playerName.name = NameChangeWindow.playerName;
+                gameClient.sendTCP(playerName);
             }
 
             public void received(Connection connection, Object object) {

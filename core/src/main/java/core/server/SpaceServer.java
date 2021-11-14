@@ -1,5 +1,6 @@
 package core.server;
 
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.*;
 import core.game.entities.Entity;
 import core.game.logic.GameLogic;
@@ -11,7 +12,9 @@ import core.wad.funcs.WadFuncs;
 import core.server.Network.SendPing;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.*;
 
 public class SpaceServer implements Listener {
@@ -22,6 +25,7 @@ public class SpaceServer implements Listener {
     public static String ip = "localhost";
     public static Network.ClientData clientData;
     public static HashSet<Integer> connected = new HashSet<>();
+    public static HashMap<Integer, String> playerNames = new HashMap<>();
     public static HashSet<Integer> rconConnected = new HashSet<>();
     public static HashSet<Integer> disconnected = new HashSet<>();
     public static List<Integer> idToPlayerNum = new LinkedList<>();
@@ -31,12 +35,22 @@ public class SpaceServer implements Listener {
     final private SpaceServer spaceServer = this;
     public long packetsReceived = 0;
     public long packetsSent = 0;
-    File serverInfo;
-
+    File serverReport;
+    final long startTimer;
+    Writer fileWriter;
     //Game loop
     Thread gameLoop;
 
     public SpaceServer(int tcpPort) throws IOException {
+        startTimer = System.nanoTime();
+        serverReport = Gdx.files.internal("server-reports/gameServer-" + tcpPort + ".txt").file();
+        if(serverReport.createNewFile()){
+            System.out.println("Created new server report file called gameServer-" + tcpPort);
+            fileWriter = new FileWriter(serverReport, true);
+        }else{
+            System.out.println("gameServer-"+tcpPort+" file already exists overwriting the file.");
+            fileWriter = new FileWriter(serverReport, false);
+        }
         createGameLoopThread();
         startTime = new Date();
         idToPlayerNum.add(-1);
@@ -58,9 +72,17 @@ public class SpaceServer implements Listener {
 
             //When the client connects to the server add a player entity to the game
             public void connected(Connection c){
+                long duration = (System.nanoTime()-startTimer)/1000000000;
                 ips.put(c.getID(), c.getRemoteAddressTCP().getAddress().toString());
                 server.sendToTCP(c.getID(), new Network.PromptConnectionType());
                 packetsSent++;
+                try {
+                    fileWriter.write(duration + ": A new player has joined the server: Player " + c.getID() + "\n");
+                    fileWriter.flush();
+                } catch (IOException e) {
+                    System.out.println("Could not write to file " + serverReport.getName());
+                    e.printStackTrace();
+                }
                 if(gameStartedByHost){
                     System.out.println("Game started by host is true sending tcp");
                     StartGame start = new StartGame();
@@ -72,6 +94,7 @@ public class SpaceServer implements Listener {
             }
             //When the client sends a packet to the server handle it
             public void received(Connection c, Object packetData) {
+                long duration = (System.nanoTime()-startTimer)/1000000000;
                 packetsReceived++;
                 PlayerConnection connection = (PlayerConnection) c;
 
@@ -79,11 +102,20 @@ public class SpaceServer implements Listener {
                 if(packetData instanceof InputData){
                     InputData input = (InputData) packetData;
                     connection.playerInput = input;
-
                     if(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())) != null) {
+                        try {
+                            fileWriter.write(duration + ": Received input data from Player " + c.getID() + ": " + Arrays.toString(input.controls) + ", angle: " + input.angle + "\n");
+                            fileWriter.flush();
+                        } catch (IOException e) {
+                            System.out.println("Could not write to file " + serverReport.getName());
+                            e.printStackTrace();
+                        }
                         Objects.requireNonNull(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()))).controls = input.controls;
                         Objects.requireNonNull(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()))).getPos().angle = input.angle;
                     }
+                }
+                else if(packetData instanceof Network.SendPlayerName){
+                    playerNames.put(c.getID(), ((Network.SendPlayerName) packetData).name);
                 }
                 else if(packetData instanceof StartGame){
                     if(((StartGame) packetData).startGame && !gameLoop.isAlive()){
@@ -153,11 +185,13 @@ public class SpaceServer implements Listener {
                 }
                 else if (packetData instanceof Network.CheckConnection) {
                     if (((Network.CheckConnection) packetData).type == Network.ConnectionType.PLAYER) {
-                        System.out.println("Client connected to game server: " + c.getID());
+                        System.out.println("Client connected to game server: " + c.getID() + "Username: " + c.toString());
                         connected.add(c.getID());
                         idToPlayerNum.add(c.getID());
                         clientData.connected = connected;
                         clientData.idToPlayerNum = idToPlayerNum;
+                        clientData.playerNames = playerNames;
+                        clientData.playerNames = playerNames;
                         System.out.println("Player connected " + idToPlayerNum.indexOf(c.getID()));
 
                         if (gameStartedByHost) {
@@ -186,27 +220,44 @@ public class SpaceServer implements Listener {
             }
             //This method will run when a client disconnects from the server, remove the character from the game
             public void disconnected(Connection c){
-                if (connected.contains(c.getID())) {
-                    disconnected.add(c.getID());
-                    connected.remove(c.getID());
+                long duration = (System.nanoTime()-startTimer)/1000000000;
+                int connectionID = c.getID();
+                if (connected.contains(connectionID)) {
+                    try {
+                        fileWriter.write(duration + ": A player has left the server: Player " + connectionID + "\n");
+                        fileWriter.flush();
+                    } catch (IOException e) {
+                        System.out.println("Could not write to file " + serverReport.getName());
+                        e.printStackTrace();
+                    }
+                    disconnected.add(connectionID);
+                    connected.remove(connectionID);
                     clientData.connected = connected;
-                    idToPlayerNum.remove((Object) c.getID());
+                    idToPlayerNum.remove((Object) connectionID);
                     if(connected.size() == 0){
+                        try {
+                            fileWriter.write(duration +": All players left, the server is now empty and ready to be reused\n");
+                            fileWriter.flush();
+                        } catch (IOException e) {
+                            System.out.println("Could not write to file " + serverReport.getName());
+                            e.printStackTrace();
+                        }
                         //Ping the master server that this server is empty
                         Network.OpenLobby openLobby = new Network.OpenLobby();
                         openLobby.tcpPort = tcpPort;
                         gameStartedByHost = false;
                         serverClient.sendTCP(openLobby);
                         //Stop the GameLogic and restart the thread so when a new lobby starts everything gets reset
-                        GameLogic.stop();
+//                        GameLogic.stop();
                         createGameLoopThread();
                     }
                     //clientData.idToPlayerNum = idToPlayerNum;
                     server.sendToAllTCP(clientData);
                     packetsSent += server.getConnections().size();
-                    System.out.println("Client disconnected from game server! " + c.getID());
-                } else if (rconConnected.contains(c.getID())) {
-                    rconConnected.remove(c.getID());
+
+                    System.out.println("Client disconnected from game server! " + connectionID);
+                } else if (rconConnected.contains(connectionID)) {
+                    rconConnected.remove(connectionID);
                 }
             }
         });

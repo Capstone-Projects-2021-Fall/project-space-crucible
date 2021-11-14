@@ -73,6 +73,7 @@ public class GameScreen implements Screen {
     int ping;
     public int updatePing = 0;
     ArrayList<Button> players = new ArrayList<>();
+    DeadPlayerWindow deadPlayerWindow;
 
     public GameScreen(Thread gameLoop, boolean isSinglePlayer, MyGDxTest myGdxTest) {
         this.gameLoop = gameLoop;
@@ -88,6 +89,7 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         SoundFuncs.stopMIDI();
+        deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
         if (isSinglePlayer) {
             playerNumber = 1;
             gameLoop.start();
@@ -134,26 +136,24 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
 
-        Gdx.input.setInputProcessor(stage);
-        DeadPlayerWindow deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
-        if(GameLogic.getPlayer(playerNumber).getHealth()<=0){
-            stage.addActor(deadPlayerWindow);
-            deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
-            stage.addActor(deadPlayerWindow);
-            deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
-        }
-        if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)){
-            for(Actor actor : stage.getActors()){
-                if(actor.getHeight()==deadPlayerWindow.getHeight() && actor.getWidth()==deadPlayerWindow.getWidth()){
-                    //normal deadPlayerWindow.remove() not working
-                    actor.remove();
+        if(isSinglePlayer){
+            Gdx.input.setInputProcessor(stage);
+            if(GameLogic.getPlayer(playerNumber).getHealth()<=0){
+                stage.addActor(deadPlayerWindow);
+                deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
+            }
+            if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+                stage.addActor(deadPlayerWindow);
+                deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
+            }
+            if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+                for(Actor actor : stage.getActors()){
+                    if(actor.getHeight()==deadPlayerWindow.getHeight() && actor.getWidth()==deadPlayerWindow.getWidth()){
+                        //normal deadPlayerWindow.remove() not working
+                        actor.remove();
+                    }
                 }
             }
-        }
-
-        if(isSinglePlayer){
             getAngle(true);
             GameLogic.getPlayer(1).getPos().angle = angle; //Turn the vector2 into a degree angle
             camera.position.set(GameLogic.getPlayer(1).getPos().x + GameLogic.getPlayer(1).getWidth() / (float) 2.0,
@@ -434,12 +434,12 @@ public class GameScreen implements Screen {
             shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
                     levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
                     Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY);
-            if(levelTile.solid==true) {
+            if(levelTile.solid) {
                 shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
                         levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
                         Color.RED, Color.RED, Color.RED, Color.RED);
             }
-            if(levelTile.solid==false && levelTile.pos.x  == (int)GameLogic.getPlayer(playerNumber).getPos().x/LevelTile.TILE_SIZE &&
+            if(!levelTile.solid && levelTile.pos.x  == (int)GameLogic.getPlayer(playerNumber).getPos().x/LevelTile.TILE_SIZE &&
                     levelTile.pos.y == (int)GameLogic.getPlayer(playerNumber).getPos().y/LevelTile.TILE_SIZE){
                 shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
                         levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
