@@ -119,7 +119,15 @@ public class SpaceServer implements Listener {
                     }
                 }
                 else if(packetData instanceof Network.SendPlayerName){
-                    playerNames.put(c.getID(), ((Network.SendPlayerName) packetData).name);
+                    int i = 1;
+                    String name = ((Network.SendPlayerName) packetData).name;
+                    if(playerNames.containsValue(name) ){
+                        while (playerNames.containsValue(name)) {
+                            name = name.concat(String.valueOf(i));
+                            i++;
+                        }
+                    }
+                    playerNames.put(c.getID(), name);
                 }
                 else if(packetData instanceof StartGame){
                     if(((StartGame) packetData).startGame && !gameLoop.isAlive()){
@@ -237,10 +245,12 @@ public class SpaceServer implements Listener {
                     disconnected.add(connectionID);
                     connected.remove(connectionID);
                     clientData.connected = connected;
-                    //idToPlayerNum.remove((Object) connectionID);
+//                    idToPlayerNum.remove((Object) connectionID);
+                    playerNames.remove(connectionID);
                     if(connected.size() == 0){
                         idToPlayerNum.clear();
                         idToPlayerNum.add(-1);
+                        playerNames.clear();
                         try {
                             fileWriter.write(duration +": All players left, the server is now empty and ready to be reused\n");
                             fileWriter.flush();
@@ -257,9 +267,10 @@ public class SpaceServer implements Listener {
                         try {GameLogic.stop();} catch (NullPointerException ignored){}
                         createGameLoopThread();
                     } else {
-                        GameLogic.getPlayer(idToPlayerNum.get(c.getID()))
-                                .setSpeed(GameLogic.getPlayer(idToPlayerNum.get(c.getID())).getSpeed() / 40);
+//                        GameLogic.getPlayer(idToPlayerNum.get(c.getID()))
+//                                .setSpeed(GameLogic.getPlayer(idToPlayerNum.get(c.getID())).getSpeed() / 40);
                         //clientData.idToPlayerNum = idToPlayerNum;
+                        clientData.playerNames = playerNames;
                         server.sendToAllTCP(clientData);
                         packetsSent += server.getConnections().size();
                         System.out.println("Client disconnected from game server! " + connectionID);

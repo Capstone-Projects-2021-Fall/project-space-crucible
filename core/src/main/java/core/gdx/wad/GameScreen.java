@@ -35,6 +35,7 @@ import core.wad.funcs.WadFuncs;
 import java.util.ArrayList;
 
 import java.util.ConcurrentModificationException;
+import java.util.HashMap;
 
 
 public class GameScreen implements Screen {
@@ -75,7 +76,7 @@ public class GameScreen implements Screen {
     boolean remove = false;
     int ping;
     public int updatePing = 0;
-    ArrayList<Button> players = new ArrayList<>();
+    HashMap<String, Button> playerbuttons = new HashMap<>();
     DeadPlayerWindow deadPlayerWindow;
 
     public GameScreen(Thread gameLoop, boolean isSinglePlayer, MyGDxTest myGdxTest) {
@@ -211,17 +212,23 @@ public class GameScreen implements Screen {
                 int x = 100;
                 int y = 400;
 
-                if (clientData.idToPlayerNum.size() - 1 > players.size()) {
-                    for (int element : clientData.idToPlayerNum) {
-                        if (element == -1) {continue;} //Skip dummy
-                        String clientId = "Player " + clientData.idToPlayerNum.indexOf(element);
-                        Button player = new TextButton(clientId, uiSkin);
+                if(clientData.playerNames.size() > playerbuttons.size()) {
+                    for (String name : clientData.playerNames.values()) {
+                        Button player = new TextButton(name, uiSkin);
                         player.setBounds(x, y, 80, 50);
                         lobbyStage.addActor(player);
                         y -= 50;
-                        players.add(player);
+                        playerbuttons.put(name, player);
                     }
                 }
+                if(clientData.playerNames.size() < playerbuttons.size()) {
+                    for (String name : playerbuttons.keySet()) {
+                        if (!clientData.playerNames.containsValue(name)) {
+                            playerbuttons.get(name).remove();
+                        }
+                    }
+                }
+
                 if (serverDetails.lobbyCode != null && !remove) {
                     if (client.getGameClient().getID() == 1) {
                         lobbyCode = new Label("Lobby Code\n" + serverDetails.lobbyCode + "\nRCON Pass:\n" + serverDetails.rconPass, uiSkin);
@@ -255,9 +262,7 @@ public class GameScreen implements Screen {
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
                 camera.update();
                 RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, renderData.entityList, getPlayer(playerNumber));
-                //RenderFuncs.entityDraw(batch, renderData.entityList);
-//                font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
-//                        getPlayer(playerNumber).getPos().y);
+
                 if(getPlayer(playerNumber).getHealth()>0){
                     font.draw(batch,"HP:" +getPlayer(playerNumber).getHealth(),
                             getPlayer(playerNumber).getPos().x,
@@ -284,19 +289,12 @@ public class GameScreen implements Screen {
                 return;
             }
         }
-
-
-        if (showBoxes) {
-            showBoxes();
-        }
-
         if (showBoxes) {showBoxes();}
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS)) {
             showBoxes = !showBoxes;
         }
         batch.end();
-
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         drawMiniMap();
@@ -420,6 +418,7 @@ public class GameScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("exit");
                 client.getGameClient().close();
+                client.getMasterClient().close();
                 myGDxTest.setScreen(myGDxTest.titleScreen);
             }
         });

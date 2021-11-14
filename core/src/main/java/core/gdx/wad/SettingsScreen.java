@@ -47,7 +47,8 @@ public class SettingsScreen implements Screen {
          Gdx.input.setInputProcessor(stage);
         Actor settingsActor = new SettingsMenu("Settings", skin, this, stage, myGDxTest);
         stage.addActor(settingsActor);
-        settingsActor.setPosition(camera.viewportWidth/7, camera.viewportHeight/4);
+        settingsActor.setPosition((Gdx.graphics.getWidth() - settingsActor.getWidth())/ 2f, (Gdx.graphics.getHeight() - settingsActor.getHeight())/ 2f);
+
     }
 
     @Override
