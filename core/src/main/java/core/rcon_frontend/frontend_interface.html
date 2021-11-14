@@ -1,45 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <script src="https://unpkg.com/loglevel/dist/loglevel.min.js"></script>
+    <script>
+    var originalFactory = log.methodFactory;
+    log.methodFactory = function (methodName, logLevel, loggerName) {
+        var rawMethod = originalFactory(methodName, logLevel, loggerName);
+
+        return function (message) {
+            var payload = {
+                message: message,
+                logLevel: logLevel
+            };
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:8080/log", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(payload));
+            rawMethod(message);
+        };
+    };
+    log.setLevel(log.getLevel());
+  </script>
 </head>
 <body>
-<h1>RCON</h1>
-    <table>
+<script>
+    function makeTable() {
+    var row_num = 4;
+    var cell_num = 4;
+    var tab = document.createElement('table');
+    tab.setAttribute('id','newtable');
+    var tbo = document.createElement('tbody');
+    tbo.setAttribute('id','tabody');
+    var cont;
+    for(var i = 0 ; i < row_num ; i++) {
+        var row = document.createElement('tr');
+        for(var j = 0 ; j < cell_num ; j++) {
+            var cell = document.createElement('td');
+            if (j > 0) {
+                cont = document.createElement("input");
+                cont.setAttribute('type','text');
+                } else {
+                    cont = document.createTextNode("0" + (i + 1));
+                    }
+                    cell.appendChild(cont);
+                    row.appendChild(cell);
+                }
+            tbo.appendChild(row);
+        }
+    tab.appendChild(tbo);
+    document.body.appendChild(tab);
+    tab.setAttribute("align", "top-left");
+    }
+    window.onload = function() {
+        makeTable();
+    };
+  </script>
+<input type="text" id="textfield"><input type="button" value="Log" id="logButton" />
+<form>
+    <h2><u>RCON</u>:</h2>
+    <table id = "project" border = "1" width ="60%" class = "newtable" cellpadding="10" cellspacing="0">
         <tr>
-            <th>Player Name</th>
-            <th>Player Coordinate</th>
-            <th>Player Hit point</th>
-        </tr>
-        <tr>
-            <td>Player 1</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Player 2</td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <td>Player 3</td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <td>Player 4</td>
-            <td> </td>
-            <td> </td>
+            <th align="center" width ="70px" id = "PlayerName">PlayerName</th>
+            <th align="center" width ="70px" id = "PlayerCoordinate">Player Coordinate</th>
+            <th align="center" width ="70px" id = "Player Hitpoint">Player Hitpoint</th>
         </tr>
     </table>
-    <br>
-    <br>
-    <input type="text"/><button onclick="Submit()">Submit</button>
+</form>
+<script>
+    document
+        .getElementById("logButton")
+            .addEventListener("click", function(event) {
+                log.warn("text");
+            });
+  </script>
 </body>
-<style>
-    table, th, td {
-        border:1px solid black;
-    }
-</style>
 </html>
