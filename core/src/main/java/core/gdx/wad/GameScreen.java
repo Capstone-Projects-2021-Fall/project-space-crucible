@@ -379,15 +379,29 @@ public class GameScreen implements Screen {
 
 
     private void drawHealthAndName() {
-        if(GameLogic.getPlayer(playerNumber).getHealth()>0){
-            font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
-                    GameLogic.getPlayer(playerNumber).getPos().x,
-                    GameLogic.getPlayer(playerNumber).getPos().y);
-        }else{
-            font.draw(batch,"HP:0",
-                    GameLogic.getPlayer(playerNumber).getPos().x,
-                    GameLogic.getPlayer(playerNumber).getPos().y);
+
+        for(Entity entity : GameLogic.entityList){
+            if(entity.getHeight()>20){
+                if(entity.getHealth()>0){
+                    font.draw(batch,"HP:" +entity.getHealth(),
+                            entity.getPos().x,
+                            entity.getPos().y);
+                }
+            }
         }
+//        if(GameLogic.getPlayer(playerNumber).getHealth()>0){
+//            font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
+//                    GameLogic.getPlayer(playerNumber).getPos().x,
+//                    GameLogic.getPlayer(playerNumber).getPos().y);
+//        }else{
+//            font.draw(batch,"HP:0",
+//                    GameLogic.getPlayer(playerNumber).getPos().x,
+//                    GameLogic.getPlayer(playerNumber).getPos().y);
+//        }
+        for(int i = 0 ; i<20 ; i++){
+
+        }
+
         font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
                 GameLogic.getPlayer(playerNumber).getPos().x,
                 GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+10);
