@@ -106,8 +106,6 @@ public class StartMenu extends Actor{
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
                         client.makeLobby();
-                        setCoopButtonsVisible(false);
-                        setMainMenuButtonsVisible(true);
                     }
                 });
                 joinLobbyButton.button.addListener(new ClickListener(){
