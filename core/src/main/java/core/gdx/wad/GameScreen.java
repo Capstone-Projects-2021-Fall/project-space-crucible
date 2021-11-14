@@ -152,21 +152,7 @@ public class GameScreen implements Screen {
             camera.update();
             RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
             RenderFuncs.entityDraw(batch, GameLogic.entityList);
-
-            if(GameLogic.getPlayer(playerNumber).getHealth()>0){
-                font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
-                        GameLogic.getPlayer(playerNumber).getPos().x,
-                        GameLogic.getPlayer(playerNumber).getPos().y);
-            }else{
-                font.draw(batch,"HP:0",
-                        GameLogic.getPlayer(playerNumber).getPos().x,
-                        GameLogic.getPlayer(playerNumber).getPos().y);
-            }
-            font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
-                    GameLogic.getPlayer(playerNumber).getPos().x,
-                    GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+10);
-            font.draw(batch,NameChangeWindow.playerName, GameLogic.getPlayer(playerNumber).getPos().x,
-                    GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+25);
+            drawHealthAndName();
             if (showBoxes) {showBoxes();}
             GameLogic.getPlayer(1).controls = getControls();
 
@@ -389,6 +375,24 @@ public class GameScreen implements Screen {
 
     public void changeScreen(){
         myGDxTest.setScreen(myGDxTest.settingsScreen);
+    }
+
+
+    private void drawHealthAndName() {
+        if(GameLogic.getPlayer(playerNumber).getHealth()>0){
+            font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
+                    GameLogic.getPlayer(playerNumber).getPos().x,
+                    GameLogic.getPlayer(playerNumber).getPos().y);
+        }else{
+            font.draw(batch,"HP:0",
+                    GameLogic.getPlayer(playerNumber).getPos().x,
+                    GameLogic.getPlayer(playerNumber).getPos().y);
+        }
+        font.draw(batch,"Player: " +GameLogic.getPlayer(playerNumber).getTag(),
+                GameLogic.getPlayer(playerNumber).getPos().x,
+                GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+10);
+        font.draw(batch,NameChangeWindow.playerName, GameLogic.getPlayer(playerNumber).getPos().x,
+                GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+25);
     }
 
     private void drawMiniMap() {

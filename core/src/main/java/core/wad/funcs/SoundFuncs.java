@@ -34,18 +34,24 @@ public class SoundFuncs {
         try {
             sequencer = MidiSystem.getSequencer();
             sequencer.open();
-            // code right below is supposed to change bgm volume:
+            // code right below is supposed to change bgm volume (non-functional):
             // http://www.java2s.com/Code/Java/Development-Class/SettingtheVolumeofPlayingMidiAudio.htm
-            // not working tho
             if (sequencer instanceof Synthesizer) {
                 Synthesizer synthesizer = (Synthesizer) sequencer;
                 MidiChannel[] channels = synthesizer.getChannels();
 
-                // gain is a value between 0 and 1 (loudest)
-                seqVolume = 0.9d;
+                // seqVolume is a value between 0 (lowest) and 1 (loudest)
+                // controller 7 is volume: https://www.sweetwater.com/insync/media/2019/06/Reason-MIDI-Implementation-Chart.jpg
+                seqVolume = 0.5D;
                 for (int i = 0; i < channels.length; i++) {
-                    channels[i].controlChange(7, (int) (seqVolume * 127.0));
+                    channels[i].controlChange(7, (int) (seqVolume * 127));
+//                    channels[i].controlChange(7, (int)seqVolume);
+
                 }
+                //alt method: https://stackoverflow.com/questions/8008286/how-to-control-the-midi-channels-volume
+//                for(MidiChannel midiChannel : synthesizer.getChannels()){
+//                    midiChannel.controlChange(7, (int) (seqVolume*127f));
+//                }
             }
         } catch (MidiUnavailableException e) {
             System.out.println("Could not get MIDI sequencer. Will continue without music.");
