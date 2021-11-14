@@ -10,6 +10,7 @@ public class LevelScript {
 
     final private Queue<ScriptCommand> commandQueue;
     final private Entity activator;
+    private boolean newCommand = true;
 
     public LevelScript() {
         activator = null;
@@ -26,12 +27,26 @@ public class LevelScript {
 
         if (commandQueue.peek() == null) {return true;}
 
-        if (commandQueue.peek().delay > 0) {
-            commandQueue.peek().delay--;
+        while (commandQueue.peek() != null && newCommand) {
+            commandQueue.peek().run(activator);
+
+            if (commandQueue.peek() != null && commandQueue.peek().delay == 0) {
+                commandQueue.remove();
+            } else {
+                break;
+            }
         }
 
-        while (commandQueue.peek() != null && commandQueue.peek().delay == 0) {
-            commandQueue.remove().run(activator);
+        if (commandQueue.peek() != null && commandQueue.peek().delay > 0) {
+            commandQueue.peek().delay--;
+            System.out.println(commandQueue.peek().delay);
+
+            if (commandQueue.peek() != null && commandQueue.peek().delay > 0) {
+                newCommand = false;
+            } else {
+                commandQueue.remove();
+                newCommand = true;
+            }
         }
 
         return commandQueue.peek() == null;

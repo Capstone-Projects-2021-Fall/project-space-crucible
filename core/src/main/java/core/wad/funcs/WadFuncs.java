@@ -138,12 +138,15 @@ public class WadFuncs {
 
                             if (command.equals("delay")) {
                                 nextCommand.delay = Integer.parseInt(st.nextToken());
-                                System.out.println("Adding " + nextCommand.action.getClass().getName() + ", (" + nextCommand.arg1 + ", " + nextCommand.arg2 + ")");
+                                System.out.println("Adding " + nextCommand.action.getClass().getName() + ", (" + nextCommand.arg1 + ", " + nextCommand.arg2 + ") with delay " + nextCommand.delay);
                                 commandQueue.add(nextCommand);
                                 nextCommand = new ScriptCommand();
                             } else {
-                                commandQueue.add(nextCommand);
-                                nextCommand = new ScriptCommand();
+                                if (nextCommand.action != null) {
+                                    System.out.println("Adding " + nextCommand.action.getClass().getName() + ", (" + nextCommand.arg1 + ", " + nextCommand.arg2 + ") with delay " + nextCommand.delay);
+                                    commandQueue.add(nextCommand);
+                                    nextCommand = new ScriptCommand();
+                                }
 
                                 switch (command) {
                                     case "ChangeLevel":
@@ -167,7 +170,10 @@ public class WadFuncs {
                                 nextCommand.arg1 = Integer.parseInt(st.nextToken());
                                 nextCommand.arg2 = Integer.parseInt(st.nextToken());
 
-                                if (!scriptScanner.hasNextLine()) {commandQueue.add(nextCommand);}
+                                if (!scriptScanner.hasNextLine()) {
+                                    System.out.println("Adding " + nextCommand.action.getClass().getName() + ", (" + nextCommand.arg1 + ", " + nextCommand.arg2 + ") with delay " + nextCommand.delay);
+                                    commandQueue.add(nextCommand);
+                                }
                             }
                         }
 
