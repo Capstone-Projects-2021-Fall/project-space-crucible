@@ -176,8 +176,7 @@ public class GameScreen implements Screen {
                 batch.end();
                 return;
             }
-            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
-            RenderFuncs.entityDraw(batch, GameLogic.entityList);
+            RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, GameLogic.entityList, GameLogic.getPlayer(1));
             drawHealthAndName();
             if (showBoxes) {showBoxes();}
             GameLogic.getPlayer(1).controls = getControls();
@@ -233,8 +232,7 @@ public class GameScreen implements Screen {
                 camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
                 camera.update();
-                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false);
-                RenderFuncs.entityDraw(batch, renderData.entityList);
+                RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, renderData.entityList, renderData.playerPawn);
                 if(GameLogic.getPlayer(playerNumber).getHealth()>0){
                     font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
                             GameLogic.getPlayer(playerNumber).getPos().x,
