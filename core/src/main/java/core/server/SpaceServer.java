@@ -237,7 +237,7 @@ public class SpaceServer implements Listener {
                     disconnected.add(connectionID);
                     connected.remove(connectionID);
                     clientData.connected = connected;
-                    idToPlayerNum.remove((Object) connectionID);
+                    //idToPlayerNum.remove((Object) connectionID);
                     if(connected.size() == 0){
                         idToPlayerNum.clear();
                         idToPlayerNum.add(-1);
