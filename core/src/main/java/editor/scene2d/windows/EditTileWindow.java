@@ -1,4 +1,4 @@
-package editor.windows;
+package editor.scene2d.windows;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,7 +11,7 @@ import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelTile;
 import core.wad.funcs.WadFuncs;
 import editor.launch.EditorScreen;
-import editor.windows.actors.NumberField;
+import editor.scene2d.actors.NumberField;
 import net.mtrop.doom.WadFile;
 
 public class EditTileWindow extends Window {
@@ -30,6 +30,8 @@ public class EditTileWindow extends Window {
     NumberField tagField;
     TextButton okButton;
     TextButton cancelButton;
+    NumberField layerField;
+    NumberField bridgeField;
     EditorScreen editor;
 
     public EditTileWindow(String title, Skin skin, Array<LevelTile> tiles, Array<WadFile> resources, EditorScreen editor) {
@@ -97,6 +99,14 @@ public class EditTileWindow extends Window {
         tagField = new NumberField(Integer.toString(tile.tag), skin);
         add(tagField);
         row();
+        add(new Label("Layer:", skin));
+        layerField = new NumberField(Integer.toString(tile.pos.layer), skin);
+        add (layerField);
+        row();
+        add(new Label("Bridge:", skin));
+        bridgeField = new NumberField(Integer.toString(tile.bridge), skin);
+        add (bridgeField);
+        row();
         okButton = new TextButton("OK", skin);
 
         okButton.addListener(new ClickListener(){
@@ -163,11 +173,13 @@ public class EditTileWindow extends Window {
             t.graphicname = textureList.getSelected();
             t.solid = solidCheckBox.isChecked();
             t.light = (int) lightSlider.getValue();
-            t.effect = Integer.parseInt(effectField.getText());
-            t.arg1 = Integer.parseInt(arg1Field.getText());
-            t.arg2 = Integer.parseInt(arg2Field.getText());
+            t.effect = effectField.getInteger();
+            t.arg1 = arg1Field.getInteger();
+            t.arg2 = arg2Field.getInteger();
             t.repeat = repeatCheckBox.isChecked();
-            t.tag = Integer.parseInt(tagField.getText());
+            t.tag = tagField.getInteger();
+            t.pos.layer = layerField.getInteger();
+            t.bridge = bridgeField.getInteger();
         }
         close();
     }

@@ -18,7 +18,7 @@ public class A_MeleeAttack implements StateAction {
         distance.x = target.getPos().x - caller.getPos().x;
         distance.y = target.getPos().y - caller.getPos().y;
 
-        if (distance.len() <= 64f) {
+        if (distance.len() <= 64f && target.currentLayer == caller.currentLayer) {
             target.takeDamage(caller, damage);
         }
     }

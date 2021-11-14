@@ -43,9 +43,9 @@ public class LevelData {
         try {
             leveldata = file.getTextData(entry, Charset.defaultCharset());
             readLevelData(leveldata);
+            System.out.println("Read " + entry + " from " + file.getFileName());
         } catch (IOException e) {
             System.out.println("Could not read entry \"" + entry + "\" from " + file.getFileName() + "!");
-            e.printStackTrace();
         }
     }
 
@@ -79,14 +79,40 @@ public class LevelData {
         return tiles;
     }
 
-    public LevelTile getTile(int x, int y) {
+    public LevelTile getTile(int x, int y, int layer) {
         for (LevelTile tile : tiles) {
-            if (tile.pos.x == x && tile.pos.y == y) {
+            if (tile.pos.x == x && tile.pos.y == y && tile.pos.layer == layer) {
                 return tile;
             }
         }
 
         return null;
+    }
+    
+    public LevelTile getTopTile(int x, int y) {
+        LevelTile ret = null;
+        for (LevelTile tile : tiles) {
+            if (tile.pos.x == x && tile.pos.y == y) {
+                if (ret == null || tile.pos.layer > ret.pos.layer) {
+                    ret = tile;
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    public LevelTile getBottomTile(int x, int y) {
+        LevelTile ret = null;
+        for (LevelTile tile : tiles) {
+            if (tile.pos.x == x && tile.pos.y == y) {
+                if (ret == null || tile.pos.layer < ret.pos.layer) {
+                    ret = tile;
+                }
+            }
+        }
+
+        return ret;
     }
 
     public ArrayList<LevelObject> getObjects() {
@@ -101,6 +127,7 @@ public class LevelData {
         float angle = 0;
         boolean singleplayer = false, cooperative = false, ambush = false;
         boolean[] skill = {false, false, false, false, false};
+        int layer = 0;
 
         boolean[] objectdata = {false, false, false, false, false, false, false, false,
                 false, false, false, false, false};
@@ -149,6 +176,8 @@ public class LevelData {
             } else if (line.startsWith("tag")) {
                 tag = Integer.parseInt(rawvalue);
                 objectdata[12] = true;
+            } else if (line.startsWith("layer")) {
+                layer = Integer.parseInt(rawvalue);
             } else {
                 System.out.println("Error: unrecognized level object data!");
                 throw new IOException();
@@ -166,7 +195,7 @@ public class LevelData {
             }
         }
 
-        LevelObject obj = new LevelObject(type, xpos, ypos, angle, singleplayer, cooperative, skill, ambush, tag);
+        LevelObject obj = new LevelObject(type, xpos, ypos, angle, singleplayer, cooperative, skill, ambush, tag, layer);
         objects.add(obj);
     }
 
@@ -176,8 +205,9 @@ public class LevelData {
         int xpos = 0, ypos = 0;
         boolean solid = false;
         String graphic = "";
-        int light = 0, effect = 0, arg1 = 0, arg2 = 0, tag = 0;
+        int light = 0, effect = 0, arg1 = 0, arg2 = 0, tag = 0, bridge = -1;
         boolean repeat = false;
+        int layer = 0;
 
         boolean[] leveldata = {false, false, false, false, false, false, false, false, false, false};
 
@@ -221,7 +251,14 @@ public class LevelData {
             } else if (line.startsWith("tag")) {
                 tag = Integer.parseInt(rawvalue);
                 leveldata[9] = true;
-            } else {
+            }
+            else if (line.startsWith("layer")) {
+                layer = Integer.parseInt(rawvalue);
+            }
+            else if (line.startsWith("bridge")) {
+                bridge = Integer.parseInt(rawvalue);
+            }
+            else {
                 System.out.println("Error: unrecognized level tile data!");
                 throw new IOException();
             }
@@ -238,8 +275,8 @@ public class LevelData {
             }
         }
 
-        LevelTile.TilePosition pos = new LevelTile.TilePosition(xpos, ypos);
-        LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag);
+        LevelTile.TilePosition pos = new LevelTile.TilePosition(xpos, ypos, layer);
+        LevelTile tile = new LevelTile(pos, solid, graphic, light, effect, arg1, arg2, repeat, tag, bridge);
         tiles.add(tile);
     }
 

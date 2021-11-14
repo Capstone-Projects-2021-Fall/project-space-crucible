@@ -163,8 +163,8 @@ public class SpaceServer implements Listener {
                         if (gameStartedByHost) {
                             for (LevelObject lo : GameLogic.currentLevel.getObjects()) {
                                 if (lo.type == 0 && lo.tag == idToPlayerNum.indexOf(c.getID())) {
-                                    GameLogic.newEntityQueue.addLast(GameLogic.mapIDTable.get(0)
-                                            .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), lo.tag));
+                                    GameLogic.newEntityQueue.add(GameLogic.mapIDTable.get(0)
+                                            .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), lo.tag, lo.layer, lo.ambush));
                                     break;
                                 }
                             }
@@ -188,8 +188,10 @@ public class SpaceServer implements Listener {
                     disconnected.add(c.getID());
                     connected.remove(c.getID());
                     clientData.connected = connected;
-                    idToPlayerNum.remove((Object) c.getID());
+                    //idToPlayerNum.remove(c.getID());
                     if(connected.size() == 0){
+                        idToPlayerNum.clear();
+                        idToPlayerNum.add(-1);
                         //Ping the master server that this server is empty
                         Network.OpenLobby openLobby = new Network.OpenLobby();
                         openLobby.tcpPort = tcpPort;
@@ -198,11 +200,14 @@ public class SpaceServer implements Listener {
                         //Stop the GameLogic and restart the thread so when a new lobby starts everything gets reset
                         GameLogic.stop();
                         createGameLoopThread();
+                    } else {
+                        GameLogic.getPlayer(idToPlayerNum.get(c.getID()))
+                                .setSpeed(GameLogic.getPlayer(idToPlayerNum.get(c.getID())).getSpeed() / 40);
+                        //clientData.idToPlayerNum = idToPlayerNum;
+                        server.sendToAllTCP(clientData);
+                        packetsSent += server.getConnections().size();
+                        System.out.println("Client disconnected from game server! " + c.getID());
                     }
-                    //clientData.idToPlayerNum = idToPlayerNum;
-                    server.sendToAllTCP(clientData);
-                    packetsSent += server.getConnections().size();
-                    System.out.println("Client disconnected from game server! " + c.getID());
                 } else if (rconConnected.contains(c.getID())) {
                     rconConnected.remove(c.getID());
                 }

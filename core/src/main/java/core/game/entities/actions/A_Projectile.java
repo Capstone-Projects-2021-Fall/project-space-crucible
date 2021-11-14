@@ -21,7 +21,7 @@ public class A_Projectile implements StateAction {
 
         Vector2 start = caller.getCenter();
 
-        GameLogic.newEntityQueue.addLast(
+        GameLogic.newEntityQueue.add(
                 GameLogic.entityTable.get(projectileClass)
                     .spawnProjectile((new Entity.Position(start.x, start.y, caller.getPos().angle)), caller));
 
