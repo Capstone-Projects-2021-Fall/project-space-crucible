@@ -179,11 +179,9 @@ public class GameScreen implements Screen {
                 }
                 font.draw(batch, "Layer:" + GameLogic.getPlayer(playerNumber).currentLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-10);
                 font.draw(batch, "Bridge:" + GameLogic.getPlayer(playerNumber).bridgeLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-20);
-                font.draw(batch, "Player: " + GameLogic.getPlayer(playerNumber).getTag(),
+                font.draw(batch, NameChangeWindow.playerName,
                         GameLogic.getPlayer(playerNumber).getPos().x,
                         GameLogic.getPlayer(playerNumber).getPos().y + GameLogic.getPlayer(playerNumber).getHeight() + 10);
-                font.draw(batch,NameChangeWindow.playerName, GameLogic.getPlayer(playerNumber).getPos().x,
-                        GameLogic.getPlayer(playerNumber).getPos().y+GameLogic.getPlayer(playerNumber).getHeight()+25);
                 if (showBoxes) {
                     showBoxes();
                 }
@@ -264,7 +262,7 @@ public class GameScreen implements Screen {
                             getPlayer(playerNumber).getPos().x,
                             getPlayer(playerNumber).getPos().y);
                 }
-                font.draw(batch, "Player: " + getPlayer(playerNumber).getTag(),
+                font.draw(batch, NameChangeWindow.playerName,
                         getPlayer(playerNumber).getPos().x,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() + 10);
                 font.draw(batch, "Ping: " + ping, getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y-13);
