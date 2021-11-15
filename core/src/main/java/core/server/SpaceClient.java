@@ -25,7 +25,7 @@ public class SpaceClient implements Listener {
 
     Client masterClient;
     Client gameClient;
-    static String ip = "localhost";//100.19.127.86
+    static String ip = "100.19.127.86";
     GameScreen screen;
     public ValidLobby validLobby;
     StartMenu startMenu;
