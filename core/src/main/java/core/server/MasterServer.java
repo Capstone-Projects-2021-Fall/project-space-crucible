@@ -32,7 +32,7 @@ public class MasterServer implements Listener {
     final private String CODE = "MASTER";
 
     public MasterServer(int minPort, int maxPort, String password){
-        server = new Server();
+        server = new Server(81920, 81920);
         Network.register(server);
         for(int i = minPort; i <= maxPort; i++){
             availablePorts.add(i);

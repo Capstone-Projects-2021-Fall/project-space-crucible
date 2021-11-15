@@ -19,7 +19,12 @@ public class Projectile extends Entity {
 
         //Projectiles get thrown to the layer of their target
         if (owner instanceof BaseMonster) {
-            this.bridgeLayer = GameLogic.entityList.get(((BaseMonster) owner).getTarget()).currentLayer;
+            try {
+                this.bridgeLayer = GameLogic.entityList.get(((BaseMonster) owner).getTarget()).currentLayer;
+                if (this.bridgeLayer == this.currentLayer) {
+                    this.bridgeLayer = -1;
+                }
+            } catch(Exception e) {this.bridgeLayer = -1;}
             System.out.println("Proj bridge layer: " + this.bridgeLayer);
         }
     }

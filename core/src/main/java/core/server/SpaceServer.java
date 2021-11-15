@@ -86,14 +86,6 @@ public class SpaceServer implements Listener {
                     System.out.println("Could not write to file " + serverReport.getName());
                     e.printStackTrace();
                 }
-                if(gameStartedByHost){
-                    System.out.println("Game started by host is true sending tcp");
-                    StartGame start = new StartGame();
-                    start.startGame = true;
-                    start.levelnum = GameLogic.currentLevel.levelnumber;
-                    server.sendToTCP(c.getID(), start);
-                    packetsSent += server.getConnections().size();
-                }
             }
             //When the client sends a packet to the server handle it
             public void received(Connection c, Object packetData) {
@@ -217,6 +209,14 @@ public class SpaceServer implements Listener {
                         server.sendToAllTCP(clientData);
                         packetsSent += server.getConnections().size();
                         idToPlayerNum.forEach(integer -> System.out.println("Player " + idToPlayerNum.indexOf(integer) + "'s username is " + playerNames.get(integer)));
+                        if(gameStartedByHost){
+                            System.out.println("Game started by host is true sending tcp");
+                            StartGame start = new StartGame();
+                            start.startGame = true;
+                            start.levelnum = GameLogic.currentLevel.levelnumber;
+                            server.sendToTCP(c.getID(), start);
+                            packetsSent += server.getConnections().size();
+                        }
                     }
                     else if (((Network.CheckConnection) packetData).type == Network.ConnectionType.RCON) {
                         rconConnected.add(c.getID());
