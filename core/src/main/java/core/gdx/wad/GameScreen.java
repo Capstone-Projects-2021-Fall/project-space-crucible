@@ -271,7 +271,7 @@ public class GameScreen implements Screen {
                 client.getCameraData(getCameraData());
             }
             catch (NullPointerException | ConcurrentModificationException e) {
-                batch.end();
+                try {batch.end();} catch(NullPointerException ignored){}
                 return;
             }
         }
