@@ -424,6 +424,7 @@ public class GameScreen implements Screen {
 
     public void updatePlayerNumber() {
         playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
+        System.out.println("My playernumber is " + playerNumber);
     }
 
     public void setPing(int returnTripTime) {

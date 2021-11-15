@@ -271,7 +271,6 @@ public class SpaceServer implements Listener {
                             GameLogic.getPlayer(idToPlayerNum.indexOf(c.getID()))
                                     .setSpeed(GameLogic.getPlayer(idToPlayerNum.indexOf(c.getID())).getSpeed() / 40);
                         } else {
-                            playerNames.remove(c.getID());
                             SpaceServer.idToPlayerNum.remove((Integer)c.getID());
                         }
                         clientData.idToPlayerNum = idToPlayerNum;
