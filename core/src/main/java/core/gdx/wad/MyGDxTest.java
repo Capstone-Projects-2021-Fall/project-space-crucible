@@ -3,6 +3,8 @@ package core.gdx.wad;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
+import core.game.entities.actions.StateAction;
+import core.game.logic.EntityState;
 import core.game.logic.GameLogic;
 import core.wad.funcs.EntityFuncs;
 import core.wad.funcs.GameSprite;
@@ -82,6 +84,9 @@ public class MyGDxTest extends Game {
             //Load prepare all Entity and level logic, open game screen and initiate game loop.
             WadFuncs.loadLevelEffects();
             WadFuncs.loadScripts(wads);
+
+            //Blank state reserved at index 0 for map spot- visible in editor only
+            GameLogic.stateList.add(new EntityState("UNKN", 'A', -1, -1, null));
 
             wads.forEach(w -> {
                 if (w.contains("ENTITIES")) {

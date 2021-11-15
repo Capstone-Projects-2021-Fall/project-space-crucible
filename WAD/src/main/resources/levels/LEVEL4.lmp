@@ -857,3 +857,37 @@ tag = 1
 layer = 0
 }
 
+object {
+type = -1
+xpos = 124.0
+ypos = 71.0
+angle = 225.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 1
+layer = 0
+}
+
+object {
+type = -1
+xpos = 129.0
+ypos = -152.0
+angle = 135.0
+single = true
+coop = true
+skill1 = true
+skill2 = true
+skill3 = true
+skill4 = true
+skill5 = true
+ambush = false
+tag = 1
+layer = 0
+}
+

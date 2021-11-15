@@ -7,7 +7,7 @@ public class T_ChangeLevel implements TileAction {
 
     //Change level to next if arg1 is 0, or to that level number if it's above 0.
     @Override
-    public void run(Entity activator, int arg1, int arg2) {
+    public void run(Entity activator, int arg1, int arg2, int tag) {
 
         if (arg1 > 0) {
             GameLogic.readyChangeLevel(GameLogic.levels.get(arg1));

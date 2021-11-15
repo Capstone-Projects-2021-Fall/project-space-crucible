@@ -54,7 +54,7 @@ public class CollisionLogic {
                     //Do effects if there are any
                     if(levelTile.effect > 0) {
                         GameLogic.effectList.get(levelTile.effect - 1)
-                                .run(entity, levelTile.arg1, levelTile.arg2);
+                                .run(entity, levelTile.arg1, levelTile.arg2, levelTile.tag);
 
                         if (!levelTile.repeat) {
                             levelTile.effect = 0;

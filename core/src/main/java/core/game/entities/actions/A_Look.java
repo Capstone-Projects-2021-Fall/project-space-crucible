@@ -21,7 +21,9 @@ public class A_Look implements StateAction {
 
         if (seen != null && GameLogic.ticCounter > 0) {
             ((BaseMonster) caller).setTarget(GameLogic.entityList.indexOf(seen));
-            SoundFuncs.playSound(((BaseMonster) caller).getSound(BaseMonster.SEESOUND));
+            try {
+                SoundFuncs.playSound(((BaseMonster) caller).getSound(BaseMonster.SEESOUND));
+            } catch (NullPointerException ignored){}
             caller.setState(caller.getStates()[Entity.WALK]);
         }
     }

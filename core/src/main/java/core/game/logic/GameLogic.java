@@ -8,6 +8,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import core.game.entities.BaseMonster;
 import core.game.entities.Entity;
+import core.game.entities.MapSpot;
 import core.game.entities.PlayerPawn;
 import core.game.logic.tileactions.TileAction;
 import core.level.info.LevelData;
@@ -260,6 +261,15 @@ public class GameLogic {
                 if (server != null && obj.tag > SpaceServer.connected.size()) {
                     System.out.println("Skipping player " + obj.tag + " because they don't exist.");
                     continue;
+                }
+            }
+
+            if (obj.type == -1) {
+                if (!editor) {continue;}
+
+                else {
+                    entityList.add(new MapSpot(
+                            new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag, obj.layer));
                 }
             }
 
