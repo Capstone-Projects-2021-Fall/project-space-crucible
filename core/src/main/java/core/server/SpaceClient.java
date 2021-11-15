@@ -9,10 +9,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.util.InputStreamSender;
 import com.google.common.hash.Hashing;
 import core.game.logic.GameLogic;
-import core.gdx.wad.GameScreen;
-import core.gdx.wad.MyGDxTest;
-import core.gdx.wad.NameChangeWindow;
-import core.gdx.wad.StartMenu;
+import core.gdx.wad.*;
 import core.server.Network.*;
 import core.wad.funcs.SoundFuncs;
 
@@ -26,6 +23,7 @@ public class SpaceClient implements Listener {
     Client masterClient;
     Client gameClient;
     static String ip = "100.19.127.86";
+//    static String ip = "localhost";
     GameScreen screen;
     public ValidLobby validLobby;
     StartMenu startMenu;
@@ -35,7 +33,7 @@ public class SpaceClient implements Listener {
         this.screen = screen;
         this.startMenu = startMenu;
 
-        masterClient = new Client(8192, 8192);
+        masterClient = new Client(81920, 81920);
         masterClient.start();
         //register the packets
         Network.register(masterClient);
@@ -69,7 +67,7 @@ public class SpaceClient implements Listener {
                                 e.printStackTrace();
                             }
                             ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-                            connection.addListener(new InputStreamSender(in, 1024) {
+                            connection.addListener(new InputStreamSender(in, 512) {
                                 protected void start() {
                                     CreateWadFile sendLevelFile = new CreateWadFile();
                                     sendLevelFile.levelFileName = file.getName();
@@ -99,9 +97,10 @@ public class SpaceClient implements Listener {
                         try {
                             file = Gdx.files.internal("assets/" + ((CreateWadFile) object).levelFileName).file();
                             if(file.createNewFile()){
+                                System.out.println("Created a new file");
+                            }else{
                                 System.out.println("Couldn't create file " + file.getName());
                             }
-                            System.out.println("Created a new file");
                             return;
                         } catch (IOException ioException) {
                             ioException.printStackTrace();
@@ -122,11 +121,13 @@ public class SpaceClient implements Listener {
                     if((int)file.length() == ((WadFile) object).levelFileSize){
                         System.out.println("File receive complete");
                         try {
-                            MyGDxTest.addons.add(file);
+                            System.out.println("in the try block");
+                            System.out.println("file added to addons" + MyGDxTest.addons.add(file));
                             String hash;
                             hash = com.google.common.io.Files.asByteSource(file).hash(Hashing.sha256()).toString();
                             MyGDxTest.addonHashes.add(hash);
-                            screen.update = true;
+                            TitleScreen.update = true;
+                            System.out.println("Screen update: " + TitleScreen.update);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

@@ -48,8 +48,6 @@ public class GameScreen implements Screen {
     ClientData clientData = new ClientData();
     ServerDetails serverDetails = new ServerDetails();
     ChatWindow chatWindow;
-    public boolean update = false;
-
     public int playerNumber = 0;
 
     //screen
@@ -126,10 +124,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if(update){
-            MyGDxTest.loadWADS();
-            update = false;
-        }
+
         if (GameLogic.switchingLevels || GameLogic.getPlayer(1) == null) {return;}
 
         Gdx.gl.glClearColor(0,0,0,1F);
