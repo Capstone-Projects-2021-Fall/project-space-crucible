@@ -134,7 +134,9 @@ public class SpaceServer implements Listener {
                         GameLogic.server = server;
                         GameLogic.currentLevel = GameLogic.levels.get(1);
                         GameLogic.loadEntities(GameLogic.currentLevel, false);
-                        gameLoop.start();
+                        try {
+                            gameLoop.start();
+                        } catch(IllegalThreadStateException ignored){}
                     }
                 }
                 else if(packetData instanceof Network.CameraData) {
