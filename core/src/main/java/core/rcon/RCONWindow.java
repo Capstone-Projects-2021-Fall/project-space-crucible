@@ -15,6 +15,7 @@ import java.io.IOException;
 
 public class RCONWindow extends Window {
 
+    //final private Table rconTable;
     final private Stage stage;
     final private Label connectedLabel;
     final private ScrollPane scrollPane;
@@ -24,8 +25,6 @@ public class RCONWindow extends Window {
     final private Table commandTable;
     final public static String ip = "100.19.127.86";
     private boolean loggedIn = false;
-
-    final private Client client = new Client(8192, 8192);
 
     public RCONWindow(String title, Skin skin, Stage stage) {
         super(title, skin);
@@ -67,12 +66,12 @@ public class RCONWindow extends Window {
         sendButton.setDisabled(true);
 
         //Prepare Client
-        Network.register(client);
+        Network.register(RCON.client);
         addClientListener();
-        client.start();
+        RCON.client.start();
 
         try {
-            client.connect(5000, ip, Network.tcpPort);
+            RCON.client.connect(5000, ip, Network.tcpPort);
         } catch(IOException io) {System.exit(1);}
     }
 
@@ -88,11 +87,11 @@ public class RCONWindow extends Window {
             if (!loggedIn) {
                 System.exit(0);
             } else {
-                client.close();
+                RCON.client.close();
                 loggedIn = false;
 
                 try {
-                    client.connect(5000, ip, Network.tcpPort);
+                    RCON.client.connect(5000, ip, Network.tcpPort);
                 } catch(IOException io) {System.exit(1);}
             }
         }
@@ -101,18 +100,18 @@ public class RCONWindow extends Window {
 
         Network.RCONMessage command = new Network.RCONMessage();
         command.message = commandField.getText();
-        client.sendTCP(command);
+        RCON.client.sendTCP(command);
         commandField.setText("");
     }
 
     private void addClientListener() {
 
-        client.addListener(new Listener.ThreadedListener(new Listener() {
+        RCON.client.addListener(new Listener.ThreadedListener(new Listener() {
             @Override
             public void connected(Connection connection) {
                 Listener.super.connected(connection);
                 if (!loggedIn) {
-                    stage.addActor(new LoginWindow("Login", getSkin(), client));
+                    stage.addActor(new LoginWindow("Login", getSkin(), RCON.client));
                 }
             }
 
@@ -129,23 +128,23 @@ public class RCONWindow extends Window {
 
                         if (!loggedIn) {
                             if (((Network.RCONMessage) object).message.equals("Bad login")) {
-                                stage.addActor(new LoginWindow("Login", getSkin(), client));
+                                stage.addActor(new LoginWindow("Login", getSkin(), RCON.client));
                                 stage.addActor(new PopupWindow("Error", getSkin(), ((Network.RCONMessage) object).message));
                             } else if (((Network.RCONMessage) object).message.equals("OK")) {
                                 loggedIn = true;
                                 commandField.setDisabled(false);
                                 sendButton.setDisabled(false);
-                                connectedLabel.setText("Connected to: " + client.getRemoteAddressTCP().getHostString() + ":"+client.getRemoteAddressTCP().getPort());
+                                connectedLabel.setText("Connected to: " + RCON.client.getRemoteAddressTCP().getHostString() + ":" +RCON.client.getRemoteAddressTCP().getPort());
                             } else {
                                 try {
                                     int port = Integer.parseInt(((Network.RCONMessage) object).message);
-                                    client.close();
-                                    client.connect(ip, port);
+                                    RCON.client.close();
+                                    RCON.client.connect(ip, port);
 
                                     loggedIn = true;
                                     commandField.setDisabled(false);
                                     sendButton.setDisabled(false);
-                                    connectedLabel.setText("Connected to: " + client.getRemoteAddressTCP().getHostString() + ":"+client.getRemoteAddressTCP().getPort());
+                                    connectedLabel.setText("Connected to: " + RCON.client.getRemoteAddressTCP().getHostString() + ":"+ RCON.client.getRemoteAddressTCP().getPort());
 
 
                                 } catch (NumberFormatException | IOException ignored){}
@@ -158,7 +157,7 @@ public class RCONWindow extends Window {
                     else if (object instanceof Network.PromptConnectionType) {
                         Network.CheckConnection cc = new Network.CheckConnection();
                         cc.type = Network.ConnectionType.RCON;
-                        client.sendTCP(cc);
+                        RCON.client.sendTCP(cc);
                     }
             }
         }));

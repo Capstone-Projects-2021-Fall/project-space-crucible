@@ -34,7 +34,8 @@ public class RCONScreen extends InputAdapter implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height);
-        //rcon.setSize(width, height);
+        rcon.setSize(width/2f, height);
+        rcon.setPosition(0, 0);
     }
 
     @Override
