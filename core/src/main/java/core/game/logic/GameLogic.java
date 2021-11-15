@@ -298,10 +298,14 @@ public class GameLogic {
 
     public static PlayerPawn getPlayer(int tag) {
 
-        for (Entity e : entityList) {
-            if (e instanceof PlayerPawn && e.getTag() == tag) {
-                return (PlayerPawn) e;
+        try {
+            for (Entity e : entityList) {
+                if (e instanceof PlayerPawn && e.getTag() == tag) {
+                    return (PlayerPawn) e;
+                }
             }
+        } catch (ConcurrentModificationException cme) {
+            return getPlayer(tag);
         }
         return null;
     }

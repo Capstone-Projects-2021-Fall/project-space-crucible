@@ -107,8 +107,8 @@ public class SpaceServer implements Listener {
                             System.out.println("Could not write to file " + serverReport.getName());
                             e.printStackTrace();
                         }
-                        Objects.requireNonNull(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()))).controls = input.controls;
-                        Objects.requireNonNull(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()))).getPos().angle = input.angle;
+                        GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())).controls = input.controls;
+                        GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())).getPos().angle = input.angle;
                     }
                 }
                 else if(packetData instanceof Network.SendPlayerName){
