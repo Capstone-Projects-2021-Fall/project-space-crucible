@@ -210,6 +210,7 @@ public class GameScreen implements Screen {
                 int x = 100;
                 int y = 400;
 
+                updatePlayerNumber();
                 playerbuttons.forEach((k, v) -> v.remove());
                 for (String name : clientData.playerNames.values()) {
                     Button player = new TextButton(name, uiSkin);
@@ -422,7 +423,20 @@ public class GameScreen implements Screen {
 
     public void updatePlayerNumber() {
         playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
-        System.out.println("My playernumber is " + playerNumber);
+        if(!startGame && playerNumber == 1){
+            play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
+            lobbyStage.addActor(play);
+            play.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    startGame = true;
+                    Network.StartGame startGame = new Network.StartGame();
+                    startGame.startGame = true;
+                    client.getGameClient().sendTCP(startGame);
+                    play.removeListener(this);
+                }
+            });
+        }
+//        System.out.println("My playernumber is " + playerNumber);
     }
 
     public void setPing(int returnTripTime) {
