@@ -162,8 +162,11 @@ public class RCONWindow extends Window {
                     }
 
                     else if (object instanceof Network.RCONPlayerStats) {
-                        System.out.println("Got stats");
                         parent.live.updatePlayers((Network.RCONPlayerStats) object);
+                    }
+
+                    else if (object instanceof Network.RCONPacketStats) {
+                        parent.live.updatePacketStats((Network.RCONPacketStats) object);
                     }
             }
         }));

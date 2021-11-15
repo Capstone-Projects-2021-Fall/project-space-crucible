@@ -217,9 +217,9 @@ public class SpaceClient implements Listener {
                     if (ping.isReply){
                         screen.setPing(connection.getReturnTripTime());
                     }
-//                    SendPing sendPing = new SendPing();
-//                    sendPing.ping = connection.getReturnTripTime();
-//                    gameClient.sendTCP(sendPing);
+                    SendPing sendPing = new SendPing();
+                    sendPing.ping = connection.getReturnTripTime();
+                    gameClient.sendTCP(sendPing);
                 }
             }
 

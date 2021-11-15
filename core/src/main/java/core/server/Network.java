@@ -241,9 +241,12 @@ public class Network {
     public static class RCONPlayerStats{
         public ArrayList<PlayerPawn> playerList;
         public ArrayList<String> usernames;
+        public ArrayList<Integer> pings;
     }
     public static class RCONPacketStats{
         public int sentPerSec;
         public int receivedPerSec;
+        public int avgSentPerSec;
+        public int avgReceivedPerSec;
     }
 }

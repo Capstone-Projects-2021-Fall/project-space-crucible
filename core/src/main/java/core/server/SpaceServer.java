@@ -1,10 +1,7 @@
 package core.server;
 
 import com.badlogic.gdx.Gdx;
-import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.kryonet.Server;
+import com.esotericsoftware.kryonet.*;
 import core.game.entities.Entity;
 import core.game.logic.GameLogic;
 import core.level.info.LevelData;
@@ -19,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SpaceServer implements Listener {
 
@@ -30,6 +28,7 @@ public class SpaceServer implements Listener {
     public static Network.ClientData clientData;
     public static HashSet<Integer> connected = new HashSet<>();
     public static HashMap<Integer, String> playerNames = new HashMap<>();
+    public static HashMap<Integer, Integer> playerPings = new HashMap<>();
     public static HashSet<Integer> rconConnected = new HashSet<>();
     public static HashSet<Integer> disconnected = new HashSet<>();
     public static List<Integer> idToPlayerNum = new LinkedList<>();
@@ -39,6 +38,9 @@ public class SpaceServer implements Listener {
     final private SpaceServer spaceServer = this;
     public long packetsReceived = 0;
     public long packetsSent = 0;
+    public volatile AtomicInteger packetsReceivedLastSecond = new AtomicInteger(0);
+    public volatile AtomicInteger packetsSentLastSecond = new AtomicInteger(0);
+    private Timer packetTimer = new Timer();
     File serverReport;
     final long startTimer;
     Writer fileWriter;
@@ -78,8 +80,10 @@ public class SpaceServer implements Listener {
             public void connected(Connection c){
                 long duration = (System.nanoTime()-startTimer)/1000000000;
                 ips.put(c.getID(), c.getRemoteAddressTCP().getAddress().toString());
+                playerPings.put(c.getID(), c.getReturnTripTime());
                 server.sendToTCP(c.getID(), new Network.PromptConnectionType());
                 packetsSent++;
+                packetsSentLastSecond.incrementAndGet();
                 try {
                     fileWriter.write(duration + ": A new player has joined the server: Player " + c.getID() + "\n");
                     fileWriter.flush();
@@ -92,6 +96,7 @@ public class SpaceServer implements Listener {
             public void received(Connection c, Object packetData) {
                 long duration = (System.nanoTime()-startTimer)/1000000000;
                 packetsReceived++;
+                packetsReceivedLastSecond.incrementAndGet();
                 PlayerConnection connection = (PlayerConnection) c;
 
                 //update player movement based on the input
@@ -131,6 +136,7 @@ public class SpaceServer implements Listener {
                         gameStartedByHost = true;
                         server.sendToAllTCP(start);
                         packetsSent += server.getConnections().size();
+                        packetsSentLastSecond.addAndGet(server.getConnections().size());
                         GameLogic.spaceServer = spaceServer;
                         GameLogic.server = server;
                         GameLogic.currentLevel = GameLogic.levels.get(1);
@@ -146,6 +152,7 @@ public class SpaceServer implements Listener {
                 else if(packetData instanceof Network.ChatMessage) {
                     server.sendToAllTCP(packetData);
                     packetsSent += server.getConnections().size();
+                    packetsSentLastSecond.addAndGet(server.getConnections().size());
                     sendToRCON(
                             ((Network.ChatMessage) packetData).sender + ": "
                             + ((Network.ChatMessage) packetData).message
@@ -211,6 +218,7 @@ public class SpaceServer implements Listener {
                         }
                         server.sendToAllTCP(clientData);
                         packetsSent += server.getConnections().size();
+                        packetsSentLastSecond.addAndGet(server.getConnections().size());
                         idToPlayerNum.forEach(integer -> System.out.println("Player " + idToPlayerNum.indexOf(integer) + "'s username is " + playerNames.get(integer)));
                         if(gameStartedByHost){
                             System.out.println("Game started by host is true sending tcp");
@@ -219,6 +227,7 @@ public class SpaceServer implements Listener {
                             start.levelnum = GameLogic.currentLevel.levelnumber;
                             server.sendToTCP(c.getID(), start);
                             packetsSent += server.getConnections().size();
+                            packetsSentLastSecond.addAndGet(server.getConnections().size());
                         }
                     }
                     else if (((Network.CheckConnection) packetData).type == Network.ConnectionType.RCON) {
@@ -230,7 +239,7 @@ public class SpaceServer implements Listener {
                     handleRCON(((Network.RCONMessage) packetData).message);
                 }
                 else if (packetData instanceof SendPing){
-//                    System.out.println(((SendPing) packetData).ping);
+                    playerPings.put(c.getID(), ((SendPing) packetData).ping);
                 }
             }
             //This method will run when a client disconnects from the server, remove the character from the game
@@ -284,6 +293,7 @@ public class SpaceServer implements Listener {
                         clientData.playerNames = playerNames;
                         server.sendToAllTCP(clientData);
                         packetsSent += server.getConnections().size();
+                        packetsSentLastSecond.addAndGet(server.getConnections().size());
                         System.out.println("Client disconnected from game server! " + connectionID);
                     }
                 } else if (rconConnected.contains(connectionID)) {
@@ -294,6 +304,13 @@ public class SpaceServer implements Listener {
         });
         server.bind(tcpPort);
         server.start();
+
+        packetTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                updatePackets();
+            }
+        }, 0, 1000);
 
         //Start a connection to the master server as a client
         serverClient = new Client(8192, 8192);
@@ -318,6 +335,28 @@ public class SpaceServer implements Listener {
         }
     }
 
+    private void updatePackets() {
+
+        Network.RCONPacketStats ps = new Network.RCONPacketStats();
+        ps.sentPerSec = packetsSentLastSecond.get();
+        ps.receivedPerSec = packetsReceivedLastSecond.get();
+
+        Date now = new Date();
+        long elapsedTime = now.getTime() - startTime.getTime();
+        double elapsedSeconds = elapsedTime / 1000f;
+
+        ps.avgSentPerSec = (int)(packetsSent / elapsedSeconds);
+        ps.avgReceivedPerSec = (int)(packetsReceived / elapsedSeconds);
+        packetsSentLastSecond.set(0);
+        packetsReceivedLastSecond.set(0);
+
+        System.out.println("Sent Last Second: " + ps.sentPerSec);
+
+        for (int id : rconConnected) {
+            server.sendToTCP(id, ps);
+        }
+    }
+
     private void createGameLoopThread() {
         gameLoop = new Thread() {
             @Override
@@ -335,6 +374,7 @@ public class SpaceServer implements Listener {
     public static class PlayerConnection extends Connection{
         public InputData playerInput;
         public Network.CameraData cameraData;
+        public int ping;
     }
 
     private void handleRCON(String message) {
@@ -356,6 +396,7 @@ public class SpaceServer implements Listener {
                 cm.message = chat;
                 server.sendToAllTCP(cm);
                 packetsSent += server.getConnections().size();
+                packetsSentLastSecond.addAndGet(server.getConnections().size());
                 break;
 
             case "level":
@@ -425,6 +466,7 @@ public class SpaceServer implements Listener {
         for (Integer i : rconConnected) {
             server.sendToTCP(i, m);
             packetsSent++;
+            packetsSentLastSecond.addAndGet(server.getConnections().size());
         }
     }
 }
