@@ -32,7 +32,7 @@ public class MasterServer implements Listener {
     final private String CODE = "MASTER";
 
     public MasterServer(int minPort, int maxPort, String password){
-        server = new Server(81920, 81920);
+        server = new Server(10000, 10000);
         Network.register(server);
         for(int i = minPort; i <= maxPort; i++){
             availablePorts.add(i);
@@ -199,7 +199,7 @@ public class MasterServer implements Listener {
                 }
                 else if(object instanceof Network.WadFile){
                     //Redirect the files to the player that needs it
-                    System.out.println("master received a chunk of file " + ((Network.WadFile) object).levelFileName);
+                    System.out.println("master received a chunk of file size" + ((Network.WadFile) object).levelFileName + " size: " + ((Network.WadFile) object).levelFile.length);
                     server.sendToTCP(((Network.WadFile) object).sendFileTo, object);
                 }
             }

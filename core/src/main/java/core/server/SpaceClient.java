@@ -33,7 +33,7 @@ public class SpaceClient implements Listener {
         this.screen = screen;
         this.startMenu = startMenu;
 
-        masterClient = new Client(81920, 81920);
+        masterClient = new Client(10000, 10000);
         masterClient.start();
         //register the packets
         Network.register(masterClient);

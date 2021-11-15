@@ -26,6 +26,7 @@ public class SpaceServer implements Listener {
     Server server;
     Client serverClient;
     public static String ip = "100.19.127.86";
+//    public static String ip = "localhost";
     public static Network.ClientData clientData;
     public static HashSet<Integer> connected = new HashSet<>();
     public static HashMap<Integer, String> playerNames = new HashMap<>();
