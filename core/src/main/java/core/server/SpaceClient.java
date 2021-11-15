@@ -233,13 +233,6 @@ public class SpaceClient implements Listener {
             System.out.println("Game Server is not running!");
             gameClient = null;
         }
-        //If host
-        if (getGameClient().getID() == 1) {
-            System.out.println("Sending .WAD data...");
-            sendLevels();
-            sendEntities();
-            System.out.println("Done!");
-        }
     }
 
     public void makeLobby(){
@@ -277,7 +270,7 @@ public class SpaceClient implements Listener {
         return masterClient;
     }
 
-    private void sendLevels() {
+    public void sendLevels() {
 
         GameLogic.levels.forEach((integer, levelData) -> {
 
@@ -305,7 +298,7 @@ public class SpaceClient implements Listener {
         });
     }
 
-    private void sendEntities() {
+    public void sendEntities() {
 
         GameLogic.stateList.forEach(s -> {
             State state = new State();

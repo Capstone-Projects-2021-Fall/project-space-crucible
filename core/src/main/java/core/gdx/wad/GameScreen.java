@@ -98,6 +98,12 @@ public class GameScreen implements Screen {
         } else {
             playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
             System.out.println("I am player " + playerNumber);
+            if (playerNumber == 1) {
+                System.out.println("Sending .WAD data...");
+                client.sendLevels();
+                client.sendEntities();
+                System.out.println("Done!");
+            }
         }
         if(!isSinglePlayer) {
             if(!startGame) {

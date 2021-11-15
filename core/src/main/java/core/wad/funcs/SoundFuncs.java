@@ -63,7 +63,7 @@ public class SoundFuncs {
             sequencer.setSequence(new ByteArrayInputStream(gameMIDIs.get(name)));
             sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
             sequencer.start();
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             System.out.println("Could not read data, skipping...");
         } catch (InvalidMidiDataException e) {
             System.out.println("Not a valid MIDI file, skipping...");
