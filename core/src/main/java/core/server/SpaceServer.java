@@ -105,6 +105,7 @@ public class SpaceServer implements Listener {
                     connection.playerInput = input;
 
                     if(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())) != null) {
+                        /*
                         try {
                             fileWriter.write(duration + ": Received input data from Player " + c.getID() + ": " + Arrays.toString(input.controls) + ", angle: " + input.angle + "\n");
                             fileWriter.flush();
@@ -112,6 +113,7 @@ public class SpaceServer implements Listener {
                             System.out.println("Could not write to file " + serverReport.getName());
                             e.printStackTrace();
                         }
+                        */
                         GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())).controls = input.controls;
                         GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())).getPos().angle = input.angle;
                     }
@@ -350,7 +352,16 @@ public class SpaceServer implements Listener {
         packetsSentLastSecond.set(0);
         packetsReceivedLastSecond.set(0);
 
-        System.out.println("Sent Last Second: " + ps.sentPerSec);
+        try {
+            fileWriter.write("Sent Last Second: " + ps.sentPerSec + "\n");
+            fileWriter.write("Received Last Second: " + ps.receivedPerSec + "\n");
+            fileWriter.write("Avg Sent Per Second: " + ps.avgSentPerSec + "\n");
+            fileWriter.write("Avg Received Per Second: " + ps.avgReceivedPerSec + "\n\n");
+            fileWriter.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         for (int id : rconConnected) {
             server.sendToTCP(id, ps);
