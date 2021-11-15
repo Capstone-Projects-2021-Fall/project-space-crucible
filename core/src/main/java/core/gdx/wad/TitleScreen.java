@@ -23,6 +23,8 @@ public class TitleScreen implements Screen {
     Thread gameLoop;
     private Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
+    public static boolean update = false;
+
 
     public TitleScreen(MyGDxTest game, Thread gameLoop) {
         WadFile file;
@@ -53,7 +55,11 @@ public class TitleScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
+        if(update){
+            System.out.println("loading wadfile");
+            MyGDxTest.loadWADS();
+            update = false;
+        }
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

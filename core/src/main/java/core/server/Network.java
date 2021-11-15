@@ -15,6 +15,7 @@ import core.level.info.LevelObject;
 import core.level.info.LevelTile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -61,6 +62,10 @@ public class Network {
         kryo.register(CreateWadFile.class);
         kryo.register(GameEntity.class);
         kryo.register(State.class);
+        kryo.register(SendPing.class);
+        kryo.register(SendPlayerName.class);
+        kryo.register(RCONPlayerStats.class);
+        kryo.register(RCONPacketStats.class);
 
         //Level Classes
         kryo.register(LevelData.class);
@@ -103,6 +108,7 @@ public class Network {
         kryo.register(Integer[].class);
         kryo.register(String[].class);
         kryo.register(java.util.HashSet.class);
+        kryo.register(java.util.HashMap.class);
         kryo.register(java.util.LinkedList.class);
         kryo.register(byte[].class);
 
@@ -123,6 +129,7 @@ public class Network {
     public static class ClientData{
         public HashSet<Integer> connected;
         public List<Integer> idToPlayerNum;
+        public HashMap<Integer, String> playerNames;
     }
 
     //Send this to the SERVER
@@ -224,5 +231,22 @@ public class Network {
         public String levelFileName;
         public int levelFileSize;
         public int sendFileTo;
+    }
+    public static class SendPing{
+        public int ping;
+    }
+    public static class SendPlayerName{
+        public String name;
+    }
+    public static class RCONPlayerStats{
+        public ArrayList<PlayerPawn> playerList;
+        public ArrayList<String> usernames;
+        public ArrayList<Integer> pings;
+    }
+    public static class RCONPacketStats{
+        public int sentPerSec;
+        public int receivedPerSec;
+        public int avgSentPerSec;
+        public int avgReceivedPerSec;
     }
 }

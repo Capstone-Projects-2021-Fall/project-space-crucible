@@ -13,11 +13,14 @@ public class RCONScreen extends InputAdapter implements Screen {
     private Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
-    private RCONWindow rcon = new RCONWindow("RCON", skin, stage);
+    public RCONWindow rcon = new RCONWindow("RCON", skin, stage, this);
+    public LiveWindow live = new LiveWindow("Live Stats", skin, stage, this);
 
     @Override
     public void show() {
         stage.addActor(rcon);
+        stage.addActor(live);
+        live.setPosition(stage.getWidth()/2, 0);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -33,7 +36,11 @@ public class RCONScreen extends InputAdapter implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height);
+        rcon.setSize(width/2f, height);
+        rcon.setPosition(0, 0);
+        live.setSize(width/2f, height);
+        live.setPosition(width/2f, 0);
     }
 
     @Override

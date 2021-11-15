@@ -3,14 +3,13 @@ package core.server;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.kryonet.Listener;
 
 import com.esotericsoftware.kryonet.util.InputStreamSender;
 import com.google.common.hash.Hashing;
 import core.game.logic.GameLogic;
-import core.gdx.wad.GameScreen;
-import core.gdx.wad.MyGDxTest;
-import core.gdx.wad.StartMenu;
+import core.gdx.wad.*;
 import core.server.Network.*;
 import core.wad.funcs.SoundFuncs;
 
@@ -23,7 +22,8 @@ public class SpaceClient implements Listener {
 
     Client masterClient;
     Client gameClient;
-    static String ip = "localhost";//100.19.127.86
+    static String ip = "100.19.127.86";
+//    static String ip = "localhost";
     GameScreen screen;
     public ValidLobby validLobby;
     StartMenu startMenu;
@@ -33,7 +33,7 @@ public class SpaceClient implements Listener {
         this.screen = screen;
         this.startMenu = startMenu;
 
-        masterClient = new Client(8192, 8192);
+        masterClient = new Client(10000, 10000);
         masterClient.start();
         //register the packets
         Network.register(masterClient);
@@ -67,7 +67,7 @@ public class SpaceClient implements Listener {
                                 e.printStackTrace();
                             }
                             ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-                            connection.addListener(new InputStreamSender(in, 1024) {
+                            connection.addListener(new InputStreamSender(in, 512) {
                                 protected void start() {
                                     CreateWadFile sendLevelFile = new CreateWadFile();
                                     sendLevelFile.levelFileName = file.getName();
@@ -97,9 +97,10 @@ public class SpaceClient implements Listener {
                         try {
                             file = Gdx.files.internal("assets/" + ((CreateWadFile) object).levelFileName).file();
                             if(file.createNewFile()){
+                                System.out.println("Created a new file");
+                            }else{
                                 System.out.println("Couldn't create file " + file.getName());
                             }
-                            System.out.println("Created a new file");
                             return;
                         } catch (IOException ioException) {
                             ioException.printStackTrace();
@@ -120,11 +121,13 @@ public class SpaceClient implements Listener {
                     if((int)file.length() == ((WadFile) object).levelFileSize){
                         System.out.println("File receive complete");
                         try {
-                            MyGDxTest.addons.add(file);
+                            System.out.println("in the try block");
+                            System.out.println("file added to addons" + MyGDxTest.addons.add(file));
                             String hash;
                             hash = com.google.common.io.Files.asByteSource(file).hash(Hashing.sha256()).toString();
                             MyGDxTest.addonHashes.add(hash);
-                            screen.update = true;
+                            TitleScreen.update = true;
+                            System.out.println("Screen update: " + TitleScreen.update);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -147,11 +150,16 @@ public class SpaceClient implements Listener {
     public void createGameClient(int tcpPort) {
         gameClient = new Client(8192, 8192);
         gameClient.start();
+
         //register the packets
         Network.register(gameClient);
 
         gameClient.addListener(new ThreadedListener(new Listener() {
             public void connected(Connection connection) {
+                gameClient.updateReturnTripTime();
+                SendPlayerName playerName = new SendPlayerName();
+                playerName.name = NameChangeWindow.playerName;
+                gameClient.sendTCP(playerName);
             }
 
             public void received(Connection connection, Object object) {
@@ -183,8 +191,10 @@ public class SpaceClient implements Listener {
 
                 //If server sends StartGame set the startGame value to it
                 else if(object instanceof StartGame){
+                    screen.updatePlayerNumber();
                     GameLogic.currentLevel = GameLogic.levels.get(((StartGame) object).levelnum);
                     screen.startGame = ((StartGame) object).startGame;
+                    screen.addChatWindow();
                 }
 
                 else if (object instanceof LevelChange) {
@@ -201,6 +211,16 @@ public class SpaceClient implements Listener {
                     cc.type = ConnectionType.PLAYER;
                     gameClient.sendTCP(cc);
                 }
+                if(object instanceof FrameworkMessage.Ping){
+                    FrameworkMessage.Ping ping = (FrameworkMessage.Ping)object;
+
+                    if (ping.isReply){
+                        screen.setPing(connection.getReturnTripTime());
+                    }
+                    SendPing sendPing = new SendPing();
+                    sendPing.ping = connection.getReturnTripTime();
+                    gameClient.sendTCP(sendPing);
+                }
             }
 
             public void disconnected (Connection connection) {
@@ -212,13 +232,6 @@ public class SpaceClient implements Listener {
         } catch (IOException e) {
             System.out.println("Game Server is not running!");
             gameClient = null;
-        }
-        //If host
-        if (getGameClient().getID() == 1) {
-            System.out.println("Sending .WAD data...");
-            sendLevels();
-            sendEntities();
-            System.out.println("Done!");
         }
     }
 
@@ -257,7 +270,7 @@ public class SpaceClient implements Listener {
         return masterClient;
     }
 
-    private void sendLevels() {
+    public void sendLevels() {
 
         GameLogic.levels.forEach((integer, levelData) -> {
 
@@ -285,7 +298,7 @@ public class SpaceClient implements Listener {
         });
     }
 
-    private void sendEntities() {
+    public void sendEntities() {
 
         GameLogic.stateList.forEach(s -> {
             State state = new State();

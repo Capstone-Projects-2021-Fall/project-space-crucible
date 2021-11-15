@@ -1,6 +1,7 @@
 package core.level.info;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
@@ -53,6 +54,14 @@ public class LevelTile {
         this.bridge = bridge;
 
         graphicname = tex;
+    }
+
+    public static Rectangle getTileBounds(LevelTile levelTile) {
+        Rectangle tileBounds
+                = new Rectangle(levelTile.pos.x * LevelTile.TILE_SIZE,
+                levelTile.pos.y * LevelTile.TILE_SIZE,
+                LevelTile.TILE_SIZE, LevelTile.TILE_SIZE);
+        return  tileBounds;
     }
 
     public String toString() {

@@ -91,7 +91,7 @@ public class PlayerPawn extends Entity {
             } else if (getRemainingStateTics() == -1) {
 
                 if (GameLogic.isSinglePlayer) {
-                    GameLogic.readyChangeLevel(GameLogic.currentLevel);
+                    //GameLogic.readyChangeLevel(GameLogic.currentLevel);
                 } else {
                     int tag = this.tag;
                     this.tag = 0; //Stop controlling the corpse

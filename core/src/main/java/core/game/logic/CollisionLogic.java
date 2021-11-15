@@ -16,7 +16,8 @@ public class CollisionLogic {
             //No collision with self OR owner (if projectile)
             if(entity==entity2
                 || entity instanceof Projectile && ((Projectile) entity).getOwner() == entity2
-                || !entity2.getFlag(Entity.SOLID)){
+                || !entity2.getFlag(Entity.SOLID)
+                || (entity instanceof PlayerPawn && entity2 instanceof PlayerPawn)){
                 continue;
             }
             if(bounds.overlaps(entity2.getBounds()) && (entity.currentLayer == entity2.currentLayer)) {
@@ -53,7 +54,7 @@ public class CollisionLogic {
                     //Do effects if there are any
                     if(levelTile.effect > 0) {
                         GameLogic.effectList.get(levelTile.effect - 1)
-                                .run(entity, levelTile.arg1, levelTile.arg2);
+                                .run(entity, levelTile.arg1, levelTile.arg2, levelTile.tag);
 
                         if (!levelTile.repeat) {
                             levelTile.effect = 0;

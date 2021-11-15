@@ -7,7 +7,7 @@ import core.game.logic.LevelScript;
 public class T_ExecuteScript implements TileAction{
 
     @Override
-    public void run(Entity activator, int arg1, int arg2) {
+    public void run(Entity activator, int arg1, int arg2, int tag) {
         if (GameLogic.scripts.containsKey(arg1)) {
             System.out.println("Running script " + arg1);
             GameLogic.newScriptQueue.add(new LevelScript(activator, GameLogic.scripts.get(arg1)));

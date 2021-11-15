@@ -3,6 +3,7 @@ package core.gdx.wad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,14 +13,17 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
 import core.game.logic.GameLogic;
+import core.level.info.LevelTile;
 import core.server.Network;
 import core.server.Network.ClientData;
 import core.server.Network.RenderData;
@@ -28,7 +32,11 @@ import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 
+import java.util.ArrayList;
+
 import java.util.ConcurrentModificationException;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 
 public class GameScreen implements Screen {
@@ -40,8 +48,6 @@ public class GameScreen implements Screen {
     ClientData clientData = new ClientData();
     ServerDetails serverDetails = new ServerDetails();
     ChatWindow chatWindow;
-    public boolean update = false;
-
     public int playerNumber = 0;
 
     //screen
@@ -49,6 +55,7 @@ public class GameScreen implements Screen {
     private final Vector2 mouseInWorld2D = new Vector2();
     private final Vector3 mouseInWorld3D = new Vector3();
     ShapeRenderer sr = new ShapeRenderer();
+    ShapeRenderer shapeRenderer = new ShapeRenderer();
     boolean showBoxes = false;
     boolean isSinglePlayer;
     BitmapFont font = new BitmapFont();
@@ -66,6 +73,10 @@ public class GameScreen implements Screen {
     public boolean startGame = false;
     Label lobbyCode;
     boolean remove = false;
+    int ping;
+    public int updatePing = 0;
+    TreeMap<String, Button> playerbuttons = new TreeMap<>();
+    DeadPlayerWindow deadPlayerWindow;
 
     public GameScreen(Thread gameLoop, boolean isSinglePlayer, MyGDxTest myGdxTest) {
         this.gameLoop = gameLoop;
@@ -87,6 +98,12 @@ public class GameScreen implements Screen {
         } else {
             playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
             System.out.println("I am player " + playerNumber);
+            if (playerNumber == 1) {
+                System.out.println("Sending .WAD data...");
+                client.sendLevels();
+                client.sendEntities();
+                System.out.println("Done!");
+            }
         }
         if(!isSinglePlayer) {
             if(!startGame) {
@@ -101,7 +118,6 @@ public class GameScreen implements Screen {
                             Network.StartGame startGame = new Network.StartGame();
                             startGame.startGame = true;
                             client.getGameClient().sendTCP(startGame);
-                            addChatWindow();
                             play.removeListener(this);
                         }
                     });
@@ -114,10 +130,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if(update){
-            MyGDxTest.loadWADS();
-            update = false;
-        }
+
         if (GameLogic.switchingLevels || GameLogic.getPlayer(1) == null) {return;}
 
         Gdx.gl.glClearColor(0,0,0,1F);
@@ -129,6 +142,25 @@ public class GameScreen implements Screen {
         batch.begin();
 
         if(isSinglePlayer){
+            Gdx.input.setInputProcessor(stage);
+            deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
+
+            if(GameLogic.getPlayer(playerNumber).getHealth()<=0){
+                stage.addActor(deadPlayerWindow);
+                deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
+            }
+            if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+                stage.addActor(deadPlayerWindow);
+                deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
+            }
+            if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+                for(Actor actor : stage.getActors()){
+                    if(actor.getHeight()==deadPlayerWindow.getHeight() && actor.getWidth()==deadPlayerWindow.getWidth()){
+                        //normal deadPlayerWindow.remove() not working
+                        actor.remove();
+                    }
+                }
+            }
             getAngle(true);
             GameLogic.getPlayer(1).getPos().angle = angle; //Turn the vector2 into a degree angle
             camera.position.set(GameLogic.getPlayer(1).getPos().x + GameLogic.getPlayer(1).getWidth() / (float) 2.0,
@@ -137,10 +169,18 @@ public class GameScreen implements Screen {
             try {
                 RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, GameLogic.entityList, GameLogic.getPlayer(1));
                 //RenderFuncs.entityDraw(batch, GameLogic.entityList);
-                font.draw(batch, "HP:" + GameLogic.getPlayer(playerNumber).getHealth(), GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y);
+                if(GameLogic.getPlayer(playerNumber).getHealth()>0){
+                    font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
+                            GameLogic.getPlayer(playerNumber).getPos().x,
+                            GameLogic.getPlayer(playerNumber).getPos().y);
+                }else{
+                    font.draw(batch,"HP:0",
+                            GameLogic.getPlayer(playerNumber).getPos().x,
+                            GameLogic.getPlayer(playerNumber).getPos().y);
+                }
                 font.draw(batch, "Layer:" + GameLogic.getPlayer(playerNumber).currentLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-10);
                 font.draw(batch, "Bridge:" + GameLogic.getPlayer(playerNumber).bridgeLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-20);
-                font.draw(batch, "Player: " + GameLogic.getPlayer(playerNumber).getTag(),
+                font.draw(batch, NameChangeWindow.playerName,
                         GameLogic.getPlayer(playerNumber).getPos().x,
                         GameLogic.getPlayer(playerNumber).getPos().y + GameLogic.getPlayer(playerNumber).getHeight() + 10);
                 if (showBoxes) {
@@ -157,20 +197,30 @@ public class GameScreen implements Screen {
                 batch.end();
                 return;
             }
+            //The ping interval
+            if(updatePing == 0) {
+                updatePing = 50;
+                client.getGameClient().updateReturnTripTime();
+            }
+            updatePing--;
+
             if (!startGame) {
                 lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
                 lobbyStage.getBatch().begin();
                 lobbyStage.getBatch().draw(WadFuncs.LOBBYSCREEN, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
                 int x = 100;
                 int y = 400;
-                for (int element : clientData.idToPlayerNum) {
-                    if (element == -1) {continue;} //Skip dummy
-                    String clientId = "Player " + clientData.idToPlayerNum.indexOf(element);
-                    TextButton player = new TextButton(clientId, uiSkin);
+
+                updatePlayerNumber();
+                playerbuttons.forEach((k, v) -> v.remove());
+                for (String name : clientData.playerNames.values()) {
+                    Button player = new TextButton(name, uiSkin);
                     player.setBounds(x, y, 80, 50);
                     lobbyStage.addActor(player);
                     y -= 50;
+                    playerbuttons.put(name, player);
                 }
+
                 if (serverDetails.lobbyCode != null && !remove) {
                     if (client.getGameClient().getID() == 1) {
                         lobbyCode = new Label("Lobby Code\n" + serverDetails.lobbyCode + "\nRCON Pass:\n" + serverDetails.rconPass, uiSkin);
@@ -204,13 +254,21 @@ public class GameScreen implements Screen {
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
                 camera.update();
                 RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, renderData.entityList, getPlayer(playerNumber));
-                //RenderFuncs.entityDraw(batch, renderData.entityList);
 
-                font.draw(batch, "HP:" + getPlayer(playerNumber).getHealth(), getPlayer(playerNumber).getPos().x,
-                        getPlayer(playerNumber).getPos().y);
-                font.draw(batch, "Player: " + getPlayer(playerNumber).getTag(),
+                if(getPlayer(playerNumber).getHealth()>0){
+                    font.draw(batch,"HP:" +getPlayer(playerNumber).getHealth(),
+                            getPlayer(playerNumber).getPos().x,
+                            getPlayer(playerNumber).getPos().y);
+                }else{
+                    font.draw(batch,"HP: 0",
+                            getPlayer(playerNumber).getPos().x,
+                            getPlayer(playerNumber).getPos().y);
+                }
+                font.draw(batch, NameChangeWindow.playerName,
                         getPlayer(playerNumber).getPos().x,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() + 10);
+                font.draw(batch, "Ping: " + ping, getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y-13);
+
                 if (showBoxes) {
                     showBoxes();
                 }
@@ -219,25 +277,19 @@ public class GameScreen implements Screen {
                 client.getCameraData(getCameraData());
             }
             catch (NullPointerException | ConcurrentModificationException e) {
-                batch.end();
+                try {batch.end();} catch(NullPointerException ignored){}
                 return;
             }
         }
-
-
-        if (showBoxes) {
-            showBoxes();
-        }
-
         if (showBoxes) {showBoxes();}
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS)) {
             showBoxes = !showBoxes;
         }
         batch.end();
-
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        drawMiniMap();
     }
 
     private void showBoxes() {
@@ -257,8 +309,8 @@ public class GameScreen implements Screen {
             mouseInWorld3D.x = Gdx.input.getX() - GameLogic.getPlayer(1).getPos().x - GameLogic.getPlayer(1).getWidth()/2f;
             mouseInWorld3D.y = Gdx.input.getY() + GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight()/2f;
         } else if(renderData.entityList != null && getPlayer(playerNumber) != null) {
-            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(playerNumber).getPos().x - GameLogic.getPlayer(1).getWidth()/2f;
-            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y + GameLogic.getPlayer(1).getHeight()/2f;
+            mouseInWorld3D.x = Gdx.input.getX() - getPlayer(playerNumber).getPos().x - getPlayer(playerNumber).getWidth()/2f;
+            mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight()/2f;
         }
         mouseInWorld3D.z = 0;
         camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
@@ -343,7 +395,7 @@ public class GameScreen implements Screen {
         return null;
     }
 
-    private void addChatWindow() {
+    public void addChatWindow() {
         Gdx.input.setInputProcessor(stage);
         chatWindow = new ChatWindow("Chat", skin, this, stage, myGDxTest);
         stage.addActor(chatWindow);
@@ -359,7 +411,9 @@ public class GameScreen implements Screen {
                 System.out.println("exit");
                 client.getGameClient().close();
                 client.getMasterClient().close();
-                myGDxTest.setScreen(new TitleScreen(myGDxTest, myGDxTest.gameLoop));
+                myGDxTest.setScreen(myGDxTest.titleScreen);
+                StartMenu.setCoopButtonsVisible(false);
+                StartMenu.setMainMenuButtonsVisible(true);
             }
         });
     }
@@ -370,5 +424,59 @@ public class GameScreen implements Screen {
 
     public void updatePlayerNumber() {
         playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
+        if(!startGame && playerNumber == 1){
+            play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
+            lobbyStage.addActor(play);
+            play.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    startGame = true;
+                    Network.StartGame startGame = new Network.StartGame();
+                    startGame.startGame = true;
+                    client.getGameClient().sendTCP(startGame);
+                    play.removeListener(this);
+                }
+            });
+        }
+//        System.out.println("My playernumber is " + playerNumber);
+    }
+
+    public void setPing(int returnTripTime) {
+        ping = returnTripTime;
+    }
+
+    private void drawMiniMap() {
+        float miniSquareWidth = camera.viewportWidth/200;
+        float miniSquareHeight = miniSquareWidth;
+        float drawMiniX = 0;
+        float drawMiniY = 345;
+        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        float mapSpacing =4;
+        for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
+            shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
+                    levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
+                    Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY);
+            if(levelTile.solid) {
+                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
+                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
+                        Color.RED, Color.RED, Color.RED, Color.RED);
+            }
+            if(isSinglePlayer) {
+                if (!levelTile.solid && levelTile.pos.x == (int) GameLogic.getPlayer(playerNumber).getPos().x / LevelTile.TILE_SIZE &&
+                        levelTile.pos.y == (int) GameLogic.getPlayer(playerNumber).getPos().y / LevelTile.TILE_SIZE) {
+                    shapeRenderer.rect(levelTile.pos.x * mapSpacing + drawMiniX + camera.viewportWidth / 12,
+                            levelTile.pos.y * mapSpacing + drawMiniY + camera.viewportHeight / 7, miniSquareWidth, miniSquareHeight,
+                            Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
+                }
+            }else{
+                if (!levelTile.solid && levelTile.pos.x == (int) getPlayer(playerNumber).getPos().x / LevelTile.TILE_SIZE &&
+                        levelTile.pos.y == (int) getPlayer(playerNumber).getPos().y / LevelTile.TILE_SIZE) {
+                    shapeRenderer.rect(levelTile.pos.x * mapSpacing + drawMiniX + camera.viewportWidth / 12,
+                            levelTile.pos.y * mapSpacing + drawMiniY + camera.viewportHeight / 7, miniSquareWidth, miniSquareHeight,
+                            Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE);
+                }
+            }
+        }
+        shapeRenderer.end();
     }
 }
