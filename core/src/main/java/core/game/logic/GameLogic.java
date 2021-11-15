@@ -100,49 +100,54 @@ public class GameLogic {
             e.decrementTics();
 
             if (e instanceof PlayerPawn) {
-                //If PlayerPawn is being controlled by a connected player
-                if (isSinglePlayer || SpaceServer.connected.contains(SpaceServer.idToPlayerNum.get(e.getTag()))) {
-                    ((PlayerPawn) e).movementUpdate();
-                } else {
-                    if (e.getHealth() <= 0) {continue;}
-                    //Set player to chase closest enemy or player (bot only attacks monsters)
-                    setPlayerBotTarget((PlayerPawn) e);
+                try {
+                    //If PlayerPawn is being controlled by a connected player
+                    if (isSinglePlayer || SpaceServer.connected.contains(SpaceServer.idToPlayerNum.get(e.getTag()))) {
+                        ((PlayerPawn) e).movementUpdate();
+                    } else {
+                        if (e.getHealth() <= 0) {
+                            continue;
+                        }
+                        //Set player to chase closest enemy or player (bot only attacks monsters)
+                        setPlayerBotTarget((PlayerPawn) e);
 
-                    if (((PlayerPawn) e).botTarget == null) {
-                        e.setState(Entity.IDLE);
-                    }
+                        if (((PlayerPawn) e).botTarget == null) {
+                            e.setState(Entity.IDLE);
+                        }
 
-                    try {
+                        try {
 
-                        Vector2 start = e.getCenter();
-                        Entity target = ((PlayerPawn) e).botTarget;
+                            Vector2 start = e.getCenter();
+                            Entity target = ((PlayerPawn) e).botTarget;
 
-                        Vector2 distance = new Vector2();
-                        distance.x = target.getPos().x - e.getPos().x;
-                        distance.y = target.getPos().y - e.getPos().y;
+                            Vector2 distance = new Vector2();
+                            distance.x = target.getPos().x - e.getPos().x;
+                            distance.y = target.getPos().y - e.getPos().y;
 
-                        if ((CollisionLogic.checkFOVForEntity(start.x, start.y, e.getPos().angle, e, target)
-                                || distance.len() < 64f)
-                                && e.getCurrentStateIndex() <= e.getStates()[Entity.MELEE]
-                                && !(target instanceof PlayerPawn)) {
+                            if ((CollisionLogic.checkFOVForEntity(start.x, start.y, e.getPos().angle, e, target)
+                                    || distance.len() < 64f)
+                                    && e.getCurrentStateIndex() <= e.getStates()[Entity.MELEE]
+                                    && !(target instanceof PlayerPawn)) {
 
 
-                            e.getPos().angle = distance.angleDeg();
-                            e.setState(e.getStates()[Entity.MISSILE]);
-                            e.hitScanAttack(e.getPos().angle, 15);
-                            SoundFuncs.playSound("pistol/shoot");
-                            GameLogic.alertMonsters(e);
-                        } else {
-                            if (!(((PlayerPawn) e).botTarget instanceof PlayerPawn && distance.len() < 128f)) {
-                                e.pursueTarget(target);
+                                e.getPos().angle = distance.angleDeg();
+                                e.setState(e.getStates()[Entity.MISSILE]);
+                                e.hitScanAttack(e.getPos().angle, 15);
+                                SoundFuncs.playSound("pistol/shoot");
+                                GameLogic.alertMonsters(e);
+                            } else {
+                                if (!(((PlayerPawn) e).botTarget instanceof PlayerPawn && distance.len() < 128f)) {
+                                    e.pursueTarget(target);
 
-                                if (e.getCurrentStateIndex() == e.getStates()[Entity.IDLE]) {
-                                    e.setState(e.getStates()[Entity.WALK]);
+                                    if (e.getCurrentStateIndex() == e.getStates()[Entity.IDLE]) {
+                                        e.setState(e.getStates()[Entity.WALK]);
+                                    }
                                 }
                             }
+                        } catch (NullPointerException ignored) {
                         }
-                    } catch (NullPointerException ignored){}
-                }
+                    }
+                } catch(IndexOutOfBoundsException ioobe) {System.out.println("Could not get player with that tag.");}
             }
         }
 

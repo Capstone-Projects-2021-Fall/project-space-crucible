@@ -123,7 +123,7 @@ public class SpaceServer implements Listener {
                     playerNames.put(c.getID(), name);
                 }
                 else if(packetData instanceof StartGame){
-                    if(((StartGame) packetData).startGame && !gameLoop.isAlive()){
+                    if(((StartGame) packetData).startGame && !gameLoop.isAlive() && !gameStartedByHost){
                         System.out.println("Initializing server and starting game loop");
                         StartGame start = new StartGame();
                         start.startGame = true;
