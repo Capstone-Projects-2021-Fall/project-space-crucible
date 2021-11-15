@@ -409,8 +409,8 @@ public class GameScreen implements Screen {
                 System.out.println("exit");
                 client.getGameClient().close();
                 client.getMasterClient().close();
-                TitleScreen titleScreen = new TitleScreen(myGDxTest, gameLoop);
-                myGDxTest.setScreen(titleScreen);
+                myGDxTest.setScreen(myGDxTest.titleScreen);
+                StartMenu.setCoopButtonsVisible(false);
                 StartMenu.setMainMenuButtonsVisible(true);
             }
         });
