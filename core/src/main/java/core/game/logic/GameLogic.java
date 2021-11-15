@@ -184,6 +184,23 @@ public class GameLogic {
                 server.sendToTCP(c.getID(), renderData);
                 spaceServer.packetsSent++;
             }
+
+            //Send live player info
+            Network.RCONPlayerStats ps = new Network.RCONPlayerStats();
+            ps.playerList = new ArrayList<>();
+            ps.usernames = new ArrayList<>();
+
+            for (int pid : SpaceServer.idToPlayerNum) {
+                if (pid == -1) {continue;}
+                ps.playerList.add(getPlayer(SpaceServer.idToPlayerNum.indexOf(pid)));
+                ps.usernames.add(SpaceServer.playerNames.get(pid));
+            }
+
+            System.out.println(ps.usernames);
+
+            for (int id : SpaceServer.rconConnected) {
+                server.sendToTCP(id, ps);
+            }
         }
 
         if (!goingToNextLevel) {

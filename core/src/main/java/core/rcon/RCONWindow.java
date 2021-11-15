@@ -17,6 +17,7 @@ public class RCONWindow extends Window {
 
     //final private Table rconTable;
     final private Stage stage;
+    final private RCONScreen parent;
     final private Label connectedLabel;
     final private ScrollPane scrollPane;
     final private Table serverLog;
@@ -26,12 +27,12 @@ public class RCONWindow extends Window {
     final public static String ip = "100.19.127.86";
     private boolean loggedIn = false;
 
-    public RCONWindow(String title, Skin skin, Stage stage) {
+    public RCONWindow(String title, Skin skin, Stage stage, RCONScreen parent) {
         super(title, skin);
-        setModal(true);
         setResizable(true);
         setMovable(true);
         this.stage = stage;
+        this.parent = parent;
 
         connectedLabel = new Label("Connected to:", skin);
         add(connectedLabel);
@@ -158,6 +159,11 @@ public class RCONWindow extends Window {
                         Network.CheckConnection cc = new Network.CheckConnection();
                         cc.type = Network.ConnectionType.RCON;
                         RCON.client.sendTCP(cc);
+                    }
+
+                    else if (object instanceof Network.RCONPlayerStats) {
+                        System.out.println("Got stats");
+                        parent.live.updatePlayers((Network.RCONPlayerStats) object);
                     }
             }
         }));

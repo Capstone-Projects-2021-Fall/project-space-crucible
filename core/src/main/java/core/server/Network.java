@@ -64,6 +64,8 @@ public class Network {
         kryo.register(State.class);
         kryo.register(SendPing.class);
         kryo.register(SendPlayerName.class);
+        kryo.register(RCONPlayerStats.class);
+        kryo.register(RCONPacketStats.class);
 
         //Level Classes
         kryo.register(LevelData.class);
@@ -235,5 +237,13 @@ public class Network {
     }
     public static class SendPlayerName{
         public String name;
+    }
+    public static class RCONPlayerStats{
+        public ArrayList<PlayerPawn> playerList;
+        public ArrayList<String> usernames;
+    }
+    public static class RCONPacketStats{
+        public int sentPerSec;
+        public int receivedPerSec;
     }
 }
