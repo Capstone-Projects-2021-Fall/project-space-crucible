@@ -18,8 +18,7 @@ public class RCONWindow extends Window {
     final private Stage stage;
     final private Label connectedLabel;
     final private ScrollPane scrollPane;
-    final private List<String> serverLog;
-    final private Array<String> serverLogArray = new Array<>();
+    final private Table serverLog;
     final private TextField commandField;
     final private TextButton sendButton;
     final private Table commandTable;
@@ -39,10 +38,10 @@ public class RCONWindow extends Window {
         add(connectedLabel);
         row();
 
-        serverLog = new List<>(skin);
-        serverLog.setItems(serverLogArray);
-        serverLog.setLayoutEnabled(false);
+        serverLog = new Table(skin);
+        //serverLog.setLayoutEnabled(false);
         scrollPane = new ScrollPane(serverLog);
+        scrollPane.setFadeScrollBars(false);
         add(scrollPane).width(320).height(400);
         row();
 
@@ -78,8 +77,8 @@ public class RCONWindow extends Window {
     }
 
     private void updateLog(String message) {
-        serverLogArray.add(message);
-        serverLog.setItems(serverLogArray);
+        serverLog.add(new Label(message, getSkin())).width(320);
+        serverLog.row();
         scrollPane.setScrollPercentY(100f);
     }
 
