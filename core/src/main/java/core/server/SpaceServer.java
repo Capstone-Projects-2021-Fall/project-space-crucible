@@ -203,7 +203,6 @@ public class SpaceServer implements Listener {
                         clientData.connected = connected;
                         clientData.idToPlayerNum = idToPlayerNum;
                         clientData.playerNames = playerNames;
-                        clientData.playerNames = playerNames;
                         System.out.println("Player connected " + idToPlayerNum.indexOf(c.getID()));
 
                         if (gameStartedByHost) {
@@ -217,6 +216,7 @@ public class SpaceServer implements Listener {
                         }
                         server.sendToAllTCP(clientData);
                         packetsSent += server.getConnections().size();
+                        idToPlayerNum.forEach(integer -> System.out.println("Player " + idToPlayerNum.indexOf(integer) + "'s username is " + playerNames.get(integer)));
                     }
                     else if (((Network.CheckConnection) packetData).type == Network.ConnectionType.RCON) {
                         rconConnected.add(c.getID());
@@ -267,9 +267,14 @@ public class SpaceServer implements Listener {
                         try {GameLogic.stop();} catch (NullPointerException ignored){}
                         createGameLoopThread();
                     } else {
-//                        GameLogic.getPlayer(idToPlayerNum.get(c.getID()))
-//                                .setSpeed(GameLogic.getPlayer(idToPlayerNum.get(c.getID())).getSpeed() / 40);
-                        //clientData.idToPlayerNum = idToPlayerNum;
+                        if (gameStartedByHost) {
+                            GameLogic.getPlayer(idToPlayerNum.indexOf(c.getID()))
+                                    .setSpeed(GameLogic.getPlayer(idToPlayerNum.indexOf(c.getID())).getSpeed() / 40);
+                        } else {
+                            playerNames.remove(c.getID());
+                            SpaceServer.idToPlayerNum.remove((Integer)c.getID());
+                        }
+                        clientData.idToPlayerNum = idToPlayerNum;
                         clientData.playerNames = playerNames;
                         server.sendToAllTCP(clientData);
                         packetsSent += server.getConnections().size();
@@ -278,6 +283,7 @@ public class SpaceServer implements Listener {
                 } else if (rconConnected.contains(connectionID)) {
                     rconConnected.remove(connectionID);
                 }
+                idToPlayerNum.forEach(integer -> System.out.println("Player " + idToPlayerNum.indexOf(integer) + "'s username is " + playerNames.get(integer)));
             }
         });
         server.bind(tcpPort);

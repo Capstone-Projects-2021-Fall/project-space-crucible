@@ -192,6 +192,7 @@ public class SpaceClient implements Listener {
                 else if(object instanceof StartGame){
                     GameLogic.currentLevel = GameLogic.levels.get(((StartGame) object).levelnum);
                     screen.startGame = ((StartGame) object).startGame;
+                    screen.addChatWindow();
                 }
 
                 else if (object instanceof LevelChange) {

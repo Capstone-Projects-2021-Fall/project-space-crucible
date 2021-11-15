@@ -41,8 +41,9 @@ public class RCONWindow extends Window {
 
         serverLog = new List<>(skin);
         serverLog.setItems(serverLogArray);
+        serverLog.setLayoutEnabled(false);
         scrollPane = new ScrollPane(serverLog);
-        add(scrollPane).width(320).height(240);
+        add(scrollPane).width(320).height(400);
         row();
 
         commandField = new TextField("", skin);
@@ -135,6 +136,7 @@ public class RCONWindow extends Window {
                                 loggedIn = true;
                                 commandField.setDisabled(false);
                                 sendButton.setDisabled(false);
+                                connectedLabel.setText("Connected to: " + client.getRemoteAddressTCP().getHostString() + ":"+client.getRemoteAddressTCP().getPort());
                             } else {
                                 try {
                                     int port = Integer.parseInt(((Network.RCONMessage) object).message);
@@ -144,6 +146,7 @@ public class RCONWindow extends Window {
                                     loggedIn = true;
                                     commandField.setDisabled(false);
                                     sendButton.setDisabled(false);
+                                    connectedLabel.setText("Connected to: " + client.getRemoteAddressTCP().getHostString() + ":"+client.getRemoteAddressTCP().getPort());
 
 
                                 } catch (NumberFormatException | IOException ignored){}

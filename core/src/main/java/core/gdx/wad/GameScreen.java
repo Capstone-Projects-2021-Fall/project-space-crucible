@@ -36,6 +36,7 @@ import java.util.ArrayList;
 
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 
 public class GameScreen implements Screen {
@@ -76,7 +77,7 @@ public class GameScreen implements Screen {
     boolean remove = false;
     int ping;
     public int updatePing = 0;
-    HashMap<String, Button> playerbuttons = new HashMap<>();
+    TreeMap<String, Button> playerbuttons = new TreeMap<>();
     DeadPlayerWindow deadPlayerWindow;
 
     public GameScreen(Thread gameLoop, boolean isSinglePlayer, MyGDxTest myGdxTest) {
@@ -113,7 +114,6 @@ public class GameScreen implements Screen {
                             Network.StartGame startGame = new Network.StartGame();
                             startGame.startGame = true;
                             client.getGameClient().sendTCP(startGame);
-                            addChatWindow();
                             play.removeListener(this);
                         }
                     });
@@ -212,21 +212,13 @@ public class GameScreen implements Screen {
                 int x = 100;
                 int y = 400;
 
-                if(clientData.playerNames.size() > playerbuttons.size()) {
-                    for (String name : clientData.playerNames.values()) {
-                        Button player = new TextButton(name, uiSkin);
-                        player.setBounds(x, y, 80, 50);
-                        lobbyStage.addActor(player);
-                        y -= 50;
-                        playerbuttons.put(name, player);
-                    }
-                }
-                if(clientData.playerNames.size() < playerbuttons.size()) {
-                    for (String name : playerbuttons.keySet()) {
-                        if (!clientData.playerNames.containsValue(name)) {
-                            playerbuttons.get(name).remove();
-                        }
-                    }
+                playerbuttons.forEach((k, v) -> v.remove());
+                for (String name : clientData.playerNames.values()) {
+                    Button player = new TextButton(name, uiSkin);
+                    player.setBounds(x, y, 80, 50);
+                    lobbyStage.addActor(player);
+                    y -= 50;
+                    playerbuttons.put(name, player);
                 }
 
                 if (serverDetails.lobbyCode != null && !remove) {
@@ -403,7 +395,7 @@ public class GameScreen implements Screen {
         return null;
     }
 
-    private void addChatWindow() {
+    public void addChatWindow() {
         Gdx.input.setInputProcessor(stage);
         chatWindow = new ChatWindow("Chat", skin, this, stage, myGDxTest);
         stage.addActor(chatWindow);
