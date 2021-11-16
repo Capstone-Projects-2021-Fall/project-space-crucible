@@ -13,6 +13,9 @@ We are providing a .zip file which will contain all the files and folders requir
 ## Testing Doc
 [Link](https://www.dropbox.com/s/444101l5moxaws5/Acceptance%20QA%20Testing%20doc.xlsx?dl=0)
 
+## Demo 3 Release Link
+[Link](https://github.com/Capstone-Projects-2021-Fall/project-space-crucible/releases/tag/0.3.0)
+
 ## Contributors: 
   Isaac Colon <br />
   Parth Patel <br />
