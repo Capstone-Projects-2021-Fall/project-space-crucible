@@ -11,7 +11,7 @@ Players will receive a launcher upon starting the game. The launcher will allow 
 We are providing a .zip file which will contain all the files and folders required to run this multiplayer game. In the files, there will be a spacecrucible.jar that the windows OS using players are supposed to open with a JAVA launcher that will open the game. Linux users can run spacecrucible.sh and MAC OS users can open legacylauncher.jar.
 
 ## Testing Doc
-[Link](https://www.dropbox.com/scl/fi/whllvzk0s9ujp3ir3a3ox/Acceptance-QA-Testing-doc.xlsx?dl=1)
+[Link](https://www.dropbox.com/s/444101l5moxaws5/Acceptance%20QA%20Testing%20doc.xlsx?dl=0)
 
 ## Contributors: 
   Isaac Colon <br />
