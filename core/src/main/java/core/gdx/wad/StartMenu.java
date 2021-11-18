@@ -88,8 +88,6 @@ public class StartMenu extends Actor{
                     error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
                     return;
                 }
-                setMainMenuButtonsVisible(false);
-                setCoopButtonsVisible(true);
                 GameScreen gameScreen= new GameScreen(null, false, myGDxTest);
                 client = new SpaceClient(gameScreen, startMenu);
                 if(client.getMasterClient() == null) {
@@ -99,6 +97,8 @@ public class StartMenu extends Actor{
                     error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
                     return;
                 }
+                setMainMenuButtonsVisible(false);
+                setCoopButtonsVisible(true);
                 gameScreen.client = client;
 
                 backButton.button.addListener(new ClickListener(){
