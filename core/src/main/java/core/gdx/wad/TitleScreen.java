@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -24,11 +25,12 @@ public class TitleScreen implements Screen {
     private Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
     public static boolean update = false;
-
+    private GLProfiler profiler;
 
     public TitleScreen(MyGDxTest game, Thread gameLoop) {
         WadFile file;
-
+        profiler = new GLProfiler(Gdx.graphics);
+        profiler.enable();
         try {
             file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
             String path = file.getFileAbsolutePath();
@@ -55,6 +57,8 @@ public class TitleScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
+        profiler.reset();
         if(update){
             System.out.println("loading wadfile");
             MyGDxTest.loadWADS();
@@ -66,13 +70,16 @@ public class TitleScreen implements Screen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
-
         //drawing sprite background
-        batch.begin();
-        batch.draw(texture,25,30);
-        batch.end();
         stage.act(Gdx.graphics.getDeltaTime());
+        batch.begin();
+        batch.draw(texture, 0, 0, camera.viewportWidth, camera.viewportHeight);
+        batch.end();
         stage.draw();
+        float drawCalls = profiler.getDrawCalls();
+        float textureBinds = profiler.getTextureBindings();
+//        System.out.println(drawCalls);
+//        System.out.println(textureBinds);
     }
 
     @Override
