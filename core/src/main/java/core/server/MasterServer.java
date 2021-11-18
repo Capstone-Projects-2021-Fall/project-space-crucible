@@ -16,6 +16,7 @@ import core.server.Network.SendServerInfo;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.nio.BufferOverflowException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,7 +33,7 @@ public class MasterServer implements Listener {
     final private String CODE = "MASTER";
 
     public MasterServer(int minPort, int maxPort, String password){
-        server = new Server(10000, 10000);
+        server = new Server();
         Network.register(server);
         for(int i = minPort; i <= maxPort; i++){
             availablePorts.add(i);
@@ -104,13 +105,13 @@ public class MasterServer implements Listener {
 
                         if (serverEntry.getFiles().size() != ((JoinLobby) object).names.size()) {
                             //Ping  the host and tell the host to send the file
-                            /*
+
                             Ping pingLobbyHost = new Ping();
                             pingLobbyHost.getAddonFiles = true;
                             pingLobbyHost.masterClientThatNeedsTheFiles = connection.getID();
                             ServerEntry hostEntry = servers.get(lobbyCode);
                             server.sendToTCP(hostEntry.masterID, pingLobbyHost);
-*/
+
                             validLobby.valid = false;
                             validLobby.reason = "Lobby requires these WADS:\n" + serverEntry.getFiles().toString();// + " \n Server is downloading them in your assets folder\n Wait a few seconds and try to join again!";
                             connection.sendTCP(validLobby);
@@ -202,7 +203,17 @@ public class MasterServer implements Listener {
                 else if(object instanceof Network.WadFile){
                     //Redirect the files to the player that needs it
                     System.out.println("master received a chunk of file size" + ((Network.WadFile) object).levelFileName + " size: " + ((Network.WadFile) object).levelFile.length);
-                    server.sendToTCP(((Network.WadFile) object).sendFileTo, object);
+//                    Log.DEBUG();
+                    try {
+                        server.sendToTCP(((Network.WadFile) object).sendFileTo, object);
+                    }catch(BufferOverflowException i){
+                        try {
+                            System.out.println("Buffer overflow error");
+                            server.update(100);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
 

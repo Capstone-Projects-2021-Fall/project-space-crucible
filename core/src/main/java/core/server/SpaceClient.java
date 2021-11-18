@@ -22,18 +22,19 @@ public class SpaceClient implements Listener {
 
     Client masterClient;
     Client gameClient;
-    static String ip = "100.19.127.86";
-//    static String ip = "localhost";
+//    static String ip = "100.19.127.86";
+    static String ip = "localhost";
     GameScreen screen;
     public ValidLobby validLobby;
     StartMenu startMenu;
     File file;
+    boolean fileReceive = false;
 
     public SpaceClient(GameScreen screen, StartMenu startMenu){
         this.screen = screen;
         this.startMenu = startMenu;
 
-        masterClient = new Client(10000, 10000);
+        masterClient = new Client(1000, 1000);
         masterClient.start();
         //register the packets
         Network.register(masterClient);
@@ -114,12 +115,9 @@ public class SpaceClient implements Listener {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-//                    if((int)file.length() == ((WadFile) object).levelFileSize) {
-//                        System.out.println("Changing screens");
-//                        screen.changeScreen();
-//                    }
                     if((int)file.length() == ((WadFile) object).levelFileSize){
                         System.out.println("File receive complete");
+                        fileReceive = true;
                         try {
                             System.out.println("in the try block");
                             System.out.println("file added to addons" + MyGDxTest.addons.add(file));
@@ -127,7 +125,6 @@ public class SpaceClient implements Listener {
                             hash = com.google.common.io.Files.asByteSource(file).hash(Hashing.sha256()).toString();
                             MyGDxTest.addonHashes.add(hash);
                             TitleScreen.update = true;
-                            System.out.println("Screen update: " + TitleScreen.update);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
