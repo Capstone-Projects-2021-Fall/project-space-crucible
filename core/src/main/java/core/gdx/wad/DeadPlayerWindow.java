@@ -56,7 +56,7 @@ public class DeadPlayerWindow extends Window {
                 };
                     TitleScreen titleScreen = new TitleScreen(myGDxTest, gameLoop);
                     myGDxTest.setScreen(titleScreen);
-                    StartMenu.setMainMenuButtonsVisible(true);
+                    TitleScreen.setMainMenuButtonsVisible(true);
 
             }
         });

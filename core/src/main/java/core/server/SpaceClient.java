@@ -26,15 +26,15 @@ public class SpaceClient implements Listener {
     static String ip = "localhost";
     GameScreen screen;
     public ValidLobby validLobby;
-    StartMenu startMenu;
+    TitleScreen titleScreen;
     File file;
     boolean fileReceive = false;
 
-    public SpaceClient(GameScreen screen, StartMenu startMenu){
+    public SpaceClient(GameScreen screen, TitleScreen titleScreen){
         this.screen = screen;
-        this.startMenu = startMenu;
+        this.titleScreen = titleScreen;
 
-        masterClient = new Client(1000, 1000);
+        masterClient = new Client(8192, 8192);
         masterClient.start();
         //register the packets
         Network.register(masterClient);
@@ -53,8 +53,8 @@ public class SpaceClient implements Listener {
                 //If Master Server sends ValidLobby unblock the startMenu
                 else if( object instanceof ValidLobby){
                     validLobby = (ValidLobby) object;
-                    synchronized (startMenu){
-                        startMenu.notifyAll();
+                    synchronized (titleScreen){
+                        titleScreen.notifyAll();
                     }
                 }
                 else if(object instanceof Ping) {
@@ -178,7 +178,7 @@ public class SpaceClient implements Listener {
                     //If playernumber is changed and data is not null
                     if (screen.playerNumber == 0
                             && ((ClientData) object).connected != null && ((ClientData) object).idToPlayerNum != null) {
-                        startMenu.myGDxTest.setScreen(screen);
+                        titleScreen.myGDxTest.setScreen(screen);
                     }
                 }
                 //If server sends SoundData, play sound matching the given name

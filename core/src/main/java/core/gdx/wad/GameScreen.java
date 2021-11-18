@@ -412,8 +412,8 @@ public class GameScreen implements Screen {
                 client.getGameClient().close();
                 client.getMasterClient().close();
                 myGDxTest.setScreen(myGDxTest.titleScreen);
-                StartMenu.setCoopButtonsVisible(false);
-                StartMenu.setMainMenuButtonsVisible(true);
+                TitleScreen.setCoopButtonsVisible(false);
+                TitleScreen.setMainMenuButtonsVisible(true);
             }
         });
     }

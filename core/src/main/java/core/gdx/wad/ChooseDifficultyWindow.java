@@ -11,7 +11,7 @@ public class ChooseDifficultyWindow extends Window {
     private TextButton button;
     private TextButton back;
 
-    public ChooseDifficultyWindow(String title, Skin skin, TitleScreen screen, StartMenu startMenu, Button buttons[]) {
+    public ChooseDifficultyWindow(String title, Skin skin, TitleScreen titleScreen, Button buttons[]) {
         super(title, skin);
         setModal(true);
         levelList = new SelectBox<>(skin);
@@ -31,9 +31,8 @@ public class ChooseDifficultyWindow extends Window {
                 super.clicked(event, x, y);
                 GameLogic.difficulty = levelList.getSelectedIndex();
                 remove();
-                startMenu.remove();
-                screen.game.setScreen(new GameScreen(screen.gameLoop, true, startMenu.myGDxTest));
-                screen.dispose();
+                titleScreen.myGDxTest.setScreen(new GameScreen(titleScreen.gameLoop, true, titleScreen.myGDxTest));
+                titleScreen.dispose();
             }
         });
         back.addListener(new ClickListener() {

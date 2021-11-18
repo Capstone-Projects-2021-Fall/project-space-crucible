@@ -25,7 +25,6 @@ import java.util.ArrayList;
 public class MyGDxTest extends Game {
 
     public TitleScreen titleScreen;
-    public SettingsScreen settingsScreen;
     public static ArrayList<File> addons = new ArrayList<>(); //Addons has all the files host added
     public static ArrayList<String> addonHashes = new ArrayList<>();
 
