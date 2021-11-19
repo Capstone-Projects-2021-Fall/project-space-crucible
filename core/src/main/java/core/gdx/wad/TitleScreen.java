@@ -23,6 +23,7 @@ import net.mtrop.doom.WadFile;
 import java.io.IOException;
 
 public class TitleScreen implements Screen {
+    public static boolean changeScreen;
     OrthographicCamera camera;
     SpriteBatch batch;
     Texture texture;
@@ -47,6 +48,7 @@ public class TitleScreen implements Screen {
     TextButton submit = new TextButton("submit", skin);
     TextButton back = new TextButton("back", skin);
     TextField lobbyCode = new TextField("Lobby Code", skin);
+    public GameScreen gameScreen;
 
     public TitleScreen(MyGDxTest myGDxTest) {
         WadFile file;
@@ -70,7 +72,6 @@ public class TitleScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-
     }
     @Override
     public void render(float delta) {
@@ -79,6 +80,10 @@ public class TitleScreen implements Screen {
             System.out.println("loading wadfile");
             MyGDxTest.loadWADS();
             update = false;
+        }
+        if(changeScreen){
+            myGDxTest.setScreen(gameScreen);
+            changeScreen = false;
         }
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -156,14 +161,13 @@ public class TitleScreen implements Screen {
         coopButton.button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Called coop button clicked");
                 if(NameChangeWindow.playerName.length() == 0){
                     PopupWindow error = new PopupWindow("No Username Found!", skin, "Go to settings and create a username");
                     showPopup(error);
                     error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
                     return;
                 }
-                GameScreen gameScreen= new GameScreen(null, false, myGDxTest);
+                gameScreen= new GameScreen(null, false, myGDxTest);
                 client = new SpaceClient(gameScreen, titleScreen);
                 if(client.getMasterClient() == null) {
                     PopupWindow error = new PopupWindow("Connection Error", skin,
@@ -176,80 +180,83 @@ public class TitleScreen implements Screen {
                 setMainMenuButtonsVisible(false);
                 setCoopButtonsVisible(true);
                 gameScreen.client = client;
+            }
+        });
 
-                backButton.button.addListener(new ClickListener(){
-                    public void clicked(InputEvent event, float x, float y) {
-                        super.clicked(event, x, y);
-                        client.getMasterClient().close();
-                        setCoopButtonsVisible(false);
-                        setMainMenuButtonsVisible(true);
-                    }
-                });
-                createLobbyButton.button.addListener(new ClickListener(){
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        super.clicked(event, x, y);
-                        client.makeLobby();
-                    }
-                });
-                joinLobbyButton.button.addListener(new ClickListener(){
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        super.clicked(event, x, y);
-                        setCoopButtonsVisible(false);
-                        if(lobbyCode.getStage() == null) {
-                            stage.addActor(lobbyCode);
-                            stage.addActor(submit);
-                            stage.addActor(back);
-                        }
-                        lobbyCode.setVisible(true);
+        backButton.button.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                client.getMasterClient().close();
+                setCoopButtonsVisible(false);
+                setMainMenuButtonsVisible(true);
+            }
+        });
 
-                        lobbyCode.addListener(new ClickListener() {
-                            @Override
-                            public void clicked(InputEvent event, float x, float y) {
-                                super.clicked(event, x, y);
-                                lobbyCode.setText("");
-                            }
-                        });
-                        submit.addListener(new ClickListener(){
-                            public void clicked(InputEvent event, float x, float y) {
-                                String lCode = lobbyCode.getText();
-                                lCode = lCode.toUpperCase();
-                                client.sendLobbyCode(lCode);
-                                removeJoinLobbyButtons();
-                                System.out.println("Waiting...");
-                                synchronized (titleScreen){
-                                    try {
-                                        titleScreen.wait(1000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                System.out.println("Done waiting.");
-                                if(!client.validLobby.valid) {
-                                    System.out.println("Invalid.");
-                                    if(lobbyCode.getStage() == null ) {
-                                        stage.addActor(lobbyCode);
-                                        stage.addActor(submit);
-                                        stage.addActor(back);
-                                    }
-                                    PopupWindow error = new PopupWindow("Invalid Lobby", skin, client.validLobby.reason);
-                                    error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
-                                    showPopup(error);
-                                }
-                            }
-                        });
-                        back.addListener(new ClickListener(){
-                            public void clicked(InputEvent event, float x, float y) {
-                                submit.remove();
-                                back.remove();
-                                lobbyCode.remove();
-                                setCoopButtonsVisible(true);
+        createLobbyButton.button.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                client.makeLobby();
+            }
+        });
+        joinLobbyButton.button.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                setCoopButtonsVisible(false);
+                if(lobbyCode.getStage() == null) {
+                    stage.addActor(lobbyCode);
+                    stage.addActor(submit);
+                    stage.addActor(back);
+                }
+                lobbyCode.setVisible(true);
 
-                            }
-                        });
+
+            }
+        });
+
+        lobbyCode.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                lobbyCode.setText("");
+            }
+        });
+        submit.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y) {
+                String lCode = lobbyCode.getText();
+                lCode = lCode.toUpperCase();
+                client.sendLobbyCode(lCode);
+                removeJoinLobbyButtons();
+                System.out.println("Waiting...");
+                synchronized (titleScreen){
+                    try {
+                        titleScreen.wait(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                });
+                }
+                System.out.println("Done waiting.");
+                if(!client.validLobby.valid) {
+                    System.out.println("Invalid.");
+                    if(lobbyCode.getStage() == null ) {
+                        stage.addActor(lobbyCode);
+                        stage.addActor(submit);
+                        stage.addActor(back);
+                    }
+                    PopupWindow error = new PopupWindow("Invalid Lobby", skin, client.validLobby.reason);
+                    error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
+                    showPopup(error);
+                }
+            }
+        });
+        back.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y) {
+                submit.remove();
+                back.remove();
+                lobbyCode.remove();
+                setCoopButtonsVisible(true);
+
             }
         });
         settingsButton.button.addListener(new ClickListener() {

@@ -32,8 +32,6 @@ import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 
-import java.util.ArrayList;
-
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -87,6 +85,7 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         lobbyStage = new Stage();
         this.isSinglePlayer = isSinglePlayer;
+        play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
     }
 
     @Override
@@ -110,7 +109,7 @@ public class GameScreen implements Screen {
                 Gdx.input.setInputProcessor(lobbyStage);
                 addExitButton();
                 if (playerNumber == 1) {
-                    play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
+//                    play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
                     lobbyStage.addActor(play);
                     play.addListener(new ClickListener() {
                         public void clicked(InputEvent event, float x, float y) {
@@ -323,6 +322,11 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
+        stage.getViewport().update(width, height, true);
+        lobbyStage.getViewport().update(width, height, true);
+        if(chatWindow != null){
+            chatWindow.setBounds(Gdx.graphics.getWidth(), 0, width/2f, height/3.1f);
+        }
     }
 
     @Override
@@ -399,8 +403,9 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         chatWindow = new ChatWindow("Chat", skin, this, stage, myGDxTest);
         stage.addActor(chatWindow);
-        chatWindow.setPosition(camera.viewportWidth,0);
-        chatWindow.setSize(chatWindow.getWidth(), chatWindow.getHeight());
+        chatWindow.setBounds(Gdx.graphics.getWidth(), 0, chatWindow.getWidth(),chatWindow.getHeight());
+//        chatWindow.setPosition(camera.viewportWidth,0);
+//        chatWindow.setSize(chatWindow.getWidth(), chatWindow.getHeight());
     }
 
     private void addExitButton(){
@@ -427,7 +432,6 @@ public class GameScreen implements Screen {
     public void updatePlayerNumber() {
         playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
         if(!startGame && playerNumber == 1){
-            play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
             lobbyStage.addActor(play);
             play.addListener(new ClickListener() {
                 @Override

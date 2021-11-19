@@ -178,7 +178,7 @@ public class SpaceClient implements Listener {
                     //If playernumber is changed and data is not null
                     if (screen.playerNumber == 0
                             && ((ClientData) object).connected != null && ((ClientData) object).idToPlayerNum != null) {
-                        titleScreen.myGDxTest.setScreen(screen);
+                        TitleScreen.changeScreen = true;
                     }
                 }
                 //If server sends SoundData, play sound matching the given name
