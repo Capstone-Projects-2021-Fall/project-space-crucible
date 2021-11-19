@@ -407,7 +407,9 @@ public class GameScreen implements Screen {
         exitToMenu.setBounds((Gdx.graphics.getWidth() + 250) / 2f, 50, 100, 60);
         lobbyStage.addActor(exitToMenu);
         exitToMenu.addListener(new ClickListener(){
+            @Override
             public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
                 System.out.println("exit");
                 client.getGameClient().close();
                 client.getMasterClient().close();
@@ -428,7 +430,9 @@ public class GameScreen implements Screen {
             play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
             lobbyStage.addActor(play);
             play.addListener(new ClickListener() {
+                @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
                     startGame = true;
                     Network.StartGame startGame = new Network.StartGame();
                     startGame.startGame = true;

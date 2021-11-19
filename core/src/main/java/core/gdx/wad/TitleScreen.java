@@ -26,7 +26,6 @@ public class TitleScreen implements Screen {
     OrthographicCamera camera;
     SpriteBatch batch;
     Texture texture;
-    Thread gameLoop;
     private final Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
     public static boolean update = false;
@@ -49,16 +48,13 @@ public class TitleScreen implements Screen {
     TextButton back = new TextButton("back", skin);
     TextField lobbyCode = new TextField("Lobby Code", skin);
 
-    public TitleScreen(MyGDxTest myGDxTest, Thread gameLoop) {
+    public TitleScreen(MyGDxTest myGDxTest) {
         WadFile file;
         profiler = new GLProfiler(Gdx.graphics);
         profiler.enable();
         try {
             file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
-            String path = file.getFileAbsolutePath();
-
             this.myGDxTest=myGDxTest;
-            this.gameLoop=gameLoop;
             camera = new OrthographicCamera();
             camera.setToOrtho(false, 1920, 1080);
             batch = new SpriteBatch();
@@ -68,17 +64,84 @@ public class TitleScreen implements Screen {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        createMenus();
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
 
+    }
+    @Override
+    public void render(float delta) {
+        profiler.reset();
+        if(update){
+            System.out.println("loading wadfile");
+            MyGDxTest.loadWADS();
+            update = false;
+        }
+        Gdx.gl.glClearColor(0,0,0,1F);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.setProjectionMatrix(camera.combined);
+        batch.enableBlending();
+        //drawing sprite background
+        stage.act(Gdx.graphics.getDeltaTime());
+        batch.begin();
+        batch.draw(texture, 0, 0, camera.viewportWidth, camera.viewportHeight);
+        batch.end();
+        stage.draw();
+//        float drawCalls = profiler.getDrawCalls();
+//        float textureBinds = profiler.getTextureBindings();
+//        System.out.println(drawCalls);
+//        System.out.println(textureBinds);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+        float w = width/2.5f;
+        float h = height/7.5f;
+        startButton.button.setBounds((Gdx.graphics.getWidth()-w)/ 2f, (Gdx.graphics.getHeight())/ 2f, w, h);
+        coopButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*1.8f)/ 2f, w, h);
+        settingsButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*3.6f)/ 2f, w, h);
+        levelEditorButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*5.4f)/ 2f, w, h);
+        exitButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*7.2f)/ 2f, w, h);
+        createLobbyButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, Gdx.graphics.getHeight() / 2f, w, h);
+        joinLobbyButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*1.8f)/ 2f, w, h);
+        backButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*3.6f)/ 2f, w, h);
+        lobbyCode.setBounds(((Gdx.graphics.getWidth() - width/5f)/ 2f),((Gdx.graphics.getHeight())/ 2f), width/5f, height/15f);
+        submit.setBounds(((Gdx.graphics.getWidth() + width/4.5f)/ 2f),((Gdx.graphics.getHeight())/ 2f),width/6f,height/15f);
+        back.setBounds(((Gdx.graphics.getWidth() - width/6f)/ 2f),((Gdx.graphics.getHeight() - height/6.5f)/ 2f),width/6f,height/15f);
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+        titleScreen.dispose();
+    }
+
+    @Override
+    public void dispose() {
+    }
+
+    private void createMenus(){
         stage.addActor(startButton.button);
         stage.addActor(coopButton.button);
         stage.addActor(settingsButton.button);
         stage.addActor(levelEditorButton.button);
         stage.addActor(exitButton.button);
+        stage.addActor(createLobbyButton.button);
+        stage.addActor(joinLobbyButton.button);
+        stage.addActor(backButton.button);
+        setCoopButtonsVisible(false);
 
         startButton.button.addListener(new ClickListener() {
             @Override
@@ -93,13 +156,11 @@ public class TitleScreen implements Screen {
         coopButton.button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-
+                System.out.println("Called coop button clicked");
                 if(NameChangeWindow.playerName.length() == 0){
                     PopupWindow error = new PopupWindow("No Username Found!", skin, "Go to settings and create a username");
                     showPopup(error);
                     error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
-
                     return;
                 }
                 GameScreen gameScreen= new GameScreen(null, false, myGDxTest);
@@ -109,12 +170,11 @@ public class TitleScreen implements Screen {
                             "Error connecting to the server!\nTry Again Later.");
                     showPopup(error);
                     error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
+                    coopButton.button.addListener(this);
                     return;
                 }
                 setMainMenuButtonsVisible(false);
-                stage.addActor(createLobbyButton.button);
-                stage.addActor(joinLobbyButton.button);
-                stage.addActor(backButton.button);
+                setCoopButtonsVisible(true);
                 gameScreen.client = client;
 
                 backButton.button.addListener(new ClickListener(){
@@ -126,19 +186,23 @@ public class TitleScreen implements Screen {
                     }
                 });
                 createLobbyButton.button.addListener(new ClickListener(){
+                    @Override
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
                         client.makeLobby();
                     }
                 });
                 joinLobbyButton.button.addListener(new ClickListener(){
+                    @Override
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
-
                         setCoopButtonsVisible(false);
-                        stage.addActor(lobbyCode);
-                        stage.addActor(submit);
-                        stage.addActor(back);
+                        if(lobbyCode.getStage() == null) {
+                            stage.addActor(lobbyCode);
+                            stage.addActor(submit);
+                            stage.addActor(back);
+                        }
+                        lobbyCode.setVisible(true);
 
                         lobbyCode.addListener(new ClickListener() {
                             @Override
@@ -152,6 +216,7 @@ public class TitleScreen implements Screen {
                                 String lCode = lobbyCode.getText();
                                 lCode = lCode.toUpperCase();
                                 client.sendLobbyCode(lCode);
+                                removeJoinLobbyButtons();
                                 System.out.println("Waiting...");
                                 synchronized (titleScreen){
                                     try {
@@ -163,13 +228,14 @@ public class TitleScreen implements Screen {
                                 System.out.println("Done waiting.");
                                 if(!client.validLobby.valid) {
                                     System.out.println("Invalid.");
-                                    showPopup(new PopupWindow("Invalid Lobby", skin,
-                                            client.validLobby.reason));
-                                }else{
-                                    submit.remove();
-                                    back.remove();
-                                    lobbyCode.remove();
-                                    setCoopButtonsVisible(false);
+                                    if(lobbyCode.getStage() == null ) {
+                                        stage.addActor(lobbyCode);
+                                        stage.addActor(submit);
+                                        stage.addActor(back);
+                                    }
+                                    PopupWindow error = new PopupWindow("Invalid Lobby", skin, client.validLobby.reason);
+                                    error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
+                                    showPopup(error);
                                 }
                             }
                         });
@@ -215,65 +281,6 @@ public class TitleScreen implements Screen {
             }
         });
     }
-    @Override
-    public void render(float delta) {
-
-        profiler.reset();
-        if(update){
-            System.out.println("loading wadfile");
-            MyGDxTest.loadWADS();
-            update = false;
-        }
-        Gdx.gl.glClearColor(0,0,0,1F);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        batch.setProjectionMatrix(camera.combined);
-        batch.enableBlending();
-        //drawing sprite background
-        stage.act(Gdx.graphics.getDeltaTime());
-        batch.begin();
-        batch.draw(texture, 0, 0, camera.viewportWidth, camera.viewportHeight);
-        batch.end();
-        stage.draw();
-        float drawCalls = profiler.getDrawCalls();
-        float textureBinds = profiler.getTextureBindings();
-//        System.out.println(drawCalls);
-//        System.out.println(textureBinds);
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-        float w = width/2.5f;
-        float h = height/7.5f;
-        startButton.button.setBounds((Gdx.graphics.getWidth()-w)/ 2f, (Gdx.graphics.getHeight())/ 2f, w, h);
-        coopButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*1.8f)/ 2f, w, h);
-        settingsButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*3.6f)/ 2f, w, h);
-        levelEditorButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*5.4f)/ 2f, w, h);
-        exitButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*7.2f)/ 2f, w, h);
-        createLobbyButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, Gdx.graphics.getHeight() / 2f, w, h);
-        joinLobbyButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*1.8f)/ 2f, w, h);
-        backButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*3.6f)/ 2f, w, h);
-        lobbyCode.setBounds(((Gdx.graphics.getWidth() - width/5f)/ 2f),((Gdx.graphics.getHeight())/ 2f), width/5f, height/15f);
-        submit.setBounds(((Gdx.graphics.getWidth() + width/4.5f)/ 2f),((Gdx.graphics.getHeight())/ 2f),width/6f,height/15f);
-        back.setBounds(((Gdx.graphics.getWidth() - width/6f)/ 2f),((Gdx.graphics.getHeight() - height/6.5f)/ 2f),width/6f,height/15f);
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-    }
-
-    @Override
-    public void dispose() {
-    }
 
     public void showPopup(PopupWindow invalid_lobby) {
         stage.addActor(invalid_lobby);
@@ -281,6 +288,13 @@ public class TitleScreen implements Screen {
                 (stage.getWidth()/2f) - invalid_lobby.getWidth(),
                 (stage.getHeight()/2f) - invalid_lobby.getHeight());
     }
+
+    public void removeJoinLobbyButtons(){
+        submit.remove();
+        back.remove();
+        lobbyCode.remove();
+    }
+
     public static void setCoopButtonsVisible(boolean visible){
         for(Button button : CoopButtons)
             button.setVisible(visible);

@@ -48,7 +48,7 @@ public class MyGDxTest extends Game {
 
         SoundFuncs.startSequencer();
         SoundFuncs.playMIDI("TITLE");
-        titleScreen = new TitleScreen(this, gameLoop);
+        titleScreen = new TitleScreen(this);
         setScreen(titleScreen);
 
     }
