@@ -1,0 +1,4 @@
+core.android
+drawable ic_launcher
+string app_name
+style GdxTheme

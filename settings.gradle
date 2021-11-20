@@ -1,3 +1,4 @@
 include 'lwjgl3', 'core'
+include 'android'
 include 'RCON'
 include 'WAD'

@@ -1,0 +1,3 @@
+core.android:style/GdxTheme = 0x7f030000
+core.android:string/app_name = 0x7f020000
+core.android:drawable/ic_launcher = 0x7f010000

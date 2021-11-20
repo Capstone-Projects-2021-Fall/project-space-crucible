@@ -1,0 +1,88 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:2:1-28:12
+INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:2:1-28:12
+INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:2:1-28:12
+INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:2:1-28:12
+MERGED from [com.android.support:multidex:1.0.2] /home/themightyheracross/.gradle/caches/transforms-3/af79c65322495264ea1704950660578a/transformed/multidex-1.0.2/AndroidManifest.xml:17:1-22:12
+INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:2:1-28:12
+INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:2:1-28:12
+INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:2:1-28:12
+	package
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:4:3-25
+		INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+		INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+	android:versionName
+		INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:2:1-28:12
+		INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+	xmlns:tools
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:3:6-52
+	android:versionCode
+		INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:2:1-28:12
+		INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:2:11-69
+uses-feature#0x00020000
+ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:5:2-74
+	android:glEsVersion
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:5:16-48
+	android:required
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:5:49-72
+application
+ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:6:2-26:16
+	android:label
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:12:10-42
+	android:fullBackupContent
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:8:10-42
+	android:appCategory
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:11:4-30
+	tools:ignore
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:13:10-40
+	android:icon
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:9:4-40
+	android:allowBackup
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:7:4-30
+	android:theme
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:14:4-35
+	android:isGame
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:10:4-25
+activity#core.android.AndroidLauncher
+ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:15:3-25:14
+	android:screenOrientation
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:18:5-42
+	android:label
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:17:5-37
+	android:exported
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:20:13-36
+	android:configChanges
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:19:5-99
+	android:name
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:16:5-48
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:21:5-24:20
+action#android.intent.action.MAIN
+ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:22:5-56
+	android:name
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:22:13-54
+category#android.intent.category.LAUNCHER
+ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:23:5-64
+	android:name
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml:23:15-62
+uses-sdk
+INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+MERGED from [com.android.support:multidex:1.0.2] /home/themightyheracross/.gradle/caches/transforms-3/af79c65322495264ea1704950660578a/transformed/multidex-1.0.2/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:multidex:1.0.2] /home/themightyheracross/.gradle/caches/transforms-3/af79c65322495264ea1704950660578a/transformed/multidex-1.0.2/AndroidManifest.xml:20:5-43
+INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+		INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+		ADDED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
+		INJECTED from /home/themightyheracross/IdeaProjects/project-space-crucible/android/AndroidManifest.xml
