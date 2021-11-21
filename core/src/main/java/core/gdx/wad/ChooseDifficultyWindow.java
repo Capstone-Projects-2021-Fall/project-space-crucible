@@ -11,7 +11,7 @@ public class ChooseDifficultyWindow extends Window {
     private TextButton button;
     private TextButton back;
 
-    public ChooseDifficultyWindow(String title, Skin skin, TitleScreen titleScreen, Button buttons[]) {
+    public ChooseDifficultyWindow(String title, Skin skin, TitleScreen titleScreen, Button buttons[], boolean isSingleplayer) {
         super(title, skin);
         setModal(true);
         levelList = new SelectBox<>(skin);
@@ -29,10 +29,17 @@ public class ChooseDifficultyWindow extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                GameLogic.difficulty = levelList.getSelectedIndex();
-                remove();
-                titleScreen.myGDxTest.setScreen(new GameScreen(titleScreen.myGDxTest.gameLoop, true, titleScreen.myGDxTest));
-                titleScreen.dispose();
+                if(isSingleplayer) {
+                    GameLogic.difficulty = levelList.getSelectedIndex();
+                    remove();
+                    titleScreen.myGDxTest.setScreen(new GameScreen(titleScreen.myGDxTest.gameLoop, true, titleScreen.myGDxTest));
+                    titleScreen.dispose();
+                }else{
+                    GameScreen.difficultyLevelSelected = levelList.getSelectedIndex();
+                    System.out.println("Game difficulty level: " + GameScreen.difficultyLevelSelected);
+                    remove();
+
+                }
             }
         });
         back.addListener(new ClickListener() {
@@ -40,9 +47,10 @@ public class ChooseDifficultyWindow extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 remove();
-                for(Button button : buttons)
-                    button.setVisible(true);
-
+                if(isSingleplayer) {
+                    for (Button button : buttons)
+                        button.setVisible(true);
+                }
             }
         });
     }

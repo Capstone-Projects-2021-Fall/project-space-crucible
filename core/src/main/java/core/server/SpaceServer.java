@@ -93,6 +93,7 @@ public class SpaceServer implements Listener {
                 }
             }
             //When the client sends a packet to the server handle it
+            @Override
             public void received(Connection c, Object packetData) {
                 long duration = (System.nanoTime()-startTimer)/1000000000;
                 packetsReceived++;
@@ -142,6 +143,7 @@ public class SpaceServer implements Listener {
                         GameLogic.spaceServer = spaceServer;
                         GameLogic.server = server;
                         GameLogic.currentLevel = GameLogic.levels.get(1);
+                        GameLogic.difficulty = ((StartGame) packetData).difficultyLevel;
                         GameLogic.loadEntities(GameLogic.currentLevel, false);
                         try {
                             gameLoop.start();

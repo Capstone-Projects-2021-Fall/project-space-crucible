@@ -39,6 +39,7 @@ import java.util.TreeMap;
 
 public class GameScreen implements Screen {
 
+    public static int difficultyLevelSelected = 0;
     Thread gameLoop;
     MyGDxTest myGDxTest;
     public SpaceClient client;
@@ -68,6 +69,7 @@ public class GameScreen implements Screen {
     Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
     TextButton play = new TextButton("Start Game", uiSkin);
     TextButton exitToMenu = new TextButton("Exit Lobby", uiSkin);
+    TextButton difficultyLevel = new TextButton("Difficulty Level", uiSkin);
     public boolean startGame = false;
     Label lobbyCode;
     boolean remove = false;
@@ -86,6 +88,7 @@ public class GameScreen implements Screen {
         lobbyStage = new Stage();
         this.isSinglePlayer = isSinglePlayer;
         play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
+        difficultyLevel.setBounds((Gdx.graphics.getWidth() + 250) / 2f, 120, 110, 60);
     }
 
     @Override
@@ -116,8 +119,17 @@ public class GameScreen implements Screen {
                             startGame = true;
                             Network.StartGame startGame = new Network.StartGame();
                             startGame.startGame = true;
+                            startGame.difficultyLevel = difficultyLevelSelected;
                             client.getGameClient().sendTCP(startGame);
                             play.removeListener(this);
+                        }
+                    });
+                    lobbyStage.addActor(difficultyLevel);
+                    difficultyLevel.addListener(new ClickListener() {
+                        public void clicked(InputEvent event, float x, float y) {
+                            ChooseDifficultyWindow window = new ChooseDifficultyWindow("Choose Difficulty:", skin, null, null, false);
+                            window.setBounds(((Gdx.graphics.getWidth() - 150)/ 2f), ((Gdx.graphics.getHeight() - 110) / 2f), 150, 110);
+                            lobbyStage.addActor(window);
                         }
                     });
                 }
@@ -451,6 +463,7 @@ public class GameScreen implements Screen {
                     startGame = true;
                     Network.StartGame startGame = new Network.StartGame();
                     startGame.startGame = true;
+                    startGame.difficultyLevel = difficultyLevelSelected;
                     client.getGameClient().sendTCP(startGame);
                     play.removeListener(this);
                 }

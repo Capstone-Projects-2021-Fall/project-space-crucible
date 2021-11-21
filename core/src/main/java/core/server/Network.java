@@ -172,6 +172,7 @@ public class Network {
     public static class StartGame{
         public boolean startGame;
         public int levelnum;
+        public int difficultyLevel;
     }
     public static class ChatMessage {
         public String sender;
