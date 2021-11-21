@@ -33,7 +33,7 @@ import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 
 import java.util.ConcurrentModificationException;
-import java.util.HashMap;
+import java.util.Objects;
 import java.util.TreeMap;
 
 
@@ -254,24 +254,35 @@ public class GameScreen implements Screen {
                 camera.update();
                 RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, renderData.entityList, getPlayer(playerNumber));
 
-                if(getPlayer(playerNumber).getHealth()>0){
-                    font.draw(batch,"HP:" +getPlayer(playerNumber).getHealth(),
-                            getPlayer(playerNumber).getPos().x,
-                            getPlayer(playerNumber).getPos().y);
-                }else{
-                    font.draw(batch,"HP: 0",
-                            getPlayer(playerNumber).getPos().x,
-                            getPlayer(playerNumber).getPos().y);
+                int playerSize = clientData.idToPlayerNum.size();
+                for(int player = 1; player < playerSize; player++){
+                    int playerId = clientData.idToPlayerNum.get(player);
+                    if(getPlayer(player) != null) {
+                        if(clientData.playerNames.get(playerId) == null){
+                            font.draw(batch, "Bot",
+                                    Objects.requireNonNull(getPlayer(player)).getPos().x,
+                                    Objects.requireNonNull(getPlayer(player)).getPos().y + Objects.requireNonNull(getPlayer(player)).getHeight() + 10);
+                        }else {
+                            font.draw(batch, clientData.playerNames.get(playerId),
+                                    Objects.requireNonNull(getPlayer(player)).getPos().x,
+                                    Objects.requireNonNull(getPlayer(player)).getPos().y + Objects.requireNonNull(getPlayer(player)).getHeight() + 10);
+                        }
+                        if (getPlayer(player).getHealth() > 0) {
+                            font.draw(batch, "HP:" + getPlayer(player).getHealth(),
+                                    getPlayer(player).getPos().x,
+                                    getPlayer(player).getPos().y);
+                        } else {
+                            font.draw(batch, "HP: 0",
+                                    getPlayer(player).getPos().x,
+                                    getPlayer(player).getPos().y);
+                        }
+                    }
                 }
-                font.draw(batch, NameChangeWindow.playerName,
-                        getPlayer(playerNumber).getPos().x,
-                        getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() + 10);
                 font.draw(batch, "Ping: " + ping, getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y-13);
 
                 if (showBoxes) {
                     showBoxes();
                 }
-
                 client.getInput(getControls());
                 client.getCameraData(getCameraData());
             }
