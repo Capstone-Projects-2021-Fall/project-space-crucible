@@ -454,7 +454,7 @@ public class GameScreen implements Screen {
 
     public void updatePlayerNumber() {
         playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
-        if(!startGame && playerNumber == 1){
+        if(!startGame && playerNumber == 1 && !lobbyStage.getActors().contains(play, true) && !lobbyStage.getActors().contains(difficultyLevel, true)){
             lobbyStage.addActor(play);
             play.addListener(new ClickListener() {
                 @Override
@@ -466,6 +466,15 @@ public class GameScreen implements Screen {
                     startGame.difficultyLevel = difficultyLevelSelected;
                     client.getGameClient().sendTCP(startGame);
                     play.removeListener(this);
+                }
+            });
+            lobbyStage.addActor(difficultyLevel);
+            difficultyLevel.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    ChooseDifficultyWindow window = new ChooseDifficultyWindow("Choose Difficulty:", skin, null, null, false);
+                    window.setBounds(((Gdx.graphics.getWidth() - 150)/ 2f), ((Gdx.graphics.getHeight() - 110) / 2f), 150, 110);
+                    lobbyStage.addActor(window);
+                    window.removeListener(this);
                 }
             });
         }
