@@ -65,7 +65,7 @@ public class SettingsMenu extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 remove();
-                TitleScreen.setMainMenuButtonsVisible(true);
+                TitleScreen.mainMenuTable.setVisible(true);
             }
         });
     }

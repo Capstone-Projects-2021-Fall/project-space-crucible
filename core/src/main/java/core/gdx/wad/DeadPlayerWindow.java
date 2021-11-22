@@ -1,7 +1,5 @@
 package core.gdx.wad;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -57,17 +55,9 @@ public class DeadPlayerWindow extends Window {
                     };
                     myGDxTest.gameLoop = gameLoop;
                 }
-//                else{
-//                    try {
-//                        //this way is faster but since it disposes it quickly some packets dont make it and throw and error
-////                        gameScreen.client.getGameClient().dispose();
-////                        gameScreen.client.getMasterClient().dispose();
-////                        gameScreen.client.getGameClient().close();
-////                        gameScreen.client.getMasterClient().close();
-//                    } catch (IOException | ClosedSelectorException ex) {}
-//                }
+
                     myGDxTest.setScreen(myGDxTest.titleScreen);
-                    TitleScreen.setMainMenuButtonsVisible(true);
+                    TitleScreen.mainMenuTable.setVisible(true);
             }
         });
     }

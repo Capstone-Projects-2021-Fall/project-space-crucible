@@ -9,10 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.server.SpaceClient;
@@ -43,12 +40,13 @@ public class TitleScreen implements Screen {
     static CreateImageButton createLobbyButton = new CreateImageButton("buttons/createlobby.png", "buttons/createlobbynobg.png");
     static CreateImageButton joinLobbyButton = new CreateImageButton("buttons/joinlobby.png", "buttons/joinlobbynobg.png");
     static CreateImageButton backButton = new CreateImageButton("buttons/back.png", "buttons/backnobg.png");
-    static Button[] MainMenuButtons = {startButton.button, coopButton.button, settingsButton.button, exitButton.button, levelEditorButton.button};
-    static Button[] CoopButtons = {createLobbyButton.button, joinLobbyButton.button, backButton.button};
     TextButton submit = new TextButton("submit", skin);
     TextButton back = new TextButton("back", skin);
     TextField lobbyCode = new TextField("Lobby Code", skin);
     public GameScreen gameScreen;
+    public static Table mainMenuTable;
+    public static Table coopMenuTable;
+    public static Table joinLobbyTable;
 
     public TitleScreen(MyGDxTest myGDxTest) {
         WadFile file;
@@ -91,7 +89,9 @@ public class TitleScreen implements Screen {
         }
         if(changeScreen){
             myGDxTest.setScreen(gameScreen);
-            setCoopButtonsVisible(false);
+//            myGDxTest.setScreen(new LobbyScreen());
+            coopMenuTable.setVisible(false);
+
             changeScreen = false;
         }
         Gdx.gl.glClearColor(0,0,0,1F);
@@ -114,19 +114,6 @@ public class TitleScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-        float w = width/2.5f;
-        float h = height/7.5f;
-        startButton.button.setBounds((Gdx.graphics.getWidth()-w)/ 2f, (Gdx.graphics.getHeight())/ 2f, w, h);
-        coopButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*1.8f)/ 2f, w, h);
-        settingsButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*3.6f)/ 2f, w, h);
-        levelEditorButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*5.4f)/ 2f, w, h);
-        exitButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*7.2f)/ 2f, w, h);
-        createLobbyButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, Gdx.graphics.getHeight() / 2f, w, h);
-        joinLobbyButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*1.8f)/ 2f, w, h);
-        backButton.button.setBounds((Gdx.graphics.getWidth() - w)/ 2f, (Gdx.graphics.getHeight() - h*3.6f)/ 2f, w, h);
-        lobbyCode.setBounds(((Gdx.graphics.getWidth() - width/5f)/ 2f),((Gdx.graphics.getHeight())/ 2f), width/5f, height/15f);
-        submit.setBounds(((Gdx.graphics.getWidth() + width/4.5f)/ 2f),((Gdx.graphics.getHeight())/ 2f),width/6f,height/15f);
-        back.setBounds(((Gdx.graphics.getWidth() - width/6f)/ 2f),((Gdx.graphics.getHeight() - height/6.5f)/ 2f),width/6f,height/15f);
     }
 
     @Override
@@ -146,23 +133,23 @@ public class TitleScreen implements Screen {
     }
 
     private void createMenus(){
-        stage.addActor(startButton.button);
-        stage.addActor(coopButton.button);
-        stage.addActor(settingsButton.button);
-        stage.addActor(levelEditorButton.button);
-        stage.addActor(exitButton.button);
-        stage.addActor(createLobbyButton.button);
-        stage.addActor(joinLobbyButton.button);
-        stage.addActor(backButton.button);
-        setCoopButtonsVisible(false);
+        mainMenuTable = new Table();
+        mainMenuTable.setFillParent(true);
+        mainMenuTable.bottom().padBottom(20);
+        coopMenuTable = new Table();
+        coopMenuTable.setFillParent(true);
+        coopMenuTable.center().padTop(50);
+        joinLobbyTable = new Table();
+        joinLobbyTable.setFillParent(true);
+        joinLobbyTable.center();
 
         startButton.button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                ChooseDifficultyWindow window = new ChooseDifficultyWindow("Choose Difficulty:", skin, titleScreen, MainMenuButtons, true);
+                ChooseDifficultyWindow window = new ChooseDifficultyWindow("Choose Difficulty:", skin, titleScreen, true);
                 window.setBounds(((Gdx.graphics.getWidth() - 150)/ 2f), ((Gdx.graphics.getHeight() - 110) / 2f), 150, 110);
-                setMainMenuButtonsVisible(false);
+                mainMenuTable.setVisible(false);
                 stage.addActor(window);
             }
         });
@@ -185,8 +172,8 @@ public class TitleScreen implements Screen {
                     coopButton.button.addListener(this);
                     return;
                 }
-                setMainMenuButtonsVisible(false);
-                setCoopButtonsVisible(true);
+                mainMenuTable.setVisible(false);
+                coopMenuTable.setVisible(true);
                 gameScreen.client = client;
             }
         });
@@ -195,8 +182,8 @@ public class TitleScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 client.getMasterClient().close();
-                setCoopButtonsVisible(false);
-                setMainMenuButtonsVisible(true);
+                coopMenuTable.setVisible(false);
+                mainMenuTable.setVisible(true);
             }
         });
 
@@ -211,15 +198,8 @@ public class TitleScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                setCoopButtonsVisible(false);
-                if(lobbyCode.getStage() == null) {
-                    stage.addActor(lobbyCode);
-                    stage.addActor(submit);
-                    stage.addActor(back);
-                }
-                lobbyCode.setVisible(true);
-
-
+                coopMenuTable.setVisible(false);
+                joinLobbyTable.setVisible(true);
             }
         });
 
@@ -235,7 +215,7 @@ public class TitleScreen implements Screen {
                 String lCode = lobbyCode.getText();
                 lCode = lCode.toUpperCase();
                 client.sendLobbyCode(lCode);
-                removeJoinLobbyButtons();
+                joinLobbyTable.setVisible(false);
                 System.out.println("Waiting...");
                 synchronized (titleScreen){
                     try {
@@ -247,24 +227,17 @@ public class TitleScreen implements Screen {
                 System.out.println("Done waiting.");
                 if(!client.validLobby.valid) {
                     System.out.println("Invalid.");
-                    if(lobbyCode.getStage() == null ) {
-                        stage.addActor(lobbyCode);
-                        stage.addActor(submit);
-                        stage.addActor(back);
-                    }
+                    joinLobbyTable.setVisible(true);
                     PopupWindow error = new PopupWindow("Invalid Lobby", skin, client.validLobby.reason);
-                    error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
                     showPopup(error);
+                    error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
                 }
             }
         });
         back.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y) {
-                submit.remove();
-                back.remove();
-                lobbyCode.remove();
-                setCoopButtonsVisible(true);
-
+                joinLobbyTable.setVisible(false);
+                coopMenuTable.setVisible(true);
             }
         });
         settingsButton.button.addListener(new ClickListener() {
@@ -274,7 +247,7 @@ public class TitleScreen implements Screen {
                 titleScreen.dispose();
                 SettingsMenu settingsMenu = new SettingsMenu("Choose Difficulty:", skin, stage);
                 settingsMenu.setPosition(((Gdx.graphics.getWidth() - settingsMenu.getWidth())/ 2f), ((Gdx.graphics.getHeight() - settingsMenu.getHeight()) / 2f));
-                setMainMenuButtonsVisible(false);
+                mainMenuTable.setVisible(false);
                 stage.addActor(settingsMenu);
             }
         });
@@ -295,6 +268,35 @@ public class TitleScreen implements Screen {
                 System.exit(0);
             }
         });
+
+        mainMenuTable.add(startButton.button).width(Value.percentWidth(.35f, mainMenuTable)).height(Value.percentHeight(.13f, mainMenuTable));
+        mainMenuTable.row();
+        mainMenuTable.add(coopButton.button).width(Value.percentWidth(.35f, mainMenuTable)).height(Value.percentHeight(.13f, mainMenuTable));
+        mainMenuTable.row();
+        mainMenuTable.add(levelEditorButton.button).width(Value.percentWidth(.35f, mainMenuTable)).height(Value.percentHeight(.133f, mainMenuTable));
+        mainMenuTable.row();
+        mainMenuTable.add(settingsButton.button).width(Value.percentWidth(.35f, mainMenuTable)).height(Value.percentHeight(.13f, mainMenuTable));
+        mainMenuTable.row();
+        mainMenuTable.add(exitButton.button).width(Value.percentWidth(.35f, mainMenuTable)).height(Value.percentHeight(.13f, mainMenuTable));
+        mainMenuTable.pack();
+        stage.addActor(mainMenuTable);
+
+        coopMenuTable.add(createLobbyButton.button).width(Value.percentWidth(.35f, coopMenuTable)).height(Value.percentHeight(.13f, coopMenuTable));
+        coopMenuTable.row();
+        coopMenuTable.add(joinLobbyButton.button).width(Value.percentWidth(.35f, coopMenuTable)).height(Value.percentHeight(.13f, coopMenuTable));
+        coopMenuTable.row();
+        coopMenuTable.add(backButton.button).width(Value.percentWidth(.35f, coopMenuTable)).height(Value.percentHeight(.13f, coopMenuTable));
+        coopMenuTable.pack();
+        stage.addActor(coopMenuTable);
+        coopMenuTable.setVisible(false);
+
+        joinLobbyTable.add(lobbyCode).padRight(10).width(Value.percentWidth(.2f, joinLobbyTable)).height(Value.percentHeight(.08f, joinLobbyTable));
+        joinLobbyTable.add(submit).width(Value.percentWidth(.1f, joinLobbyTable)).height(Value.percentHeight(.08f, joinLobbyTable));
+        joinLobbyTable.row();
+        joinLobbyTable.add(back).padTop(10).width(Value.percentWidth(.1f, joinLobbyTable)).height(Value.percentHeight(.08f, joinLobbyTable));
+        joinLobbyTable.pack();
+        stage.addActor(joinLobbyTable);
+        joinLobbyTable.setVisible(false);
     }
 
     public void showPopup(PopupWindow invalid_lobby) {
@@ -302,20 +304,5 @@ public class TitleScreen implements Screen {
         invalid_lobby.setPosition(
                 (stage.getWidth()/2f) - invalid_lobby.getWidth(),
                 (stage.getHeight()/2f) - invalid_lobby.getHeight());
-    }
-
-    public void removeJoinLobbyButtons(){
-        submit.remove();
-        back.remove();
-        lobbyCode.remove();
-    }
-
-    public static void setCoopButtonsVisible(boolean visible){
-        for(Button button : CoopButtons)
-            button.setVisible(visible);
-    }
-    public static void setMainMenuButtonsVisible(boolean visible){
-        for(Button button : MainMenuButtons)
-            button.setVisible(visible);
     }
 }

@@ -126,7 +126,7 @@ public class GameScreen implements Screen {
                     lobbyStage.addActor(difficultyLevel);
                     difficultyLevel.addListener(new ClickListener() {
                         public void clicked(InputEvent event, float x, float y) {
-                            ChooseDifficultyWindow window = new ChooseDifficultyWindow("Choose Difficulty:", skin, null, null, false);
+                            ChooseDifficultyWindow window = new ChooseDifficultyWindow("Choose Difficulty:", skin,null, false);
                             window.setBounds(((Gdx.graphics.getWidth() - 150)/ 2f), ((Gdx.graphics.getHeight() - 110) / 2f), 150, 110);
                             lobbyStage.addActor(window);
                         }
@@ -153,6 +153,7 @@ public class GameScreen implements Screen {
 
         if(isSinglePlayer){
             Gdx.input.setInputProcessor(stage);
+            System.out.println("levels: " + GameLogic.levels.size());
             if(deadPlayerWindow == null){
                 deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
                 deadPlayerWindow.setPosition((Gdx.graphics.getWidth() - deadPlayerWindow.getWidth()) / 2f, (Gdx.graphics.getHeight() - deadPlayerWindow.getHeight()) / 2f);
@@ -450,8 +451,8 @@ public class GameScreen implements Screen {
                 super.clicked(event, x, y);
                 System.out.println("exit");
                 myGDxTest.setScreen(myGDxTest.titleScreen);
-                TitleScreen.setCoopButtonsVisible(false);
-                TitleScreen.setMainMenuButtonsVisible(true);
+                TitleScreen.coopMenuTable.setVisible(false);
+                TitleScreen.mainMenuTable.setVisible(true);
             }
         });
     }
@@ -479,7 +480,7 @@ public class GameScreen implements Screen {
             lobbyStage.addActor(difficultyLevel);
             difficultyLevel.addListener(new ClickListener() {
                 public void clicked(InputEvent event, float x, float y) {
-                    ChooseDifficultyWindow window = new ChooseDifficultyWindow("Choose Difficulty:", skin, null, null, false);
+                    ChooseDifficultyWindow window = new ChooseDifficultyWindow("Choose Difficulty:", skin,null, false);
                     window.setBounds(((Gdx.graphics.getWidth() - 150)/ 2f), ((Gdx.graphics.getHeight() - 110) / 2f), 150, 110);
                     lobbyStage.addActor(window);
                     window.removeListener(this);
