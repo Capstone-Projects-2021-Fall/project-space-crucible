@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.game.logic.GameLogic;
 
-
 public class DeadPlayerWindow extends Window {
     MyGDxTest myGDxTest;
     public DeadPlayerWindow(String title, Skin skin, MyGDxTest myGDxTest, Stage stage, GameScreen gameScreen) {
@@ -44,23 +43,29 @@ public class DeadPlayerWindow extends Window {
 //                StartMenu.setMainMenuButtonsVisible(true);
                 if(gameScreen.isSinglePlayer) {
                     myGDxTest.gameLoop.interrupt();
-                }else{
-                    gameScreen.client.getGameClient().close();
-                    gameScreen.client.getMasterClient().close();
-                }
-                Thread gameLoop = new Thread() {
-                    @Override
-                    public void run() {
-                        GameLogic.start();
-                    }
 
-                    @Override
-                    public void interrupt() {
-                        GameLogic.stop();
-                    }
-                };
+                    Thread gameLoop = new Thread() {
+                        @Override
+                        public void run() {
+                            GameLogic.start();
+                        }
+
+                        @Override
+                        public void interrupt() {
+                            GameLogic.stop();
+                        }
+                    };
                     myGDxTest.gameLoop = gameLoop;
-//                    TitleScreen titleScreen = new TitleScreen(myGDxTest);
+                }
+//                else{
+//                    try {
+//                        //this way is faster but since it disposes it quickly some packets dont make it and throw and error
+////                        gameScreen.client.getGameClient().dispose();
+////                        gameScreen.client.getMasterClient().dispose();
+////                        gameScreen.client.getGameClient().close();
+////                        gameScreen.client.getMasterClient().close();
+//                    } catch (IOException | ClosedSelectorException ex) {}
+//                }
                     myGDxTest.setScreen(myGDxTest.titleScreen);
                     TitleScreen.setMainMenuButtonsVisible(true);
             }

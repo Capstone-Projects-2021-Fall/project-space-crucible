@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -372,6 +371,9 @@ public class GameScreen implements Screen {
     public void hide() {
         SoundFuncs.stopMIDI();
         try {GameLogic.stop();} catch (NullPointerException ignored){}
+        stage.dispose();
+        batch.dispose();
+        lobbyStage.dispose();
     }
 
     @Override
@@ -447,8 +449,6 @@ public class GameScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 System.out.println("exit");
-                client.getGameClient().close();
-                client.getMasterClient().close();
                 myGDxTest.setScreen(myGDxTest.titleScreen);
                 TitleScreen.setCoopButtonsVisible(false);
                 TitleScreen.setMainMenuButtonsVisible(true);
