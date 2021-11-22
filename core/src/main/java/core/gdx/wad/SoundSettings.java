@@ -28,9 +28,9 @@ public class SoundSettings extends Window {
         Label bgmLabel = new Label("BGM: ", skin);
         add(bgmLabel);
         Slider bgmSlider = new Slider(0, 100, 1, false, skin);
-        bgmSlider.setValue(90);
+        bgmSlider.setValue(50);
         add(bgmSlider);
-        Label bgmVolumeValue = new Label("90", skin);
+        Label bgmVolumeValue = new Label("50", skin);
         add(bgmVolumeValue);
         row();
         Button confirmButton = new TextButton("Confirm", skin);
@@ -58,20 +58,20 @@ public class SoundSettings extends Window {
             @Override
             public void changed(ChangeEvent event, Actor actor) {  //TODO: find why volume messages aren't working (controller 7)
                 bgmVolumeValue.setText((int) bgmSlider.getValue());
-                SoundFuncs.seqVolume=bgmSlider.getValue()/100d; //supposed to change BGM volume
-                System.out.println("seqVolume: " +SoundFuncs.seqVolume);
+//                SoundFuncs.seqVolume=bgmSlider.getValue()/100d; //supposed to change BGM volume
+//                System.out.println("seqVolume: " +SoundFuncs.seqVolume);
 
-                //mutes bgm
-//                if(bgmSlider.getValue()<49){
-//                    for(int i=0; i<1000; i++){
-//                        SoundFuncs.sequencer.setTrackMute(i,true);//mutes BGM, but you can still hear drums
-//                    }
-//                }
-//                if(bgmSlider.getValue()>=50){
-//                    for(int i=0; i<=1000; i++){
-//                        SoundFuncs.sequencer.setTrackMute(i,false);//unmutes BGM
-//                    }
-//                }
+//                mutes bgm
+                if(bgmSlider.getValue()<49){
+                    for(int i=0; i<1000; i++){
+                        SoundFuncs.sequencer.setTrackMute(i,true);//mutes BGM, but you can still hear drums
+                    }
+                }
+                if(bgmSlider.getValue()>=50){
+                    for(int i=0; i<=1000; i++){
+                        SoundFuncs.sequencer.setTrackMute(i,false);//unmutes BGM
+                    }
+                }
             }
         });
     }
