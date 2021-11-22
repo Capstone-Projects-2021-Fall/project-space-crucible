@@ -56,7 +56,7 @@ public class GameScreen implements Screen {
     ShapeRenderer sr = new ShapeRenderer();
     ShapeRenderer shapeRenderer = new ShapeRenderer();
     boolean showBoxes = false;
-    boolean isSinglePlayer;
+    public boolean isSinglePlayer;
     BitmapFont font = new BitmapFont();
     private Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
@@ -154,23 +154,9 @@ public class GameScreen implements Screen {
 
         if(isSinglePlayer){
             Gdx.input.setInputProcessor(stage);
-            deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
-
-            if(GameLogic.getPlayer(playerNumber).getHealth()<=0){
-                stage.addActor(deadPlayerWindow);
-                deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
-            }
-            if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
-                stage.addActor(deadPlayerWindow);
-                deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
-            }
-            if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)){
-                for(Actor actor : stage.getActors()){
-                    if(actor.getHeight()==deadPlayerWindow.getHeight() && actor.getWidth()==deadPlayerWindow.getWidth()){
-                        //normal deadPlayerWindow.remove() not working
-                        actor.remove();
-                    }
-                }
+            if(deadPlayerWindow == null){
+                deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
+                deadPlayerWindow.setPosition((Gdx.graphics.getWidth() - deadPlayerWindow.getWidth()) / 2f, (Gdx.graphics.getHeight() - deadPlayerWindow.getHeight()) / 2f);
             }
             getAngle(true);
             GameLogic.getPlayer(1).getPos().angle = angle; //Turn the vector2 into a degree angle
@@ -196,6 +182,15 @@ public class GameScreen implements Screen {
                         GameLogic.getPlayer(playerNumber).getPos().y + GameLogic.getPlayer(playerNumber).getHeight() + 10);
                 if (showBoxes) {
                     showBoxes();
+                }
+                if(GameLogic.getPlayer(playerNumber).getHealth()<=0) {
+                    stage.addActor(deadPlayerWindow);
+                }
+                if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+                    stage.addActor(deadPlayerWindow);
+                }
+                if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+                    deadPlayerWindow.remove();
                 }
             } catch (ConcurrentModificationException cme) {
                 batch.end();
@@ -261,6 +256,11 @@ public class GameScreen implements Screen {
                 return;
             }
             try {
+                if(deadPlayerWindow == null){
+                    deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
+                    deadPlayerWindow.setPosition((Gdx.graphics.getWidth() - deadPlayerWindow.getWidth()) / 2f, (Gdx.graphics.getHeight() - deadPlayerWindow.getHeight()) / 2f);
+
+                }
                 camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
                 camera.update();
@@ -288,6 +288,12 @@ public class GameScreen implements Screen {
                                     getPlayer(player).getPos().x,
                                     getPlayer(player).getPos().y);
                         }
+                    }
+                    if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+                        stage.addActor(deadPlayerWindow);
+                    }
+                    if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+                        deadPlayerWindow.remove();
                     }
                 }
                 font.draw(batch, "Ping: " + ping, getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y-13);
@@ -350,6 +356,8 @@ public class GameScreen implements Screen {
         if(chatWindow != null){
             chatWindow.setBounds(Gdx.graphics.getWidth(), 0, width/2f, height/3.1f);
         }
+        if(deadPlayerWindow != null)
+            deadPlayerWindow.setPosition((Gdx.graphics.getWidth() - deadPlayerWindow.getWidth()) / 2f, (Gdx.graphics.getHeight() - deadPlayerWindow.getHeight()) / 2f);
     }
 
     @Override

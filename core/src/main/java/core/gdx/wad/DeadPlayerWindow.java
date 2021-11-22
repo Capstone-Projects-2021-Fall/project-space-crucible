@@ -19,15 +19,15 @@ public class DeadPlayerWindow extends Window {
         setMovable(false);
         setResizable(false);
         this.myGDxTest = myGDxTest;
-
         Button restartButton = new TextButton("Restart Level", skin);
-        add(restartButton);
-        row();
+        if(gameScreen.playerNumber == 1) {
+            add(restartButton);
+            row();
+        }
         Button titleScreenButton = new TextButton("Return to Title screen", skin);
         add(titleScreenButton);
         row();
         pack();
-
         restartButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -42,7 +42,12 @@ public class DeadPlayerWindow extends Window {
                 super.clicked(event, x, y);
 //                myGDxTest.setScreen(myGDxTest.titleScreen);
 //                StartMenu.setMainMenuButtonsVisible(true);
-                myGDxTest.gameLoop.interrupt();
+                if(gameScreen.isSinglePlayer) {
+                    myGDxTest.gameLoop.interrupt();
+                }else{
+                    gameScreen.client.getGameClient().close();
+                    gameScreen.client.getMasterClient().close();
+                }
                 Thread gameLoop = new Thread() {
                     @Override
                     public void run() {
@@ -54,10 +59,10 @@ public class DeadPlayerWindow extends Window {
                         GameLogic.stop();
                     }
                 };
-                    TitleScreen titleScreen = new TitleScreen(myGDxTest);
-                    myGDxTest.setScreen(titleScreen);
+                    myGDxTest.gameLoop = gameLoop;
+//                    TitleScreen titleScreen = new TitleScreen(myGDxTest);
+                    myGDxTest.setScreen(myGDxTest.titleScreen);
                     TitleScreen.setMainMenuButtonsVisible(true);
-
             }
         });
     }

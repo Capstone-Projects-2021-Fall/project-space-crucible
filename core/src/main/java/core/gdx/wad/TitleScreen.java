@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -83,6 +84,7 @@ public class TitleScreen implements Screen {
         }
         if(changeScreen){
             myGDxTest.setScreen(gameScreen);
+            setCoopButtonsVisible(false);
             changeScreen = false;
         }
         Gdx.gl.glClearColor(0,0,0,1F);
@@ -130,7 +132,6 @@ public class TitleScreen implements Screen {
 
     @Override
     public void hide() {
-        titleScreen.dispose();
     }
 
     @Override
