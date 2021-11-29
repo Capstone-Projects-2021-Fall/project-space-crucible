@@ -117,6 +117,7 @@ public class AddonWindow extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                TitleScreen.mainMenuTable.setVisible(true);
                 close();
             }
         });
@@ -125,11 +126,12 @@ public class AddonWindow extends Window {
         add(buttonTable);
         pack();
         updateList();
-        updateResources();
+//        updateResources();
     }
 
     private void updateResources() {
         resourceList.setItems(files);
+        System.out.println("Loading wads");
         MyGDxTest.loadWADS();
     }
 

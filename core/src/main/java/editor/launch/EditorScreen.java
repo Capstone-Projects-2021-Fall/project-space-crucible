@@ -1,5 +1,6 @@
 package editor.launch;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -18,7 +19,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
 import core.game.logic.GameLogic;
+import core.gdx.wad.MyGDxTest;
 import core.gdx.wad.RenderFuncs;
+import core.gdx.wad.TitleScreen;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.level.info.LevelTile;
@@ -82,9 +85,12 @@ public class EditorScreen implements Screen {
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
     private EditorHUDActor hud = new EditorHUDActor(new TextField("", skin), new MIDINameField("", skin),
             new CheckBox("Layer view", skin), new NumberField("0", skin));
+    public static MyGDxTest myGDXTest;
+    public static TitleScreen titleScreen;
 
-    public EditorScreen() {
-
+    public EditorScreen(MyGDxTest myGDXTest, TitleScreen titleScreen) {
+        EditorScreen.myGDXTest = myGDXTest;
+        EditorScreen.titleScreen = titleScreen;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
         camera.position.set(0, 0, 0);

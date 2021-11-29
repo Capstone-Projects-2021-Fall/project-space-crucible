@@ -40,7 +40,7 @@ public class SpaceServer implements Listener {
     public long packetsSent = 0;
     public volatile AtomicInteger packetsReceivedLastSecond = new AtomicInteger(0);
     public volatile AtomicInteger packetsSentLastSecond = new AtomicInteger(0);
-    private Timer packetTimer = new Timer();
+    final Timer packetTimer = new Timer();
     File serverReport;
     final long startTimer;
     Writer fileWriter;
@@ -95,7 +95,6 @@ public class SpaceServer implements Listener {
             //When the client sends a packet to the server handle it
             @Override
             public void received(Connection c, Object packetData) {
-                long duration = (System.nanoTime()-startTimer)/1000000000;
                 packetsReceived++;
                 packetsReceivedLastSecond.incrementAndGet();
                 PlayerConnection connection = (PlayerConnection) c;
@@ -106,15 +105,6 @@ public class SpaceServer implements Listener {
                     connection.playerInput = input;
 
                     if(GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())) != null) {
-                        /*
-                        try {
-                            fileWriter.write(duration + ": Received input data from Player " + c.getID() + ": " + Arrays.toString(input.controls) + ", angle: " + input.angle + "\n");
-                            fileWriter.flush();
-                        } catch (IOException e) {
-                            System.out.println("Could not write to file " + serverReport.getName());
-                            e.printStackTrace();
-                        }
-                        */
                         GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())).controls = input.controls;
                         GameLogic.getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID())).getPos().angle = input.angle;
                     }
@@ -203,7 +193,7 @@ public class SpaceServer implements Listener {
                 }
                 else if (packetData instanceof Network.CheckConnection) {
                     if (((Network.CheckConnection) packetData).type == Network.ConnectionType.PLAYER) {
-                        System.out.println("Client connected to game server: " + c.getID() + "Username: " + c.toString());
+                        System.out.println("Client connected to game server: " + c.getID());
                         connected.add(c.getID());
                         idToPlayerNum.add(c.getID());
                         clientData.connected = connected;

@@ -33,10 +33,9 @@ public class ChooseDifficultyWindow extends Window {
                     GameLogic.difficulty = levelList.getSelectedIndex();
                     remove();
                     titleScreen.myGDxTest.setScreen(new GameScreen(titleScreen.myGDxTest.gameLoop, true, titleScreen.myGDxTest));
-//                    titleScreen.myGDxTest.setScreen(new LobbyScreen());
                 }else{
-                    GameScreen.difficultyLevelSelected = levelList.getSelectedIndex();
-                    System.out.println("Game difficulty level: " + GameScreen.difficultyLevelSelected);
+                    LobbyScreen.difficultyLevelSelected = levelList.getSelectedIndex();
+                    System.out.println("Game difficulty level: " + LobbyScreen.difficultyLevelSelected);
                     remove();
 
                 }

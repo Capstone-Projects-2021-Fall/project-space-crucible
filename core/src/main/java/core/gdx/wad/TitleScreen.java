@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.server.SpaceClient;
+import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import editor.launch.EditorScreen;
 import net.mtrop.doom.WadFile;
@@ -32,21 +33,15 @@ public class TitleScreen implements Screen {
     public MyGDxTest myGDxTest;
     SpaceClient client;
     final TitleScreen titleScreen = this;
-    static CreateImageButton startButton = new CreateImageButton("buttons/start.png", "buttons/startnobg.png");
-    static CreateImageButton coopButton = new CreateImageButton("buttons/coop.png", "buttons/coopnobg.png");
-    static CreateImageButton settingsButton = new CreateImageButton("buttons/settings.png", "buttons/settingsnobg.png");
-    static CreateImageButton levelEditorButton = new CreateImageButton("buttons/leveleditor.png", "buttons/leveleditornobg.png");
-    static CreateImageButton exitButton = new CreateImageButton("buttons/exit.png", "buttons/exitnobg.png");
-    static CreateImageButton createLobbyButton = new CreateImageButton("buttons/createlobby.png", "buttons/createlobbynobg.png");
-    static CreateImageButton joinLobbyButton = new CreateImageButton("buttons/joinlobby.png", "buttons/joinlobbynobg.png");
-    static CreateImageButton backButton = new CreateImageButton("buttons/back.png", "buttons/backnobg.png");
-    TextButton submit = new TextButton("submit", skin);
-    TextButton back = new TextButton("back", skin);
-    TextField lobbyCode = new TextField("Lobby Code", skin);
     public GameScreen gameScreen;
+    public LobbyScreen lobbyScreen;
     public static Table mainMenuTable;
     public static Table coopMenuTable;
     public static Table joinLobbyTable;
+    SettingsMenu settingsMenu = new SettingsMenu("Choose Difficulty:", skin, stage);
+    ChooseDifficultyWindow difficultyWindow = new ChooseDifficultyWindow("Choose Difficulty:", skin, titleScreen, true);
+    PopupWindow error;
+
 
     public TitleScreen(MyGDxTest myGDxTest) {
         WadFile file;
@@ -69,6 +64,10 @@ public class TitleScreen implements Screen {
 
     @Override
     public void show() {
+        //Play lobby music
+        SoundFuncs.startSequencer();
+        SoundFuncs.playMIDI("TITLE");
+
         Gdx.input.setInputProcessor(stage);
         if(client != null){
             try {
@@ -88,10 +87,9 @@ public class TitleScreen implements Screen {
             update = false;
         }
         if(changeScreen){
-            myGDxTest.setScreen(gameScreen);
-//            myGDxTest.setScreen(new LobbyScreen());
+//            myGDxTest.setScreen(gameScreen);
+            myGDxTest.setScreen(lobbyScreen);
             coopMenuTable.setVisible(false);
-
             changeScreen = false;
         }
         Gdx.gl.glClearColor(0,0,0,1F);
@@ -100,6 +98,7 @@ public class TitleScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
         //drawing sprite background
+
         stage.act(Gdx.graphics.getDeltaTime());
         batch.begin();
         batch.draw(texture, 0, 0, camera.viewportWidth, camera.viewportHeight);
@@ -114,6 +113,11 @@ public class TitleScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
+        settingsMenu.setPosition(((Gdx.graphics.getWidth() - settingsMenu.getWidth())/ 2f), ((Gdx.graphics.getHeight() - settingsMenu.getHeight()) / 2f));
+        settingsMenu.resize();
+        difficultyWindow.setBounds(((Gdx.graphics.getWidth() - 150)/ 2f), ((Gdx.graphics.getHeight() - 110) / 2f), 150, 110);
+        if(error != null)
+            error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
     }
 
     @Override
@@ -143,29 +147,40 @@ public class TitleScreen implements Screen {
         joinLobbyTable.setFillParent(true);
         joinLobbyTable.center();
 
+        CreateImageButton startButton = new CreateImageButton("buttons/start.png", "buttons/startnobg.png");
+        CreateImageButton coopButton = new CreateImageButton("buttons/coop.png", "buttons/coopnobg.png");
+        CreateImageButton settingsButton = new CreateImageButton("buttons/settings.png", "buttons/settingsnobg.png");
+        CreateImageButton levelEditorButton = new CreateImageButton("buttons/leveleditor.png", "buttons/leveleditornobg.png");
+        CreateImageButton exitButton = new CreateImageButton("buttons/exit.png", "buttons/exitnobg.png");
+        CreateImageButton createLobbyButton = new CreateImageButton("buttons/createlobby.png", "buttons/createlobbynobg.png");
+        CreateImageButton joinLobbyButton = new CreateImageButton("buttons/joinlobby.png", "buttons/joinlobbynobg.png");
+        CreateImageButton backButton = new CreateImageButton("buttons/back.png", "buttons/backnobg.png");
+        TextButton submit = new TextButton("submit", skin);
+        TextButton back = new TextButton("back", skin);
+        TextField lobbyCode = new TextField("Lobby Code", skin);
+
         startButton.button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                ChooseDifficultyWindow window = new ChooseDifficultyWindow("Choose Difficulty:", skin, titleScreen, true);
-                window.setBounds(((Gdx.graphics.getWidth() - 150)/ 2f), ((Gdx.graphics.getHeight() - 110) / 2f), 150, 110);
                 mainMenuTable.setVisible(false);
-                stage.addActor(window);
+                stage.addActor(difficultyWindow);
             }
         });
         coopButton.button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(NameChangeWindow.playerName.length() == 0){
-                    PopupWindow error = new PopupWindow("No Username Found!", skin, "Go to settings and create a username");
+                    error = new PopupWindow("No Username Found!", skin, "Go to settings and create a username");
                     showPopup(error);
                     error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
                     return;
                 }
                 gameScreen= new GameScreen(null, false, myGDxTest);
-                client = new SpaceClient(gameScreen, titleScreen);
+                lobbyScreen = new LobbyScreen(myGDxTest, gameScreen);
+                client = new SpaceClient(lobbyScreen, gameScreen, titleScreen);
                 if(client.getMasterClient() == null) {
-                    PopupWindow error = new PopupWindow("Connection Error", skin,
+                    error = new PopupWindow("Connection Error", skin,
                             "Error connecting to the server!\nTry Again Later.");
                     showPopup(error);
                     error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
@@ -228,7 +243,7 @@ public class TitleScreen implements Screen {
                 if(!client.validLobby.valid) {
                     System.out.println("Invalid.");
                     joinLobbyTable.setVisible(true);
-                    PopupWindow error = new PopupWindow("Invalid Lobby", skin, client.validLobby.reason);
+                    error = new PopupWindow("Invalid Lobby", skin, client.validLobby.reason);
                     showPopup(error);
                     error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
                 }
@@ -244,11 +259,8 @@ public class TitleScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                titleScreen.dispose();
-                SettingsMenu settingsMenu = new SettingsMenu("Choose Difficulty:", skin, stage);
-                settingsMenu.setPosition(((Gdx.graphics.getWidth() - settingsMenu.getWidth())/ 2f), ((Gdx.graphics.getHeight() - settingsMenu.getHeight()) / 2f));
-                mainMenuTable.setVisible(false);
                 stage.addActor(settingsMenu);
+                mainMenuTable.setVisible(false);
             }
         });
 
@@ -257,7 +269,7 @@ public class TitleScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 titleScreen.dispose();
-                myGDxTest.setScreen(new EditorScreen());
+                myGDxTest.setScreen(new EditorScreen(myGDxTest, titleScreen));
             }
         });
 
@@ -297,6 +309,8 @@ public class TitleScreen implements Screen {
         joinLobbyTable.pack();
         stage.addActor(joinLobbyTable);
         joinLobbyTable.setVisible(false);
+
+
     }
 
     public void showPopup(PopupWindow invalid_lobby) {

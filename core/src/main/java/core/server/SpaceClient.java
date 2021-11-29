@@ -22,17 +22,19 @@ public class SpaceClient implements Listener {
 
     Client masterClient;
     Client gameClient;
-//    static String ip = "100.19.127.86";
-    static String ip = "localhost";
+    static String ip = "100.19.127.86";
+//    static String ip = "localhost";
     GameScreen screen;
     public ValidLobby validLobby;
     TitleScreen titleScreen;
+    LobbyScreen lobbyScreen;
     File file;
     boolean fileReceive = false;
 
-    public SpaceClient(GameScreen screen, TitleScreen titleScreen){
+    public SpaceClient(LobbyScreen lobbyScreen, GameScreen screen, TitleScreen titleScreen){
         this.screen = screen;
         this.titleScreen = titleScreen;
+        this.lobbyScreen = lobbyScreen;
 
         masterClient = new Client(8192, 8192);
         masterClient.start();
@@ -176,7 +178,7 @@ public class SpaceClient implements Listener {
                     screen.setClientData((ClientData) object);
 
                     //If playernumber is changed and data is not null
-                    if (screen.playerNumber == 0
+                    if (lobbyScreen.playerNumber == 0
                             && ((ClientData) object).connected != null && ((ClientData) object).idToPlayerNum != null) {
                         TitleScreen.changeScreen = true;
                     }
@@ -188,14 +190,14 @@ public class SpaceClient implements Listener {
 
                 //If server sends StartGame set the startGame value to it
                 else if(object instanceof StartGame){
-                    screen.updatePlayerNumber();
+                    lobbyScreen.updatePlayerNumber();
                     GameLogic.currentLevel = GameLogic.levels.get(((StartGame) object).levelnum);
-                    screen.startGame = ((StartGame) object).startGame;
+                    lobbyScreen.startGame = ((StartGame) object).startGame;
                     screen.addChatWindow();
                 }
 
                 else if (object instanceof LevelChange) {
-                    screen.updatePlayerNumber();
+                    lobbyScreen.updatePlayerNumber();
                     GameLogic.currentLevel = GameLogic.levels.get(((LevelChange) object).number);
                 }
 

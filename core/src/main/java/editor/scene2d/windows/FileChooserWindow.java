@@ -217,7 +217,8 @@ public class FileChooserWindow extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                cancelFile();
+                EditorScreen.myGDXTest.setScreen(EditorScreen.titleScreen);
+//                cancelFile();
             }
         });
 

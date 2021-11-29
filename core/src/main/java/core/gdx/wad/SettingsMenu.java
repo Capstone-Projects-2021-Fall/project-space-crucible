@@ -11,7 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class SettingsMenu extends Window {
 
+    final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
     private SettingsMenu settingsMenu = this;
+    AddonWindow addonWindow = new AddonWindow("Add .WADs", skin);
+    SoundSettings soundSettings = new SoundSettings("Volume", skin, settingsMenu);
+    NameChangeWindow nameChangeWindow = new NameChangeWindow("Enter player name", skin, settingsMenu);
+
     public SettingsMenu(String title, Skin skin, Stage stage) {
         super(title, skin);
         setModal(false);
@@ -34,8 +39,7 @@ public class SettingsMenu extends Window {
              @Override
              public void clicked(InputEvent event, float x, float y) {
                  super.clicked(event, x, y);
-                 setVisible(false);
-                 AddonWindow addonWindow = new AddonWindow("Add .WADs", skin);
+                 remove();
                  addonWindow.setPosition(((Gdx.graphics.getWidth() - addonWindow.getWidth())/ 2f), ((Gdx.graphics.getHeight() - addonWindow.getHeight()) / 2f));
                  stage.addActor(addonWindow);
              }
@@ -45,7 +49,6 @@ public class SettingsMenu extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 setVisible(false);
-                SoundSettings soundSettings = new SoundSettings("Volume", skin, settingsMenu);
                 soundSettings.setPosition(((Gdx.graphics.getWidth() - soundSettings.getWidth())/ 2f), ((Gdx.graphics.getHeight() - soundSettings.getHeight()) / 2f));
                 stage.addActor(soundSettings);
             }
@@ -55,7 +58,6 @@ public class SettingsMenu extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 setVisible(false);
-                NameChangeWindow nameChangeWindow = new NameChangeWindow("Enter player name", skin, settingsMenu);
                 nameChangeWindow.setPosition(((Gdx.graphics.getWidth() - nameChangeWindow.getWidth())/ 2f), ((Gdx.graphics.getHeight() - nameChangeWindow.getHeight()) / 2f));
                 stage.addActor(nameChangeWindow);
             }
@@ -68,5 +70,10 @@ public class SettingsMenu extends Window {
                 TitleScreen.mainMenuTable.setVisible(true);
             }
         });
+    }
+    public void resize(){
+        addonWindow.setPosition(((Gdx.graphics.getWidth() - addonWindow.getWidth())/ 2f), ((Gdx.graphics.getHeight() - addonWindow.getHeight()) / 2f));
+        soundSettings.setPosition(((Gdx.graphics.getWidth() - soundSettings.getWidth())/ 2f), ((Gdx.graphics.getHeight() - soundSettings.getHeight()) / 2f));
+        nameChangeWindow.setPosition(((Gdx.graphics.getWidth() - nameChangeWindow.getWidth())/ 2f), ((Gdx.graphics.getHeight() - nameChangeWindow.getHeight()) / 2f));
     }
 }
