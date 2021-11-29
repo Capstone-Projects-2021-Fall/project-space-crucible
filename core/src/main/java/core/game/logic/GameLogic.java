@@ -8,6 +8,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import core.game.entities.BaseMonster;
 import core.game.entities.Entity;
+import core.game.entities.MapSpot;
 import core.game.entities.PlayerPawn;
 import core.game.logic.tileactions.TileAction;
 import core.level.info.LevelData;
@@ -75,6 +76,7 @@ public class GameLogic {
             midi.midi = currentLevel.getMIDI();
             server.sendToAllTCP(midi);
             spaceServer.packetsSent += server.getConnections().size();
+            spaceServer.packetsSentLastSecond.addAndGet(server.getConnections().size());
         }
         gameTimer = new Timer();
         gameTimer.schedule( new TimerTask() {
@@ -100,49 +102,54 @@ public class GameLogic {
             e.decrementTics();
 
             if (e instanceof PlayerPawn) {
-                //If PlayerPawn is being controlled by a connected player
-                if (isSinglePlayer || SpaceServer.connected.contains(SpaceServer.idToPlayerNum.get(e.getTag()))) {
-                    ((PlayerPawn) e).movementUpdate();
-                } else {
-                    if (e.getHealth() <= 0) {continue;}
-                    //Set player to chase closest enemy or player (bot only attacks monsters)
-                    setPlayerBotTarget((PlayerPawn) e);
+                try {
+                    //If PlayerPawn is being controlled by a connected player
+                    if (isSinglePlayer || SpaceServer.connected.contains(SpaceServer.idToPlayerNum.get(e.getTag()))) {
+                        ((PlayerPawn) e).movementUpdate();
+                    } else {
+                        if (e.getHealth() <= 0) {
+                            continue;
+                        }
+                        //Set player to chase closest enemy or player (bot only attacks monsters)
+                        setPlayerBotTarget((PlayerPawn) e);
 
-                    if (((PlayerPawn) e).botTarget == null) {
-                        e.setState(Entity.IDLE);
-                    }
+                        if (((PlayerPawn) e).botTarget == null) {
+                            e.setState(Entity.IDLE);
+                        }
 
-                    try {
+                        try {
 
-                        Vector2 start = e.getCenter();
-                        Entity target = ((PlayerPawn) e).botTarget;
+                            Vector2 start = e.getCenter();
+                            Entity target = ((PlayerPawn) e).botTarget;
 
-                        Vector2 distance = new Vector2();
-                        distance.x = target.getPos().x - e.getPos().x;
-                        distance.y = target.getPos().y - e.getPos().y;
+                            Vector2 distance = new Vector2();
+                            distance.x = target.getPos().x - e.getPos().x;
+                            distance.y = target.getPos().y - e.getPos().y;
 
-                        if ((CollisionLogic.checkFOVForEntity(start.x, start.y, e.getPos().angle, e, target)
-                                || distance.len() < 64f)
-                                && e.getCurrentStateIndex() <= e.getStates()[Entity.MELEE]
-                                && !(target instanceof PlayerPawn)) {
+                            if ((CollisionLogic.checkFOVForEntity(start.x, start.y, e.getPos().angle, e, target)
+                                    || distance.len() < 64f)
+                                    && e.getCurrentStateIndex() <= e.getStates()[Entity.MELEE]
+                                    && !(target instanceof PlayerPawn)) {
 
 
-                            e.getPos().angle = distance.angleDeg();
-                            e.setState(e.getStates()[Entity.MISSILE]);
-                            e.hitScanAttack(e.getPos().angle, 15);
-                            SoundFuncs.playSound("pistol/shoot");
-                            GameLogic.alertMonsters(e);
-                        } else {
-                            if (!(((PlayerPawn) e).botTarget instanceof PlayerPawn && distance.len() < 128f)) {
-                                e.pursueTarget(target);
+                                e.getPos().angle = distance.angleDeg();
+                                e.setState(e.getStates()[Entity.MISSILE]);
+                                e.hitScanAttack(e.getPos().angle, 15);
+                                SoundFuncs.playSound("pistol/shoot");
+                                GameLogic.alertMonsters(e);
+                            } else {
+                                if (!(((PlayerPawn) e).botTarget instanceof PlayerPawn && distance.len() < 128f)) {
+                                    e.pursueTarget(target);
 
-                                if (e.getCurrentStateIndex() == e.getStates()[Entity.IDLE]) {
-                                    e.setState(e.getStates()[Entity.WALK]);
+                                    if (e.getCurrentStateIndex() == e.getStates()[Entity.IDLE]) {
+                                        e.setState(e.getStates()[Entity.WALK]);
+                                    }
                                 }
                             }
+                        } catch (NullPointerException ignored) {
                         }
-                    } catch (NullPointerException ignored){}
-                }
+                    }
+                } catch(IndexOutOfBoundsException ioobe) {System.out.println("Could not get player with that tag.");}
             }
         }
 
@@ -178,6 +185,26 @@ public class GameLogic {
                 renderData.playerPawn = getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()));
                 server.sendToTCP(c.getID(), renderData);
                 spaceServer.packetsSent++;
+                spaceServer.packetsSentLastSecond.incrementAndGet();
+            }
+
+            //Send live player info
+            Network.RCONPlayerStats ps = new Network.RCONPlayerStats();
+            ps.playerList = new ArrayList<>();
+            ps.usernames = new ArrayList<>();
+            ps.pings = new ArrayList<>();
+
+            for (int pid : SpaceServer.idToPlayerNum) {
+                if (pid == -1) {continue;}
+                ps.playerList.add(getPlayer(SpaceServer.idToPlayerNum.indexOf(pid)));
+                ps.usernames.add(SpaceServer.playerNames.get(pid));
+                ps.pings.add(SpaceServer.playerPings.get(pid));
+            }
+
+            System.out.println(ps.usernames);
+
+            for (int id : SpaceServer.rconConnected) {
+                server.sendToTCP(id, ps);
             }
         }
 
@@ -202,12 +229,14 @@ public class GameLogic {
                 SpaceServer.clientData.idToPlayerNum = SpaceServer.idToPlayerNum;
                 server.sendToAllTCP(SpaceServer.clientData);
                 spaceServer.packetsSent += server.getConnections().size();
+                spaceServer.packetsSentLastSecond.addAndGet(server.getConnections().size());
                 System.out.println("Size after: " + SpaceServer.idToPlayerNum.size());
                 Network.LevelChange lc = new Network.LevelChange();
                 System.out.println("Going to level " + nextLevel.getLevelnumber());
                 lc.number = nextLevel.getLevelnumber();
                 server.sendToAllTCP(lc);
                 spaceServer.packetsSent += server.getConnections().size();
+                spaceServer.packetsSentLastSecond.addAndGet(server.getConnections().size());
             }
             changeLevel(nextLevel);
         }
@@ -232,6 +261,15 @@ public class GameLogic {
                 if (server != null && obj.tag > SpaceServer.connected.size()) {
                     System.out.println("Skipping player " + obj.tag + " because they don't exist.");
                     continue;
+                }
+            }
+
+            if (obj.type == -1) {
+                if (!editor) {continue;}
+
+                else {
+                    entityList.add(new MapSpot(
+                            new Entity.Position(obj.xpos, obj.ypos, obj.angle), obj.tag, obj.layer));
                 }
             }
 
@@ -276,6 +314,7 @@ public class GameLogic {
             midi.midi = level.getMIDI();
             server.sendToAllTCP(midi);
             spaceServer.packetsSent += server.getConnections().size();
+            spaceServer.packetsSentLastSecond.addAndGet(server.getConnections().size());
         }
         goingToNextLevel = false;
         switchingLevels = false;
@@ -293,10 +332,14 @@ public class GameLogic {
 
     public static PlayerPawn getPlayer(int tag) {
 
-        for (Entity e : entityList) {
-            if (e instanceof PlayerPawn && e.getTag() == tag) {
-                return (PlayerPawn) e;
+        try {
+            for (Entity e : entityList) {
+                if (e instanceof PlayerPawn && e.getTag() == tag) {
+                    return (PlayerPawn) e;
+                }
             }
+        } catch (ConcurrentModificationException cme) {
+            return getPlayer(tag);
         }
         return null;
     }
@@ -333,6 +376,7 @@ public class GameLogic {
         soundData.sound = name;
         server.sendToAllTCP(soundData);
         spaceServer.packetsSent += server.getConnections().size();
+        spaceServer.packetsSentLastSecond.addAndGet(server.getConnections().size());
     }
 
     public static void alertMonsters(Entity soundSource) {

@@ -8,12 +8,14 @@ import core.game.entities.Projectile;
 public class EntitySpawner {
     String baseClass;
     Properties properties;
+    String className;
 
     public EntitySpawner (){}
 
     public EntitySpawner (String baseClass, Properties properties) {
         this.baseClass = baseClass;
         this.properties = properties;
+        this.className = properties.name;
         System.out.println(baseClass + "flags: " + properties.flags);
     }
 
@@ -94,4 +96,6 @@ public class EntitySpawner {
                 properties.flags
         );
     }
+
+    public String getClassName() {return className;}
 }

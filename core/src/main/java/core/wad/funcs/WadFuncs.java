@@ -8,10 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import core.game.entities.*;
 import core.game.entities.actions.*;
 import core.game.logic.*;
-import core.game.logic.tileactions.T_ChangeLevel;
-import core.game.logic.tileactions.T_ExecuteScript;
-import core.game.logic.tileactions.T_InstantDamage;
-import core.game.logic.tileactions.T_SlimeDamage;
+import core.game.logic.tileactions.*;
 import core.gdx.wad.RenderFuncs;
 import core.level.info.LevelData;
 import net.mtrop.doom.WadEntry;
@@ -114,6 +111,7 @@ public class WadFuncs {
         GameLogic.effectList.add(new T_SlimeDamage());
         GameLogic.effectList.add(new T_ExecuteScript());
         GameLogic.effectList.add(new T_InstantDamage());
+        GameLogic.effectList.add(new T_SpawnThing());
     }
 
     public static void loadScripts(Array<WadFile> wads) {
@@ -165,10 +163,15 @@ public class WadFuncs {
                                         nextCommand.action = new T_InstantDamage();
                                         break;
 
+                                    case "SpawnThing":
+                                        nextCommand.action = new T_SpawnThing();
+                                        break;
+
                                 }
 
                                 nextCommand.arg1 = Integer.parseInt(st.nextToken());
                                 nextCommand.arg2 = Integer.parseInt(st.nextToken());
+                                nextCommand.tag = Integer.parseInt(st.nextToken());
 
                                 if (!scriptScanner.hasNextLine()) {
                                     System.out.println("Adding " + nextCommand.action.getClass().getName() + ", (" + nextCommand.arg1 + ", " + nextCommand.arg2 + ") with delay " + nextCommand.delay);

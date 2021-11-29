@@ -10,12 +10,10 @@ import core.wad.funcs.SoundFuncs;
 
 public class SoundSettings extends Window {
     MyGDxTest myGDxTest;
-    SettingsScreen settingsScreen;
 
-    public SoundSettings(String title, Skin skin, SettingsScreen settingsScreen, Stage stage, MyGDxTest myGDxTest) {
+    public SoundSettings(String title, Skin skin, SettingsMenu settingsMenu) {
         super(title, skin);
         setModal(false);
-        this.myGDxTest=myGDxTest;
 
         Label sfxLabel = new Label("SFX: ", skin);
         add(sfxLabel);
@@ -44,6 +42,8 @@ public class SoundSettings extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 remove();
+                settingsMenu.setVisible(true);
+
                 //settingsScreen.remove = true;
             }
         });

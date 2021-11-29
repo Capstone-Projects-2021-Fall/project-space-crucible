@@ -9,11 +9,10 @@ import core.server.Network;
 
 public class NameChangeWindow extends Window {
     MyGDxTest myGDxTest;
-    SettingsScreen settingsScreen;
     public int playerNumber = 1;
-    public static String playerName="";
+    public static String playerName="Player";
 
-    public NameChangeWindow(String title, Skin skin, SettingsScreen settingsScreen, Stage stage, MyGDxTest myGDxTest) {
+    public NameChangeWindow(String title, Skin skin, SettingsMenu settingsMenu) {
         super(title, skin);
         setModal(false);
         this.myGDxTest=myGDxTest;
@@ -46,6 +45,7 @@ public class NameChangeWindow extends Window {
                 playerName = enterNewName.getText();
                 newName.setText(playerName);
                 remove();
+                settingsMenu.setVisible(true);
                 //settingsScreen.remove = true;
             }
         });

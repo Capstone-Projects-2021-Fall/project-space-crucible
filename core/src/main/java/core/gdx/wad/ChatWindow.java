@@ -15,9 +15,8 @@ import java.util.Objects;
 public class ChatWindow extends com.badlogic.gdx.scenes.scene2d.ui.Window {
     MyGDxTest myGDxTest;
     GameScreen gameScreen;
-    List<String> chatLog;
+    Table chatLog;
     ScrollPane scrollPane;
-    Array<String> qA = new Array<>();
     public ChatWindow(String title, Skin skin, GameScreen gameScreen, Stage stage, MyGDxTest myGDxTest) {
         super(title, skin);
         setModal(true);
@@ -32,10 +31,10 @@ public class ChatWindow extends com.badlogic.gdx.scenes.scene2d.ui.Window {
 
         //TextField chatLog = new TextField("", skin);
         //Label chatLogBody = new Label("",skin);
-        chatLog = new List<>(skin);
+        chatLog = new Table(skin);
         scrollPane = new ScrollPane(chatLog, skin);
         //add(chatLog).height(chatLog.getHeight()*3/2);
-        add(scrollPane).height(100).width(200);
+        add(scrollPane).height(100).width(320);
         scrollPane.setFadeScrollBars(false);
 
         //chatLog.setDisabled(true);
@@ -50,7 +49,7 @@ public class ChatWindow extends com.badlogic.gdx.scenes.scene2d.ui.Window {
             if (key == '\n' || key == '\r') {
 
                 Network.ChatMessage chat = new Network.ChatMessage();
-                chat.sender = "Player " + gameScreen.playerNumber;
+                chat.sender = NameChangeWindow.playerName;
                 chat.message = chatField.getText();
                 gameScreen.client.getGameClient().sendTCP(chat);
                 chatField.setText("");
@@ -82,7 +81,7 @@ public class ChatWindow extends com.badlogic.gdx.scenes.scene2d.ui.Window {
     }
 
     public void addToChatLog(String log) {
-        qA.add(log);
-        chatLog.setItems(qA);
+        chatLog.add(new Label(log, getSkin())).width(320);
+        chatLog.row();
     }
 }
