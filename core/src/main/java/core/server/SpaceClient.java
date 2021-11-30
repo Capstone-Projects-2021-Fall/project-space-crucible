@@ -5,7 +5,6 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.kryonet.Listener;
-
 import com.esotericsoftware.kryonet.util.InputStreamSender;
 import com.google.common.hash.Hashing;
 import core.game.logic.GameLogic;
@@ -15,7 +14,6 @@ import core.wad.funcs.SoundFuncs;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
 public class SpaceClient implements Listener {
@@ -30,6 +28,7 @@ public class SpaceClient implements Listener {
     LobbyScreen lobbyScreen;
     File file;
     boolean fileReceive = false;
+    FileOutputStream outputStream;
 
     public SpaceClient(LobbyScreen lobbyScreen, GameScreen screen, TitleScreen titleScreen){
         this.screen = screen;
@@ -101,10 +100,11 @@ public class SpaceClient implements Listener {
                             file = Gdx.files.internal("assets/" + ((CreateWadFile) object).levelFileName).file();
                             if(file.createNewFile()){
                                 System.out.println("Created a new file");
+                                outputStream = new FileOutputStream(file,true);
                             }else{
                                 System.out.println("Couldn't create file " + file.getName());
+                                outputStream= new FileOutputStream(file, false);
                             }
-                            return;
                         } catch (IOException ioException) {
                             ioException.printStackTrace();
                         }
@@ -113,7 +113,8 @@ public class SpaceClient implements Listener {
                 else if(object instanceof WadFile){
                     try {
                         System.out.println("Writing to file " + ((WadFile) object).levelFileName);
-                        Files.write(file.toPath(), ((WadFile) object).levelFile, StandardOpenOption.APPEND);
+                        outputStream.write(((WadFile) object).levelFile);
+                        outputStream.flush();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -177,7 +178,7 @@ public class SpaceClient implements Listener {
                 else if(object instanceof ClientData){
                     screen.setClientData((ClientData) object);
 
-                    //If playernumber is changed and data is not null
+                    //If player number is changed and data is not null
                     if (lobbyScreen.playerNumber == 0
                             && ((ClientData) object).connected != null && ((ClientData) object).idToPlayerNum != null) {
                         TitleScreen.changeScreen = true;

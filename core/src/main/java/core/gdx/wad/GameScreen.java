@@ -144,7 +144,7 @@ public class GameScreen implements Screen {
                 batch.end();
                 return;
             }
-            GameLogic.getPlayer(1).controls = getControls();
+            Objects.requireNonNull(GameLogic.getPlayer(1)).controls = getControls();
 
         }else { //If co-op mode
             if (clientData.connected == null)  {
@@ -281,7 +281,7 @@ public class GameScreen implements Screen {
             mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight()/2f;
         }
         mouseInWorld3D.z = 0;
-        camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
+        camera.unproject(mouseInWorld3D); //unproject will give game world coordinates matching the pointer's position
         mouseInWorld2D.x = mouseInWorld3D.x;
         mouseInWorld2D.y = mouseInWorld3D.y;
         angle = mouseInWorld2D.angleDeg();
@@ -317,8 +317,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-//        client.getGameClient().stop();
-//        System.exit(0);
     }
 
     public float getAngle() {
@@ -351,11 +349,11 @@ public class GameScreen implements Screen {
         Network.CameraData newCameraData = new Network.CameraData();
         newCameraData.width = camera.viewportWidth;
         newCameraData.hight = camera.viewportHeight;
-        Vector3 bottomleft = new Vector3();
-        bottomleft.x = camera.position.x - camera.viewportWidth/2;
-        bottomleft.y = camera.position.y - camera.viewportHeight/2;
-        bottomleft.z = 0;
-        newCameraData.camerapositon = bottomleft;
+        Vector3 bottomLeft = new Vector3();
+        bottomLeft.x = camera.position.x - camera.viewportWidth/2;
+        bottomLeft.y = camera.position.y - camera.viewportHeight/2;
+        bottomLeft.z = 0;
+        newCameraData.camerapositon = bottomLeft;
         return newCameraData;
     }
 
@@ -387,7 +385,7 @@ public class GameScreen implements Screen {
 
     private void drawMiniMap() {
         //chatLog.setPosition(((Gdx.graphics.getWidth() - chatLog.getWidth())/ 2f), ((Gdx.graphics.getHeight() - chatLog.getHeight()) / 2f));
-        float miniSquareWidth = Gdx.graphics.getWidth()/200;
+        float miniSquareWidth = Gdx.graphics.getWidth()/200f;
         float miniSquareHeight = miniSquareWidth;
         float drawMiniX = 0;
         float drawMiniY = camera.viewportHeight - camera.viewportHeight/3;
@@ -395,7 +393,7 @@ public class GameScreen implements Screen {
         shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         //float mapSpacing = 4;
-        float mapSpacing = Gdx.graphics.getWidth()/200;
+        float mapSpacing = Gdx.graphics.getWidth()/200f;
         for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
             shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
                     levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
