@@ -1,5 +1,6 @@
 package core.gdx.wad;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -62,5 +63,10 @@ public class ChatWindow extends com.badlogic.gdx.scenes.scene2d.ui.Window {
     public void addToChatLog(String log) {
         chatLog.add(new Label(log, getSkin())).width(320);
         chatLog.row();
+    }
+
+    public void resize() {
+        chatLog.setPosition(((Gdx.graphics.getWidth() - chatLog.getWidth())/ 2f), ((Gdx.graphics.getHeight() - chatLog.getHeight()) / 2f));
+        scrollPane.setPosition(((Gdx.graphics.getWidth() - scrollPane.getWidth())/ 2f), ((Gdx.graphics.getHeight() - scrollPane.getHeight()) / 2f));
     }
 }

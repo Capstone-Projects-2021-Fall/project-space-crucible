@@ -113,17 +113,19 @@ public class GameScreen implements Screen {
 
             try {
                 RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, GameLogic.entityList, GameLogic.getPlayer(1));
-                if(GameLogic.getPlayer(playerNumber).getHealth()>0){
-                    font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
-                            GameLogic.getPlayer(playerNumber).getPos().x,
-                            GameLogic.getPlayer(playerNumber).getPos().y);
-                }else{
-                    font.draw(batch,"HP:0",
-                            GameLogic.getPlayer(playerNumber).getPos().x,
-                            GameLogic.getPlayer(playerNumber).getPos().y);
-                }
-                font.draw(batch, "Layer:" + GameLogic.getPlayer(playerNumber).currentLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-10);
-                font.draw(batch, "Bridge:" + GameLogic.getPlayer(playerNumber).bridgeLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-20);
+                drawHealth();//TODO test this and the other in multiplayer
+//                if(GameLogic.getPlayer(playerNumber).getHealth()>0){
+//                    font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
+//                            GameLogic.getPlayer(playerNumber).getPos().x,
+//                            GameLogic.getPlayer(playerNumber).getPos().y);
+//                }else{
+//                    font.draw(batch,"HP:0",
+//                            GameLogic.getPlayer(playerNumber).getPos().x,
+//                            GameLogic.getPlayer(playerNumber).getPos().y);
+//                }
+                //TODO: re-add tags for layer and bridge before pr
+                //font.draw(batch, "Layer:" + GameLogic.getPlayer(playerNumber).currentLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-10);
+                //font.draw(batch, "Bridge:" + GameLogic.getPlayer(playerNumber).bridgeLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-20);
                 font.draw(batch, NameChangeWindow.playerName,
                         GameLogic.getPlayer(playerNumber).getPos().x,
                         GameLogic.getPlayer(playerNumber).getPos().y + GameLogic.getPlayer(playerNumber).getHeight() + 10);
@@ -193,15 +195,16 @@ public class GameScreen implements Screen {
                                     Objects.requireNonNull(getPlayer(player)).getPos().x,
                                     Objects.requireNonNull(getPlayer(player)).getPos().y + Objects.requireNonNull(getPlayer(player)).getHeight() + 10);
                         }
-                        if (getPlayer(player).getHealth() > 0) {
-                            font.draw(batch, "HP:" + getPlayer(player).getHealth(),
-                                    getPlayer(player).getPos().x,
-                                    getPlayer(player).getPos().y);
-                        } else {
-                            font.draw(batch, "HP: 0",
-                                    getPlayer(player).getPos().x,
-                                    getPlayer(player).getPos().y);
-                        }
+                        drawHealth();
+//                        if (getPlayer(player).getHealth() > 0) {
+//                            font.draw(batch, "HP:" + getPlayer(player).getHealth(),
+//                                    getPlayer(player).getPos().x,
+//                                    getPlayer(player).getPos().y);
+//                        } else {
+//                            font.draw(batch, "HP: 0",
+//                                    getPlayer(player).getPos().x,
+//                                    getPlayer(player).getPos().y);
+//                        }
                     }
                     if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
                         stage.addActor(deadPlayerWindow);
@@ -232,6 +235,19 @@ public class GameScreen implements Screen {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         drawMiniMap();
+    }
+
+    private void drawHealth() {
+        for(Entity entity : GameLogic.entityList){
+                if(entity.getHeight()>1){
+                    if(entity.getHealth()>0){
+                        font.draw(batch,"HP:" +entity.getHealth(),
+                                entity.getPos().x,
+                                entity.getPos().y);
+                    }
+                }
+
+        }
     }
 
     private void showBoxes() {
@@ -271,6 +287,10 @@ public class GameScreen implements Screen {
         }
         if(deadPlayerWindow != null)
             deadPlayerWindow.setPosition((Gdx.graphics.getWidth() - deadPlayerWindow.getWidth()) / 2f, (Gdx.graphics.getHeight() - deadPlayerWindow.getHeight()) / 2f);
+
+        if(!isSinglePlayer){
+            chatWindow.resize();
+        }
     }
 
     @Override
@@ -360,13 +380,16 @@ public class GameScreen implements Screen {
     }
 
     private void drawMiniMap() {
-        float miniSquareWidth = camera.viewportWidth/200;
+        //chatLog.setPosition(((Gdx.graphics.getWidth() - chatLog.getWidth())/ 2f), ((Gdx.graphics.getHeight() - chatLog.getHeight()) / 2f));
+        float miniSquareWidth = Gdx.graphics.getWidth()/200;
         float miniSquareHeight = miniSquareWidth;
         float drawMiniX = 0;
-        float drawMiniY = 345;
+        float drawMiniY = camera.viewportHeight - camera.viewportHeight/3;
+        //float drawMiniY = Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/3; //apparently does the same thing as above
         shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        float mapSpacing =4;
+        //float mapSpacing = 4;
+        float mapSpacing = Gdx.graphics.getWidth()/200;
         for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
             shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
                     levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
