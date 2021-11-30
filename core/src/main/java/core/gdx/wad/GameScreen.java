@@ -67,6 +67,9 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
         batch = new SpriteBatch();
+        if(!isSinglePlayer){
+            chatWindow = new ChatWindow("Chat", skin, this, stage);
+        }
     }
 
     @Override
@@ -264,7 +267,7 @@ public class GameScreen implements Screen {
         camera.viewportHeight = height;
         stage.getViewport().update(width, height, true);
         if(chatWindow != null){
-            chatWindow.setBounds(Gdx.graphics.getWidth(), 0, width/2f, height/3.1f);
+            chatWindow.setSize(width/2f, height/3.1f);
         }
         if(deadPlayerWindow != null)
             deadPlayerWindow.setPosition((Gdx.graphics.getWidth() - deadPlayerWindow.getWidth()) / 2f, (Gdx.graphics.getHeight() - deadPlayerWindow.getHeight()) / 2f);
@@ -344,9 +347,8 @@ public class GameScreen implements Screen {
 
     public void addChatWindow() {
         Gdx.input.setInputProcessor(stage);
-        chatWindow = new ChatWindow("Chat", skin, this, stage, myGDxTest);
-        stage.addActor(chatWindow);
         chatWindow.setBounds(Gdx.graphics.getWidth(), 0, chatWindow.getWidth(),chatWindow.getHeight());
+        stage.addActor(chatWindow);
     }
 
     public void addChatToWindow(Network.ChatMessage chat) {

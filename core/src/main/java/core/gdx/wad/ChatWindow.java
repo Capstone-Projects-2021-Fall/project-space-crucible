@@ -11,6 +11,7 @@ public class ChatWindow extends com.badlogic.gdx.scenes.scene2d.ui.Window {
     GameScreen gameScreen;
     Table chatLog;
     ScrollPane scrollPane;
+    Window chatWindow = this;
     public ChatWindow(String title, Skin skin, GameScreen gameScreen, Stage stage) {
         super(title, skin);
         setModal(true);
@@ -50,7 +51,7 @@ public class ChatWindow extends com.badlogic.gdx.scenes.scene2d.ui.Window {
             }
         });
 
-        stage.getRoot().addCaptureListener(new InputListener() {
+        chatWindow.addCaptureListener(new InputListener() {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 if (!(event.getTarget() instanceof TextField)) stage.setKeyboardFocus(null);
                 return false;
