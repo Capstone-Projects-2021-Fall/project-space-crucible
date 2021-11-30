@@ -283,14 +283,10 @@ public class GameScreen implements Screen {
         camera.viewportHeight = height;
         stage.getViewport().update(width, height, true);
         if(chatWindow != null){
-            chatWindow.setSize(width/2f, height/3.1f);
+            chatWindow.setBounds(Gdx.graphics.getWidth(), 0, width/2f, height/3.1f);
         }
         if(deadPlayerWindow != null)
             deadPlayerWindow.setPosition((Gdx.graphics.getWidth() - deadPlayerWindow.getWidth()) / 2f, (Gdx.graphics.getHeight() - deadPlayerWindow.getHeight()) / 2f);
-
-        if(!isSinglePlayer){
-            chatWindow.resize();
-        }
     }
 
     @Override

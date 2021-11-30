@@ -20,15 +20,14 @@ public class ChatWindow extends com.badlogic.gdx.scenes.scene2d.ui.Window {
         setResizable(false);
         setColor(0,0,0,0.5f);
         this.gameScreen = gameScreen;
-
-        chatLog = new Table();
-        scrollPane = new ScrollPane(chatLog);
-        add(scrollPane).height(100).width(320);
+        chatLog = new Table(skin);
+        scrollPane = new ScrollPane(chatLog,skin);
+        scrollPane.setColor(0,0,0,.7f);
+        add(scrollPane).width(Value.percentWidth(.9f, chatWindow)).height(Value.percentHeight(.5f, chatWindow));
         scrollPane.setFadeScrollBars(false);
         row();
         TextField chatField = new TextField("", skin);
-        chatField.setColor(1,1,1,1);
-        add(chatField);
+        add(chatField).width(Value.percentWidth(.7f, chatWindow)).height(Value.percentHeight(.14f, chatWindow));
         pack();
 
 
@@ -61,12 +60,7 @@ public class ChatWindow extends com.badlogic.gdx.scenes.scene2d.ui.Window {
     }
 
     public void addToChatLog(String log) {
-        chatLog.add(new Label(log, getSkin())).width(320);
+        chatLog.add(new Label(log, getSkin())).width(Value.percentWidth(.85f, chatWindow));
         chatLog.row();
-    }
-
-    public void resize() {
-        chatLog.setPosition(((Gdx.graphics.getWidth() - chatLog.getWidth())/ 2f), ((Gdx.graphics.getHeight() - chatLog.getHeight()) / 2f));
-        scrollPane.setPosition(((Gdx.graphics.getWidth() - scrollPane.getWidth())/ 2f), ((Gdx.graphics.getHeight() - scrollPane.getHeight()) / 2f));
     }
 }
