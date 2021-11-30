@@ -100,7 +100,6 @@ public class GameScreen implements Screen {
 
         if(isSinglePlayer){
             Gdx.input.setInputProcessor(stage);
-            System.out.println("levels: " + GameLogic.levels.size());
             if(deadPlayerWindow == null){
                 deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
                 deadPlayerWindow.setPosition((Gdx.graphics.getWidth() - deadPlayerWindow.getWidth()) / 2f, (Gdx.graphics.getHeight() - deadPlayerWindow.getHeight()) / 2f);
@@ -181,7 +180,7 @@ public class GameScreen implements Screen {
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
                 camera.update();
                 RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, renderData.entityList, getPlayer(playerNumber));
-
+                drawHealth();
                 int playerSize = clientData.idToPlayerNum.size();
                 for(int player = 1; player < playerSize; player++){
                     int playerId = clientData.idToPlayerNum.get(player);
@@ -195,16 +194,15 @@ public class GameScreen implements Screen {
                                     Objects.requireNonNull(getPlayer(player)).getPos().x,
                                     Objects.requireNonNull(getPlayer(player)).getPos().y + Objects.requireNonNull(getPlayer(player)).getHeight() + 10);
                         }
-                        drawHealth();
-//                        if (getPlayer(player).getHealth() > 0) {
-//                            font.draw(batch, "HP:" + getPlayer(player).getHealth(),
-//                                    getPlayer(player).getPos().x,
-//                                    getPlayer(player).getPos().y);
-//                        } else {
-//                            font.draw(batch, "HP: 0",
-//                                    getPlayer(player).getPos().x,
-//                                    getPlayer(player).getPos().y);
-//                        }
+                        if (getPlayer(player).getHealth() > 0) {
+                            font.draw(batch, "HP:" + getPlayer(player).getHealth(),
+                                    getPlayer(player).getPos().x,
+                                    getPlayer(player).getPos().y);
+                        } else {
+                            font.draw(batch, "HP: 0",
+                                    getPlayer(player).getPos().x,
+                                    getPlayer(player).getPos().y);
+                        }
                     }
                     if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
                         stage.addActor(deadPlayerWindow);
@@ -238,15 +236,27 @@ public class GameScreen implements Screen {
     }
 
     private void drawHealth() {
-        for(Entity entity : GameLogic.entityList){
-                if(entity.getHeight()>1){
-                    if(entity.getHealth()>0){
-                        font.draw(batch,"HP:" +entity.getHealth(),
+        if (isSinglePlayer) {
+            for (Entity entity : GameLogic.entityList) {
+                if (entity.getHeight() > 1) {
+                    if (entity.getHealth() > 0) {
+                        font.draw(batch, "HP:" + entity.getHealth(),
+                                entity.getPos().x,
+                                entity.getPos().y);
+
+                    }
+                }
+            }
+        }else{
+            for(Entity entity: renderData.entityList) {
+                if (entity.getHeight() > 1) {
+                    if (entity.getHealth() > 0) {
+                        font.draw(batch, "HP:" + entity.getHealth(),
                                 entity.getPos().x,
                                 entity.getPos().y);
                     }
                 }
-
+            }
         }
     }
 
