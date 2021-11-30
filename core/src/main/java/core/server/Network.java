@@ -221,6 +221,7 @@ public class Network {
         public boolean getAddonFiles;
         public boolean sendingFiles;
         public int masterClientThatNeedsTheFiles;
+        public boolean disconnect;
     }
     public static class CreateWadFile{
         public String levelFileName;
