@@ -37,11 +37,10 @@ public class BaseMonster extends Entity {
 
     @Override
     public void setState(Integer state) {
-        currentState = GameLogic.stateList.get(state);
-        currentStateIndex = state;
-        remainingStateTics = currentState.getDuration();
-
         try {
+            currentState = GameLogic.stateList.get(state);
+            currentStateIndex = state;
+            remainingStateTics = currentState.getDuration();
             if (currentState.getAction() != null) {
                 currentState.getAction().run(this,
                         target > -1 ? GameLogic.entityList.get(target) : null);
