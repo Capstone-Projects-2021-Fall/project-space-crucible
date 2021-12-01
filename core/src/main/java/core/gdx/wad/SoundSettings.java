@@ -8,6 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.wad.funcs.SoundFuncs;
 
+import javax.sound.midi.MidiChannel;
+import javax.sound.midi.Sequencer;
+
 public class SoundSettings extends Window {
     MyGDxTest myGDxTest;
 
@@ -63,14 +66,16 @@ public class SoundSettings extends Window {
 
 //                mutes bgm
                 if(bgmSlider.getValue()<49){
-                    for(int i=0; i<1000; i++){
+                    for(int i = 0; i<=SoundFuncs.gameMIDIs.size(); i++){
                         SoundFuncs.sequencer.setTrackMute(i,true);//mutes BGM, but you can still hear drums
                     }
+                    //SoundFuncs.sequencer.stop(); //only stops for current screen
                 }
                 if(bgmSlider.getValue()>=50){
-                    for(int i=0; i<=1000; i++){
+                    for(int i=0; i<=SoundFuncs.gameMIDIs.size(); i++){
                         SoundFuncs.sequencer.setTrackMute(i,false);//unmutes BGM
                     }
+                    //SoundFuncs.sequencer.start(); only starts for current screen
                 }
             }
         });

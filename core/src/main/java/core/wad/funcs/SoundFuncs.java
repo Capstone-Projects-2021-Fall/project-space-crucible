@@ -26,7 +26,7 @@ public class SoundFuncs {
     final public static Map<String, String> gameSounds = new HashMap<>();   //Map nice name to lump name
 
     public static float volume = 0.5f;
-    public static double seqVolume;
+    public static double seqVolume = 0.5d;
 
     public static Sequencer sequencer = null;
 
@@ -42,7 +42,6 @@ public class SoundFuncs {
 
                 // seqVolume is a value between 0 (lowest) and 1 (loudest)
                 // controller 7 is volume: https://www.sweetwater.com/insync/media/2019/06/Reason-MIDI-Implementation-Chart.jpg
-                seqVolume = 0.5D;
                 for (int i = 0; i < channels.length; i++) {
                     channels[i].controlChange(7, (int) (seqVolume * 127));
 //                    channels[i].controlChange(7, (int)seqVolume);
