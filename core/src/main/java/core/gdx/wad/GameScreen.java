@@ -392,7 +392,7 @@ public class GameScreen implements Screen {
         //float drawMiniY = Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/3; //apparently does the same thing as above
         shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        float mapSpacing = Gdx.graphics.getWidth()/170;
+        float mapSpacing = Gdx.graphics.getWidth()/170f;
         for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
             shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
                     levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
