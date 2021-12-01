@@ -8,6 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.game.logic.GameLogic;
+import core.server.Network;
+
+import java.io.IOException;
 
 public class DeadPlayerWindow extends Window {
     MyGDxTest myGDxTest;
@@ -56,7 +59,15 @@ public class DeadPlayerWindow extends Window {
                     myGDxTest.gameLoop = gameLoop;
                 }
 
-                    myGDxTest.setScreen(myGDxTest.titleScreen);
+                try {
+                    gameScreen.client.getGameClient().update(0);
+                    Network.Ping ping = new Network.Ping();
+                    ping.disconnect = true;
+                    gameScreen.client.getGameClient().sendTCP(ping);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                myGDxTest.setScreen(myGDxTest.titleScreen);
                     TitleScreen.mainMenuTable.setVisible(true);
             }
         });

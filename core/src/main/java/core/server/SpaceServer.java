@@ -235,6 +235,19 @@ public class SpaceServer implements Listener {
                 else if (packetData instanceof SendPing){
                     playerPings.put(c.getID(), ((SendPing) packetData).ping);
                 }
+                else if(packetData instanceof Network.Ping){
+                    if(((Network.Ping) packetData).disconnect){
+                        System.out.println("Server is disconnecting the client");
+                        try {
+                            server.update(0);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Connection disc = c;
+                            c.close();
+                            disconnected(disc);
+                        }
+                    }
+                }
             }
             //This method will run when a client disconnects from the server, remove the character from the game
             public void disconnected(Connection c){

@@ -38,7 +38,7 @@ public class GameScreen implements Screen {
     RenderData renderData = new RenderData();
     ClientData clientData = new ClientData();
     ServerDetails serverDetails = new ServerDetails();
-    //ChatWindow chatWindow;
+    ChatWindow chatWindow;
     public int playerNumber;
 
     //screen
@@ -61,7 +61,6 @@ public class GameScreen implements Screen {
     public int updatePing = 0;
     DeadPlayerWindow deadPlayerWindow;
 
-    ChatWindow chatWindow = new ChatWindow("Chat", skin, this, stage, myGDxTest);
     public GameScreen(Thread gameLoop, boolean isSinglePlayer, MyGDxTest myGdxTest) {
         this.gameLoop = gameLoop;
         this.myGDxTest = myGdxTest;
@@ -70,6 +69,9 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
         batch = new SpriteBatch();
+        if(!isSinglePlayer){
+            chatWindow = new ChatWindow("Chat", skin, this, stage);
+        }
     }
 
     @Override
@@ -79,7 +81,7 @@ public class GameScreen implements Screen {
             playerNumber = 1;
             gameLoop.start();
         } else {
-            playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
+              playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
         }
         if(!isSinglePlayer)
             addChatWindow();
@@ -100,7 +102,6 @@ public class GameScreen implements Screen {
 
         if(isSinglePlayer){
             Gdx.input.setInputProcessor(stage);
-            System.out.println("levels: " + GameLogic.levels.size());
             if(deadPlayerWindow == null){
                 deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
                 deadPlayerWindow.setPosition((Gdx.graphics.getWidth() - deadPlayerWindow.getWidth()) / 2f, (Gdx.graphics.getHeight() - deadPlayerWindow.getHeight()) / 2f);
@@ -143,7 +144,7 @@ public class GameScreen implements Screen {
                 batch.end();
                 return;
             }
-            GameLogic.getPlayer(1).controls = getControls();
+            Objects.requireNonNull(GameLogic.getPlayer(1)).controls = getControls();
 
         }else { //If co-op mode
             if (clientData.connected == null)  {
@@ -234,6 +235,31 @@ public class GameScreen implements Screen {
         drawMiniMap();
     }
 
+    private void drawHealth() {
+        if (isSinglePlayer) {
+            for (Entity entity : GameLogic.entityList) {
+                if (entity.getHeight() > 1) {
+                    if (entity.getHealth() > 0) {
+                        font.draw(batch, "HP:" + entity.getHealth(),
+                                entity.getPos().x,
+                                entity.getPos().y);
+
+                    }
+                }
+            }
+        }else{
+            for(Entity entity: renderData.entityList) {
+                if (entity.getHeight() > 1) {
+                    if (entity.getHealth() > 0) {
+                        font.draw(batch, "HP:" + entity.getHealth(),
+                                entity.getPos().x,
+                                entity.getPos().y);
+                    }
+                }
+            }
+        }
+    }
+
     private void showBoxes() {
         sr.setProjectionMatrix(camera.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
@@ -255,7 +281,7 @@ public class GameScreen implements Screen {
             mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight()/2f;
         }
         mouseInWorld3D.z = 0;
-        camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
+        camera.unproject(mouseInWorld3D); //unproject will give game world coordinates matching the pointer's position
         mouseInWorld2D.x = mouseInWorld3D.x;
         mouseInWorld2D.y = mouseInWorld3D.y;
         angle = mouseInWorld2D.angleDeg();
@@ -268,10 +294,6 @@ public class GameScreen implements Screen {
         stage.getViewport().update(width, height, true);
         if(chatWindow != null){
             chatWindow.setBounds(Gdx.graphics.getWidth(), 0, width/2f, height/3.1f);
-            chatWindow.chatLog.setFillParent(true);
-//            chatWindow.chatLog.setBounds(Gdx.graphics.getWidth(), 0, width/2f, height/3.1f);
-//            chatWindow.chatLog.setSize(width/2f, height/2f);
-            chatWindow.pack();
         }
         if(deadPlayerWindow != null)
             deadPlayerWindow.setPosition((Gdx.graphics.getWidth() - deadPlayerWindow.getWidth()) / 2f, (Gdx.graphics.getHeight() - deadPlayerWindow.getHeight()) / 2f);
@@ -295,8 +317,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-//        client.getGameClient().stop();
-//        System.exit(0);
     }
 
     public float getAngle() {
@@ -329,11 +349,11 @@ public class GameScreen implements Screen {
         Network.CameraData newCameraData = new Network.CameraData();
         newCameraData.width = camera.viewportWidth;
         newCameraData.hight = camera.viewportHeight;
-        Vector3 bottomleft = new Vector3();
-        bottomleft.x = camera.position.x - camera.viewportWidth/2;
-        bottomleft.y = camera.position.y - camera.viewportHeight/2;
-        bottomleft.z = 0;
-        newCameraData.camerapositon = bottomleft;
+        Vector3 bottomLeft = new Vector3();
+        bottomLeft.x = camera.position.x - camera.viewportWidth/2;
+        bottomLeft.y = camera.position.y - camera.viewportHeight/2;
+        bottomLeft.z = 0;
+        newCameraData.camerapositon = bottomLeft;
         return newCameraData;
     }
 
@@ -351,9 +371,8 @@ public class GameScreen implements Screen {
 
     public void addChatWindow() {
         Gdx.input.setInputProcessor(stage);
-        //chatWindow = new ChatWindow("Chat", skin, this, stage, myGDxTest);
-        stage.addActor(chatWindow);
         chatWindow.setBounds(Gdx.graphics.getWidth(), 0, chatWindow.getWidth(),chatWindow.getHeight());
+        stage.addActor(chatWindow);
     }
 
     public void addChatToWindow(Network.ChatMessage chat) {
@@ -365,7 +384,8 @@ public class GameScreen implements Screen {
     }
 
     private void drawMiniMap() {
-        float miniSquareWidth = Gdx.graphics.getWidth()/200;
+        //chatLog.setPosition(((Gdx.graphics.getWidth() - chatLog.getWidth())/ 2f), ((Gdx.graphics.getHeight() - chatLog.getHeight()) / 2f));
+        float miniSquareWidth = Gdx.graphics.getWidth()/200f;
         float miniSquareHeight = miniSquareWidth;
         float drawMiniX = 0;
         float drawMiniY = camera.viewportHeight - camera.viewportHeight/3;
