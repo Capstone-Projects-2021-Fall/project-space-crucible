@@ -114,15 +114,16 @@ public class GameScreen implements Screen {
 
             try {
                 RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, GameLogic.entityList, GameLogic.getPlayer(1));
-                if(GameLogic.getPlayer(playerNumber).getHealth()>0){
-                    font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
-                            GameLogic.getPlayer(playerNumber).getPos().x,
-                            GameLogic.getPlayer(playerNumber).getPos().y);
-                }else{
-                    font.draw(batch,"HP:0",
-                            GameLogic.getPlayer(playerNumber).getPos().x,
-                            GameLogic.getPlayer(playerNumber).getPos().y);
-                }
+                drawHealth();//TODO test this and the other in multiplayer
+//                if(GameLogic.getPlayer(playerNumber).getHealth()>0){
+//                    font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
+//                            GameLogic.getPlayer(playerNumber).getPos().x,
+//                            GameLogic.getPlayer(playerNumber).getPos().y);
+//                }else{
+//                    font.draw(batch,"HP:0",
+//                            GameLogic.getPlayer(playerNumber).getPos().x,
+//                            GameLogic.getPlayer(playerNumber).getPos().y);
+//                }
                 font.draw(batch, "Layer:" + GameLogic.getPlayer(playerNumber).currentLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-10);
                 font.draw(batch, "Bridge:" + GameLogic.getPlayer(playerNumber).bridgeLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-20);
                 font.draw(batch, NameChangeWindow.playerName,
@@ -180,7 +181,7 @@ public class GameScreen implements Screen {
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
                 camera.update();
                 RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, renderData.entityList, getPlayer(playerNumber));
-
+                drawHealth();
                 int playerSize = clientData.idToPlayerNum.size();
                 for(int player = 1; player < playerSize; player++){
                     int playerId = clientData.idToPlayerNum.get(player);
