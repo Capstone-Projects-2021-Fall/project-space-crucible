@@ -1,4 +1,5 @@
 import core.server.MasterServer;
+import core.server.SpaceClient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,4 +21,12 @@ public class SpaceCrucibleTests {
         String lobbyb = MasterServer.createRandomLobbyCode();
         assertNotEquals(lobbya, lobbyb);
     }
+    @Test
+    @DisplayName("Client connection to master server")
+    void testConnectionToMasterServer(){
+        MasterServer masterServer = new MasterServer(27980, 27990, "asd");
+        SpaceClient spaceClient = new SpaceClient(null, null, null);
+        assertTrue(spaceClient.getMasterClient().isConnected());
+    }
+
 }
