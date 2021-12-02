@@ -158,7 +158,7 @@ public class SpaceClient implements Listener {
             public void connected(Connection connection) {
                 gameClient.updateReturnTripTime();
                 SendPlayerName playerName = new SendPlayerName();
-                playerName.name = NameChangeWindow.playerName;
+                playerName.name = TitleScreen.playerName;
                 gameClient.sendTCP(playerName);
             }
 

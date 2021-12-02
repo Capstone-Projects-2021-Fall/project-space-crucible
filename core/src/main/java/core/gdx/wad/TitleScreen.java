@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import core.config.Config;
 import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
@@ -38,16 +39,30 @@ public class TitleScreen implements Screen {
     public static Table mainMenuTable;
     public static Table coopMenuTable;
     public static Table joinLobbyTable;
-    SettingsMenu settingsMenu = new SettingsMenu("Choose Difficulty:", skin, stage);
     ChooseDifficultyWindow difficultyWindow = new ChooseDifficultyWindow("Choose Difficulty:", skin, titleScreen, true);
     PopupWindow error;
-
+    SettingsMenu settingsMenu;
+    Config config = new Config();
+    public static String playerName="Player";
+    public static float sfx = 50;
+    public static float bgm = 50;
 
     public TitleScreen(MyGDxTest myGDxTest) {
         WadFile file;
         profiler = new GLProfiler(Gdx.graphics);
         profiler.enable();
+        SoundFuncs.startSequencer();
         try {
+            if(Config.file.exists()){
+                if(config.getText("name") != null)
+                    TitleScreen.playerName = config.getText("name");
+                System.out.println(TitleScreen.playerName);
+                if(config.getText("sfx") != null)
+                    TitleScreen.sfx = Float.parseFloat(config.getText("sfx"));
+                if(config.getText("bgm") != null)
+                    TitleScreen.bgm = Float.parseFloat(config.getText("bgm"));
+            }
+            settingsMenu = new SettingsMenu("Choose Difficulty:", skin, stage);
             file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
             this.myGDxTest=myGDxTest;
             camera = new OrthographicCamera();
@@ -65,8 +80,9 @@ public class TitleScreen implements Screen {
     @Override
     public void show() {
         //Play lobby music
-        SoundFuncs.startSequencer();
         SoundFuncs.playMIDI("TITLE");
+        SoundSettings.handleBGM(TitleScreen.bgm);
+        SoundSettings.handleSFX(TitleScreen.sfx);
 
         Gdx.input.setInputProcessor(stage);
         if(client != null){
@@ -170,7 +186,7 @@ public class TitleScreen implements Screen {
         coopButton.button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(NameChangeWindow.playerName.length() == 0){
+                if(TitleScreen.playerName.length() == 0){
                     error = new PopupWindow("No Username Found!", skin, "Go to settings and create a username");
                     showPopup(error);
                     error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
