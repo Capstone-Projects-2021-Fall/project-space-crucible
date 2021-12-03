@@ -28,21 +28,8 @@ public class WadFuncs {
 
     //Gets output from WAD graphics and turns it into input for Pixmap
     public static Pixmap lumpToPixmap(WadFile file, String name) {
-        //PNGPicture is a type defined by Doomstruct
-        PNGPicture p;
-
         try {
-            p = file.getDataAs(name, PNGPicture.class);
-        } catch (IOException e) {
-            System.out.println("Lump " + name + " does not exist.");
-            e.printStackTrace();
-            return null;
-        }
-
-        try {
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            p.writeBytes(os);
-            ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
+            ByteArrayInputStream is = new ByteArrayInputStream(file.getData(name));
             return new Pixmap(new Gdx2DPixmap(is, Gdx2DPixmap.GDX2D_FORMAT_RGBA8888));
 
         } catch (IOException e) {
