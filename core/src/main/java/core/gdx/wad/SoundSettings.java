@@ -9,10 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.wad.funcs.SoundFuncs;
 
 import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 
 public class SoundSettings extends Window {
     MyGDxTest myGDxTest;
+    public static boolean muteBGM;
 
     public SoundSettings(String title, Skin skin, SettingsMenu settingsMenu) {
         super(title, skin);
@@ -59,25 +62,42 @@ public class SoundSettings extends Window {
         });
         bgmSlider.addListener(new ChangeListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {  //TODO: find why volume messages aren't working (controller 7)
+            public void changed(ChangeEvent event, Actor actor) {
                 bgmVolumeValue.setText((int) bgmSlider.getValue());
-//                SoundFuncs.seqVolume=bgmSlider.getValue()/100d; //supposed to change BGM volume
-//                System.out.println("seqVolume: " +SoundFuncs.seqVolume);
+                SoundFuncs.seqVolume=bgmSlider.getValue()/100d;
 
-//                mutes bgm
                 if(bgmSlider.getValue()<49){
-                    for(int i = 0; i<=SoundFuncs.gameMIDIs.size(); i++){
-                        SoundFuncs.sequencer.setTrackMute(i,true);//mutes BGM, but you can still hear drums
-                    }
-                    //SoundFuncs.sequencer.stop(); //only stops for current screen
+                    muteBGM = true;
+                    SoundFuncs.sequencer.stop();
                 }
                 if(bgmSlider.getValue()>=50){
-                    for(int i=0; i<=SoundFuncs.gameMIDIs.size(); i++){
-                        SoundFuncs.sequencer.setTrackMute(i,false);//unmutes BGM
-                    }
-                    //SoundFuncs.sequencer.start(); only starts for current screen
+                    muteBGM = false;
+                    SoundFuncs.sequencer.start();
                 }
             }
         });
     }
 }
+
+//                    for(int i = 0; i<=SoundFuncs.gameMIDIs.size(); i++){
+//                        SoundFuncs.sequencer.setTrackMute(i,true);//mutes BGM, but you can still hear drums
+//                    }
+//                    for(int i=0; i<=SoundFuncs.gameMIDIs.size(); i++){
+//                        SoundFuncs.sequencer.setTrackMute(i,false);//unmutes BGM
+//                    }
+
+//SoundFuncs.sequencer.stop(); //only stops for current screen
+//SoundFuncs.sequencer.start(); only starts for current screen
+
+//errors
+//                    try {
+//                            SoundFuncs.sequencer = MidiSystem.getSequencer(false);
+//                            } catch (MidiUnavailableException e) {
+//                            e.printStackTrace();
+//                            }
+
+//                    try {
+//                        SoundFuncs.sequencer = MidiSystem.getSequencer(true);
+//                    } catch (MidiUnavailableException e) {
+//                        e.printStackTrace();
+//                    }

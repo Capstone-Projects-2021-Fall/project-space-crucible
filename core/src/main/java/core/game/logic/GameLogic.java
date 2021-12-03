@@ -11,6 +11,7 @@ import core.game.entities.Entity;
 import core.game.entities.MapSpot;
 import core.game.entities.PlayerPawn;
 import core.game.logic.tileactions.TileAction;
+import core.gdx.wad.SoundSettings;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.server.Network;
@@ -70,7 +71,11 @@ public class GameLogic {
 
     public static void start() {
         if (isSinglePlayer) {
-            SoundFuncs.playMIDI(currentLevel.getMIDI());
+            if(!SoundSettings.muteBGM){
+                SoundFuncs.playMIDI(currentLevel.getMIDI());
+            }else if(SoundSettings.muteBGM){
+                SoundFuncs.stopMIDI();
+            }
         } else {
             Network.MIDIData midi = new Network.MIDIData();
             midi.midi = currentLevel.getMIDI();
@@ -305,10 +310,14 @@ public class GameLogic {
         currentLevel = level;
         if (isSinglePlayer) {
             if (SoundFuncs.sequencer.isRunning()) {
-                SoundFuncs.stopMIDI();
+                if(SoundSettings.muteBGM){
+                    SoundFuncs.stopMIDI();
+                }
             }
             if (level.getMIDI() != null) {
-                SoundFuncs.playMIDI(level.getMIDI());
+                if(!SoundSettings.muteBGM){
+                    SoundFuncs.playMIDI(level.getMIDI());
+                }
             }
         } else {
             Network.MIDIData midi = new Network.MIDIData();
