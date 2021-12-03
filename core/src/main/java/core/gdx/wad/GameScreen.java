@@ -11,14 +11,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
@@ -30,14 +24,9 @@ import core.server.Network.RenderData;
 import core.server.Network.ServerDetails;
 import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
-import core.wad.funcs.WadFuncs;
-
-import java.util.ArrayList;
 
 import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.TreeMap;
-
+import java.util.Objects;
 
 public class GameScreen implements Screen {
 
@@ -48,7 +37,7 @@ public class GameScreen implements Screen {
     ClientData clientData = new ClientData();
     ServerDetails serverDetails = new ServerDetails();
     ChatWindow chatWindow;
-    public int playerNumber = 0;
+    public int playerNumber;
 
     //screen
     OrthographicCamera camera;
@@ -57,36 +46,30 @@ public class GameScreen implements Screen {
     ShapeRenderer sr = new ShapeRenderer();
     ShapeRenderer shapeRenderer = new ShapeRenderer();
     boolean showBoxes = false;
-    boolean isSinglePlayer;
+    public boolean isSinglePlayer;
     BitmapFont font = new BitmapFont();
-    private Stage stage = new Stage(new ScreenViewport());
+    private final Stage stage = new Stage(new ScreenViewport());
     final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
     float angle = 0;
 
     //graphics
     SpriteBatch batch;
-    Stage lobbyStage;
-    Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
-    TextButton play = new TextButton("Start Game", uiSkin);
-    TextButton exitToMenu = new TextButton("Exit Lobby", uiSkin);
-    public boolean startGame = false;
-    Label lobbyCode;
-    boolean remove = false;
     int ping;
     public int updatePing = 0;
-    TreeMap<String, Button> playerbuttons = new TreeMap<>();
     DeadPlayerWindow deadPlayerWindow;
 
     public GameScreen(Thread gameLoop, boolean isSinglePlayer, MyGDxTest myGdxTest) {
         this.gameLoop = gameLoop;
         this.myGDxTest = myGdxTest;
+        this.isSinglePlayer = isSinglePlayer;
         GameLogic.loadEntities(GameLogic.currentLevel, false);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
         batch = new SpriteBatch();
-        lobbyStage = new Stage();
-        this.isSinglePlayer = isSinglePlayer;
+        if(!isSinglePlayer){
+            chatWindow = new ChatWindow("Chat", skin, this, stage);
+        }
     }
 
     @Override
@@ -96,36 +79,10 @@ public class GameScreen implements Screen {
             playerNumber = 1;
             gameLoop.start();
         } else {
-            playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
-            System.out.println("I am player " + playerNumber);
-            if (playerNumber == 1) {
-                System.out.println("Sending .WAD data...");
-                client.sendLevels();
-                client.sendEntities();
-                System.out.println("Done!");
-            }
+              playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
         }
-        if(!isSinglePlayer) {
-            if(!startGame) {
-                Gdx.input.setInputProcessor(lobbyStage);
-                addExitButton();
-                if (playerNumber == 1) {
-                    play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
-                    lobbyStage.addActor(play);
-                    play.addListener(new ClickListener() {
-                        public void clicked(InputEvent event, float x, float y) {
-                            startGame = true;
-                            Network.StartGame startGame = new Network.StartGame();
-                            startGame.startGame = true;
-                            client.getGameClient().sendTCP(startGame);
-                            play.removeListener(this);
-                        }
-                    });
-                }
-            } else {
-                addChatWindow();
-            }
-        }
+        if(!isSinglePlayer)
+            addChatWindow();
     }
 
     @Override
@@ -143,54 +100,51 @@ public class GameScreen implements Screen {
 
         if(isSinglePlayer){
             Gdx.input.setInputProcessor(stage);
-            deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
-
-            if(GameLogic.getPlayer(playerNumber).getHealth()<=0){
-                stage.addActor(deadPlayerWindow);
-                deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
-            }
-            if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
-                stage.addActor(deadPlayerWindow);
-                deadPlayerWindow.setPosition(camera.viewportWidth, camera.viewportHeight);
-            }
-            if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)){
-                for(Actor actor : stage.getActors()){
-                    if(actor.getHeight()==deadPlayerWindow.getHeight() && actor.getWidth()==deadPlayerWindow.getWidth()){
-                        //normal deadPlayerWindow.remove() not working
-                        actor.remove();
-                    }
-                }
+            if(deadPlayerWindow == null){
+                deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
+                deadPlayerWindow.setPosition((Gdx.graphics.getWidth() - deadPlayerWindow.getWidth()) / 2f, (Gdx.graphics.getHeight() - deadPlayerWindow.getHeight()) / 2f);
             }
             getAngle(true);
             GameLogic.getPlayer(1).getPos().angle = angle; //Turn the vector2 into a degree angle
             camera.position.set(GameLogic.getPlayer(1).getPos().x + GameLogic.getPlayer(1).getWidth() / (float) 2.0,
                     GameLogic.getPlayer(1).getPos().y + GameLogic.getPlayer(1).getHeight() / (float) 2.0, 0);
             camera.update();
+
             try {
                 RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, GameLogic.entityList, GameLogic.getPlayer(1));
-                //RenderFuncs.entityDraw(batch, GameLogic.entityList);
-                if(GameLogic.getPlayer(playerNumber).getHealth()>0){
-                    font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
-                            GameLogic.getPlayer(playerNumber).getPos().x,
-                            GameLogic.getPlayer(playerNumber).getPos().y);
-                }else{
-                    font.draw(batch,"HP:0",
-                            GameLogic.getPlayer(playerNumber).getPos().x,
-                            GameLogic.getPlayer(playerNumber).getPos().y);
-                }
-                font.draw(batch, "Layer:" + GameLogic.getPlayer(playerNumber).currentLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-10);
-                font.draw(batch, "Bridge:" + GameLogic.getPlayer(playerNumber).bridgeLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-20);
+                drawHealth();//TODO test this and the other in multiplayer
+//                if(GameLogic.getPlayer(playerNumber).getHealth()>0){
+//                    font.draw(batch,"HP:" +GameLogic.getPlayer(playerNumber).getHealth(),
+//                            GameLogic.getPlayer(playerNumber).getPos().x,
+//                            GameLogic.getPlayer(playerNumber).getPos().y);
+//                }else{
+//                    font.draw(batch,"HP:0",
+//                            GameLogic.getPlayer(playerNumber).getPos().x,
+//                            GameLogic.getPlayer(playerNumber).getPos().y);
+//                }
+                //TODO: re-add tags for layer and bridge before pr
+                //font.draw(batch, "Layer:" + GameLogic.getPlayer(playerNumber).currentLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-10);
+                //font.draw(batch, "Bridge:" + GameLogic.getPlayer(playerNumber).bridgeLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-20);
                 font.draw(batch, NameChangeWindow.playerName,
                         GameLogic.getPlayer(playerNumber).getPos().x,
                         GameLogic.getPlayer(playerNumber).getPos().y + GameLogic.getPlayer(playerNumber).getHeight() + 10);
                 if (showBoxes) {
                     showBoxes();
                 }
+                if(GameLogic.getPlayer(playerNumber).getHealth()<=0) {
+                    stage.addActor(deadPlayerWindow);
+                }
+                if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+                    stage.addActor(deadPlayerWindow);
+                }
+                if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+                    deadPlayerWindow.remove();
+                }
             } catch (ConcurrentModificationException cme) {
                 batch.end();
                 return;
             }
-            GameLogic.getPlayer(1).controls = getControls();
+            Objects.requireNonNull(GameLogic.getPlayer(1)).controls = getControls();
 
         }else { //If co-op mode
             if (clientData.connected == null)  {
@@ -204,37 +158,6 @@ public class GameScreen implements Screen {
             }
             updatePing--;
 
-            if (!startGame) {
-                lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
-                lobbyStage.getBatch().begin();
-                lobbyStage.getBatch().draw(WadFuncs.LOBBYSCREEN, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
-                int x = 100;
-                int y = 400;
-
-                updatePlayerNumber();
-                playerbuttons.forEach((k, v) -> v.remove());
-                for (String name : clientData.playerNames.values()) {
-                    Button player = new TextButton(name, uiSkin);
-                    player.setBounds(x, y, 80, 50);
-                    lobbyStage.addActor(player);
-                    y -= 50;
-                    playerbuttons.put(name, player);
-                }
-
-                if (serverDetails.lobbyCode != null && !remove) {
-                    if (client.getGameClient().getID() == 1) {
-                        lobbyCode = new Label("Lobby Code\n" + serverDetails.lobbyCode + "\nRCON Pass:\n" + serverDetails.rconPass, uiSkin);
-                    } else {
-                        lobbyCode = new Label("Lobby Code\n" + serverDetails.lobbyCode, uiSkin);
-                    }
-                    lobbyStage.addActor(lobbyCode);
-                    remove = true;
-                }
-                lobbyStage.getBatch().end();
-                lobbyStage.draw(); //Draw the ui
-                batch.end();
-                return;
-            }
             if (renderData.entityList == null)  {
                 batch.end();
                 return;
@@ -243,36 +166,56 @@ public class GameScreen implements Screen {
                 batch.end();
                 return;
             }
-            getAngle(false);
-
             if (GameLogic.currentLevel == null) {
                 batch.end();
                 return;
             }
             try {
+                if(deadPlayerWindow == null){
+                    deadPlayerWindow = new DeadPlayerWindow("Press enter to hide", skin, myGDxTest, stage, this);
+                    deadPlayerWindow.setPosition((Gdx.graphics.getWidth() - deadPlayerWindow.getWidth()) / 2f, (Gdx.graphics.getHeight() - deadPlayerWindow.getHeight()) / 2f);
+                }
+                getAngle(false);
                 camera.position.set(getPlayer(playerNumber).getPos().x + getPlayer(playerNumber).getWidth() / (float) 2.0,
                         getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() / (float) 2.0, 0);
                 camera.update();
                 RenderFuncs.worldDraw(batch, GameLogic.currentLevel.getTiles(), false, false, renderData.entityList, getPlayer(playerNumber));
-
-                if(getPlayer(playerNumber).getHealth()>0){
-                    font.draw(batch,"HP:" +getPlayer(playerNumber).getHealth(),
-                            getPlayer(playerNumber).getPos().x,
-                            getPlayer(playerNumber).getPos().y);
-                }else{
-                    font.draw(batch,"HP: 0",
-                            getPlayer(playerNumber).getPos().x,
-                            getPlayer(playerNumber).getPos().y);
+                drawHealth();
+                int playerSize = clientData.idToPlayerNum.size();
+                for(int player = 1; player < playerSize; player++){
+                    int playerId = clientData.idToPlayerNum.get(player);
+                    if(getPlayer(player) != null) {
+                        if(clientData.playerNames.get(playerId) == null){
+                            font.draw(batch, "Bot",
+                                    Objects.requireNonNull(getPlayer(player)).getPos().x,
+                                    Objects.requireNonNull(getPlayer(player)).getPos().y + Objects.requireNonNull(getPlayer(player)).getHeight() + 10);
+                        }else {
+                            font.draw(batch, clientData.playerNames.get(playerId),
+                                    Objects.requireNonNull(getPlayer(player)).getPos().x,
+                                    Objects.requireNonNull(getPlayer(player)).getPos().y + Objects.requireNonNull(getPlayer(player)).getHeight() + 10);
+                        }
+                        if (getPlayer(player).getHealth() > 0) {
+                            font.draw(batch, "HP:" + getPlayer(player).getHealth(),
+                                    getPlayer(player).getPos().x,
+                                    getPlayer(player).getPos().y);
+                        } else {
+                            font.draw(batch, "HP: 0",
+                                    getPlayer(player).getPos().x,
+                                    getPlayer(player).getPos().y);
+                        }
+                    }
+                    if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+                        stage.addActor(deadPlayerWindow);
+                    }
+                    if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+                        deadPlayerWindow.remove();
+                    }
                 }
-                font.draw(batch, NameChangeWindow.playerName,
-                        getPlayer(playerNumber).getPos().x,
-                        getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight() + 10);
                 font.draw(batch, "Ping: " + ping, getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y-13);
 
                 if (showBoxes) {
                     showBoxes();
                 }
-
                 client.getInput(getControls());
                 client.getCameraData(getCameraData());
             }
@@ -290,6 +233,31 @@ public class GameScreen implements Screen {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         drawMiniMap();
+    }
+
+    private void drawHealth() {
+        if (isSinglePlayer) {
+            for (Entity entity : GameLogic.entityList) {
+                if (entity.getHeight() > 1) {
+                    if (entity.getHealth() > 0) {
+                        font.draw(batch, "HP:" + entity.getHealth(),
+                                entity.getPos().x,
+                                entity.getPos().y);
+
+                    }
+                }
+            }
+        }else{
+            for(Entity entity: renderData.entityList) {
+                if (entity.getHeight() > 1) {
+                    if (entity.getHealth() > 0) {
+                        font.draw(batch, "HP:" + entity.getHealth(),
+                                entity.getPos().x,
+                                entity.getPos().y);
+                    }
+                }
+            }
+        }
     }
 
     private void showBoxes() {
@@ -313,7 +281,7 @@ public class GameScreen implements Screen {
             mouseInWorld3D.y = Gdx.input.getY() + getPlayer(playerNumber).getPos().y + getPlayer(playerNumber).getHeight()/2f;
         }
         mouseInWorld3D.z = 0;
-        camera.unproject(mouseInWorld3D); //unprojecting will give game world coordinates matching the pointer's position
+        camera.unproject(mouseInWorld3D); //unproject will give game world coordinates matching the pointer's position
         mouseInWorld2D.x = mouseInWorld3D.x;
         mouseInWorld2D.y = mouseInWorld3D.y;
         angle = mouseInWorld2D.angleDeg();
@@ -323,6 +291,12 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
+        stage.getViewport().update(width, height, true);
+        if(chatWindow != null){
+            chatWindow.setBounds(Gdx.graphics.getWidth(), 0, width/2f, height/3.1f);
+        }
+        if(deadPlayerWindow != null)
+            deadPlayerWindow.setPosition((Gdx.graphics.getWidth() - deadPlayerWindow.getWidth()) / 2f, (Gdx.graphics.getHeight() - deadPlayerWindow.getHeight()) / 2f);
     }
 
     @Override
@@ -337,12 +311,12 @@ public class GameScreen implements Screen {
     public void hide() {
         SoundFuncs.stopMIDI();
         try {GameLogic.stop();} catch (NullPointerException ignored){}
+        stage.dispose();
+        batch.dispose();
     }
 
     @Override
     public void dispose() {
-        client.getGameClient().stop();
-        System.exit(0);
     }
 
     public float getAngle() {
@@ -357,7 +331,7 @@ public class GameScreen implements Screen {
         clientData = object;
     }
 
-    public void setServerDetails(ServerDetails object){ serverDetails = object;}
+    public void setServerDetails(Network.ServerDetails object){ serverDetails = object;}
 
 
     private boolean[] getControls() {
@@ -375,11 +349,11 @@ public class GameScreen implements Screen {
         Network.CameraData newCameraData = new Network.CameraData();
         newCameraData.width = camera.viewportWidth;
         newCameraData.hight = camera.viewportHeight;
-        Vector3 bottomleft = new Vector3();
-        bottomleft.x = camera.position.x - camera.viewportWidth/2;
-        bottomleft.y = camera.position.y - camera.viewportHeight/2;
-        bottomleft.z = 0;
-        newCameraData.camerapositon = bottomleft;
+        Vector3 bottomLeft = new Vector3();
+        bottomLeft.x = camera.position.x - camera.viewportWidth/2;
+        bottomLeft.y = camera.position.y - camera.viewportHeight/2;
+        bottomLeft.z = 0;
+        newCameraData.camerapositon = bottomLeft;
         return newCameraData;
     }
 
@@ -397,47 +371,12 @@ public class GameScreen implements Screen {
 
     public void addChatWindow() {
         Gdx.input.setInputProcessor(stage);
-        chatWindow = new ChatWindow("Chat", skin, this, stage, myGDxTest);
+        chatWindow.setBounds(Gdx.graphics.getWidth(), 0, chatWindow.getWidth(),chatWindow.getHeight());
         stage.addActor(chatWindow);
-        chatWindow.setPosition(camera.viewportWidth,0);
-        chatWindow.setSize(chatWindow.getWidth(), chatWindow.getHeight());
-    }
-
-    private void addExitButton(){
-        exitToMenu.setBounds((Gdx.graphics.getWidth() + 250) / 2f, 50, 100, 60);
-        lobbyStage.addActor(exitToMenu);
-        exitToMenu.addListener(new ClickListener(){
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.println("exit");
-                client.getGameClient().close();
-                client.getMasterClient().close();
-                myGDxTest.setScreen(myGDxTest.titleScreen);
-                StartMenu.setCoopButtonsVisible(false);
-                StartMenu.setMainMenuButtonsVisible(true);
-            }
-        });
     }
 
     public void addChatToWindow(Network.ChatMessage chat) {
         chatWindow.addToChatLog(chat.sender + ": " + chat.message);
-    }
-
-    public void updatePlayerNumber() {
-        playerNumber = clientData.idToPlayerNum.indexOf(client.getGameClient().getID());
-        if(!startGame && playerNumber == 1){
-            play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
-            lobbyStage.addActor(play);
-            play.addListener(new ClickListener() {
-                public void clicked(InputEvent event, float x, float y) {
-                    startGame = true;
-                    Network.StartGame startGame = new Network.StartGame();
-                    startGame.startGame = true;
-                    client.getGameClient().sendTCP(startGame);
-                    play.removeListener(this);
-                }
-            });
-        }
-//        System.out.println("My playernumber is " + playerNumber);
     }
 
     public void setPing(int returnTripTime) {
@@ -445,13 +384,16 @@ public class GameScreen implements Screen {
     }
 
     private void drawMiniMap() {
-        float miniSquareWidth = camera.viewportWidth/200;
+        //chatLog.setPosition(((Gdx.graphics.getWidth() - chatLog.getWidth())/ 2f), ((Gdx.graphics.getHeight() - chatLog.getHeight()) / 2f));
+        float miniSquareWidth = Gdx.graphics.getWidth()/200f;
         float miniSquareHeight = miniSquareWidth;
         float drawMiniX = 0;
-        float drawMiniY = 345;
+        float drawMiniY = camera.viewportHeight - camera.viewportHeight/3;
+        //float drawMiniY = Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/3; //apparently does the same thing as above
         shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        float mapSpacing =4;
+        //float mapSpacing = 4;
+        float mapSpacing = Gdx.graphics.getWidth()/200f;
         for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
             shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
                     levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,

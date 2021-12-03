@@ -5,7 +5,6 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.kryonet.Listener;
-
 import com.esotericsoftware.kryonet.util.InputStreamSender;
 import com.google.common.hash.Hashing;
 import core.game.logic.GameLogic;
@@ -15,25 +14,28 @@ import core.wad.funcs.SoundFuncs;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
 public class SpaceClient implements Listener {
 
     Client masterClient;
     Client gameClient;
-    static String ip = "100.19.127.86";
-//    static String ip = "localhost";
+//    static String ip = "100.19.127.86";
+    static String ip = "localhost";
     GameScreen screen;
     public ValidLobby validLobby;
-    StartMenu startMenu;
+    TitleScreen titleScreen;
+    LobbyScreen lobbyScreen;
     File file;
+    boolean fileReceive = false;
+    FileOutputStream outputStream;
 
-    public SpaceClient(GameScreen screen, StartMenu startMenu){
+    public SpaceClient(LobbyScreen lobbyScreen, GameScreen screen, TitleScreen titleScreen){
         this.screen = screen;
-        this.startMenu = startMenu;
+        this.titleScreen = titleScreen;
+        this.lobbyScreen = lobbyScreen;
 
-        masterClient = new Client(10000, 10000);
+        masterClient = new Client(8192, 8192);
         masterClient.start();
         //register the packets
         Network.register(masterClient);
@@ -52,8 +54,8 @@ public class SpaceClient implements Listener {
                 //If Master Server sends ValidLobby unblock the startMenu
                 else if( object instanceof ValidLobby){
                     validLobby = (ValidLobby) object;
-                    synchronized (startMenu){
-                        startMenu.notifyAll();
+                    synchronized (titleScreen){
+                        titleScreen.notifyAll();
                     }
                 }
                 else if(object instanceof Ping) {
@@ -98,10 +100,11 @@ public class SpaceClient implements Listener {
                             file = Gdx.files.internal("assets/" + ((CreateWadFile) object).levelFileName).file();
                             if(file.createNewFile()){
                                 System.out.println("Created a new file");
+                                outputStream = new FileOutputStream(file,true);
                             }else{
                                 System.out.println("Couldn't create file " + file.getName());
+                                outputStream= new FileOutputStream(file, false);
                             }
-                            return;
                         } catch (IOException ioException) {
                             ioException.printStackTrace();
                         }
@@ -110,16 +113,14 @@ public class SpaceClient implements Listener {
                 else if(object instanceof WadFile){
                     try {
                         System.out.println("Writing to file " + ((WadFile) object).levelFileName);
-                        Files.write(file.toPath(), ((WadFile) object).levelFile, StandardOpenOption.APPEND);
+                        outputStream.write(((WadFile) object).levelFile);
+                        outputStream.flush();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-//                    if((int)file.length() == ((WadFile) object).levelFileSize) {
-//                        System.out.println("Changing screens");
-//                        screen.changeScreen();
-//                    }
                     if((int)file.length() == ((WadFile) object).levelFileSize){
                         System.out.println("File receive complete");
+                        fileReceive = true;
                         try {
                             System.out.println("in the try block");
                             System.out.println("file added to addons" + MyGDxTest.addons.add(file));
@@ -127,7 +128,6 @@ public class SpaceClient implements Listener {
                             hash = com.google.common.io.Files.asByteSource(file).hash(Hashing.sha256()).toString();
                             MyGDxTest.addonHashes.add(hash);
                             TitleScreen.update = true;
-                            System.out.println("Screen update: " + TitleScreen.update);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -178,10 +178,10 @@ public class SpaceClient implements Listener {
                 else if(object instanceof ClientData){
                     screen.setClientData((ClientData) object);
 
-                    //If playernumber is changed and data is not null
-                    if (screen.playerNumber == 0
+                    //If player number is changed and data is not null
+                    if (lobbyScreen.playerNumber == 0
                             && ((ClientData) object).connected != null && ((ClientData) object).idToPlayerNum != null) {
-                        startMenu.myGDxTest.setScreen(screen);
+                        TitleScreen.changeScreen = true;
                     }
                 }
                 //If server sends SoundData, play sound matching the given name
@@ -191,14 +191,14 @@ public class SpaceClient implements Listener {
 
                 //If server sends StartGame set the startGame value to it
                 else if(object instanceof StartGame){
-                    screen.updatePlayerNumber();
+                    lobbyScreen.updatePlayerNumber();
                     GameLogic.currentLevel = GameLogic.levels.get(((StartGame) object).levelnum);
-                    screen.startGame = ((StartGame) object).startGame;
+                    lobbyScreen.startGame = ((StartGame) object).startGame;
                     screen.addChatWindow();
                 }
 
                 else if (object instanceof LevelChange) {
-                    screen.updatePlayerNumber();
+                    lobbyScreen.updatePlayerNumber();
                     GameLogic.currentLevel = GameLogic.levels.get(((LevelChange) object).number);
                 }
 

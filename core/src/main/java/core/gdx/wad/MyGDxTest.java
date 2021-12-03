@@ -3,7 +3,6 @@ package core.gdx.wad;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
-import core.game.entities.actions.StateAction;
 import core.game.logic.EntityState;
 import core.game.logic.GameLogic;
 import core.wad.funcs.EntityFuncs;
@@ -11,13 +10,9 @@ import core.wad.funcs.GameSprite;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
 import net.mtrop.doom.WadFile;
-import org.checkerframework.checker.units.qual.A;
-import org.lwjgl.system.CallbackI;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
@@ -25,7 +20,6 @@ import java.util.ArrayList;
 public class MyGDxTest extends Game {
 
     public TitleScreen titleScreen;
-    public SettingsScreen settingsScreen;
     public static ArrayList<File> addons = new ArrayList<>(); //Addons has all the files host added
     public static ArrayList<String> addonHashes = new ArrayList<>();
 
@@ -44,14 +38,9 @@ public class MyGDxTest extends Game {
 
     @Override
     public void create() {
-
         loadWADS();
-
-        SoundFuncs.startSequencer();
-        SoundFuncs.playMIDI("TITLE");
-        titleScreen = new TitleScreen(this, gameLoop);
+        titleScreen = new TitleScreen(this);
         setScreen(titleScreen);
-
     }
 
     public static void loadWADS() {
