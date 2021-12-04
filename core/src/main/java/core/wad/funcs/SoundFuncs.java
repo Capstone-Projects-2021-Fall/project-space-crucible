@@ -38,19 +38,24 @@ public class SoundFuncs {
             if (sequencer instanceof Synthesizer) {
                 Synthesizer synthesizer = (Synthesizer) sequencer;
                 synthesizer.open();
-                MidiChannel[] channels = synthesizer.getChannels();
-
-                // seqVolume is a value between 0 (lowest) and 1 (loudest); controller 7 is volume: https://www.sweetwater.com/insync/media/2019/06/Reason-MIDI-Implementation-Chart.jpg
-                for (int i = 0; i < channels.length; i++) {
-                    channels[i].controlChange(7, (int) (seqVolume * 127.0));
-                    //channels[i].controlChange(7, (int)seqVolume);
+                Track[] sequencerTracks = sequencer.getSequence().getTracks();
+                for(int i = 0; i < sequencerTracks.length; i++){
+                    //Control change = 0xB0
+                    sequencerTracks[i].add(new MidiEvent(new ShortMessage(ShortMessage.CONTROL_CHANGE, i, 60, (int) (seqVolume*127)), sequencerTracks[i].ticks()));
                 }
+
+//                MidiChannel[] channels = synthesizer.getChannels();
+                // seqVolume is a value between 0 (lowest) and 1 (loudest); controller 7 is volume: https://www.sweetwater.com/insync/media/2019/06/Reason-MIDI-Implementation-Chart.jpg
+//                for (int i = 0; i < channels.length; i++) {
+//                    channels[i].controlChange(7, (int) (seqVolume * 127.0));
+//                    //channels[i].controlChange(7, (int)seqVolume);
+//                }
                 //alt method: https://stackoverflow.com/questions/8008286/how-to-control-the-midi-channels-volume
 //                for(MidiChannel midiChannel : synthesizer.getChannels()){
 //                    midiChannel.controlChange(7, (int) (seqVolume*127f));
 //                }
             }
-        } catch (MidiUnavailableException e) {
+        } catch (MidiUnavailableException | InvalidMidiDataException e) {
             System.out.println("Could not get MIDI sequencer. Will continue without music.");
         }
     }

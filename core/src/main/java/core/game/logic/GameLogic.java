@@ -73,7 +73,7 @@ public class GameLogic {
         if (isSinglePlayer) {
             if(!SoundSettings.muteBGM){
                 SoundFuncs.playMIDI(currentLevel.getMIDI());
-            }else if(SoundSettings.muteBGM){
+            }else{
                 SoundFuncs.stopMIDI();
             }
         } else {
@@ -310,14 +310,10 @@ public class GameLogic {
         currentLevel = level;
         if (isSinglePlayer) {
             if (SoundFuncs.sequencer.isRunning()) {
-                if(SoundSettings.muteBGM){
                     SoundFuncs.stopMIDI();
-                }
             }
             if (level.getMIDI() != null) {
-                if(!SoundSettings.muteBGM){
                     SoundFuncs.playMIDI(level.getMIDI());
-                }
             }
         } else {
             Network.MIDIData midi = new Network.MIDIData();

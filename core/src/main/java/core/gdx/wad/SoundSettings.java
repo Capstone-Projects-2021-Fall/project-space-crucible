@@ -66,14 +66,14 @@ public class SoundSettings extends Window {
                 bgmVolumeValue.setText((int) bgmSlider.getValue());
                 SoundFuncs.seqVolume=bgmSlider.getValue()/100d;
 
-                if(bgmSlider.getValue()<49){
-                    muteBGM = true;
-                    SoundFuncs.sequencer.stop();
-                }
-                if(bgmSlider.getValue()>=50){
-                    muteBGM = false;
-                    SoundFuncs.sequencer.start();
-                }
+//                if(bgmSlider.getValue()<49){
+//                    muteBGM = true;
+//                    SoundFuncs.sequencer.stop();
+//                }
+//                if(bgmSlider.getValue()>=50){
+//                    muteBGM = false;
+//                    SoundFuncs.sequencer.start();
+//                }
             }
         });
     }
