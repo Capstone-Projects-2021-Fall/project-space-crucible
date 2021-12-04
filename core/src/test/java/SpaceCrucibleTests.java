@@ -10,9 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SpaceCrucibleTests {
     @Test
     @DisplayName("Port is not being used and free to use")
-    void testIsPortAvailable() throws IOException {
-        MasterServer masterServer = new MasterServer(27980, 27990, "asd");
-        assertTrue(masterServer.isPortAvailable(27981));
+    void testIsPortAvailable(){
+        assertTrue(MasterServer.isPortAvailable(27981));
     }
     @Test
     @DisplayName("Should created random lobby codes")
