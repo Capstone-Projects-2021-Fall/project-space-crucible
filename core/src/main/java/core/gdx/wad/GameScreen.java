@@ -41,6 +41,7 @@ public class GameScreen implements Screen {
 
     //screen
     OrthographicCamera camera;
+    OrthographicCamera hudCamera;
     private final Vector2 mouseInWorld2D = new Vector2();
     private final Vector3 mouseInWorld3D = new Vector3();
     ShapeRenderer sr = new ShapeRenderer();
@@ -66,6 +67,8 @@ public class GameScreen implements Screen {
         GameLogic.loadEntities(GameLogic.currentLevel, false);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
+        hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        hudCamera.position.set(hudCamera.viewportWidth / 2.0f, hudCamera.viewportHeight / 2.0f, 1.0f);
         batch = new SpriteBatch();
         if(!isSinglePlayer){
             chatWindow = new ChatWindow("Chat", skin, this, stage);
@@ -93,10 +96,14 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         batch.begin();
+
+
 
         if(isSinglePlayer){
             Gdx.input.setInputProcessor(stage);
@@ -211,8 +218,6 @@ public class GameScreen implements Screen {
                         deadPlayerWindow.remove();
                     }
                 }
-                font.draw(batch, "Ping: " + ping, getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y-13);
-
                 if (showBoxes) {
                     showBoxes();
                 }
@@ -230,8 +235,18 @@ public class GameScreen implements Screen {
             showBoxes = !showBoxes;
         }
         batch.end();
+
+        batch.setProjectionMatrix(hudCamera.combined);
+        batch.begin();
+        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 0, hudCamera.viewportHeight);
+        if(!isSinglePlayer)
+            font.draw(batch, "Ping: " + ping, 0, hudCamera.viewportHeight-13);
+        batch.end();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        hudCamera.update();
+
+
         drawMiniMap();
     }
 
