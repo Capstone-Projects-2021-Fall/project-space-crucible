@@ -45,7 +45,7 @@ public class TitleScreen implements Screen {
     Config config = new Config();
     public static String playerName="Player";
     public static float sfx = 50;
-    public static float bgm = 50;
+    public static boolean bgm = true;
 
     public TitleScreen(MyGDxTest myGDxTest) {
         WadFile file;
@@ -60,9 +60,9 @@ public class TitleScreen implements Screen {
                 if(config.getText("sfx") != null)
                     TitleScreen.sfx = Float.parseFloat(config.getText("sfx"));
                 if(config.getText("bgm") != null)
-                    TitleScreen.bgm = Float.parseFloat(config.getText("bgm"));
+                    TitleScreen.bgm = Boolean.parseBoolean(config.getText("bgm"));
             }
-            settingsMenu = new SettingsMenu("Choose Difficulty:", skin, stage);
+            settingsMenu = new SettingsMenu("Settings", skin, stage);
             file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
             this.myGDxTest=myGDxTest;
             camera = new OrthographicCamera();
@@ -129,11 +129,15 @@ public class TitleScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-        settingsMenu.setPosition(((Gdx.graphics.getWidth() - settingsMenu.getWidth())/ 2f), ((Gdx.graphics.getHeight() - settingsMenu.getHeight()) / 2f));
         settingsMenu.resize();
         difficultyWindow.setBounds(((Gdx.graphics.getWidth() - 150)/ 2f), ((Gdx.graphics.getHeight() - 110) / 2f), 150, 110);
         if(error != null)
             error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
+        if(settingsMenu != null){
+            settingsMenu.setSize(width/2.7f, height/3.2f);
+            settingsMenu.setPosition(((Gdx.graphics.getWidth() - settingsMenu.getWidth())/ 2f), ((Gdx.graphics.getHeight() - settingsMenu.getHeight()) / 2f));
+
+        }
     }
 
     @Override
