@@ -22,7 +22,6 @@ import net.mtrop.doom.WadFile;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class GameLogic {
 
@@ -202,7 +201,7 @@ public class GameLogic {
                 ps.pings.add(SpaceServer.playerPings.get(pid));
             }
 
-            System.out.println(ps.usernames);
+//            System.out.println(ps.usernames);
 
             for (int id : SpaceServer.rconConnected) {
                 server.sendToTCP(id, ps);

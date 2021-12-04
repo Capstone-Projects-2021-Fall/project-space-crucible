@@ -239,8 +239,10 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(hudCamera.combined);
         batch.begin();
         font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 0, hudCamera.viewportHeight);
-        if(!isSinglePlayer)
-            font.draw(batch, "Ping: " + ping, 0, hudCamera.viewportHeight-13);
+        if(!isSinglePlayer) {
+            font.draw(batch, "Ping: " + ping, 0, hudCamera.viewportHeight - 13);
+            font.draw(batch, "Lobby Code " + serverDetails.lobbyCode, 0, font.getLineHeight());
+        }
         batch.end();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
