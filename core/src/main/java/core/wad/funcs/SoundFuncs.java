@@ -32,30 +32,40 @@ public class SoundFuncs {
 
     public static void startSequencer() {
         try {
-            sequencer = MidiSystem.getSequencer(true);
+            sequencer = MidiSystem.getSequencer();
             sequencer.open();
-            // http://www.java2s.com/Code/Java/Development-Class/SettingtheVolumeofPlayingMidiAudio.htm (non-functional)
-            if (sequencer instanceof Synthesizer) {
-                Synthesizer synthesizer = (Synthesizer) sequencer;
-                synthesizer.open();
-                Track[] sequencerTracks = sequencer.getSequence().getTracks();
-                for(int i = 0; i < sequencerTracks.length; i++){
-                    //Control change = 0xB0
-                    sequencerTracks[i].add(new MidiEvent(new ShortMessage(ShortMessage.CONTROL_CHANGE, i, 60, (int) (seqVolume*127)), sequencerTracks[i].ticks()));
-                }
-
-//                MidiChannel[] channels = synthesizer.getChannels();
-                // seqVolume is a value between 0 (lowest) and 1 (loudest); controller 7 is volume: https://www.sweetwater.com/insync/media/2019/06/Reason-MIDI-Implementation-Chart.jpg
-//                for (int i = 0; i < channels.length; i++) {
-//                    channels[i].controlChange(7, (int) (seqVolume * 127.0));
-//                    //channels[i].controlChange(7, (int)seqVolume);
+            Synthesizer synthesizer = MidiSystem.getSynthesizer(); //Synthesizer synthesizer = (Synthesizer) sequencer;
+            synthesizer.open();
+//            if (sequencer instanceof Synthesizer) {
+//method 1: midi events - https://www.tabnine.com/code/java/classes/javax.sound.midi.MidiEvent
+//https://www.programcreek.com/java-api-examples/?api=javax.sound.midi.MidiEvent
+//                Track[] sequencerTracks = sequencer.getSequence().getTracks();
+//                for(int i = 0; i < sequencerTracks.length; i++){
+////                    Control change = 0xB0 or 176// 60, (int)(seqVolume*127)
+//                    sequencerTracks[i].add(new MidiEvent(new ShortMessage(ShortMessage.CONTROL_CHANGE, i, 7, (int) (seqVolume*127)), sequencerTracks[i].ticks()));
 //                }
-                //alt method: https://stackoverflow.com/questions/8008286/how-to-control-the-midi-channels-volume
+
+
+//method 2: http://www.java2s.com/Code/Java/Development-Class/SettingtheVolumeofPlayingMidiAudio.htm (non-functional)
+//                Synthesizer synthesizer = MidiSystem.getSynthesizer(); //Synthesizer synthesizer = (Synthesizer) sequencer;
+//                synthesizer.open();
+                Transmitter transmitter = sequencer.getTransmitter();
+                Receiver receiver = synthesizer.getReceiver();
+                transmitter.setReceiver(receiver);
+                MidiChannel[] channels = synthesizer.getChannels();
+
+            for (MidiChannel channel : channels) {
+                channel.controlChange(7, (int) (seqVolume * 127.0)); //seqVolume is a value between 0 (lowest) and 1 (loudest); controller 7 is volume: https://www.sweetwater.com/insync/media/2019/06/Reason-MIDI-Implementation-Chart.jpg
+                //channels[i].controlChange(7, (int)seqVolume);
+            }
+//method 3: https://stackoverflow.com/questions/8008286/how-to-control-the-midi-channels-volume
 //                for(MidiChannel midiChannel : synthesizer.getChannels()){
 //                    midiChannel.controlChange(7, (int) (seqVolume*127f));
 //                }
-            }
-        } catch (MidiUnavailableException | InvalidMidiDataException e) {
+//            }else{
+//                System.out.println("Synthesizer NOT an instance of sequencer!");
+//            }
+        } catch (MidiUnavailableException | NullPointerException e) {
             System.out.println("Could not get MIDI sequencer. Will continue without music.");
         }
     }

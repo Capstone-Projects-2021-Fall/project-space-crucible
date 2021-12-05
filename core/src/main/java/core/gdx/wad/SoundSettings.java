@@ -65,6 +65,7 @@ public class SoundSettings extends Window {
             public void changed(ChangeEvent event, Actor actor) {
                 bgmVolumeValue.setText((int) bgmSlider.getValue());
                 SoundFuncs.seqVolume=bgmSlider.getValue()/100d;
+                System.out.println("seqVolume: " +SoundFuncs.seqVolume);
 
 //                if(bgmSlider.getValue()<49){
 //                    muteBGM = true;
