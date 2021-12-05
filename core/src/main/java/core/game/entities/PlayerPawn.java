@@ -34,11 +34,13 @@ public class PlayerPawn extends Entity {
             return;
         }
         //Debug keys- play, pain And death animations
-        if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
-            if (GameLogic.levels.get(GameLogic.currentLevel.getLevelnumber()+1) != null) {
-                GameLogic.readyChangeLevel(getNewLevelData());
+        try {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+                if (GameLogic.levels.get(GameLogic.currentLevel.getLevelnumber()+1) != null) {
+                    GameLogic.readyChangeLevel(getNewLevelData());
+                }
             }
-        }
+        } catch(NullPointerException ignored){}
 
         float checkPosX = getPos().x;
         float checkPosY = getPos().y;
@@ -64,9 +66,13 @@ public class PlayerPawn extends Entity {
                 vely += 10;
         }
 
-        checkPosX += velx * Gdx.graphics.getDeltaTime();
-        checkPosY += vely * Gdx.graphics.getDeltaTime();
-
+        try {
+            checkPosX += velx * Gdx.graphics.getDeltaTime();
+            checkPosY += vely * Gdx.graphics.getDeltaTime();
+        } catch (NullPointerException npe) {
+            checkPosX += velx * (1/60f);
+            checkPosY += vely * (1/60f);
+        }
         //Check only x first
         Rectangle newBounds = new Rectangle(checkPosX, getPos().y, getWidth(), getHeight());
 
