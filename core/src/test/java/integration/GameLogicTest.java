@@ -25,7 +25,7 @@ public class GameLogicTest {
 
         WadFile file, addon;
         Array<WadFile> wads = new Array<>();
-
+        GameLogic.isSinglePlayer = true;
 
         //Open files. We need our two test add-on files and the resource.
         try {
@@ -74,7 +74,6 @@ public class GameLogicTest {
         }
 
         //Is single player, there should be a player pawn.
-        assertEquals(true, GameLogic.isSinglePlayer);
         assertEquals(true, GameLogic.getPlayer(1) != null);
 
         //Tic counter should be incrementing.

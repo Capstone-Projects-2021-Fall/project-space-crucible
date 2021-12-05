@@ -46,6 +46,7 @@ public class MultiplayerTest {
 
         assertEquals(4, GameLogic.levels.size());
         assertEquals(1, GameLogic.scripts.size());
+        GameLogic.entityTable.clear();
 
         //Load entities and states
         GameLogic.stateList.add(new EntityState("UNKN", 'A', -1, -1, null));
