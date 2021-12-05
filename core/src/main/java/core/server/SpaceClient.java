@@ -102,7 +102,7 @@ public class SpaceClient implements Listener {
                                 System.out.println("Created a new file");
                                 outputStream = new FileOutputStream(file,true);
                             }else{
-                                System.out.println("Couldn't create file " + file.getName());
+                                System.out.println("File already exists!" + file.getName());
                                 outputStream= new FileOutputStream(file, false);
                             }
                         } catch (IOException ioException) {
@@ -120,9 +120,9 @@ public class SpaceClient implements Listener {
                     }
                     if((int)file.length() == ((WadFile) object).levelFileSize){
                         System.out.println("File receive complete");
+                        titleScreen.createPopup("Server Message", "File is downloaded! \n Try joining again.");
                         fileReceive = true;
                         try {
-                            System.out.println("in the try block");
                             System.out.println("file added to addons" + MyGDxTest.addons.add(file));
                             String hash;
                             hash = com.google.common.io.Files.asByteSource(file).hash(Hashing.sha256()).toString();

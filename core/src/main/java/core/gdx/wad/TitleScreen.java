@@ -28,7 +28,7 @@ public class TitleScreen implements Screen {
     SpriteBatch batch;
     Texture texture;
     private final Stage stage = new Stage(new ScreenViewport());
-    final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
+    final public Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
     public static boolean update = false;
     private final GLProfiler profiler;
 
@@ -344,5 +344,10 @@ public class TitleScreen implements Screen {
         invalid_lobby.setPosition(
                 (stage.getWidth()/2f) - invalid_lobby.getWidth(),
                 (stage.getHeight()/2f) - invalid_lobby.getHeight());
+    }
+    public void createPopup(String title, String message){
+        PopupWindow popupWindow = new PopupWindow(title, skin, message);
+        popupWindow.setPosition(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f);
+        showPopup(popupWindow);
     }
 }
