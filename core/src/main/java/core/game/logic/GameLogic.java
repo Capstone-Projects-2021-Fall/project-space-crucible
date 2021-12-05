@@ -303,7 +303,7 @@ public class GameLogic {
     public static void changeLevel(LevelData level) {
         currentLevel = level;
         if (isSinglePlayer) {
-            if (SoundFuncs.sequencer.isRunning()) {
+            if (SoundFuncs.sequencer != null && SoundFuncs.sequencer.isRunning()) {
                 SoundFuncs.stopMIDI();
             }
             if (level.getMIDI() != null) {
