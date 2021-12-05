@@ -33,7 +33,7 @@ public class SpaceServer implements Listener {
     public static HashSet<Integer> disconnected = new HashSet<>();
     public static List<Integer> idToPlayerNum = new LinkedList<>();
     public static HashMap<Integer, String> ips = new HashMap<>();
-    boolean gameStartedByHost = false;
+    public boolean gameStartedByHost = false;
     final public Date startTime;
     final private SpaceServer spaceServer = this;
     public long packetsReceived = 0;
@@ -49,14 +49,16 @@ public class SpaceServer implements Listener {
 
     public SpaceServer(int tcpPort) throws IOException {
         startTimer = System.nanoTime();
-        serverReport = Gdx.files.internal("server-reports/gameServer-" + tcpPort + ".txt").file();
-        if(serverReport.createNewFile()){
-            System.out.println("Created new server report file called gameServer-" + tcpPort);
-            fileWriter = new FileWriter(serverReport, true);
-        }else{
-            System.out.println("gameServer-"+tcpPort+" file already exists overwriting the file.");
-            fileWriter = new FileWriter(serverReport, false);
-        }
+        try {
+            serverReport = Gdx.files.internal("server-reports/gameServer-" + tcpPort + ".txt").file();
+            if (serverReport.createNewFile()) {
+                System.out.println("Created new server report file called gameServer-" + tcpPort);
+                fileWriter = new FileWriter(serverReport, true);
+            } else {
+                System.out.println("gameServer-" + tcpPort + " file already exists overwriting the file.");
+                fileWriter = new FileWriter(serverReport, false);
+            }
+        } catch (NullPointerException | IOException ignored){}
         createGameLoopThread();
         startTime = new Date();
         idToPlayerNum.add(-1);
@@ -87,9 +89,10 @@ public class SpaceServer implements Listener {
                 try {
                     fileWriter.write(duration + ": A new player has joined the server: Player " + c.getID() + "\n");
                     fileWriter.flush();
-                } catch (IOException e) {
-                    System.out.println("Could not write to file " + serverReport.getName());
-                    e.printStackTrace();
+                } catch (IOException | NullPointerException e) {
+                    if (serverReport != null) {
+                        System.out.println("Could not write to file " + serverReport.getName());
+                    }
                 }
             }
             //When the client sends a packet to the server handle it
@@ -364,9 +367,7 @@ public class SpaceServer implements Listener {
             fileWriter.write("Avg Received Per Second: " + ps.avgReceivedPerSec + "\n\n");
             fileWriter.flush();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException | NullPointerException ignored) {}
 
         for (int id : rconConnected) {
             server.sendToTCP(id, ps);

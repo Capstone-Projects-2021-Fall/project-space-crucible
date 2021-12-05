@@ -47,15 +47,19 @@ public class SpaceClient implements Listener {
             public void received (Connection connection, Object object) {
                 //If Master Server sends ServerDetails Create a new game client and connect it to game Server
                 if(object instanceof ServerDetails) {
-                    screen.setServerDetails((ServerDetails) object);
+                    if (screen != null) {
+                        screen.setServerDetails((ServerDetails) object);
+                    }
                     int tcpPort = ((ServerDetails) object).tcpPort;
                     createGameClient(tcpPort);
                 }
                 //If Master Server sends ValidLobby unblock the startMenu
                 else if( object instanceof ValidLobby){
                     validLobby = (ValidLobby) object;
-                    synchronized (titleScreen){
-                        titleScreen.notifyAll();
+                    if (titleScreen != null) {
+                        synchronized (titleScreen) {
+                            titleScreen.notifyAll();
+                        }
                     }
                 }
                 else if(object instanceof Ping) {
@@ -164,7 +168,9 @@ public class SpaceClient implements Listener {
 
             public void received(Connection connection, Object object) {
                 if(object instanceof RenderData){
-                    screen.setRenderData((RenderData) object);
+                    if (screen != null) {
+                        screen.setRenderData((RenderData) object);
+                    }
                 }
                 //If server sends MIDIData, change client's music
                 else if (object instanceof MIDIData) {
@@ -176,10 +182,12 @@ public class SpaceClient implements Listener {
                 }
                 //If server sends ClientData set the client data
                 else if(object instanceof ClientData){
-                    screen.setClientData((ClientData) object);
+                    if (screen != null) {
+                        screen.setClientData((ClientData) object);
+                    }
 
                     //If player number is changed and data is not null
-                    if (lobbyScreen.playerNumber == 0
+                    if (lobbyScreen != null && lobbyScreen.playerNumber == 0
                             && ((ClientData) object).connected != null && ((ClientData) object).idToPlayerNum != null) {
                         TitleScreen.changeScreen = true;
                     }
@@ -191,10 +199,13 @@ public class SpaceClient implements Listener {
 
                 //If server sends StartGame set the startGame value to it
                 else if(object instanceof StartGame){
-                    lobbyScreen.updatePlayerNumber();
                     GameLogic.currentLevel = GameLogic.levels.get(((StartGame) object).levelnum);
-                    lobbyScreen.startGame = ((StartGame) object).startGame;
-                    screen.addChatWindow();
+
+                    if (lobbyScreen != null) {
+                        lobbyScreen.updatePlayerNumber();
+                        lobbyScreen.startGame = ((StartGame) object).startGame;
+                        screen.addChatWindow();
+                    }
                 }
 
                 else if (object instanceof LevelChange) {
@@ -214,7 +225,7 @@ public class SpaceClient implements Listener {
                 if(object instanceof FrameworkMessage.Ping){
                     FrameworkMessage.Ping ping = (FrameworkMessage.Ping)object;
 
-                    if (ping.isReply){
+                    if (ping.isReply && screen != null){
                         screen.setPing(connection.getReturnTripTime());
                     }
                     SendPing sendPing = new SendPing();
