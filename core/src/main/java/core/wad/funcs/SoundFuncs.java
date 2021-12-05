@@ -58,10 +58,6 @@ public class SoundFuncs {
                 channel.controlChange(7, (int) (seqVolume * 127.0)); //seqVolume is a value between 0 (lowest) and 1 (loudest); controller 7 is volume: https://www.sweetwater.com/insync/media/2019/06/Reason-MIDI-Implementation-Chart.jpg
                 //channels[i].controlChange(7, (int)seqVolume);
             }
-//method 3: https://stackoverflow.com/questions/8008286/how-to-control-the-midi-channels-volume
-//                for(MidiChannel midiChannel : synthesizer.getChannels()){
-//                    midiChannel.controlChange(7, (int) (seqVolume*127f));
-//                }
 //            }else{
 //                System.out.println("Synthesizer NOT an instance of sequencer!");
 //            }
