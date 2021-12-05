@@ -134,6 +134,21 @@ public class MultiplayerTest {
             }
         } while(!spaceServer.gameStartedByHost);
 
+        //2 players plus dummy player 0
+        assertEquals(3, SpaceServer.idToPlayerNum.size());
+
+        //float x2 = GameLogic.getPlayer(2).getPos().x;
+        //float y2 = GameLogic.getPlayer(2).getPos().y;
+        Network.InputData  id = new Network.InputData();
+        id.controls = new boolean[]{true, false, true, false, false};
+        id.angle = 0f;
+        id.username = "Player";
+        player1.getGameClient().sendTCP(id);
+
+
+        float x1 = GameLogic.getPlayer(1).getPos().x;
+        float y1 = GameLogic.getPlayer(1).getPos().y;
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -141,8 +156,10 @@ public class MultiplayerTest {
             return;
         }
 
-        //2 players plus dummy player 0
-        assertEquals(3, SpaceServer.idToPlayerNum.size());
+        //Position should be different- player should have moved.
+        assertNotEquals(x1, GameLogic.getPlayer(1).getPos().x);
+        assertNotEquals(y1, GameLogic.getPlayer(1).getPos().y);
+
 
         //GameLogic is running
         assertNotEquals(0, GameLogic.ticCounter);

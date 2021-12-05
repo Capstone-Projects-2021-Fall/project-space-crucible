@@ -44,7 +44,7 @@ public class WadFuncsTest {
         WadFuncs.loadScripts(wads);
 
         //Make sure 4 levels are read
-        assertEquals(4, GameLogic.levels.size(), "Should load 5 levels from resource.wad");
+        assertEquals(4, GameLogic.levels.size(), "Should load 4 levels from resource.wad");
 
         GameLogic.stateList.add(new EntityState("UNKN", 'A', -1, -1, null));
 
