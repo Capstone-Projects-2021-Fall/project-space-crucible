@@ -182,8 +182,12 @@ public class GameLogic {
                 RenderData renderData = new RenderData();
                 renderData.entityList = entitiesInsideView(c);
                 renderData.playerPawn = getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()));
-                if(c.isConnected())
-                    server.sendToTCP(c.getID(), renderData);
+                try {
+                    if (c.isConnected())
+                        server.sendToTCP(c.getID(), renderData);
+                }catch (StackOverflowError | NoClassDefFoundError f){
+                    c.close();
+                }
                 spaceServer.packetsSent++;
                 spaceServer.packetsSentLastSecond.incrementAndGet();
             }
