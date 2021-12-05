@@ -16,6 +16,7 @@ public class SettingsMenu extends Window {
     AddonWindow addonWindow = new AddonWindow("Add .WADs", skin);
     SoundSettings soundSettings = new SoundSettings("Volume", skin, settingsMenu);
     NameChangeWindow nameChangeWindow = new NameChangeWindow("Enter player name", skin, settingsMenu);
+    ResolutionWindow resWindow = new ResolutionWindow("Resolution", skin, settingsMenu);
 
     public SettingsMenu(String title, Skin skin, Stage stage) {
         super(title, skin);
@@ -32,6 +33,10 @@ public class SettingsMenu extends Window {
         Button changeNameButton = new TextButton("Change Player Name", skin);
         changeNameButton.setColor(.35f,.35f,.35f,1f);
         add(changeNameButton).expand().fillY().fillX().padBottom(6f);
+        row();
+        Button res = new TextButton("Resolution", skin);
+        res.setColor(.35f,.35f,.35f,1f);
+        add(res).expand().fillY().fillX().padBottom(6f);
         row();
         Button backButton = new TextButton("Back", skin);
         backButton.setColor(.35f,.35f,.35f,1f);
@@ -66,6 +71,15 @@ public class SettingsMenu extends Window {
                 stage.addActor(nameChangeWindow);
             }
         });
+        res.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                setVisible(false);
+                resWindow.setPosition(((Gdx.graphics.getWidth() - nameChangeWindow.getWidth())/ 2f), ((Gdx.graphics.getHeight() - nameChangeWindow.getHeight()) / 2f));
+                stage.addActor(resWindow);
+            }
+        });
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -79,5 +93,6 @@ public class SettingsMenu extends Window {
         addonWindow.setPosition(((Gdx.graphics.getWidth() - addonWindow.getWidth())/ 2f), ((Gdx.graphics.getHeight() - addonWindow.getHeight()) / 2f));
         soundSettings.setPosition(((Gdx.graphics.getWidth() - soundSettings.getWidth())/ 2f), ((Gdx.graphics.getHeight() - soundSettings.getHeight()) / 2f));
         nameChangeWindow.setPosition(((Gdx.graphics.getWidth() - nameChangeWindow.getWidth())/ 2f), ((Gdx.graphics.getHeight() - nameChangeWindow.getHeight()) / 2f));
+        resWindow.setPosition(((Gdx.graphics.getWidth() - resWindow.getWidth())/ 2f), ((Gdx.graphics.getHeight() - nameChangeWindow.getHeight()) / 2f));
     }
 }

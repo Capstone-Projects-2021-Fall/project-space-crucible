@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.config.Config;
@@ -46,6 +47,7 @@ public class TitleScreen implements Screen {
     public static String playerName="Player";
     public static float sfx = 50;
     public static boolean bgm = true;
+    public static boolean fullscreen = false;
 
     public TitleScreen(MyGDxTest myGDxTest) {
         WadFile file;
@@ -61,7 +63,12 @@ public class TitleScreen implements Screen {
                     TitleScreen.sfx = Float.parseFloat(config.getText("sfx"));
                 if(config.getText("bgm") != null)
                     TitleScreen.bgm = Boolean.parseBoolean(config.getText("bgm"));
+                if(config.getText("fullscreen") != null){
+                    TitleScreen.fullscreen = Boolean.parseBoolean(config.getText("fullscreen"));
+                    ResolutionWindow.handleFullScreen(fullscreen);
+                }
             }
+
             settingsMenu = new SettingsMenu("Settings", skin, stage);
             file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
             this.myGDxTest=myGDxTest;
@@ -134,9 +141,8 @@ public class TitleScreen implements Screen {
         if(error != null)
             error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
         if(settingsMenu != null){
-            settingsMenu.setSize(width/2.7f, height/3.2f);
+            settingsMenu.setSize(width/2.7f, height/2.2f);
             settingsMenu.setPosition(((Gdx.graphics.getWidth() - settingsMenu.getWidth())/ 2f), ((Gdx.graphics.getHeight() - settingsMenu.getHeight()) / 2f));
-
         }
     }
 
