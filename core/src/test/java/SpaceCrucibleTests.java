@@ -1,3 +1,4 @@
+import core.game.logic.GameLogic;
 import core.server.MasterServer;
 import core.server.SpaceClient;
 import org.junit.jupiter.api.DisplayName;
@@ -27,5 +28,49 @@ public class SpaceCrucibleTests {
         SpaceClient spaceClient = new SpaceClient(null, null, null);
         assertTrue(spaceClient.getMasterClient().isConnected());
     }
+    @Test
+    @DisplayName("Should reach the next screen after click start button")
+    void testStartGame(){
+        SpaceClient spaceClient = new SpaceClient(null, null, null);
+
+       //assertTrue();
+    }
+    @Test
+    @DisplayName("Game difficulty should be changed")
+    void testChangeDifficulty(){
+
+
+    }
+    @Test
+    @DisplayName("Should display screen to join or create a lobby")
+    void testCoop(){
+
+
+    }
+    @Test
+    @DisplayName("Create a lobby with the random lobby code")
+    void testCreateLobby(){
+
+
+    }
+    @Test
+    @DisplayName("Join a lobby with the lobby code entered")
+    void testJoinLobby(){
+
+
+    }
+    @Test
+    @DisplayName("Should show the setting screen from main menu")
+    void testSettingScreen(){
+
+
+    }
+    @Test
+    @DisplayName("Game volume should be turn off")
+    void testVolumeSlider(){
+
+
+    }
+
 
 }
