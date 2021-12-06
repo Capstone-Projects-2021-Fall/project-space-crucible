@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -31,7 +30,6 @@ public class TitleScreen implements Screen {
     private final Stage stage = new Stage(new ScreenViewport());
     final public Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
     public static boolean update = false;
-    private final GLProfiler profiler;
 
     public MyGDxTest myGDxTest;
     SpaceClient client;
@@ -52,8 +50,6 @@ public class TitleScreen implements Screen {
 
     public TitleScreen(MyGDxTest myGDxTest) {
         WadFile file;
-        profiler = new GLProfiler(Gdx.graphics);
-        profiler.enable();
         SoundFuncs.startSequencer();
         try {
             if(Config.file.exists()){
@@ -104,7 +100,6 @@ public class TitleScreen implements Screen {
     }
     @Override
     public void render(float delta) {
-        profiler.reset();
         if(update){
             System.out.println("loading wadfile");
             MyGDxTest.loadWADS();
@@ -128,10 +123,6 @@ public class TitleScreen implements Screen {
         batch.draw(texture, 0, 0, camera.viewportWidth, camera.viewportHeight);
         batch.end();
         stage.draw();
-//        float drawCalls = profiler.getDrawCalls();
-//        float textureBinds = profiler.getTextureBindings();
-//        System.out.println(drawCalls);
-//        System.out.println(textureBinds);
     }
 
     @Override
