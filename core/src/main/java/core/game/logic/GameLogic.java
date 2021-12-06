@@ -251,6 +251,8 @@ public class GameLogic {
     public static void loadEntities(LevelData level, boolean editor) {
 
         entityList.clear();
+        int highestPlayerSpawnTag = 0;
+        ArrayList<LevelObject> pobjs = new ArrayList<>();
 
         for (LevelObject obj : level.getObjects()) {
 
@@ -258,14 +260,20 @@ public class GameLogic {
             if (!obj.skill[difficulty] && !editor) {continue;}
 
             if (obj.type == 0) {
-                if (isSinglePlayer && obj.tag > 1 && !editor) continue;
 
+                pobjs.add(obj);
+                highestPlayerSpawnTag = Math.max(highestPlayerSpawnTag, obj.tag);
+
+                if ((isSinglePlayer && obj.tag > 1 && !editor) || !isSinglePlayer) continue;
+
+                /*
                 System.out.println("Server IS " + (server == null ? "" : "NOT") +  " null.");
 
                 if (server != null && obj.tag > SpaceServer.connected.size()) {
                     System.out.println("Skipping player " + obj.tag + " because they don't exist.");
                     continue;
                 }
+                */
             }
 
             if (obj.type == -1) {
@@ -284,6 +292,16 @@ public class GameLogic {
                 System.out.println("Unknown Entity with map ID " + obj.type);
             }
         }
+        for (int i = 1; i < SpaceServer.idToPlayerNum.size(); i++) {
+            for (LevelObject pobj : pobjs) {
+                if ((i <= highestPlayerSpawnTag && i == pobj.tag) || (i > highestPlayerSpawnTag && (i % highestPlayerSpawnTag == pobj.tag || i % highestPlayerSpawnTag == 0))) {
+                    entityList.add(GameLogic.mapIDTable.get(0)
+                            .spawnEntity(new Entity.Position(pobj.xpos, pobj.ypos, pobj.angle), i, pobj.layer, pobj.ambush));
+                    break;
+                }
+            }
+        }
+
     }
 
     public static void loadLevels(Array<WadFile> wads) {
