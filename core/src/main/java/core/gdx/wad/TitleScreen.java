@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.config.Config;
+import core.game.logic.GameLogic;
 import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
@@ -190,6 +191,7 @@ public class TitleScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 mainMenuTable.setVisible(false);
+                GameLogic.currentLevel = GameLogic.levels.get(1);
                 stage.addActor(difficultyWindow);
             }
         });
