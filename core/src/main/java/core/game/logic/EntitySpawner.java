@@ -36,9 +36,12 @@ public class EntitySpawner {
                 );
 
             case "BaseMonster":
+
+                int modifier = properties.health / 4;
+
                 return new BaseMonster(
                     properties.name,
-                    properties.health,
+                    (properties.health + (modifier * (GameLogic.difficulty - GameLogic.MEDIUM))),
                     pos,
                     properties.speed,
                     properties.width,
