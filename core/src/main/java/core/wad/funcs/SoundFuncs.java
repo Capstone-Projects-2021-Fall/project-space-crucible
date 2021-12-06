@@ -107,7 +107,9 @@ public class SoundFuncs {
     }
 
     public static void closeSequencer() {
-        sequencer.close();
+        if (sequencer != null) {
+            sequencer.close();
+        }
     }
 
     public static void loadMIDIs(Array<WadFile> wads) {
