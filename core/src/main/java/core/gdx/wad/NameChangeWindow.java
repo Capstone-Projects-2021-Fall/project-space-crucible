@@ -4,13 +4,15 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import core.config.Config;
 import core.game.logic.GameLogic;
 import core.server.Network;
 
 public class NameChangeWindow extends Window {
     MyGDxTest myGDxTest;
     public int playerNumber = 1;
-    public static String playerName="Player";
+    Config config = new Config();
+    String playerName = TitleScreen.playerName;
 
     public NameChangeWindow(String title, Skin skin, SettingsMenu settingsMenu) {
         super(title, skin);
@@ -30,7 +32,6 @@ public class NameChangeWindow extends Window {
         newName.setDisabled(true);
         newName.setText(playerName);
 
-
         enterNewName.setTextFieldListener((textField, key) -> {
             if (key == '\n' || key == '\r') {
                 playerName = enterNewName.getText();
@@ -44,6 +45,8 @@ public class NameChangeWindow extends Window {
                 super.clicked(event, x, y);
                 playerName = enterNewName.getText();
                 newName.setText(playerName);
+                config.saveText("name", playerName);
+                System.out.println("Config save called");
                 remove();
                 settingsMenu.setVisible(true);
                 //settingsScreen.remove = true;

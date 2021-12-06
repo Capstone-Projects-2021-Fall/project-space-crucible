@@ -22,7 +22,6 @@ import net.mtrop.doom.WadFile;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class GameLogic {
 
@@ -183,8 +182,12 @@ public class GameLogic {
                 RenderData renderData = new RenderData();
                 renderData.entityList = entitiesInsideView(c);
                 renderData.playerPawn = getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()));
-                if(c.isConnected())
-                    server.sendToTCP(c.getID(), renderData);
+                try {
+                    if (c.isConnected())
+                        server.sendToTCP(c.getID(), renderData);
+                }catch (StackOverflowError | NoClassDefFoundError f){
+                    c.close();
+                }
                 spaceServer.packetsSent++;
                 spaceServer.packetsSentLastSecond.incrementAndGet();
             }
@@ -202,7 +205,7 @@ public class GameLogic {
                 ps.pings.add(SpaceServer.playerPings.get(pid));
             }
 
-            System.out.println(ps.usernames);
+//            System.out.println(ps.usernames);
 
             for (int id : SpaceServer.rconConnected) {
                 server.sendToTCP(id, ps);
@@ -248,6 +251,8 @@ public class GameLogic {
     public static void loadEntities(LevelData level, boolean editor) {
 
         entityList.clear();
+        int highestPlayerSpawnTag = 0;
+        ArrayList<LevelObject> pobjs = new ArrayList<>();
 
         for (LevelObject obj : level.getObjects()) {
 
@@ -255,14 +260,20 @@ public class GameLogic {
             if (!obj.skill[difficulty] && !editor) {continue;}
 
             if (obj.type == 0) {
-                if (isSinglePlayer && obj.tag > 1 && !editor) continue;
 
+                pobjs.add(obj);
+                highestPlayerSpawnTag = Math.max(highestPlayerSpawnTag, obj.tag);
+
+                if ((isSinglePlayer && obj.tag > 1 && !editor) || !isSinglePlayer) continue;
+
+                /*
                 System.out.println("Server IS " + (server == null ? "" : "NOT") +  " null.");
 
                 if (server != null && obj.tag > SpaceServer.connected.size()) {
                     System.out.println("Skipping player " + obj.tag + " because they don't exist.");
                     continue;
                 }
+                */
             }
 
             if (obj.type == -1) {
@@ -281,6 +292,16 @@ public class GameLogic {
                 System.out.println("Unknown Entity with map ID " + obj.type);
             }
         }
+        for (int i = 1; i < SpaceServer.idToPlayerNum.size(); i++) {
+            for (LevelObject pobj : pobjs) {
+                if ((i <= highestPlayerSpawnTag && i == pobj.tag) || (i > highestPlayerSpawnTag && (i % highestPlayerSpawnTag == pobj.tag || i % highestPlayerSpawnTag == 0))) {
+                    entityList.add(GameLogic.mapIDTable.get(0)
+                            .spawnEntity(new Entity.Position(pobj.xpos, pobj.ypos, pobj.angle), i, pobj.layer, pobj.ambush));
+                    break;
+                }
+            }
+        }
+
     }
 
     public static void loadLevels(Array<WadFile> wads) {
@@ -304,7 +325,7 @@ public class GameLogic {
     public static void changeLevel(LevelData level) {
         currentLevel = level;
         if (isSinglePlayer) {
-            if (SoundFuncs.sequencer.isRunning()) {
+            if (SoundFuncs.sequencer != null && SoundFuncs.sequencer.isRunning()) {
                 SoundFuncs.stopMIDI();
             }
             if (level.getMIDI() != null) {

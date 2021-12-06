@@ -23,8 +23,8 @@ public class SpaceServer implements Listener {
     //Server Object
     Server server;
     Client serverClient;
-//    public static String ip = "100.19.127.86";
-    public static String ip = "localhost";
+    public static String ip = "70.16.142.206";
+    //public static String ip = "localhost";
     public static Network.ClientData clientData;
     public static HashSet<Integer> connected = new HashSet<>();
     public static HashMap<Integer, String> playerNames = new HashMap<>();
@@ -33,7 +33,7 @@ public class SpaceServer implements Listener {
     public static HashSet<Integer> disconnected = new HashSet<>();
     public static List<Integer> idToPlayerNum = new LinkedList<>();
     public static HashMap<Integer, String> ips = new HashMap<>();
-    boolean gameStartedByHost = false;
+    public boolean gameStartedByHost = false;
     final public Date startTime;
     final private SpaceServer spaceServer = this;
     public long packetsReceived = 0;
@@ -49,14 +49,16 @@ public class SpaceServer implements Listener {
 
     public SpaceServer(int tcpPort) throws IOException {
         startTimer = System.nanoTime();
-        serverReport = Gdx.files.internal("server-reports/gameServer-" + tcpPort + ".txt").file();
-        if(serverReport.createNewFile()){
-            System.out.println("Created new server report file called gameServer-" + tcpPort);
-            fileWriter = new FileWriter(serverReport, true);
-        }else{
-            System.out.println("gameServer-"+tcpPort+" file already exists overwriting the file.");
-            fileWriter = new FileWriter(serverReport, false);
-        }
+        try {
+            serverReport = Gdx.files.internal("server-reports/gameServer-" + tcpPort + ".txt").file();
+            if (serverReport.createNewFile()) {
+                System.out.println("Created new server report file called gameServer-" + tcpPort);
+                fileWriter = new FileWriter(serverReport, true);
+            } else {
+                System.out.println("gameServer-" + tcpPort + " file already exists overwriting the file.");
+                fileWriter = new FileWriter(serverReport, false);
+            }
+        } catch (NullPointerException | IOException ignored) {}
         createGameLoopThread();
         startTime = new Date();
         idToPlayerNum.add(-1);
@@ -87,9 +89,10 @@ public class SpaceServer implements Listener {
                 try {
                     fileWriter.write(duration + ": A new player has joined the server: Player " + c.getID() + "\n");
                     fileWriter.flush();
-                } catch (IOException e) {
-                    System.out.println("Could not write to file " + serverReport.getName());
-                    e.printStackTrace();
+                } catch (IOException | NullPointerException e) {
+                    if (serverReport != null) {
+                        System.out.println("Could not write to file " + serverReport.getName());
+                    }
                 }
             }
             //When the client sends a packet to the server handle it
@@ -202,10 +205,22 @@ public class SpaceServer implements Listener {
                         System.out.println("Player connected " + idToPlayerNum.indexOf(c.getID()));
 
                         if (gameStartedByHost) {
-                            for (LevelObject lo : GameLogic.currentLevel.getObjects()) {
-                                if (lo.type == 0 && lo.tag == idToPlayerNum.indexOf(c.getID())) {
-                                    GameLogic.newEntityQueue.add(GameLogic.mapIDTable.get(0)
-                                            .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), lo.tag, lo.layer, lo.ambush));
+                            ArrayList<LevelObject> pobjs = new ArrayList<>();
+                            int highestPlayerSpawnTag = 0;
+                            for (LevelObject obj : GameLogic.currentLevel.getObjects()) {
+                                if (obj.type == 0) {
+
+                                    pobjs.add(obj);
+                                    highestPlayerSpawnTag = Math.max(highestPlayerSpawnTag, obj.tag);
+                                }
+                            }
+
+                            int i = idToPlayerNum.indexOf(c.getID());
+
+                            for (LevelObject pobj : pobjs) {
+                                if ((i <= highestPlayerSpawnTag && i == pobj.tag) || (i > highestPlayerSpawnTag && (i % highestPlayerSpawnTag == pobj.tag || i % highestPlayerSpawnTag == 0))) {
+                                    GameLogic.entityList.add(GameLogic.mapIDTable.get(0)
+                                            .spawnEntity(new Entity.Position(pobj.xpos, pobj.ypos, pobj.angle), i, pobj.layer, pobj.ambush));
                                     break;
                                 }
                             }
@@ -364,9 +379,7 @@ public class SpaceServer implements Listener {
             fileWriter.write("Avg Received Per Second: " + ps.avgReceivedPerSec + "\n\n");
             fileWriter.flush();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException | NullPointerException ignored) {}
 
         for (int id : rconConnected) {
             server.sendToTCP(id, ps);

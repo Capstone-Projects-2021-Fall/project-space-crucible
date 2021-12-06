@@ -47,9 +47,10 @@ public class LobbyScreen implements Screen {
         exitToMenu = new TextButton("Exit Lobby", skin);
         play = new TextButton("Start Game", skin);
         difficultyLevel = new TextButton("Difficulty Level", skin);
-        play.setBounds((Gdx.graphics.getWidth() - 100) / 2f, 50, 100, 60);
-        difficultyLevel.setBounds((Gdx.graphics.getWidth() + 250) / 2f, 120, 110, 60);
-}
+        play.setColor(.3f,.3f,.3f,1f);
+        difficultyLevel.setColor(.3f,.3f,.3f,1f);
+        exitToMenu.setColor(.3f,.3f,.3f,1f);
+    }
 
     @Override
     public void show() {
@@ -103,16 +104,17 @@ public class LobbyScreen implements Screen {
         lobbyStage.act(Gdx.graphics.getDeltaTime()); //Perform ui logic
         lobbyStage.getBatch().begin();
         lobbyStage.getBatch().draw(WadFuncs.LOBBYSCREEN, 0, 0, lobbyStage.getWidth(), lobbyStage.getHeight());
-        int x = 100;
-        int y = 400;
+        float x = Gdx.graphics.getWidth()/6.8f;
+        float y = Gdx.graphics.getHeight()/1.2f;
 
         updatePlayerNumber();
         playerbuttons.forEach((k, v) -> v.remove());
         for (String name : gameScreen.clientData.playerNames.values()) {
             Button player = new TextButton(name, skin);
-            player.setBounds(x, y, 80, 50);
+            player.setColor(.3f,.3f,.3f,1f);
+            player.setBounds(x, y, Gdx.graphics.getWidth()/8f, Gdx.graphics.getHeight()/9.6f);
             lobbyStage.addActor(player);
-            y -= 50;
+            y -= Gdx.graphics.getHeight()/9.6f;
             playerbuttons.put(name, player);
         }
 
@@ -132,6 +134,9 @@ public class LobbyScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         lobbyStage.getViewport().update(width, height, true);
+        exitToMenu.setBounds((Gdx.graphics.getWidth() + width/2) / 2f, height/7.5f, width/6.4f, height/7.5f);
+        play.setBounds((Gdx.graphics.getWidth() - width/6.4f) / 2f, height/7.5f, width/6.4f, height/7.5f);
+        difficultyLevel.setBounds((Gdx.graphics.getWidth() + width/2) / 2f, height/3.5f, width/5.5f, height/7.5f);
     }
 
     @Override
@@ -146,7 +151,6 @@ public class LobbyScreen implements Screen {
 
     @Override
     public void hide() {
-//        dispose();
     }
 
     @Override
@@ -159,7 +163,6 @@ public class LobbyScreen implements Screen {
 
 
     private void addExitButton(){
-        exitToMenu.setBounds((Gdx.graphics.getWidth() + 250) / 2f, 50, 100, 60);
         lobbyStage.addActor(exitToMenu);
         exitToMenu.addListener(new ClickListener(){
             @Override
