@@ -14,12 +14,14 @@ public class A_MeleeAttack implements StateAction {
 
     @Override
     public void run(Entity caller, Entity target) {
-        Vector2 distance = new Vector2();
-        distance.x = target.getPos().x - caller.getPos().x;
-        distance.y = target.getPos().y - caller.getPos().y;
+        try {
+            Vector2 distance = new Vector2();
+            distance.x = target.getPos().x - caller.getPos().x;
+            distance.y = target.getPos().y - caller.getPos().y;
 
-        if (distance.len() <= 64f && target.currentLayer == caller.currentLayer) {
-            target.takeDamage(caller, damage);
-        }
+            if (distance.len() <= 64f && target.currentLayer == caller.currentLayer) {
+                target.takeDamage(caller, damage);
+            }
+        } catch (NullPointerException ignored) {}
     }
 }

@@ -113,7 +113,7 @@ public class MasterServer implements Listener {
                             server.sendToTCP(hostEntry.masterID, pingLobbyHost);
 
                             validLobby.valid = false;
-                            validLobby.reason = "Lobby requires these WADS:\n" + serverEntry.getFiles().toString();// + " \n Server is downloading them in your assets folder\n Wait a few seconds and try to join again!";
+                            validLobby.reason = "Lobby requires these WADS:\n" + serverEntry.getFiles().toString() + " \n Server is downloading them in your assets folder\n Wait a few seconds and try to join again!";
                             connection.sendTCP(validLobby);
                             System.out.println("No bueno. 2");
                             return;

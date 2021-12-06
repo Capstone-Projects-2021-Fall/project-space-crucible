@@ -35,7 +35,7 @@ public class ChatWindow extends com.badlogic.gdx.scenes.scene2d.ui.Window {
             if (key == '\n' || key == '\r') {
 
                 Network.ChatMessage chat = new Network.ChatMessage();
-                chat.sender = NameChangeWindow.playerName;
+                chat.sender = TitleScreen.playerName;
                 chat.message = chatField.getText();
                 gameScreen.client.getGameClient().sendTCP(chat);
                 chatField.setText("");

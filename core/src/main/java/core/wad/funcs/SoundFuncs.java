@@ -98,11 +98,11 @@ public class SoundFuncs {
                         soundPlayer.writeSamples(sound, 0, sound.length);
                         soundPlayer.dispose();
 
-                    } catch (GdxRuntimeException ignored) {}
+                    } catch (GdxRuntimeException | NullPointerException ignored) {}
 
                     try {
                         join();
-                    } catch (InterruptedException | IndexOutOfBoundsException ignored) {}
+                    } catch (InterruptedException | IndexOutOfBoundsException | NullPointerException ignored) {}
                 }
             }.start();
         } else {

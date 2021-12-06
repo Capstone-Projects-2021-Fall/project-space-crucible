@@ -58,17 +58,8 @@ public class DeadPlayerWindow extends Window {
                     };
                     myGDxTest.gameLoop = gameLoop;
                 }
-
-                try {
-                    gameScreen.client.getGameClient().update(0);
-                    Network.Ping ping = new Network.Ping();
-                    ping.disconnect = true;
-                    gameScreen.client.getGameClient().sendTCP(ping);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 myGDxTest.setScreen(myGDxTest.titleScreen);
-                    TitleScreen.mainMenuTable.setVisible(true);
+                TitleScreen.mainMenuTable.setVisible(true);
             }
         });
     }

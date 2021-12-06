@@ -11,7 +11,6 @@ import core.game.entities.Entity;
 import core.game.entities.MapSpot;
 import core.game.entities.PlayerPawn;
 import core.game.logic.tileactions.TileAction;
-import core.gdx.wad.SoundSettings;
 import core.level.info.LevelData;
 import core.level.info.LevelObject;
 import core.server.Network;
@@ -23,7 +22,6 @@ import net.mtrop.doom.WadFile;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class GameLogic {
 
@@ -71,11 +69,7 @@ public class GameLogic {
 
     public static void start() {
         if (isSinglePlayer) {
-            if(!SoundSettings.muteBGM){
-                SoundFuncs.playMIDI(currentLevel.getMIDI());
-            }else{
-                SoundFuncs.stopMIDI();
-            }
+            SoundFuncs.playMIDI(currentLevel.getMIDI());
         } else {
             Network.MIDIData midi = new Network.MIDIData();
             midi.midi = currentLevel.getMIDI();
@@ -188,8 +182,12 @@ public class GameLogic {
                 RenderData renderData = new RenderData();
                 renderData.entityList = entitiesInsideView(c);
                 renderData.playerPawn = getPlayer(SpaceServer.idToPlayerNum.indexOf(c.getID()));
-                if(c.isConnected())
-                    server.sendToTCP(c.getID(), renderData);
+                try {
+                    if (c.isConnected())
+                        server.sendToTCP(c.getID(), renderData);
+                }catch (StackOverflowError | NoClassDefFoundError f){
+                    c.close();
+                }
                 spaceServer.packetsSent++;
                 spaceServer.packetsSentLastSecond.incrementAndGet();
             }
@@ -207,7 +205,7 @@ public class GameLogic {
                 ps.pings.add(SpaceServer.playerPings.get(pid));
             }
 
-            System.out.println(ps.usernames);
+//            System.out.println(ps.usernames);
 
             for (int id : SpaceServer.rconConnected) {
                 server.sendToTCP(id, ps);
@@ -309,11 +307,11 @@ public class GameLogic {
     public static void changeLevel(LevelData level) {
         currentLevel = level;
         if (isSinglePlayer) {
-            if (SoundFuncs.sequencer.isRunning()) {
-                    SoundFuncs.stopMIDI();
+            if (SoundFuncs.sequencer != null && SoundFuncs.sequencer.isRunning()) {
+                SoundFuncs.stopMIDI();
             }
             if (level.getMIDI() != null) {
-                    SoundFuncs.playMIDI(level.getMIDI());
+                SoundFuncs.playMIDI(level.getMIDI());
             }
         } else {
             Network.MIDIData midi = new Network.MIDIData();

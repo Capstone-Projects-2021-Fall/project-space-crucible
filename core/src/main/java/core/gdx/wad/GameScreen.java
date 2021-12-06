@@ -11,10 +11,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.game.entities.Entity;
 import core.game.entities.PlayerPawn;
@@ -43,6 +41,7 @@ public class GameScreen implements Screen {
 
     //screen
     OrthographicCamera camera;
+    OrthographicCamera hudCamera;
     private final Vector2 mouseInWorld2D = new Vector2();
     private final Vector3 mouseInWorld3D = new Vector3();
     ShapeRenderer sr = new ShapeRenderer();
@@ -68,6 +67,8 @@ public class GameScreen implements Screen {
         GameLogic.loadEntities(GameLogic.currentLevel, false);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
+        hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        hudCamera.position.set(hudCamera.viewportWidth / 2.0f, hudCamera.viewportHeight / 2.0f, 1.0f);
         batch = new SpriteBatch();
         if(!isSinglePlayer){
             chatWindow = new ChatWindow("Chat", skin, this, stage);
@@ -95,10 +96,14 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0,0,0,1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+
         batch.setProjectionMatrix(camera.combined);
         batch.enableBlending();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         batch.begin();
+
+
 
         if(isSinglePlayer){
             Gdx.input.setInputProcessor(stage);
@@ -124,9 +129,10 @@ public class GameScreen implements Screen {
 //                            GameLogic.getPlayer(playerNumber).getPos().x,
 //                            GameLogic.getPlayer(playerNumber).getPos().y);
 //                }
-                font.draw(batch, "Layer:" + GameLogic.getPlayer(playerNumber).currentLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-10);
-                font.draw(batch, "Bridge:" + GameLogic.getPlayer(playerNumber).bridgeLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-20);
-                font.draw(batch, NameChangeWindow.playerName,
+                //TODO: re-add tags for layer and bridge before pr
+                //font.draw(batch, "Layer:" + GameLogic.getPlayer(playerNumber).currentLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-10);
+                //font.draw(batch, "Bridge:" + GameLogic.getPlayer(playerNumber).bridgeLayer, GameLogic.getPlayer(playerNumber).getPos().x, GameLogic.getPlayer(playerNumber).getPos().y-20);
+                font.draw(batch, TitleScreen.playerName,
                         GameLogic.getPlayer(playerNumber).getPos().x,
                         GameLogic.getPlayer(playerNumber).getPos().y + GameLogic.getPlayer(playerNumber).getHeight() + 10);
                 if (showBoxes) {
@@ -212,8 +218,6 @@ public class GameScreen implements Screen {
                         deadPlayerWindow.remove();
                     }
                 }
-                font.draw(batch, "Ping: " + ping, getPlayer(playerNumber).getPos().x, getPlayer(playerNumber).getPos().y-13);
-
                 if (showBoxes) {
                     showBoxes();
                 }
@@ -231,8 +235,20 @@ public class GameScreen implements Screen {
             showBoxes = !showBoxes;
         }
         batch.end();
+
+        batch.setProjectionMatrix(hudCamera.combined);
+        batch.begin();
+        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 0, hudCamera.viewportHeight);
+        if(!isSinglePlayer) {
+            font.draw(batch, "Ping: " + ping, 0, hudCamera.viewportHeight - 13);
+            font.draw(batch, "Lobby Code " + serverDetails.lobbyCode, 0, font.getLineHeight());
+        }
+        batch.end();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        hudCamera.update();
+
+
         drawMiniMap();
     }
 
@@ -393,7 +409,8 @@ public class GameScreen implements Screen {
         //float drawMiniY = Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/3; //apparently does the same thing as above
         shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        float mapSpacing = Gdx.graphics.getWidth()/170f;
+        //float mapSpacing = 4;
+        float mapSpacing = Gdx.graphics.getWidth()/200f;
         for(LevelTile levelTile : GameLogic.currentLevel.getTiles()){
             shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
                     levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
@@ -402,16 +419,6 @@ public class GameScreen implements Screen {
                 shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
                         levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
                         Color.RED, Color.RED, Color.RED, Color.RED);
-            }
-            if(levelTile.effect == 1){
-                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
-                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
-                        Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW);
-            }
-            if(levelTile.effect == 2){
-                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
-                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
-                        Color.GREEN, Color.GREEN, Color.GREEN, Color.GREEN);
             }
             if(isSinglePlayer) {
                 if (!levelTile.solid && levelTile.pos.x == (int) GameLogic.getPlayer(playerNumber).getPos().x / LevelTile.TILE_SIZE &&

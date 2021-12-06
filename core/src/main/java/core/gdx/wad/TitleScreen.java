@@ -10,8 +10,10 @@ import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import core.config.Config;
 import core.server.SpaceClient;
 import core.wad.funcs.SoundFuncs;
 import core.wad.funcs.WadFuncs;
@@ -26,7 +28,7 @@ public class TitleScreen implements Screen {
     SpriteBatch batch;
     Texture texture;
     private final Stage stage = new Stage(new ScreenViewport());
-    final private Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
+    final public Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
     public static boolean update = false;
     private final GLProfiler profiler;
 
@@ -38,16 +40,36 @@ public class TitleScreen implements Screen {
     public static Table mainMenuTable;
     public static Table coopMenuTable;
     public static Table joinLobbyTable;
-    SettingsMenu settingsMenu = new SettingsMenu("Choose Difficulty:", skin, stage);
     ChooseDifficultyWindow difficultyWindow = new ChooseDifficultyWindow("Choose Difficulty:", skin, titleScreen, true);
     PopupWindow error;
-
+    SettingsMenu settingsMenu;
+    Config config = new Config();
+    public static String playerName="Player";
+    public static float sfx = 50;
+    public static boolean bgm = true;
+    public static boolean fullscreen = false;
 
     public TitleScreen(MyGDxTest myGDxTest) {
         WadFile file;
         profiler = new GLProfiler(Gdx.graphics);
         profiler.enable();
+        SoundFuncs.startSequencer();
         try {
+            if(Config.file.exists()){
+                if(config.getText("name") != null)
+                    TitleScreen.playerName = config.getText("name");
+                System.out.println(TitleScreen.playerName);
+                if(config.getText("sfx") != null)
+                    TitleScreen.sfx = Float.parseFloat(config.getText("sfx"));
+                if(config.getText("bgm") != null)
+                    TitleScreen.bgm = Boolean.parseBoolean(config.getText("bgm"));
+                if(config.getText("fullscreen") != null){
+                    TitleScreen.fullscreen = Boolean.parseBoolean(config.getText("fullscreen"));
+                    ResolutionWindow.handleFullScreen(fullscreen);
+                }
+            }
+
+            settingsMenu = new SettingsMenu("Settings", skin, stage);
             file = new WadFile(Gdx.files.internal("assets/resource.wad").file());
             this.myGDxTest=myGDxTest;
             camera = new OrthographicCamera();
@@ -65,8 +87,9 @@ public class TitleScreen implements Screen {
     @Override
     public void show() {
         //Play lobby music
-        SoundFuncs.startSequencer();
         SoundFuncs.playMIDI("TITLE");
+        SoundSettings.handleBGM(TitleScreen.bgm);
+        SoundSettings.handleSFX(TitleScreen.sfx);
 
         Gdx.input.setInputProcessor(stage);
         if(client != null){
@@ -113,11 +136,14 @@ public class TitleScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-        settingsMenu.setPosition(((Gdx.graphics.getWidth() - settingsMenu.getWidth())/ 2f), ((Gdx.graphics.getHeight() - settingsMenu.getHeight()) / 2f));
         settingsMenu.resize();
         difficultyWindow.setBounds(((Gdx.graphics.getWidth() - 150)/ 2f), ((Gdx.graphics.getHeight() - 110) / 2f), 150, 110);
         if(error != null)
             error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
+        if(settingsMenu != null){
+            settingsMenu.setSize(width/2.7f, height/2.2f);
+            settingsMenu.setPosition(((Gdx.graphics.getWidth() - settingsMenu.getWidth())/ 2f), ((Gdx.graphics.getHeight() - settingsMenu.getHeight()) / 2f));
+        }
     }
 
     @Override
@@ -170,7 +196,7 @@ public class TitleScreen implements Screen {
         coopButton.button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(NameChangeWindow.playerName.length() == 0){
+                if(TitleScreen.playerName.length() == 0){
                     error = new PopupWindow("No Username Found!", skin, "Go to settings and create a username");
                     showPopup(error);
                     error.setPosition((Gdx.graphics.getWidth() - error.getWidth())/ 2f, (Gdx.graphics.getHeight() - error.getHeight())/ 2f);
@@ -318,5 +344,10 @@ public class TitleScreen implements Screen {
         invalid_lobby.setPosition(
                 (stage.getWidth()/2f) - invalid_lobby.getWidth(),
                 (stage.getHeight()/2f) - invalid_lobby.getHeight());
+    }
+    public void createPopup(String title, String message){
+        PopupWindow popupWindow = new PopupWindow(title, skin, message);
+        popupWindow.setPosition(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f);
+        showPopup(popupWindow);
     }
 }

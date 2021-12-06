@@ -24,7 +24,7 @@ public class RCONWindow extends Window {
     final private TextField commandField;
     final private TextButton sendButton;
     final private Table commandTable;
-    final public static String ip = "100.19.127.86";
+    final public static String ip = "70.16.142.206";
     private boolean loggedIn = false;
 
     public RCONWindow(String title, Skin skin, Stage stage, RCONScreen parent) {
