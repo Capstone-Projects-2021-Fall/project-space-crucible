@@ -110,13 +110,12 @@ public class MasterServer implements Listener {
                         if (serverEntry.getFiles().size() != ((JoinLobby) object).names.size()) {
                             //Ping  the host and tell the host to send the file
 
-                            /*
                             Ping pingLobbyHost = new Ping();
                             pingLobbyHost.getAddonFiles = true;
                             pingLobbyHost.masterClientThatNeedsTheFiles = connection.getID();
                             ServerEntry hostEntry = servers.get(lobbyCode);
                             server.sendToTCP(hostEntry.masterID, pingLobbyHost);
-                            */
+
 
                             validLobby.valid = false;
                             validLobby.reason = "Lobby requires these WADS:\n" + serverEntry.getFiles().toString();// + " \n Server is downloading them in your assets folder\n Wait a few seconds and try to join again!";
@@ -205,11 +204,11 @@ public class MasterServer implements Listener {
                     //Redirect the files to the player that needs it
                     System.out.println("master received create file");
                     server.sendToTCP(((Network.CreateWadFile) object).sendFileTo, object);
+                    byteArray.reset();
                 }
                 else if(object instanceof Network.WadFile){
                     //Redirect the files to the player that needs it
                     System.out.println("master received a chunk of file size" + ((Network.WadFile) object).levelFileName + " size: " + ((Network.WadFile) object).levelFile.length);
-//                    Log.DEBUG();
                     try {
                         byteArray.write(((Network.WadFile) object).levelFile);
                     } catch (IOException e) {
