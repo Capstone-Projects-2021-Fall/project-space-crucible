@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
+import com.esotericsoftware.kryonet.util.InputStreamSender;
 import core.server.Network.JoinLobby;
 import core.server.Network.Ping;
 import core.server.Network.CreateLobby;
@@ -14,6 +15,8 @@ import core.server.Network.RCONMessage;
 import core.server.Network.OpenLobby;
 import core.server.Network.SendServerInfo;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.nio.BufferOverflowException;
@@ -31,6 +34,7 @@ public class MasterServer implements Listener {
     public ArrayList<Integer> availablePorts = new ArrayList<>();
     public HashSet<Integer> rconConnections = new HashSet<>();
     final private String CODE = "MASTER";
+    ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
 
     public MasterServer(int minPort, int maxPort, String password){
         server = new Server();
@@ -207,15 +211,47 @@ public class MasterServer implements Listener {
                     System.out.println("master received a chunk of file size" + ((Network.WadFile) object).levelFileName + " size: " + ((Network.WadFile) object).levelFile.length);
 //                    Log.DEBUG();
                     try {
-                        server.sendToTCP(((Network.WadFile) object).sendFileTo, object);
-                    }catch(BufferOverflowException i){
-                        try {
-                            System.out.println("Buffer overflow error");
-                            server.update(100);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        byteArray.write(((Network.WadFile) object).levelFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if(byteArray.size() == ((Network.WadFile) object).levelFileSize) {
+                        ByteArrayInputStream in = new ByteArrayInputStream(byteArray.toByteArray());
+                        System.out.println("Byte array size = " + byteArray.size());
+                        Connection clientConnection = null;
+                        System.out.println(((Network.WadFile) object).sendFileTo);
+                        for(Connection client: server.getConnections()){
+                            if(client.getID() == ((Network.WadFile) object).sendFileTo) {
+                                clientConnection = client;
+                            }
+                        }
+                        if(clientConnection != null) {
+                            clientConnection.addListener(new InputStreamSender(in, 512) {
+                                protected void start() {
+                                    System.out.println("Sending Files to client");
+                                }
+                                @Override
+                                protected Object next(byte[] chunk) {
+                                    System.out.println("sending " + chunk.length);
+                                    Network.WadFile levelFile = new Network.WadFile();
+                                    levelFile.levelFile = chunk;
+                                    levelFile.levelFileName = ((Network.WadFile) object).levelFileName;
+                                    levelFile.levelFileSize = ((Network.WadFile) object).levelFileSize;
+                                    return levelFile;
+                                }
+                            });
                         }
                     }
+//                    try {
+//                        server.sendToTCP(((Network.WadFile) object).sendFileTo, object);
+//                    }catch(BufferOverflowException i){
+//                        try {
+//                            System.out.println("Buffer overflow error");
+//                            server.update(100);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
                 }
             }
 
