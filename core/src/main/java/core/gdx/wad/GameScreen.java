@@ -420,6 +420,16 @@ public class GameScreen implements Screen {
                         levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
                         Color.RED, Color.RED, Color.RED, Color.RED);
             }
+            if(levelTile.effect == 1){
+                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
+                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
+                        Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW);
+            }
+            if(levelTile.effect == 2){
+                shapeRenderer.rect(levelTile.pos.x*mapSpacing+drawMiniX+ camera.viewportWidth/12,
+                        levelTile.pos.y*mapSpacing+drawMiniY+ camera.viewportHeight/7, miniSquareWidth,miniSquareHeight,
+                        Color.GREEN, Color.GREEN, Color.GREEN, Color.GREEN);
+            }
             if(isSinglePlayer) {
                 if (!levelTile.solid && levelTile.pos.x == (int) GameLogic.getPlayer(playerNumber).getPos().x / LevelTile.TILE_SIZE &&
                         levelTile.pos.y == (int) GameLogic.getPlayer(playerNumber).getPos().y / LevelTile.TILE_SIZE) {
