@@ -9,8 +9,6 @@ import core.wad.funcs.SoundFuncs;
 public class LegacyLauncher {
 	public static void main(String[] args) {
 		createApplication();
-		SoundFuncs.closeSequencer();
-		System.exit(0);
 	}
 
 	private static LwjglApplication createApplication() {
