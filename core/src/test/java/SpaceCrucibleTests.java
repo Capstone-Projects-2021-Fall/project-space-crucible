@@ -1,22 +1,113 @@
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import core.game.logic.GameLogic;
-import core.gdx.wad.SettingsMenu;
+import core.game.logic.EntityState;
+import core.wad.funcs.EntityFuncs;
 import core.server.MasterServer;
+import core.server.Network;
 import core.server.SpaceClient;
+import core.server.SpaceServer;
+import core.wad.funcs.WadFuncs;
+import net.mtrop.doom.WadFile;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SpaceCrucibleTests {
+
+    static MasterServer masterServer;
+    static SpaceServer gameServer;
+    static SpaceClient player1;
+    static SpaceClient player2;
+
+    //Prepare unit tests by creating servers, two clients, and a test lobby
+    @BeforeAll
+    @DisplayName("Start Servers")
+    static void startServers() {
+
+        WadFile file;
+        Array<WadFile> wads = new Array<>();
+
+
+        //Open files. We need our two test add-on files and the resource.
+        try {
+            file = new WadFile("../assets/resource.wad");
+            wads.add(file);
+        } catch (IOException io) {
+            fail();
+            return;
+        }
+
+        //Load Levels
+        GameLogic.loadLevels(wads);
+        WadFuncs.loadLevelEffects();
+        WadFuncs.loadScripts(wads);
+
+        assertEquals(4, GameLogic.levels.size());
+        assertEquals(1, GameLogic.scripts.size());
+        GameLogic.entityTable.clear();
+
+        //Load entities and states
+        GameLogic.stateList.add(new EntityState("UNKN", 'A', -1, -1, null));
+
+        wads.forEach(w -> {
+            if (w.contains("ENTITIES")) {
+                try {
+                    EntityFuncs.loadEntityClasses(w.getTextData("ENTITIES", Charset.defaultCharset()));
+                } catch (IOException | EntityFuncs.ParseException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+            }
+        });
+
+        assertEquals(7, GameLogic.entityTable.size());
+        GameLogic.currentLevel = GameLogic.levels.get(1);
+        try {
+            file.close();
+        } catch (IOException io) {
+            fail();
+        }
+
+        try {
+            masterServer = new MasterServer(27980, 27990, "asd");
+            gameServer = new SpaceServer(27980);
+            player1 = new SpaceClient(null, null, null);
+            player2 = new SpaceClient(null, null, null);
+
+            Network.CreateLobby cl = new Network.CreateLobby();
+            cl.names = new ArrayList<>();
+            cl.hashes = new ArrayList<>();
+            player1.getMasterClient().sendTCP(cl);
+
+            do {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    fail();
+                    return;
+                }
+            } while (!player1.getGameClient().isConnected());
+
+
+        } catch (IOException io) {
+            fail();
+            return;
+        }
+    }
+
     @Test
     @DisplayName("Port is not being used and free to use")
     void testIsPortAvailable(){
         assertTrue(MasterServer.isPortAvailable(27981));
     }
+
     @Test
     @DisplayName("Should created random lobby codes")
     void testCreateRandomLobbyCode(){
@@ -24,167 +115,106 @@ public class SpaceCrucibleTests {
         String lobbyb = MasterServer.createRandomLobbyCode();
         assertNotEquals(lobbya, lobbyb);
     }
+
     @Test
     @DisplayName("Client connection to master server")
     void testConnectionToMasterServer(){
-        MasterServer masterServer = new MasterServer(27980, 27990, "asd");
-        SpaceClient spaceClient = new SpaceClient(null, null, null);
-        assertTrue(spaceClient.getMasterClient().isConnected());
-    }
-
-    // Action Button
-    // Automated unit tests for UI objects on the title and settings screens. For testing if a certain menu is open, we can call a visibility check on its associated Scene2D UI object.
-    @Test
-    @DisplayName("Should reach the next screen after select difficulty")
-    void testStart(){
-
-
-    }
-    @Test
-    @DisplayName("Game difficulty should be changed")
-    void testChangeDifficulty(){
-
-
-    }
-    @Test
-    @DisplayName("Should display screen to join or create a lobby")
-    void testCoop(){
-
-
-    }
-    @Test
-    @DisplayName("Request is sent to the server , and it generated a code and takes the player into the lobby.")
-    void testCreateLobby(){
-
-
-    }
-    @Test
-    @DisplayName("Takes user to screen where lobby code is to be entered.")
-    void testJoinLobby(){
-
-
-    }
-    @Test
-    @DisplayName("Takes the user to the next screen where level add-ons and audio settings can be done. ")
-    void testSettingWindow(){
-        SpaceClient client = new SpaceClient(null, null, null);
-
-    }
-    @Test
-    @DisplayName("The game volume should turn off and the sequencer should be muted")
-    void testVolumeSlider(){
-
-
-    }
-
-    // Client Lobby Connection
-    // 1.Create a field where user can input lobby code.
-    // 2.Process the user input.
-    @Test
-    @DisplayName("Connection should be denied, since lobby is invalid.")
-    void testLobbyDNE(){
-
-
-    }
-    @Test
-    @DisplayName("Check if the lobby exists or not. If the lobby exists connect the client to the lobby server.")
-    void testLobbyExists(){
-
-
-    }
-
-    // Level Selected
-    // Create a field where user can select a map and  send the map selected to the server.
-    @Test
-    @DisplayName("Check if server received the map selected and check if player is being loaded into the map.")
-    void testMapSelected(){
-
-
-    }
-
-    // Select Difficulty Level
-    // Create a field where user select the difficulty level
-    @Test
-    @DisplayName("Check if the difficulty level selected is being sent to the server.")
-    void testDifficultySelected(){
-
-
-    }
-
-    // Server Input Handling
-    // Receive client’s input from the keyboard
-    @Test
-    @DisplayName("Check if the server received the correct input from the client.")
-    void testPlayerMoves(){
-
-
-    }
-    @Test
-    @DisplayName("Check if the server received the correct angle the player is facing from the client.")
-    void testRotateEntity(){
-
-
-    }
-    @Test
-    @DisplayName("Check if the server received the mouse input from the client.")
-    void testPlayerShot(){
-
-
-    }
-
-    // Loading Player Entity
-    // 1.Receive how many players are in a lobby
-    // 2.Create the player entities in the map
-    @Test
-    @DisplayName("Check if the number of player entities loaded in map match the number of players in lobby.")
-    void testPlayerNumber(){
-
-
-    }
-    @Test
-    @DisplayName("Check if the correct player entity is removed from the game.")
-    void testPlayerLeft(){
-
-
-    }
-
-
-    @Test
-    @DisplayName("True if Robot input was recognized and position integer was changed accordingly.")
-    void testKeyBinds(){
-
-
+        assertTrue(player1.getMasterClient().isConnected());
     }
 
     @Test
-    @DisplayName("True if screen in context is show, else false.")
-    void testShowScreen(){
-
-
+    @DisplayName("Client connection to game server")
+    void testConnectionToGameServer(){
+        assertTrue(player1.getGameClient().isConnected());
     }
+
+
+    //Upon joining lobby, player count should be correct
     @Test
-    @DisplayName("True if the height and/or width are different, else false.")
-    void testResizeScreen(){
+    @DisplayName("Test join lobby")
+    void testJoinLobby() {
 
+        //This prepares the join lobby signal
+        Network.JoinLobby jl = new Network.JoinLobby();
+        jl.names = new ArrayList<>();
+        jl.hashes = new ArrayList<>();
 
+        //This just fetches the lobby code
+        String code = "";
+        for (String s: masterServer.ports.keySet()) {
+            if(masterServer.ports.get(s) == 27980) {
+                code = s;
+                break;
+            }
+        }
+        jl.lobbyCode = code;
+
+        //This sends the "join lobby" packet. This is the method we're testing.
+        player2.getMasterClient().sendTCP(jl);
+
+        do {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                fail();
+                return;
+            }
+        } while (!player2.getGameClient().isConnected());
+
+        //The size of the list is 3, because there is a dummy player 0 with id -1
+        assertEquals(3, SpaceServer.idToPlayerNum.size());
     }
+
     @Test
-    @DisplayName("True if its state is paused, else false.")
-    void testPauseScreen(){
+    @DisplayName("Test Start Game")
+    void testStartGame() {
+        Network.StartGame startGame = new Network.StartGame();
+        startGame.startGame = true;
+        startGame.difficultyLevel = GameLogic.MEDIUM;
+        startGame.levelnum = 1;
+        player1.getGameClient().sendTCP(startGame);
 
-
+        do {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                fail();
+                return;
+            }
+        } while(!gameServer.gameStartedByHost);
     }
+
     @Test
-    @DisplayName("True if state is not paused, else false.")
-    void testResumeScreen(){
+    @DisplayName("Change Level")
+    void testLevelChange() {
+        Network.RCONMessage rm = new Network.RCONMessage();
+        rm.message = "level 2";
+        player1.getGameClient().sendTCP(rm);
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            fail();
+            return;
+        }
 
+        assertEquals(2, GameLogic.currentLevel.levelnumber);
     }
+
     @Test
-    @DisplayName("True if it has released all its resources, else false.")
-    void testDisposeScreen(){
+    @DisplayName("Change Difficulty")
+    void testDifficultyChange() {
+        Network.RCONMessage rm = new Network.RCONMessage();
+        rm.message = "skill 4";
+        player1.getGameClient().sendTCP(rm);
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            fail();
+            return;
+        }
 
+        assertEquals(GameLogic.NIGHTMARE, GameLogic.difficulty);
     }
-
 }
