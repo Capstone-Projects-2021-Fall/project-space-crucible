@@ -58,7 +58,7 @@ public class SpaceServer implements Listener {
                 System.out.println("gameServer-" + tcpPort + " file already exists overwriting the file.");
                 fileWriter = new FileWriter(serverReport, false);
             }
-        } catch (NullPointerException | IOException ignored){}
+        } catch (NullPointerException | IOException ignored) {}
         createGameLoopThread();
         startTime = new Date();
         idToPlayerNum.add(-1);
