@@ -205,10 +205,22 @@ public class SpaceServer implements Listener {
                         System.out.println("Player connected " + idToPlayerNum.indexOf(c.getID()));
 
                         if (gameStartedByHost) {
-                            for (LevelObject lo : GameLogic.currentLevel.getObjects()) {
-                                if (lo.type == 0 && lo.tag == idToPlayerNum.indexOf(c.getID())) {
-                                    GameLogic.newEntityQueue.add(GameLogic.mapIDTable.get(0)
-                                            .spawnEntity(new Entity.Position(lo.xpos, lo.ypos, lo.angle), lo.tag, lo.layer, lo.ambush));
+                            ArrayList<LevelObject> pobjs = new ArrayList<>();
+                            int highestPlayerSpawnTag = 0;
+                            for (LevelObject obj : GameLogic.currentLevel.getObjects()) {
+                                if (obj.type == 0) {
+
+                                    pobjs.add(obj);
+                                    highestPlayerSpawnTag = Math.max(highestPlayerSpawnTag, obj.tag);
+                                }
+                            }
+
+                            int i = idToPlayerNum.indexOf(c.getID());
+
+                            for (LevelObject pobj : pobjs) {
+                                if ((i <= highestPlayerSpawnTag && i == pobj.tag) || (i > highestPlayerSpawnTag && (i % highestPlayerSpawnTag == pobj.tag || i % highestPlayerSpawnTag == 0))) {
+                                    GameLogic.entityList.add(GameLogic.mapIDTable.get(0)
+                                            .spawnEntity(new Entity.Position(pobj.xpos, pobj.ypos, pobj.angle), i, pobj.layer, pobj.ambush));
                                     break;
                                 }
                             }
