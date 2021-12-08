@@ -241,16 +241,6 @@ public class MasterServer implements Listener {
                             });
                         }
                     }
-//                    try {
-//                        server.sendToTCP(((Network.WadFile) object).sendFileTo, object);
-//                    }catch(BufferOverflowException i){
-//                        try {
-//                            System.out.println("Buffer overflow error");
-//                            server.update(100);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
                 }
             }
 
