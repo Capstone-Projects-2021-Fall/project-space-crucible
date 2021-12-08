@@ -81,7 +81,7 @@ To load custom level: <br>
 - Co-op mode
 - Level Editor
 - Settings
-- Change player name
+- Player usernames
 - Volume settings
 - Fullscreen options
 - Persistent data for settings menu options
@@ -95,6 +95,11 @@ To load custom level: <br>
 - Load the custom level using addons menu in settings option
 - Server will automatically download custom map for a new player before joining
 - UI rework
+- Level tiles- this allows room-over-room support
+- ENTITIES content definition language- custom scripted Entities
+- Servers automatically free when empty
+- Remote connection to check server status and health
+- Basic level scripting using batches of tile effects with delays
 
 ### Known Bugs in this release
 
